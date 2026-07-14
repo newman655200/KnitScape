@@ -1,4 +1,8 @@
 import { GLOBAL_STATE, dispatch } from "../state";
+import {
+  beginTexturePreviewInteraction,
+  endTexturePreviewInteraction,
+} from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
 
 function brushColor(e, colorCanvas) {
@@ -27,6 +31,7 @@ function brushColor(e, colorCanvas) {
 
   function end() {
     dispatch({ transforming: false });
+    endTexturePreviewInteraction();
 
     colorCanvas.removeEventListener("touchmove", move);
     colorCanvas.removeEventListener("touchcancel", end);
@@ -38,46 +43,11 @@ function brushColor(e, colorCanvas) {
   colorCanvas.addEventListener("touchend", end);
 }
 
-function resizeColorCanvas(e) {
-  const startSequence = GLOBAL_STATE.yarnSequence;
-  const start = e.touches[0].clientY;
-
-  const end = () => {
-    dispatch({ transforming: false });
-
-    window.removeEventListener("touchmove", onmove);
-    window.removeEventListener("touchend", end);
-    window.removeEventListener("touchcancel", end);
-  };
-
-  const onmove = (e) => {
-    let newSize =
-      startSequence.height +
-      Math.floor(
-        ((start - e.touches[0].clientY) / GLOBAL_STATE.scale) * devicePixelRatio
-      );
-    if (newSize < 1 || newSize == startSequence.height) return;
-
-    dispatch({
-      yarnSequence: startSequence.resize(1, newSize, GLOBAL_STATE.activeYarn),
-    });
-  };
-
-  window.addEventListener("touchmove", onmove);
-  window.addEventListener("touchend", end);
-  window.addEventListener("touchcancel", end);
-}
-
-export function colorSequenceTouchInteraction(canvas, resizeDragger) {
+export function colorSequenceTouchInteraction(canvas) {
   canvas.addEventListener("touchstart", (e) => {
     dispatch({ transforming: true });
+    beginTexturePreviewInteraction();
 
     brushColor(e, canvas);
-  });
-
-  resizeDragger.addEventListener("touchstart", (e) => {
-    dispatch({ transforming: true });
-
-    resizeColorCanvas(e);
   });
 }

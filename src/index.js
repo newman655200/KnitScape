@@ -1,3 +1,4 @@
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
@@ -36,6 +37,8 @@ import { runSimulation } from "./components/runSimulation";
 import { closeModals } from "./events/closeModals";
 import { generateChart } from "./components/generateChart";
 import { isMobile } from "./utils";
+import { isCodeGuideMode } from "./codeGuide/mode";
+import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
 
 let symbolCanvas,
   gridCanvas,
@@ -43,7 +46,6 @@ let symbolCanvas,
   desktop,
   repeatContainer,
   yarnSequenceEditorCanvas,
-  colorDragger,
   simContainer,
   repeatLibrary;
 
@@ -57,7 +59,7 @@ function initKeyboard() {
 
   desktopPointerPanZoom(desktop);
   repeatPointerInteraction(repeatContainer);
-  colorSequencePointerInteraction(yarnSequenceEditorCanvas, colorDragger);
+  colorSequencePointerInteraction(yarnSequenceEditorCanvas);
   simulationPointerInteraction(simContainer);
   // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
@@ -68,7 +70,7 @@ function initTouch() {
 
   desktopTouchPanZoom(desktop);
   repeatTouchInteraction(repeatContainer);
-  colorSequenceTouchInteraction(yarnSequenceEditorCanvas, colorDragger);
+  colorSequenceTouchInteraction(yarnSequenceEditorCanvas);
   simulationTouchInteraction(simContainer);
   // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
@@ -96,7 +98,6 @@ function init() {
   repeatContainer = document.getElementById("repeat-container");
   simContainer = document.getElementById("sim-container");
   repeatLibrary = document.getElementById("repeat-library");
-  colorDragger = document.getElementById("color-dragger");
 
   Split(["#chart-pane", "#sim-pane"], {
     sizes: [60, 40],
@@ -104,7 +105,17 @@ function init() {
     gutterSize: 11,
   });
 
-  isMobile() ? initTouch() : initKeyboard();
+  if (isCodeGuideMode()) {
+    document
+      .querySelector("#site > .gutter")
+      ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"
+  }
+
+  if (isCodeGuideMode()) {
+    initCodeGuideEvents();
+  } else {
+    isMobile() ? initTouch() : initKeyboard();
+  }
 
   StateMonitor.register([
     resizeCanvases([symbolCanvas, gridCanvas, yarnColorCanvas]),

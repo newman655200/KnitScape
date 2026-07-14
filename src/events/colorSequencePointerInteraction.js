@@ -1,4 +1,8 @@
 import { GLOBAL_STATE, dispatch } from "../state";
+import {
+  beginTexturePreviewInteraction,
+  endTexturePreviewInteraction,
+} from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
 
 function brushColor(e, colorCanvas) {
@@ -27,6 +31,7 @@ function brushColor(e, colorCanvas) {
 
   function end() {
     dispatch({ transforming: false });
+    endTexturePreviewInteraction();
     colorCanvas.removeEventListener("pointermove", move);
     colorCanvas.removeEventListener("pointerup", end);
     colorCanvas.removeEventListener("pointerleave", end);
@@ -37,49 +42,11 @@ function brushColor(e, colorCanvas) {
   colorCanvas.addEventListener("pointerleave", end);
 }
 
-function resizeColorCanvas(e) {
-  const startSequence = GLOBAL_STATE.yarnSequence;
-  const start = e.clientY;
-
-  document.body.classList.add("grabbing");
-  e.target.classList.remove("grab");
-
-  function end() {
-    document.body.classList.remove("grabbing");
-    dispatch({ transforming: false });
-
-    window.removeEventListener("pointermove", move);
-    window.removeEventListener("pointerup", end);
-
-    e.target.classList.add("grab");
-  }
-
-  function move(e) {
-    let newSize =
-      startSequence.height +
-      Math.floor(((start - e.clientY) / GLOBAL_STATE.scale) * devicePixelRatio);
-
-    if (newSize < 1 || newSize == GLOBAL_STATE.yarnSequence.height) return;
-
-    dispatch({
-      yarnSequence: startSequence.resize(1, newSize, GLOBAL_STATE.activeYarn),
-    });
-  }
-
-  window.addEventListener("pointermove", move);
-  window.addEventListener("pointerup", end);
-}
-
-export function colorSequencePointerInteraction(colorCanvas, resizeDragger) {
+export function colorSequencePointerInteraction(colorCanvas) {
   colorCanvas.addEventListener("pointerdown", (e) => {
     dispatch({ transforming: true });
+    beginTexturePreviewInteraction();
 
     brushColor(e, colorCanvas);
-  });
-
-  resizeDragger.addEventListener("pointerdown", (e) => {
-    dispatch({ transforming: true });
-
-    resizeColorCanvas(e);
   });
 }

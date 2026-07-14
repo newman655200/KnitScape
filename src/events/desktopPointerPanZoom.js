@@ -1,6 +1,7 @@
 import { GLOBAL_STATE, dispatch } from "../state";
 import { posAtCoords } from "../utils";
 import { zoomAtPoint } from "../actions/zoomFit";
+import { selectChartCell } from "../actions/selectedCell";
 
 function pan(e, target) {
   const startPos = { x: e.clientX, y: e.clientY };
@@ -30,10 +31,28 @@ function pan(e, target) {
 
 export function desktopPointerPanZoom(desktop) {
   desktop.addEventListener("pointerdown", (e) => {
-    if (e.target == desktop || e.target.id == "symbol-canvas") {
+    if (e.target.id == "symbol-canvas" && e.button == 0) {
+      selectChartCell(posAtCoords(e, desktop));
+      return;
+    }
+
+    if (
+      e.button == 1 &&
+      (e.target == desktop || e.target.id == "symbol-canvas")
+    ) {
+      e.preventDefault();
+      pan(e, desktop);
+      return;
+    }
+
+    if (e.target == desktop) {
       // dispatch({ editingRepeat: -1 });
       pan(e, desktop);
     }
+  });
+
+  desktop.addEventListener("auxclick", (e) => {
+    if (e.button == 1) e.preventDefault();
   });
 
   desktop.addEventListener("pointermove", (e) => {

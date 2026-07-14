@@ -8,6 +8,23 @@ export function yarnSequenceCanvas({ canvas }) {
     let height = yarnSequence.height;
     let lastDrawn = null;
 
+    function drawYarnSequenceGrid(ctx) {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.55)";
+      ctx.lineWidth = Math.max(1, Math.round(scale * 0.08));
+
+      for (let y = 1; y < height; y++) {
+        const lineY = y * scale;
+        ctx.beginPath();
+        ctx.moveTo(0, lineY);
+        ctx.lineTo(width * scale, lineY);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
     function draw() {
       const ctx = canvas.getContext("2d");
 
@@ -30,6 +47,7 @@ export function yarnSequenceCanvas({ canvas }) {
           }
         }
       }
+      drawYarnSequenceGrid(ctx);
       lastDrawn = yarnSequence;
     }
 

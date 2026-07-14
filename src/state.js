@@ -1,16 +1,22 @@
-import { Bimp } from "./lib/Bimp";
+import { Bimp } from "./lib/Bimp.js";
 import {
   SNAPSHOT_INTERVAL,
   DEFAULT_PATTERN_LIBRARY,
   DEFAULT_SYMBOLS,
   SNAPSHOT_FIELDS,
-} from "./constants";
+  DEFAULT_YARN_COLOR,
+  DEFAULT_YARN_PLIES,
+  DEFAULT_STITCH_SYMBOL_INDEX,
+  TEXTURE_PERFORMANCE_MODES,
+} from "./constants.js";
+import { getInitialLanguage } from "./i18n/index.js";
 
 let GLOBAL_STATE = {
+  language: getInitialLanguage(),
   editingPalette: false,
   transforming: false,
 
-  activeTool: "brush",
+  activeTool: null,
   activeSymbol: 0,
 
   chartBackground: "#ffffff",
@@ -24,24 +30,24 @@ let GLOBAL_STATE = {
 
   simScale: 1,
   simPan: { x: 0, y: 0 },
+  simPreviewScale: null,
+  simPreviewPan: null,
+  texturePerformanceMode: TEXTURE_PERFORMANCE_MODES.AUTO,
+  texturePreviewInteractionActive: false,
 
   activeYarn: 0,
-  yarnPalette: ["rgba(16,18,189,1)", "rgba(235,233,187,1)", "rgba(247,85,0,1)"], // Colors of the yarns
-  yarnSequence: new Bimp(1, 8, [1, 1, 1, 1, 2, 2, 0, 0]),
+  yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns
+  yarnSequence: new Bimp(1, 60, Array(60).fill(0)),
+  yarnPlies: DEFAULT_YARN_PLIES.map((ply) => ({ ...ply })),
 
-  editingRepeat: -1,
+  editingRepeat: 0,
   repeatPos: [-1, -1],
+  selectedChartCell: null,
+  selectedRepeatCell: null,
 
   repeats: [
     {
-      bitmap: new Bimp(
-        4,
-        8,
-        [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 3, 0,
-          0, 0, 3, 0, 0, 0, 3, 0, 0,
-        ]
-      ),
+      bitmap: Bimp.empty(4, 8, DEFAULT_STITCH_SYMBOL_INDEX),
       pos: [0, 0],
       area: [48, 60],
     },
@@ -62,8 +68,8 @@ let GLOBAL_STATE = {
     },
   ], // Library of motifs which can be used as repeats
 
-  // chart: Bimp.empty(5, 5, 0),
-  chart: Bimp.empty(48, 60, 0),
+  // chart: Bimp.empty(5, 5, DEFAULT_STITCH_SYMBOL_INDEX),
+  chart: Bimp.empty(48, 60, DEFAULT_STITCH_SYMBOL_INDEX),
 
   reverseScroll: false,
   grid: true,

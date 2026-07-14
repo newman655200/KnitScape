@@ -1,10 +1,12 @@
 import { html } from "lit-html";
 import { GLOBAL_STATE, dispatch } from "../state";
-import jscolor from "@eastdesire/jscolor";
+import { t } from "../i18n";
 
 export function settingsModal() {
+  const language = GLOBAL_STATE.language;
+
   return html` <div id="settings-modal" class="modal">
-    <h2>Settings</h2>
+    <h2>${t("settings.title", language)}</h2>
 
     <div class="modal-content">
       <label class="form-control toggle">
@@ -13,7 +15,7 @@ export function settingsModal() {
           name="debug"
           ?checked=${GLOBAL_STATE.reverseScroll}
           @change=${(e) => dispatch({ reverseScroll: e.target.checked })} />
-        Invert Scroll
+        ${t("settings.invertScroll", language)}
       </label>
 
       <label class="form-control toggle">
@@ -22,7 +24,7 @@ export function settingsModal() {
           name="grid"
           ?checked=${GLOBAL_STATE.grid}
           @change=${(e) => dispatch({ grid: e.target.checked })} />
-        Grid
+        ${t("settings.grid", language)}
       </label>
 
       <label class="form-control toggle">
@@ -31,11 +33,11 @@ export function settingsModal() {
           name="debug"
           ?checked=${GLOBAL_STATE.debug}
           @change=${(e) => dispatch({ debug: e.target.checked })} />
-        Debug
+        ${t("settings.debug", language)}
       </label>
 
       <label class="form-control range">
-        Symbol Line Width
+        ${t("settings.symbolLineWidth", language)}
         <input
           type="range"
           name="line-width"
@@ -49,28 +51,3 @@ export function settingsModal() {
     </div>
   </div>`;
 }
-
-// function editBackgroundColor(target) {
-//   if (!target.jscolor) {
-//     const picker = new jscolor(target, {
-//       preset: "dark large",
-//       format: "hex",
-//       value: GLOBAL_STATE.chartBackground,
-//       onInput: () => dispatch({ chartBackground: picker.toRGBString() }),
-//       previewElement: null,
-//     });
-//   }
-//   target.jscolor.show();
-// }
-
-/* <label class="form-control">
-        <button
-          id="background-color-edit"
-          name="chart-background"
-          class="btn icon-text"
-          style="background: ${GLOBAL_STATE.chartBackground};"
-          @click=${(e) => editBackgroundColor(e.target)}>
-          <i class="fa-solid fa-palette"></i>
-          Background Color
-        </button>
-      </label> */

@@ -142,6 +142,7 @@ export function downloadJSON() {
         }),
         yarnPalette: GLOBAL_STATE.yarnPalette,
         yarnSequence: GLOBAL_STATE.yarnSequence.toJSON(),
+        yarnPlies: GLOBAL_STATE.yarnPlies,
       })
     );
 

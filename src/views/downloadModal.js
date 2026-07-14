@@ -12,13 +12,17 @@ import {
 import { punchCardSVG } from "../punchcard";
 
 import { GLOBAL_STATE, dispatch } from "../state";
+import { buttonIcon } from "./uiButton";
+import { t } from "../i18n";
 
 export function downloadModal() {
+  const language = GLOBAL_STATE.language;
+
   return html` <div class="modal">
-    <h2>Download Pattern</h2>
+    <h2>${t("download.title", language)}</h2>
     <div class="modal-content">
       <button class="btn solid" @click=${() => downloadJSON()}>
-        Pattern JSON
+        ${buttonIcon("download", t("download.patternJson", language))}
       </button>
       <!-- <button class="btn solid" @click=${() =>
         downloadPNG()}>Chart PNG</button>
@@ -29,16 +33,16 @@ export function downloadModal() {
         Windows BMP (Silver Knit)
       </button> -->
       <button class="btn solid" @click=${() => downloadSilverKnitTxt()}>
-        TXT (Silver Knit)
+        ${buttonIcon("download", t("download.silverKnit", language))}
       </button>
       <button class="btn solid" @click=${() => downloadKniterate()}>
-        Kniterate TXT Import
+        ${buttonIcon("download", t("download.kniterate", language))}
       </button>
 
-      <h3>Punchcard</h3>
+      <h3>${t("download.punchcard", language)}</h3>
 
       <label class="form-control range">
-        Vertical Repeats
+        ${t("download.verticalRepeats", language)}
         <input
           type="range"
           name="line-width"
@@ -54,7 +58,7 @@ export function downloadModal() {
       </label>
 
       <button class="btn solid" @click=${() => downloadPunchcard()}>
-        Download Punchcard SVG
+        ${buttonIcon("download", t("download.punchcardSvg", language))}
       </button>
 
       <div class="punchcard-preview">${punchCardSVG()}</div>

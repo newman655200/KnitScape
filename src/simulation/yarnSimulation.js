@@ -1,7 +1,30 @@
 import { ProcessModel } from "./ProcessModel";
 import { Pattern } from "./Pattern";
 import { YarnModel } from "./YarnModel";
-import { yarnLinkForce } from "./YarnForce";
+import {
+  drawYarnSequenceMaskPath,
+  drawYarnTexturePath,
+  prepareYarnTextureImages,
+} from "./yarnTextureBrush";
+import { buildYarnUvStrip } from "./yarnPathUvStrip.js";
+import { getWebglYarnRenderer } from "./yarnUvWebglRenderer.js";
+import { normalizeYarnTexture } from "../yarnTexture/yarnScanTexture";
+import {
+  normalizeYarnSequence,
+  yarnIndexForSequenceRow,
+} from "../actions/yarnSequenceRows";
+import {
+  TEXTURE_PERFORMANCE_MODES,
+  YARN_UV_MAX_POINTS_PER_PATH,
+  YARN_UV_SAMPLE_SPACING,
+  YARN_UV_TEXTURE_REPEAT_LENGTH,
+} from "../constants";
+import {
+  assertContinuousRowPaths,
+  moveNeckPoint,
+  pathDataLength,
+  solveSharedCoefficient,
+} from "./rowLengthLoopModel";
 import * as d3 from "d3";
 
 // Number of stitches to add to the left and right of the pattern
@@ -17,23 +40,132 @@ const STITCH_RATIO = 5 / 3; // Row height / stitch width
 const YARN_RATIO = 0.24;
 
 const SPREAD = 0.88;
+const MAX_SHARED_COEFFICIENT_CACHE_SIZE = 32;
+const sharedCoefficientCache = new Map();
 
 // Sim constants
-const ALPHA_DECAY = 0.05;
-const ALPHA_MIN = 0.2;
-const ITERATIONS = 1;
-const LINK_STRENGTH = 0.2;
-
-// The target link distance when the simulation is run
-const HEIGHT_SHRINK = 0.7;
-
 const dpi = devicePixelRatio;
 
-export function simulate(pattern, yarnSequence, palette, scale) {
-  let relaxed = false;
-  let yarnWidth, stitchHeight, sim;
-  let yarnSet = new Set(yarnSequence);
-  let yarnPalette = { ...palette, border: "#00000033" };
+function sharedCoefficientCacheKey(pattern, diameter, lengthScale) {
+  return [
+    `${pattern.width}x${pattern.height}`,
+    Number(diameter).toFixed(4),
+    Number(lengthScale).toFixed(4),
+    Array.from(pattern.pixels || []).join(","),
+  ].join("|");
+}
+
+function cachedSharedCoefficient(key) {
+  if (!sharedCoefficientCache.has(key)) return null;
+  const coefficient = sharedCoefficientCache.get(key);
+  sharedCoefficientCache.delete(key);
+  sharedCoefficientCache.set(key, coefficient);
+  return coefficient;
+}
+
+function cacheSharedCoefficient(key, coefficient) {
+  if (sharedCoefficientCache.has(key)) sharedCoefficientCache.delete(key);
+  sharedCoefficientCache.set(key, coefficient);
+  if (sharedCoefficientCache.size > MAX_SHARED_COEFFICIENT_CACHE_SIZE) {
+    sharedCoefficientCache.delete(sharedCoefficientCache.keys().next().value);
+  }
+}
+
+function normalizeYarnPlies(yarnPlies, palette) {
+  const fallbackColor = palette?.[0] || "rgba(190,190,190,1)";
+  const source =
+    Array.isArray(yarnPlies) && yarnPlies.length
+      ? yarnPlies
+      : [
+          {
+            color: fallbackColor,
+            diameter: YARN_RATIO,
+            enabled: true,
+            texture: null,
+          },
+        ];
+
+  const normalized = source
+    .filter((ply) => ply?.enabled !== false)
+    .map((ply) => ({
+      color: ply.color || fallbackColor,
+      diameter:
+        Number.isFinite(Number(ply.diameter)) && Number(ply.diameter) > 0
+          ? Number(ply.diameter)
+          : YARN_RATIO,
+      texture: normalizeYarnTexture(ply.texture),
+    }));
+
+  return normalized.length
+    ? normalized
+    : [
+        {
+          color: fallbackColor,
+          diameter: YARN_RATIO,
+          texture: null,
+        },
+      ];
+}
+
+function shouldRenderTextures({
+  texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
+  texturePreviewInteractionActive = false,
+} = {}) {
+  if (texturePerformanceMode === TEXTURE_PERFORMANCE_MODES.SOLID) return false;
+  if (texturePerformanceMode === TEXTURE_PERFORMANCE_MODES.AUTO) {
+    return !texturePreviewInteractionActive;
+  }
+  return true;
+}
+
+function hasUvTextureMap(ply) {
+  const texture = normalizeYarnTexture(ply.texture);
+  if (!texture || texture.enabled === false) return false;
+
+  return Boolean(
+    texture.processedDataUrl ||
+      texture.pbr?.baseColor?.processedDataUrl ||
+      texture.pbr?.baseColor?.dataUrl
+  );
+}
+
+function isNeutralYarnSequence(yarnSequence) {
+  const pixels = Array.from(yarnSequence?.pixels || []);
+  return !pixels.length || pixels.every((pixel) => Number(pixel) === 0);
+}
+
+export function simulate(
+  pattern,
+  yarnSequence,
+  palette,
+  scale,
+  yarnPlies,
+  {
+    texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
+    texturePreviewInteractionActive = false,
+  } = {}
+) {
+  let stopped = false;
+  let stitchWidth, yarnWidth, stitchHeight, halfStitch, offsetX;
+  const normalizedYarnSequence = normalizeYarnSequence(yarnSequence);
+  const activeYarnPlies = normalizeYarnPlies(yarnPlies, palette);
+  const hasYarnSequenceMask = !isNeutralYarnSequence(normalizedYarnSequence);
+  const primaryLengthScaleY = Math.min(
+    1.1,
+    Math.max(0.9, Number(yarnPlies?.[0]?.lengthScaleY) || 1)
+  );
+  const coefficientCacheKey = sharedCoefficientCacheKey(
+    pattern,
+    activeYarnPlies[0].diameter,
+    primaryLengthScaleY
+  );
+  const renderTextures = shouldRenderTextures({
+    texturePerformanceMode,
+    texturePreviewInteractionActive,
+  });
+  const renderUvTextures =
+    renderTextures && activeYarnPlies.some((ply) => hasUvTextureMap(ply));
+
   performance.clearMeasures();
   performance.mark("start");
 
@@ -44,18 +176,17 @@ export function simulate(pattern, yarnSequence, palette, scale) {
   function layoutNodes(yarnGraph) {
     // calculates the x,y values for the i,j
 
-    const stitchWidth = Math.min(
+    stitchWidth = Math.min(
       (canvasWidth * 0.9) / stitchPattern.width,
       ((canvasHeight * 0.9) / stitchPattern.height) * STITCH_RATIO
     );
 
-    const halfStitch = stitchWidth / 2;
+    halfStitch = stitchWidth / 2;
     stitchHeight = stitchWidth / STITCH_RATIO;
 
-    yarnWidth = stitchWidth * YARN_RATIO;
+    yarnWidth = stitchWidth * activeYarnPlies[0].diameter;
 
-    const offsetX =
-      yarnWidth + (canvasWidth - stitchPattern.width * stitchWidth) / 2;
+    offsetX = yarnWidth + (canvasWidth - stitchPattern.width * stitchWidth) / 2;
     const offsetY =
       -yarnWidth + (canvasHeight - stitchPattern.height * stitchHeight) / 2;
 
@@ -130,64 +261,253 @@ export function simulate(pattern, yarnSequence, palette, scale) {
 
   const openYarnCurve = d3
     .line()
-    .x((d) => nodes[d.cnIndex].x + (yarnWidth / 2) * d.normal[0])
-    .y((d) => nodes[d.cnIndex].y + (yarnWidth / 2) * d.normal[1])
-    .curve(d3.curveCatmullRomOpen);
+    .x((d) => d.x)
+    .y((d) => d.y)
+    .curve(d3.curveCatmullRomOpen)
+    .digits(6);
 
-  function yarnCurve(yarnLink) {
+  function getBasePointPosition(point) {
+    return {
+      x: nodes[point.cnIndex].x + (yarnWidth / 2) * point.normal[0],
+      y: nodes[point.cnIndex].y + (yarnWidth / 2) * point.normal[1],
+    };
+  }
+
+  function getYarnLinkCurvePoints(yarnLink) {
     const index = yarnLink.index;
 
-    if (index == 0 || index > yarnPathLinks.length - 3) {
-      // if is the first or last link, just draw a line
-      return `M ${yarnLink.source.x} ${yarnLink.source.y} ${yarnLink.target.x} ${yarnLink.target.y}`;
-    }
-
-    const linkData = [
+    return [
       yarnPath[index - 1],
       yarnPath[index],
       yarnPath[index + 1],
       yarnPath[index + 2],
     ];
+  }
 
-    return openYarnCurve(linkData);
+  let rowBoundaryIndices;
+
+  function getSharedPointPosition(point, coefficientByRow) {
+    const base = getBasePointPosition(point);
+    const bounds = rowBoundaryIndices.get(point.row);
+    const isBoundary = point.pathIndex === bounds?.first || point.pathIndex === bounds?.last;
+    const isNeck = point.cnType?.endsWith("L");
+    if (!isNeck || isBoundary) return base;
+    const centerI = Math.floor(point.i / 2) * 2 + 0.5;
+    const centerX = offsetX + centerI * halfStitch;
+    return moveNeckPoint(
+      base,
+      centerX,
+      coefficientByRow.get(point.row) ?? 1,
+      stitchHeight
+    );
+  }
+
+  function yarnCurve(yarnLink, coefficientByRow) {
+    const index = yarnLink.index;
+
+    if (index == 0 || index > yarnPathLinks.length - 3) {
+      const source = getSharedPointPosition(yarnPath[index], coefficientByRow);
+      const target = getSharedPointPosition(yarnPath[index + 1], coefficientByRow);
+      if (!source || !target) return "";
+      return `M ${source.x} ${source.y} L ${target.x} ${target.y}`;
+    }
+
+    return openYarnCurve(
+      getYarnLinkCurvePoints(yarnLink).map((point) =>
+        getSharedPointPosition(point, coefficientByRow)
+      )
+    );
+  }
+
+  function rowSupportsLengthModel(row) {
+    for (let x = 0; x < stitchPattern.width; x++) {
+      const operation = stitchPattern.op(x, row);
+      if (operation !== "K" && operation !== "P") return false;
+    }
+    return true;
+  }
+
+  function buildRowCoefficients(linksByRow) {
+    const coefficients = new Map([...linksByRow.keys()].map((row) => [row, 1]));
+    if (Math.abs(primaryLengthScaleY - 1) < 0.0001) return coefficients;
+    const supportedRows = [...linksByRow.keys()].filter(rowSupportsLengthModel);
+    if (!supportedRows.length) return coefficients;
+    const cachedCoefficient = cachedSharedCoefficient(coefficientCacheKey);
+    if (cachedCoefficient !== null) {
+      supportedRows.forEach((row) => coefficients.set(row, cachedCoefficient));
+      return coefficients;
+    }
+    const supportedRowSet = new Set(supportedRows);
+    const representativeRow =
+      supportedRows.find(
+        (row) => supportedRowSet.has(row - 1) && supportedRowSet.has(row + 1)
+      ) ?? supportedRows[0];
+    const representativeLinks = linksByRow.get(representativeRow);
+    const measureRow = (coefficientByRow) =>
+      representativeLinks.reduce(
+        (sum, link) =>
+          sum + pathDataLength(yarnCurve(link, coefficientByRow), stitchWidth),
+        0
+      );
+    const baselineLength = measureRow(coefficients);
+    const measureCandidate = (candidate) => {
+      const trial = new Map(coefficients);
+      supportedRows.forEach((row) => trial.set(row, candidate));
+      return measureRow(trial);
+    };
+    const result = solveSharedCoefficient({
+      targetLength: baselineLength * primaryLengthScaleY,
+      direction: primaryLengthScaleY < 1 ? "tight" : "loose",
+      measureLength: measureCandidate,
+    });
+    supportedRows.forEach((row) => coefficients.set(row, result.coefficient));
+    cacheSharedCoefficient(coefficientCacheKey, result.coefficient);
+    return coefficients;
+  }
+
+  function buildResolvedPathMap() {
+    const linksByRow = new Map();
+    yarnPathLinks.forEach((link) => {
+      const links = linksByRow.get(link.row) || [];
+      links.push(link);
+      linksByRow.set(link.row, links);
+    });
+    const coefficients = buildRowCoefficients(linksByRow);
+    const resolved = new Map();
+    yarnPathLinks.forEach((link) => resolved.set(link.index, yarnCurve(link, coefficients)));
+    linksByRow.forEach((links, row) => {
+      const paths = links.map((link) => resolved.get(link.index));
+      if (assertContinuousRowPaths(paths, stitchWidth * 1e-6)) return;
+      const fallback = new Map(coefficients);
+      fallback.set(row, 1);
+      links.forEach((link) => resolved.set(link.index, yarnCurve(link, fallback)));
+    });
+    return resolved;
   }
 
   function sortSegments() {
     const sortedSegments = {
-      front: { border: [] },
-      back: { border: [] },
-      mid: { border: [] },
+      front: [],
+      back: [],
+      mid: [],
     };
-
-    for (const color of yarnSet) {
-      sortedSegments.front[color] = [];
-      sortedSegments.back[color] = [];
-      sortedSegments.mid[color] = [];
-    }
 
     return sortedSegments;
   }
 
   ///////////////////////
-  // YARN COLOR
-  ///////////////////////
-
-  function yarnColor(rowNum) {
-    if (rowNum < Y_PADDING || rowNum >= stitchPattern.height - Y_PADDING)
-      return "border"; // show border rows as transparent black
-    return yarnSequence[(rowNum - Y_PADDING) % yarnSequence.length];
-  }
-
-  ///////////////////////
   // DRAW
   ///////////////////////
-  function drawSegmentsToLayer(context, layer) {
-    context.lineWidth = yarnWidth;
+  function rowYarnPly(link, ply) {
+    if (!hasYarnSequenceMask) return ply;
 
-    Object.entries(layer).forEach(([colorIndex, paths]) => {
-      context.strokeStyle = yarnPalette[colorIndex];
-      context.stroke(new Path2D(paths.join(" ")));
+    const paletteIndex = yarnIndexForSequenceRow(
+      normalizedYarnSequence,
+      link.row
+    );
+    const sequenceMaskColor =
+      palette[paletteIndex] || activeYarnPlies[paletteIndex]?.color;
+
+    if (!sequenceMaskColor) return ply;
+
+    return {
+      ...ply,
+      sequenceMaskColor,
+    };
+  }
+
+  function collectSequenceMaskPath(maskBatches, ply, pathData) {
+    if (!ply.sequenceMaskColor || !pathData) return;
+
+    const lineWidth = stitchWidth * ply.diameter;
+    const key = `${lineWidth}|${ply.sequenceMaskColor}`;
+    const batch =
+      maskBatches.get(key) ||
+      {
+        lineWidth,
+        sequenceMaskColor: ply.sequenceMaskColor,
+        pathParts: [],
+      };
+
+    batch.pathParts.push(pathData);
+    maskBatches.set(key, batch);
+  }
+
+  function drawBatchedSequenceMasks(context, maskBatches) {
+    maskBatches.forEach((batch) => {
+      if (!batch.pathParts.length) return;
+
+      drawYarnSequenceMaskPath(
+        context,
+        new Path2D(batch.pathParts.join(" ")),
+        batch.lineWidth,
+        batch.sequenceMaskColor
+      );
     });
+  }
+
+  let resolvedPathByLink;
+
+  function buildYarnDrawCommand(link, ply) {
+    const rowPly = rowYarnPly(link, ply);
+    const pathData = resolvedPathByLink.get(link.index);
+    if (!pathData) return null;
+
+    const lineWidth = stitchWidth * rowPly.diameter;
+    return {
+      link,
+      ply: rowPly,
+      pathData,
+      lineWidth,
+      strip: buildYarnUvStrip({
+        pathData,
+        yarnWidth: lineWidth,
+        textureRepeatLength: YARN_UV_TEXTURE_REPEAT_LENGTH,
+        sampleSpacing: YARN_UV_SAMPLE_SPACING,
+        maxPoints: YARN_UV_MAX_POINTS_PER_PATH,
+      }),
+    };
+  }
+
+  function drawSegmentsToLayerFallback(context, layerLinks) {
+    if (!layerLinks.length) return;
+
+    activeYarnPlies.forEach((ply) => {
+      const maskBatches = new Map();
+
+      layerLinks.forEach((link) => {
+        const rowPly = rowYarnPly(link, ply);
+        const pathData = resolvedPathByLink.get(link.index);
+        if (!pathData) return;
+
+        const path = new Path2D(pathData);
+        drawYarnTexturePath(context, path, rowPly, stitchWidth, {
+          renderTextures,
+        });
+        collectSequenceMaskPath(maskBatches, rowPly, pathData);
+      });
+
+      drawBatchedSequenceMasks(context, maskBatches);
+    });
+  }
+
+  function drawSegmentsToLayerUv(renderer, fallbackContext, layerLinks) {
+    if (!renderer) {
+      drawSegmentsToLayerFallback(fallbackContext, layerLinks);
+      return;
+    }
+
+    renderer.clear(canvasWidth, canvasHeight);
+
+    activeYarnPlies.forEach((ply) => {
+      layerLinks.forEach((link) => {
+        const command = buildYarnDrawCommand(link, ply);
+        if (!command?.strip?.indices.length) return;
+        renderer.drawStrip(command.strip, command.ply);
+      });
+    });
+
+    renderer.flush();
   }
 
   function draw() {
@@ -196,45 +516,36 @@ export function simulate(pattern, yarnSequence, palette, scale) {
     backCtx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     updateNormals();
+    resolvedPathByLink ||= buildResolvedPathMap();
 
     const layers = sortSegments();
 
-    yarnPathLinks.forEach((link, index) => {
-      if (index == 0 || index > yarnPathLinks.length - 3) return;
-      const colorIndex = yarnColor(link.row);
-
-      layers[link.layer][colorIndex].push(yarnCurve(link));
+    yarnPathLinks.forEach((link) => {
+      layers[link.layer].push(link);
     });
 
-    drawSegmentsToLayer(backCtx, layers.back);
-    drawSegmentsToLayer(frontCtx, layers.front);
-    drawSegmentsToLayer(midCtx, layers.mid);
-  }
+    if (renderUvTextures) {
+      drawSegmentsToLayerUv(
+        getWebglYarnRenderer(backCanvas),
+        backCtx,
+        layers.back
+      );
+      drawSegmentsToLayerUv(
+        getWebglYarnRenderer(frontCanvas),
+        frontCtx,
+        layers.front
+      );
+      drawSegmentsToLayerUv(getWebglYarnRenderer(midCanvas), midCtx, layers.mid);
+      return;
+    }
 
-  function relax() {
-    if (relaxed) return;
-    sim = d3
-      .forceSimulation(nodes)
-      .alphaMin(ALPHA_MIN)
-      .alphaDecay(ALPHA_DECAY)
-      .force(
-        "link",
-        yarnLinkForce(yarnPathLinks)
-          .strength(LINK_STRENGTH)
-          .iterations(ITERATIONS)
-          .distance((l) => {
-            if (l.linkType == "FLFH" || l.linkType == "LHLL")
-              return stitchHeight * HEIGHT_SHRINK;
-            return Math.abs(l.source.x - l.target.x);
-          })
-      )
-
-      .on("tick", draw);
-    relaxed = true;
+    drawSegmentsToLayerFallback(backCtx, layers.back);
+    drawSegmentsToLayerFallback(frontCtx, layers.front);
+    drawSegmentsToLayerFallback(midCtx, layers.mid);
   }
 
   function stopSim() {
-    if (sim) sim.stop();
+    stopped = true;
   }
 
   ///////////////////////
@@ -285,9 +596,21 @@ export function simulate(pattern, yarnSequence, palette, scale) {
   const nodes = layoutNodes(yarnGraph);
 
   const yarnPath = yarnGraph.makeNice();
+  rowBoundaryIndices = new Map();
+  yarnPath.forEach((point, pathIndex) => {
+    point.pathIndex = pathIndex;
+    const bounds = rowBoundaryIndices.get(point.row) || { first: pathIndex, last: pathIndex };
+    bounds.last = pathIndex;
+    rowBoundaryIndices.set(point.row, bounds);
+  });
 
   const yarnPathLinks = yarnGraph.yarnPathToLinks();
   draw();
+  if (renderTextures) {
+    prepareYarnTextureImages(activeYarnPlies).then(() => {
+      if (!stopped) draw();
+    });
+  }
 
-  return { relax, stopSim };
+  return { stopSim };
 }

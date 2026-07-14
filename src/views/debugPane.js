@@ -2,6 +2,8 @@ import { html } from "lit-html";
 import { map } from "lit-html/directives/map.js";
 
 import { GLOBAL_STATE, dispatch } from "../state";
+import { buttonIcon } from "./uiButton";
+import { t } from "../i18n";
 
 const styles = html`<style>
   #debug-pane {
@@ -87,34 +89,36 @@ const styles = html`<style>
 </style>`;
 
 export function debugPane() {
+  const language = GLOBAL_STATE.language;
+
   return html`${styles}
     <div id="debug-pane">
       <div id="debug-header">
-        <h3>Debug</h3>
+        <h3>${t("debug.title", language)}</h3>
         <button @click=${() => dispatch({ debug: false })}>
-          <i class="fa-solid fa-circle-xmark"></i>
+          ${buttonIcon("close", t("debug.close", language))}
         </button>
       </div>
       <div id="debug-content">
-        <h4>Scale</h4>
+        <h4>${t("debug.scale", language)}</h4>
         <span>
-          <span class="number-field">${GLOBAL_STATE.scale}</span> pixels per
-          pixel
+          <span class="number-field">${GLOBAL_STATE.scale}</span>
+          ${t("debug.pixelsPerPixel", language)}
         </span>
-        <h4>x pos</h4>
+        <h4>${t("debug.xPos", language)}</h4>
         <span class="number-field">${GLOBAL_STATE.pos.x}</span>
-        <h4>y pos</h4>
+        <h4>${t("debug.yPos", language)}</h4>
         <span class="number-field">${GLOBAL_STATE.pos.y}</span>
-        <h4>Active Tool</h4>
+        <h4>${t("debug.activeTool", language)}</h4>
         <span class="text-field">${GLOBAL_STATE.activeTool}</span>
-        <h4>Active Color</h4>
+        <h4>${t("debug.activeColor", language)}</h4>
         <span class="number-field">${GLOBAL_STATE.activeColor}</span>
-        <h4>Device Pixel Ratio</h4>
+        <h4>${t("debug.devicePixelRatio", language)}</h4>
         <span>
-          <span class="number-field">${devicePixelRatio}</span> device pixel(s)
-          per CSS pixel
+          <span class="number-field">${devicePixelRatio}</span>
+          ${t("debug.devicePixelsPerCssPixel", language)}
         </span>
-        <h4>Color Palette</h4>
+        <h4>${t("debug.colorPalette", language)}</h4>
         <div class="chip-container">
           ${map(
             GLOBAL_STATE.yarnPalette,
@@ -124,18 +128,18 @@ export function debugPane() {
               >`
           )}
         </div>
-        <h4>Snapshot Length</h4>
+        <h4>${t("debug.snapshotLength", language)}</h4>
         <span class="number-field">${GLOBAL_STATE.snapshots.length}</span>
-        <h4>Held Keys</h4>
+        <h4>${t("debug.heldKeys", language)}</h4>
         <div class="chip-container">
           ${GLOBAL_STATE.heldKeys.size > 0
             ? map(
                 GLOBAL_STATE.heldKeys,
                 (key) => html`<span class="chip">${key}</span>`
               )
-            : html`<span class="chip">none</span>`}
+            : html`<span class="chip">${t("debug.none", language)}</span>`}
         </div>
-        <h4>Grid</h4>
+        <h4>${t("debug.grid", language)}</h4>
         <div class="chip-container">
           <span
             class="chip"
@@ -145,7 +149,7 @@ export function debugPane() {
             >${GLOBAL_STATE.grid}</span
           >
         </div>
-        <h4>Editing Palette</h4>
+        <h4>${t("debug.editingPalette", language)}</h4>
         <div class="chip-container">
           <span
             class="chip"
@@ -155,7 +159,7 @@ export function debugPane() {
             >${GLOBAL_STATE.editingPalette}</span
           >
         </div>
-        <h4>Show Settings</h4>
+        <h4>${t("debug.showSettings", language)}</h4>
         <div class="chip-container">
           <span
             class="chip"
@@ -165,7 +169,7 @@ export function debugPane() {
             >${GLOBAL_STATE.showSettings}</span
           >
         </div>
-        <h4>Show download</h4>
+        <h4>${t("debug.showDownload", language)}</h4>
         <div class="chip-container">
           <span
             class="chip"
@@ -175,7 +179,7 @@ export function debugPane() {
             >${GLOBAL_STATE.showDownload}</span
           >
         </div>
-        <h4>Show debug</h4>
+        <h4>${t("debug.showDebug", language)}</h4>
         <div class="chip-container">
           <span
             class="chip"

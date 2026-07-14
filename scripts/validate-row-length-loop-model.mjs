@@ -22,7 +22,7 @@ assert.deepEqual(
 );
 assert.deepEqual(
   moveNeckPoint({ x: -0.5, y: 0 }, 0, 0.8, 2),
-  { x: -0.4, y: -0.3999999999999999 }
+  { x: -0.48, y: 0 }
 );
 
 for (const [targetLength, direction] of [[90, "tight"], [110, "loose"]]) {

@@ -8,6 +8,7 @@ import {
   DEFAULT_YARN_PLIES,
   DEFAULT_STITCH_SYMBOL_INDEX,
   TEXTURE_PERFORMANCE_MODES,
+  DEFAULT_MACHINE_GAUGE,
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
 
@@ -34,6 +35,8 @@ let GLOBAL_STATE = {
   simPreviewPan: null,
   texturePerformanceMode: TEXTURE_PERFORMANCE_MODES.AUTO,
   texturePreviewInteractionActive: false,
+  machineGauge: DEFAULT_MACHINE_GAUGE,
+  yarnLengthMetrics: null,
 
   activeYarn: 0,
   yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns

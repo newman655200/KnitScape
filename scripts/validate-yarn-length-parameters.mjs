@@ -24,8 +24,18 @@ assert.match(
   /"yarnPlies"/,
   "undo snapshots must include yarnPlies."
 );
+assert.match(
+  constantsSource,
+  /DEFAULT_MACHINE_GAUGE/,
+  "machine gauge defaults must be exported for yarn length readout."
+);
 
 const leftBarSource = read("src/views/leftBar.js");
+assert.match(
+  leftBarSource,
+  /machine\.gauge[\s\S]*yarnLength\.current/,
+  "left panel must render machine gauge and current yarn length readout."
+);
 assert.match(
   leftBarSource,
   /yarn-ply-length-control/,

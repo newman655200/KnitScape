@@ -2,8 +2,8 @@ export const translations = {
   "zh-CN": {
     "taskbar.title": "针织实验室（单面布）",
     "taskbar.logoAlt": "公司 logo",
-    "taskbar.width": "画布长",
-    "taskbar.height": "画布高",
+    "taskbar.width": "横向针数",
+    "taskbar.height": "纵向行数",
     "taskbar.undo": "撤销",
     "taskbar.new": "新建",
     "taskbar.import": "导入",
@@ -15,6 +15,10 @@ export const translations = {
 
     "left.addRepeat": "添加花型",
     "left.yarnPlyPanel": "双纱参数",
+    "machine.gauge": "机号 G",
+    "machine.needlePitch": "针距",
+    "yarnLength.current": "当前纱长",
+    "yarnLength.cmPer100": "cm / 100线圈",
 
     "yarnPly.firstTitle": "第一支纱线",
     "yarnPly.firstColor": "第一支纱线颜色",
@@ -132,8 +136,8 @@ export const translations = {
   "zh-TW": {
     "taskbar.title": "針織實驗室（單面布）",
     "taskbar.logoAlt": "公司 logo",
-    "taskbar.width": "畫布長",
-    "taskbar.height": "畫布高",
+    "taskbar.width": "橫向針數",
+    "taskbar.height": "縱向行數",
     "taskbar.undo": "復原",
     "taskbar.new": "新增",
     "taskbar.import": "匯入",
@@ -145,6 +149,10 @@ export const translations = {
 
     "left.addRepeat": "新增花型",
     "left.yarnPlyPanel": "雙紗參數",
+    "machine.gauge": "機號 G",
+    "machine.needlePitch": "針距",
+    "yarnLength.current": "目前紗長",
+    "yarnLength.cmPer100": "cm / 100線圈",
 
     "yarnPly.firstTitle": "第一支紗線",
     "yarnPly.firstColor": "第一支紗線顏色",
@@ -262,8 +270,8 @@ export const translations = {
   en: {
     "taskbar.title": "Knitting Lab (Single Jersey)",
     "taskbar.logoAlt": "Company logo",
-    "taskbar.width": "Canvas Width",
-    "taskbar.height": "Canvas Height",
+    "taskbar.width": "Stitch Count",
+    "taskbar.height": "Row Count",
     "taskbar.undo": "Undo",
     "taskbar.new": "New",
     "taskbar.import": "Import",
@@ -275,6 +283,10 @@ export const translations = {
 
     "left.addRepeat": "Add Motif",
     "left.yarnPlyPanel": "Two-Yarn Settings",
+    "machine.gauge": "Machine Gauge",
+    "machine.needlePitch": "Needle Pitch",
+    "yarnLength.current": "Current Yarn Length",
+    "yarnLength.cmPer100": "cm / 100 loops",
 
     "yarnPly.firstTitle": "Yarn 1",
     "yarnPly.firstColor": "Yarn 1 Color",
@@ -392,8 +404,8 @@ export const translations = {
   vi: {
     "taskbar.title": "Phòng thí nghiệm dệt kim (Vải một mặt)",
     "taskbar.logoAlt": "Logo công ty",
-    "taskbar.width": "Chiều rộng khung",
-    "taskbar.height": "Chiều cao khung",
+    "taskbar.width": "Số kim ngang",
+    "taskbar.height": "Số hàng dọc",
     "taskbar.undo": "Hoàn tác",
     "taskbar.new": "Tạo mới",
     "taskbar.import": "Nhập",
@@ -405,6 +417,10 @@ export const translations = {
 
     "left.addRepeat": "Thêm mẫu",
     "left.yarnPlyPanel": "Thông số hai sợi",
+    "machine.gauge": "Cỡ máy G",
+    "machine.needlePitch": "Bước kim",
+    "yarnLength.current": "Chiều dài sợi hiện tại",
+    "yarnLength.cmPer100": "cm / 100 vòng",
 
     "yarnPly.firstTitle": "Sợi 1",
     "yarnPly.firstColor": "Màu sợi 1",

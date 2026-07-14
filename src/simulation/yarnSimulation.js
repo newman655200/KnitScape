@@ -23,8 +23,13 @@ import {
   assertContinuousRowPaths,
   moveNeckPoint,
   pathDataLength,
-  solveSharedCoefficient,
 } from "./rowLengthLoopModel";
+import {
+  DEFAULT_MACHINE_GAUGE,
+  cmPer100Loops,
+  gaugeToNeedlePitchMm,
+  normalizeMachineGauge,
+} from "./yarnLengthMetrics";
 import * as d3 from "d3";
 
 // Number of stitches to add to the left and right of the pattern
@@ -40,36 +45,9 @@ const STITCH_RATIO = 5 / 3; // Row height / stitch width
 const YARN_RATIO = 0.24;
 
 const SPREAD = 0.88;
-const MAX_SHARED_COEFFICIENT_CACHE_SIZE = 32;
-const sharedCoefficientCache = new Map();
 
 // Sim constants
 const dpi = devicePixelRatio;
-
-function sharedCoefficientCacheKey(pattern, diameter, lengthScale) {
-  return [
-    `${pattern.width}x${pattern.height}`,
-    Number(diameter).toFixed(4),
-    Number(lengthScale).toFixed(4),
-    Array.from(pattern.pixels || []).join(","),
-  ].join("|");
-}
-
-function cachedSharedCoefficient(key) {
-  if (!sharedCoefficientCache.has(key)) return null;
-  const coefficient = sharedCoefficientCache.get(key);
-  sharedCoefficientCache.delete(key);
-  sharedCoefficientCache.set(key, coefficient);
-  return coefficient;
-}
-
-function cacheSharedCoefficient(key, coefficient) {
-  if (sharedCoefficientCache.has(key)) sharedCoefficientCache.delete(key);
-  sharedCoefficientCache.set(key, coefficient);
-  if (sharedCoefficientCache.size > MAX_SHARED_COEFFICIENT_CACHE_SIZE) {
-    sharedCoefficientCache.delete(sharedCoefficientCache.keys().next().value);
-  }
-}
 
 function normalizeYarnPlies(yarnPlies, palette) {
   const fallbackColor = palette?.[0] || "rgba(190,190,190,1)";
@@ -141,6 +119,7 @@ export function simulate(
   scale,
   yarnPlies,
   {
+    machineGauge = DEFAULT_MACHINE_GAUGE,
     texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
     texturePreviewInteractionActive = false,
   } = {}
@@ -153,11 +132,6 @@ export function simulate(
   const primaryLengthScaleY = Math.min(
     1.1,
     Math.max(0.9, Number(yarnPlies?.[0]?.lengthScaleY) || 1)
-  );
-  const coefficientCacheKey = sharedCoefficientCacheKey(
-    pattern,
-    activeYarnPlies[0].diameter,
-    primaryLengthScaleY
   );
   const renderTextures = shouldRenderTextures({
     texturePerformanceMode,
@@ -182,7 +156,8 @@ export function simulate(
     );
 
     halfStitch = stitchWidth / 2;
-    stitchHeight = stitchWidth / STITCH_RATIO;
+    const baseStitchHeight = stitchWidth / STITCH_RATIO;
+    stitchHeight = baseStitchHeight * primaryLengthScaleY;
 
     yarnWidth = stitchWidth * activeYarnPlies[0].diameter;
 
@@ -332,36 +307,7 @@ export function simulate(
     if (Math.abs(primaryLengthScaleY - 1) < 0.0001) return coefficients;
     const supportedRows = [...linksByRow.keys()].filter(rowSupportsLengthModel);
     if (!supportedRows.length) return coefficients;
-    const cachedCoefficient = cachedSharedCoefficient(coefficientCacheKey);
-    if (cachedCoefficient !== null) {
-      supportedRows.forEach((row) => coefficients.set(row, cachedCoefficient));
-      return coefficients;
-    }
-    const supportedRowSet = new Set(supportedRows);
-    const representativeRow =
-      supportedRows.find(
-        (row) => supportedRowSet.has(row - 1) && supportedRowSet.has(row + 1)
-      ) ?? supportedRows[0];
-    const representativeLinks = linksByRow.get(representativeRow);
-    const measureRow = (coefficientByRow) =>
-      representativeLinks.reduce(
-        (sum, link) =>
-          sum + pathDataLength(yarnCurve(link, coefficientByRow), stitchWidth),
-        0
-      );
-    const baselineLength = measureRow(coefficients);
-    const measureCandidate = (candidate) => {
-      const trial = new Map(coefficients);
-      supportedRows.forEach((row) => trial.set(row, candidate));
-      return measureRow(trial);
-    };
-    const result = solveSharedCoefficient({
-      targetLength: baselineLength * primaryLengthScaleY,
-      direction: primaryLengthScaleY < 1 ? "tight" : "loose",
-      measureLength: measureCandidate,
-    });
-    supportedRows.forEach((row) => coefficients.set(row, result.coefficient));
-    cacheSharedCoefficient(coefficientCacheKey, result.coefficient);
+    supportedRows.forEach((row) => coefficients.set(row, primaryLengthScaleY));
     return coefficients;
   }
 
@@ -383,6 +329,43 @@ export function simulate(
       links.forEach((link) => resolved.set(link.index, yarnCurve(link, fallback)));
     });
     return resolved;
+  }
+
+  function pointInEffectiveNeedles(point) {
+    const stitchColumn = Math.floor(point.i / 2);
+    return (
+      stitchColumn >= X_PADDING &&
+      stitchColumn < X_PADDING + pattern.width
+    );
+  }
+
+  function linkInEffectiveNeedles(link) {
+    return (
+      pointInEffectiveNeedles(yarnPath[link.index]) &&
+      pointInEffectiveNeedles(yarnPath[link.index + 1])
+    );
+  }
+
+  function buildYarnLengthMetrics() {
+    const totalPathLengthStitchUnits = yarnPathLinks.reduce((total, link) => {
+      const pathData = resolvedPathByLink.get(link.index);
+      if (!pathData || !linkInEffectiveNeedles(link)) return total;
+      return total + pathDataLength(pathData, stitchWidth);
+    }, 0);
+    const effectiveLoopCount = pattern.width * pattern.height;
+    const gauge = normalizeMachineGauge(machineGauge);
+
+    return {
+      gauge,
+      needlePitchMm: gaugeToNeedlePitchMm(gauge),
+      totalPathLengthStitchUnits,
+      effectiveLoopCount: pattern.width * pattern.height,
+      cmPer100Loops: cmPer100Loops({
+        totalPathLengthStitchUnits,
+        effectiveLoopCount,
+        gauge,
+      }),
+    };
   }
 
   function sortSegments() {
@@ -606,11 +589,12 @@ export function simulate(
 
   const yarnPathLinks = yarnGraph.yarnPathToLinks();
   draw();
+  const yarnLengthMetrics = buildYarnLengthMetrics();
   if (renderTextures) {
     prepareYarnTextureImages(activeYarnPlies).then(() => {
       if (!stopped) draw();
     });
   }
 
-  return { stopSim };
+  return { stopSim, yarnLengthMetrics };
 }

@@ -61,12 +61,17 @@ export function moveNeckPointX(point, centerX, coefficient, movable = true) {
   return movable ? { ...point, x: centerX + coefficient * (point.x - centerX) } : { ...point };
 }
 
+export function lengthScaleToXCompensation(coefficient, strength = 0.2) {
+  return 1 + (coefficient - 1) * strength;
+}
+
 export function moveNeckPoint(point, centerX, coefficient, verticalSpan = 0, movable = true) {
   if (!movable) return { ...point };
-  return {
-    ...moveNeckPointX(point, centerX, coefficient),
-    y: point.y + (coefficient - 1) * verticalSpan,
-  };
+  return moveNeckPointX(
+    point,
+    centerX,
+    lengthScaleToXCompensation(coefficient)
+  );
 }
 
 export function solveSharedCoefficient({ targetLength, direction, measureLength, minCoefficient = 0.4, maxCoefficient = 1.8, scanSteps = 80, refinementSteps = 28, relativeTolerance = 0.001 }) {

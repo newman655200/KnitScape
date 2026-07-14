@@ -6,6 +6,12 @@ export const MIN_SIM_SCALE = 0.6;
 
 export const SNAPSHOT_INTERVAL = 1000;
 
+export {
+  DEFAULT_MACHINE_GAUGE,
+  MAX_MACHINE_GAUGE,
+  MIN_MACHINE_GAUGE,
+} from "./simulation/yarnLengthMetrics";
+
 export const SNAPSHOT_FIELDS = [
   "yarnPalette",
   "yarnSequence",

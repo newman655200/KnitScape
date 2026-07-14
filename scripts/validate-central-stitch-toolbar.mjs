@@ -73,9 +73,9 @@ for (const token of ["--app-background", "--panel-background", "--toolbar-backgr
     failures.push(`${token} must match the darker preview background.`);
   }
 }
-for (const label of ['"taskbar.width": "画布长"', '"taskbar.height": "画布高"']) {
+for (const label of ['"taskbar.width": "横向针数"', '"taskbar.height": "纵向行数"']) {
   if (!translations.includes(label)) {
-    failures.push(`Simplified Chinese canvas label missing: ${label}.`);
+    failures.push(`Simplified Chinese stitch/row count label missing: ${label}.`);
   }
 }
 if (!/activeTool:\s*null/.test(state)) {

@@ -492,6 +492,43 @@ YARN PLY PANEL
   line-height: 1.2;
 }
 
+.yarn-length-readout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: 0.5em;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+.machine-gauge-control {
+  display: grid;
+  grid-template-columns: 4.5em minmax(0, 1fr);
+  gap: 0.35em;
+  align-items: center;
+  margin: 0;
+  color: var(--text-inactive);
+  line-height: 1.2;
+}
+
+.machine-gauge-control input {
+  min-width: 0;
+  width: 100%;
+}
+
+.machine-needle-pitch,
+.current-yarn-length {
+  color: var(--text-inactive);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+
+.current-yarn-length {
+  color: var(--text-highlight);
+  font-weight: 700;
+}
+
 .yarn-ply-card {
   display: flex;
   flex-direction: column;

@@ -435,7 +435,7 @@ try {
   const { simulate } = await server.ssrLoadModule(
     "/src/simulation/yarnSimulation.js"
   );
-  const { pathDataLength } = await server.ssrLoadModule(
+  const { pathDataLength, samplePathData } = await server.ssrLoadModule(
     "/src/simulation/rowLengthLoopModel.js"
   );
 
@@ -638,16 +638,49 @@ try {
   );
   const totalPathLength = (paths) =>
     paths.reduce((total, pathData) => total + pathDataLength(pathData), 0);
+  const pathBounds = (paths) => {
+    const points = paths.flatMap((pathData) => samplePathData(pathData));
+    const xs = points.map((point) => point.x);
+    const ys = points.map((point) => point.y);
+    return {
+      width: Math.max(...xs) - Math.min(...xs),
+      height: Math.max(...ys) - Math.min(...ys),
+    };
+  };
   const baselinePathLength = totalPathLength(baselinePaths);
   const tightLengthRatio = totalPathLength(tightPaths) / baselinePathLength;
   const looseLengthRatio = totalPathLength(loosePaths) / baselinePathLength;
+  const baselineBounds = pathBounds(baselinePaths);
+  const tightBounds = pathBounds(tightPaths);
+  const looseBounds = pathBounds(loosePaths);
+  const tightHeightRatio = tightBounds.height / baselineBounds.height;
+  const looseHeightRatio = looseBounds.height / baselineBounds.height;
+  const tightWidthRatio = tightBounds.width / baselineBounds.width;
+  const looseWidthRatio = looseBounds.width / baselineBounds.width;
+
   assert.ok(
-    Math.abs(tightLengthRatio - 0.9) <= 0.001,
-    `0.90 yarn length must resolve to the requested total center-path length; got ${tightLengthRatio}.`
+    tightLengthRatio < 1,
+    `0.90 yarn length must shorten the center path; got ratio ${tightLengthRatio}.`
   );
   assert.ok(
-    Math.abs(looseLengthRatio - 1.1) <= 0.001,
-    `1.10 yarn length must resolve to the requested total center-path length; got ${looseLengthRatio}.`
+    looseLengthRatio > 1,
+    `1.10 yarn length must lengthen the center path; got ratio ${looseLengthRatio}.`
+  );
+  assert.ok(
+    tightHeightRatio < 1,
+    `0.90 yarn length must make loops/fabric shorter on Y; got height ratio ${tightHeightRatio}.`
+  );
+  assert.ok(
+    looseHeightRatio > 1,
+    `1.10 yarn length must make loops/fabric taller on Y; got height ratio ${looseHeightRatio}.`
+  );
+  assert.ok(
+    Math.abs(tightWidthRatio - 1) < Math.abs(tightHeightRatio - 1),
+    `0.90 yarn length should change X less than Y; got width ${tightWidthRatio}, height ${tightHeightRatio}.`
+  );
+  assert.ok(
+    Math.abs(looseWidthRatio - 1) < Math.abs(looseHeightRatio - 1),
+    `1.10 yarn length should change X less than Y; got width ${looseWidthRatio}, height ${looseHeightRatio}.`
   );
 
   const largePatternHarness = createCanvasHarness();
@@ -668,8 +701,8 @@ try {
     largePatternHarness.operations.some((op) => op.type == "stroke"),
     "large-pattern performance validation must render real yarn paths."
   );
-  const cachedPatternHarness = createCanvasHarness();
-  const cachedPatternStartedAt = performance.now();
+  const repeatPatternHarness = createCanvasHarness();
+  const repeatPatternStartedAt = performance.now();
   simulate(
     Bimp.empty(48, 60, 0),
     [0],
@@ -677,14 +710,14 @@ try {
     1,
     [{ ...renderPlies[0], lengthScaleY: 0.9 }]
   ).stopSim();
-  const cachedPatternDuration = performance.now() - cachedPatternStartedAt;
+  const repeatPatternDuration = performance.now() - repeatPatternStartedAt;
   assert.ok(
-    cachedPatternDuration < largePatternDuration * 0.8,
-    `cached yarn-length solve must be at least 20% faster; first ${largePatternDuration.toFixed(1)}ms, cached ${cachedPatternDuration.toFixed(1)}ms.`
+    repeatPatternDuration < 2000,
+    `repeated 48x60 yarn-length render must finish below 2000ms; got ${repeatPatternDuration.toFixed(1)}ms.`
   );
   assert.ok(
-    cachedPatternHarness.operations.some((op) => op.type == "stroke"),
-    "cached large-pattern validation must still render real yarn paths."
+    repeatPatternHarness.operations.some((op) => op.type == "stroke"),
+    "repeated large-pattern validation must still render real yarn paths."
   );
 
   const sequenceMaskColor = "rgba(255,0,0,1)";

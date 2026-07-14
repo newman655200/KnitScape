@@ -118,6 +118,7 @@ export function runSimulation() {
         GLOBAL_STATE.simScale,
         GLOBAL_STATE.yarnPlies,
         {
+          machineGauge: GLOBAL_STATE.machineGauge,
           texturePerformanceMode: GLOBAL_STATE.texturePerformanceMode,
           texturePreviewInteractionActive:
             GLOBAL_STATE.texturePreviewInteractionActive,
@@ -125,6 +126,7 @@ export function runSimulation() {
       );
 
       ({ stopSim } = simulationResult);
+      dispatch({ yarnLengthMetrics: simulationResult.yarnLengthMetrics });
     }
 
     const debouncedRun = debounce(run, 150);
@@ -140,6 +142,7 @@ export function runSimulation() {
           "yarnPlies",
           "texturePerformanceMode",
           "texturePreviewInteractionActive",
+          "machineGauge",
           "chart",
         ].some((key) => changes.includes(key));
 

@@ -58,6 +58,7 @@ void main() {
 `;
 
 const rendererCache = new WeakMap();
+const TEXTURE_CACHE_LIMIT = 24;
 
 function compileShader(gl, type, source) {
   const shader = gl.createShader(type);
@@ -204,11 +205,23 @@ export class YarnUvWebglRenderer {
     return texture;
   }
 
+  evictOldestTexture() {
+    const oldestKey = this.textureCache.keys().next().value;
+    if (oldestKey === undefined) return;
+    const record = this.textureCache.get(oldestKey);
+    this.gl.deleteTexture(record.texture);
+    this.textureCache.delete(oldestKey);
+  }
+
   textureFromDataUrl(dataUrl) {
     if (!dataUrl) return null;
 
     const cached = this.textureCache.get(dataUrl);
-    if (cached) return cached.texture;
+    if (cached) {
+      this.textureCache.delete(dataUrl);
+      this.textureCache.set(dataUrl, cached);
+      return cached.texture;
+    }
 
     const image = getReadyYarnTextureImage(dataUrl);
     if (!image) return null;
@@ -230,6 +243,9 @@ export class YarnUvWebglRenderer {
       image
     );
     this.textureCache.set(dataUrl, { texture });
+    while (this.textureCache.size > TEXTURE_CACHE_LIMIT) {
+      this.evictOldestTexture();
+    }
     return texture;
   }
 

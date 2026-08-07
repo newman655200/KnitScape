@@ -30,7 +30,12 @@ assert.match(
   "machine gauge defaults must be exported for yarn length readout."
 );
 
-const leftBarSource = read("src/views/leftBar.js");
+const leftBarSource = [
+  "src/views/yarnLengthReadout.js",
+  "src/views/yarnPlyPanel.js",
+]
+  .map(read)
+  .join("\n");
 assert.match(
   leftBarSource,
   /machine\.gauge[\s\S]*yarnLength\.current/,

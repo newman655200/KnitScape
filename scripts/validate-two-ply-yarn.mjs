@@ -232,7 +232,7 @@ assert.match(
   "JSON export must continue persisting yarnPlies including scan textures."
 );
 
-const leftBarSource = fs.readFileSync("src/views/leftBar.js", "utf8");
+const leftBarSource = fs.readFileSync("src/views/yarnPlyPanel.js", "utf8");
 const translationsSource = fs.readFileSync("src/i18n/translations.js", "utf8");
 for (const [key, label, message] of [
   ["left.yarnPlyPanel", "双纱参数", "left sidebar must show a prominent two-yarn parameter panel."],
@@ -434,9 +434,9 @@ try {
   globalThis.devicePixelRatio = 1;
 
   const constants = await server.ssrLoadModule("/src/constants.js");
-  const state = await server.ssrLoadModule("/src/state.js");
   globalThis.window = {};
   const importers = await server.ssrLoadModule("/src/actions/importers.js");
+  const state = await server.ssrLoadModule("/src/state.js");
   const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
   const { simulate } = await server.ssrLoadModule(
     "/src/simulation/yarnSimulation.js"

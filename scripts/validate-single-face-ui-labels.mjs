@@ -27,6 +27,9 @@ const sourceFiles = [
   "src/views/taskbar.js",
   "src/views/chartEditorToolbar.js",
   "src/views/leftBar.js",
+  "src/views/yarnLengthReadout.js",
+  "src/views/yarnPlyPanel.js",
+  "src/views/yarnPicker.js",
   "src/views/repeatTools.js",
   "src/views/repeatCanvas.js",
   "src/views/chartTools.js",
@@ -68,7 +71,14 @@ for (const [key, label] of [
   expectTranslation(label, key);
 }
 
-const leftBar = read("src/views/leftBar.js");
+const leftBar = [
+  "src/views/leftBar.js",
+  "src/views/yarnLengthReadout.js",
+  "src/views/yarnPlyPanel.js",
+  "src/views/yarnPicker.js",
+]
+  .map(read)
+  .join("\n");
 const chartEditorToolbar = read("src/views/chartEditorToolbar.js");
 for (const [key, label] of [
   ["left.addRepeat", "添加花型"],

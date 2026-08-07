@@ -57,7 +57,7 @@ const runSimulationSource = read("src/components/runSimulation.js");
 assert.match(runSimulationSource, /yarnLengthMetrics/);
 assert.match(runSimulationSource, /machineGauge:\s*GLOBAL_STATE\.machineGauge/);
 
-const leftBarSource = read("src/views/leftBar.js");
+const leftBarSource = read("src/views/yarnLengthReadout.js");
 for (const token of [
   "machine.gauge",
   "machine.needlePitch",

@@ -5,7 +5,14 @@ const read = (path) => fs.readFileSync(path, "utf8");
 const packageJSON = JSON.parse(read("package.json"));
 const constants = read("src/constants.js");
 const state = read("src/state.js");
-const leftBar = read("src/views/leftBar.js");
+const leftBar = [
+  "src/views/leftBar.js",
+  "src/views/yarnLengthReadout.js",
+  "src/views/yarnPlyPanel.js",
+  "src/views/yarnPicker.js",
+]
+  .map(read)
+  .join("\n");
 const importers = read("src/actions/importers.js");
 const exporters = read("src/actions/exporters.js");
 const runSimulation = read("src/components/runSimulation.js");

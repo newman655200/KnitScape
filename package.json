@@ -28,6 +28,7 @@
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",
     "validate:yarn-simulation-characterization": "node scripts/validate-yarn-simulation-characterization.mjs",
     "validate:yarn-simulation-modules": "node scripts/validate-yarn-simulation-modules.mjs",
+    "validate:left-sidebar-modules": "node scripts/validate-left-sidebar-modules.mjs",
     "preview": "vite build && vite preview",
     "deploy": "vite build && echo knitscape.net > ./dist/CNAME && gh-pages -d dist"
   },

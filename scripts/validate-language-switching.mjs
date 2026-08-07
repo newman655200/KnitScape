@@ -93,7 +93,9 @@ if (!taskbarSource.includes('t("taskbar.title"')) {
 }
 
 const sourceExpectations = [
-  ["src/views/leftBar.js", ["left.yarnPlyPanel", "yarnTexture.import", "yarns.title"]],
+  ["src/views/yarnPlyPanel.js", ["left.yarnPlyPanel", "yarnTexture.import"]],
+  ["src/views/yarnPicker.js", ["yarns.title"]],
+  ["src/views/yarnLengthReadout.js", ["machine.gauge", "yarnLength.current"]],
   ["src/views/chartEditorToolbar.js", ["symbols.title", "taskbar.width", "taskbar.height"]],
   ["src/views/repeatTools.js", ["repeatTools.brush", "repeatTools.exit"]],
   ["src/views/chartTools.js", ["chartTools.cols", "chartTools.rows"]],

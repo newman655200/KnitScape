@@ -22,7 +22,10 @@ function expect(condition, message) {
 
 const helperPath = "src/actions/yarnSequenceRows.js";
 const paletteEditingHelperPath = "src/actions/yarnPaletteEditing.js";
-const leftBarSource = read("src/views/leftBar.js");
+const leftBarSource = [
+  read("src/views/leftBar.js"),
+  read("src/views/yarnPicker.js"),
+].join("\n");
 const repeatDimensionsSource = read("src/actions/repeatDimensions.js");
 const repeatPointerSource = read("src/events/repeatPointerInteraction.js");
 const repeatTouchSource = read("src/events/repeatTouchInteraction.js");

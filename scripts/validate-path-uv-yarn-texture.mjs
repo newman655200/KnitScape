@@ -155,7 +155,7 @@ assert.match(
   "Solid mode must bypass UV texture rendering."
 );
 
-const leftBarSource = read("src/views/leftBar.js");
+const leftBarSource = read("src/views/yarnPlyPanel.js");
 for (const key of [
   "baseColor",
   "normal",

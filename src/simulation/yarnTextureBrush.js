@@ -6,11 +6,28 @@ import {
 
 const imageCache = new Map();
 const tintedCache = new Map();
+const IMAGE_CACHE_LIMIT = 24;
+const TINTED_CACHE_LIMIT = 24;
+
+function cachedRecord(cache, key) {
+  const record = cache.get(key);
+  if (!record) return null;
+  cache.delete(key);
+  cache.set(key, record);
+  return record;
+}
+
+function rememberCacheRecord(cache, key, record, limit) {
+  cache.set(key, record);
+  while (cache.size > limit) {
+    cache.delete(cache.keys().next().value);
+  }
+}
 
 function queueImage(dataUrl) {
   if (!dataUrl) return null;
 
-  const cached = imageCache.get(dataUrl);
+  const cached = cachedRecord(imageCache, dataUrl);
   if (cached) return cached;
 
   const record = { image: null, promise: null };
@@ -24,7 +41,7 @@ function queueImage(dataUrl) {
       throw error;
     });
 
-  imageCache.set(dataUrl, record);
+  rememberCacheRecord(imageCache, dataUrl, record, IMAGE_CACHE_LIMIT);
   return record;
 }
 
@@ -32,7 +49,7 @@ function queueTintedBrush(texture, color) {
   if (!texture?.processedDataUrl) return null;
 
   const key = `${texture.processedDataUrl}|${color}|${texture.textureStrength}`;
-  const cached = tintedCache.get(key);
+  const cached = cachedRecord(tintedCache, key);
   if (cached) return cached;
 
   const record = { canvas: null, promise: null };
@@ -50,7 +67,7 @@ function queueTintedBrush(texture, color) {
       throw error;
     });
 
-  tintedCache.set(key, record);
+  rememberCacheRecord(tintedCache, key, record, TINTED_CACHE_LIMIT);
   return record;
 }
 

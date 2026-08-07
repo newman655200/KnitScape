@@ -39,6 +39,7 @@ import { generateChart } from "./components/generateChart";
 import { isMobile } from "./utils";
 import { isCodeGuideMode } from "./codeGuide/mode";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
+import { createAppRenderer } from "./components/renderApp";
 
 let symbolCanvas,
   gridCanvas,
@@ -49,10 +50,9 @@ let symbolCanvas,
   simContainer,
   repeatLibrary;
 
-function r() {
-  render(view(), document.body);
-  window.requestAnimationFrame(r);
-}
+const appRenderer = createAppRenderer({
+  renderView: () => render(view(), document.body),
+});
 
 function initKeyboard() {
   addKeypressListeners();
@@ -88,7 +88,7 @@ function measureWindow() {
 }
 
 function init() {
-  r();
+  appRenderer.renderInitial();
 
   symbolCanvas = document.getElementById("symbol-canvas");
   gridCanvas = document.getElementById("grid");
@@ -118,6 +118,7 @@ function init() {
   }
 
   StateMonitor.register([
+    () => appRenderer,
     resizeCanvases([symbolCanvas, gridCanvas, yarnColorCanvas]),
     yarnSequenceCanvas({
       canvas: yarnSequenceEditorCanvas,

@@ -34,7 +34,13 @@ const stateSource = read("src/state.js");
 assert.match(stateSource, /machineGauge:\s*DEFAULT_MACHINE_GAUGE/);
 assert.match(stateSource, /yarnLengthMetrics:\s*null/);
 
-const simulationSource = read("src/simulation/yarnSimulation.js");
+const simulationSource = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map(read)
+  .join("\n");
 assert.match(simulationSource, /machineGauge/);
 assert.match(
   simulationSource,

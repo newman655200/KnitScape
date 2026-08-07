@@ -9,7 +9,13 @@ const leftBar = read("src/views/leftBar.js");
 const importers = read("src/actions/importers.js");
 const exporters = read("src/actions/exporters.js");
 const runSimulation = read("src/components/runSimulation.js");
-const simulation = read("src/simulation/yarnSimulation.js");
+const simulation = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map(read)
+  .join("\n");
 const translations = read("src/i18n/translations.js");
 const codeGuideDefinitions = read("src/codeGuide/codeGuideDefinitions.json");
 

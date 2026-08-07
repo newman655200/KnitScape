@@ -45,7 +45,13 @@ assert.equal(
   false
 );
 
-const simulationSource = fs.readFileSync("src/simulation/yarnSimulation.js", "utf8");
+const simulationSource = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map((file) => fs.readFileSync(file, "utf8"))
+  .join("\n");
 for (const token of [
   "primaryLengthScaleY",
   "rowSupportsLengthModel",

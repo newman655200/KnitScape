@@ -117,7 +117,13 @@ assert.match(
   "renderer must expose a cached factory."
 );
 
-const simulationSource = read("src/simulation/yarnSimulation.js");
+const simulationSource = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map(read)
+  .join("\n");
 assert.match(
   simulationSource,
   /buildYarnUvStrip/,

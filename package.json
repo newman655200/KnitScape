@@ -27,6 +27,7 @@
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",
     "validate:yarn-simulation-characterization": "node scripts/validate-yarn-simulation-characterization.mjs",
+    "validate:yarn-simulation-modules": "node scripts/validate-yarn-simulation-modules.mjs",
     "preview": "vite build && vite preview",
     "deploy": "vite build && echo knitscape.net > ./dist/CNAME && gh-pages -d dist"
   },

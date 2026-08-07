@@ -37,7 +37,13 @@ const stateSource = read("src/state.js");
 const viewSource = read("src/views/view.js");
 const yarnSequenceCanvasSource = read("src/components/yarnSequenceCanvas.js");
 const runSimulationSource = read("src/components/runSimulation.js");
-const yarnSimulationSource = read("src/simulation/yarnSimulation.js");
+const yarnSimulationSource = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map(read)
+  .join("\n");
 const exportersSource = read("src/actions/exporters.js");
 const translationsSource = read("src/i18n/translations.js");
 

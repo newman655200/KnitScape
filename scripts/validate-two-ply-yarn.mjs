@@ -77,7 +77,13 @@ assert.match(
   "simulation runner must pass texture interaction state to the preview."
 );
 
-const simulationSource = fs.readFileSync("src/simulation/yarnSimulation.js", "utf8");
+const simulationSource = [
+  "src/simulation/yarnSimulation.js",
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]
+  .map((file) => fs.readFileSync(file, "utf8"))
+  .join("\n");
 assert.match(
   simulationSource,
   /yarnPlies/,

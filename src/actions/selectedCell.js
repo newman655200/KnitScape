@@ -1,3 +1,4 @@
+// 作者：FEDZ_SuZhou_Liuchen
 import { GLOBAL_STATE, dispatch } from "../state";
 
 function mod(value, divisor) {
@@ -43,24 +44,6 @@ export function chartCellToRepeatCell(repeats, chartCell) {
   return null;
 }
 
-export function replaceRepeatCell(repeats, cell, symbolIndex) {
-  if (!cell) return repeats;
-
-  const repeat = repeats[cell.repeatIndex];
-  if (!repeat) return repeats;
-
-  return [
-    ...repeats.slice(0, cell.repeatIndex),
-    {
-      ...repeat,
-      bitmap: repeat.bitmap.draw([
-        { x: cell.pos.x, y: cell.pos.y, color: symbolIndex },
-      ]),
-    },
-    ...repeats.slice(cell.repeatIndex + 1),
-  ];
-}
-
 export function selectChartCell(pos) {
   dispatch({
     selectedChartCell: pos,
@@ -75,22 +58,8 @@ export function selectRepeatCell(repeatIndex, pos) {
 }
 
 export function applySelectedSymbol(symbolIndex) {
-  const selectedRepeatCell =
-    GLOBAL_STATE.selectedRepeatCell ||
-    chartCellToRepeatCell(GLOBAL_STATE.repeats, GLOBAL_STATE.selectedChartCell);
-
-  if (!selectedRepeatCell) {
-    dispatch({ activeSymbol: symbolIndex });
-    return;
-  }
-
   dispatch({
     activeSymbol: symbolIndex,
-    repeats: replaceRepeatCell(
-      GLOBAL_STATE.repeats,
-      selectedRepeatCell,
-      symbolIndex
-    ),
-    selectedRepeatCell,
+    activeTool: "brush",
   });
 }

@@ -1579,18 +1579,36 @@ button.btn.chart-stitch-button.current {
   }
 
   #chart-editor-toolbar {
-    gap: 0.55rem;
-    padding-inline: 0.55rem;
+    min-height: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 0.45rem 0.55rem;
   }
 
-  .chart-stitch-tools h2,
-  .chart-stitch-button span {
-    display: none;
+  .chart-stitch-tools {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .chart-stitch-tools h2 {
+    text-align: center;
+  }
+
+  .chart-stitch-buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   button.btn.chart-stitch-button {
-    min-width: 3.25rem;
-    min-height: 3.2rem;
-    grid-template-rows: 1fr;
+    min-width: 0;
+  }
+
+  #chart-size-controls {
+    justify-content: center;
+    padding-left: 0;
+    border-left: 0;
   }
 }

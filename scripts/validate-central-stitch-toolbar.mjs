@@ -1,3 +1,4 @@
+// 作者：FEDZ_SuZhou_Liuchen
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -36,12 +37,26 @@ const state = read("src/state.js");
 const repeatTools = read("src/views/repeatTools.js");
 const repeatPointer = read("src/events/repeatPointerInteraction.js");
 const repeatTouch = read("src/events/repeatTouchInteraction.js");
+const selectedCell = read("src/actions/selectedCell.js");
+const compactToolbarStyles = styles.slice(
+  styles.indexOf("@media (max-width: 1080px)")
+);
 
 if (!view.includes("chartEditorToolbar")) {
   failures.push("the chart workspace must render the central stitch editor toolbar.");
 }
 if (!toolbar.includes("SYMBOL_ICON_URLS") || !toolbar.includes("applySelectedSymbol")) {
   failures.push("the central toolbar must use the original symbol assets and existing stitch action.");
+}
+if (
+  !/dispatch\(\{\s*activeSymbol:\s*symbolIndex,\s*activeTool:\s*"brush",?\s*\}\)/s.test(
+    selectedCell
+  )
+) {
+  failures.push("selecting a stitch must activate the persistent repeat brush.");
+}
+if (/export function applySelectedSymbol[\s\S]*?replaceRepeatCell\(/.test(selectedCell)) {
+  failures.push("selecting a stitch must not immediately overwrite the previously selected cell.");
 }
 for (const asset of ["knit.svg", "purl.svg", "slip.svg", "tuck.svg"]) {
   if (!toolbar.includes(asset)) {
@@ -89,6 +104,20 @@ if (!styles.includes("#chart-workspace > .tool-picker .btn.solid")) {
 }
 if (!styles.includes("background: var(--taskbar-background)")) {
   failures.push("the selected repeat brush must use the dark taskbar background.");
+}
+if (
+  /\.chart-stitch-tools h2,\s*\.chart-stitch-button span\s*\{\s*display:\s*none;/s.test(
+    compactToolbarStyles
+  )
+) {
+  failures.push("compact layouts must keep the stitch heading and all stitch names visible.");
+}
+if (
+  !/\.chart-stitch-buttons\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s.test(
+    compactToolbarStyles
+  )
+) {
+  failures.push("compact layouts must arrange all four stitch buttons in a visible two-column grid.");
 }
 if (!/activeTool:\s*GLOBAL_STATE\.activeTool\s*==\s*toolName\s*\?\s*null\s*:\s*toolName/s.test(repeatTools)) {
   failures.push("clicking the selected repeat brush must toggle editing back off.");

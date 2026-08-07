@@ -19,8 +19,13 @@ const expectedIconHashes = {
 };
 
 for (const [file, expectedHash] of Object.entries(expectedIconHashes)) {
-  const contents = fs.readFileSync(path.join(root, file));
-  const actualHash = crypto.createHash("sha256").update(contents).digest("hex");
+  const contents = fs
+    .readFileSync(path.join(root, file), "utf8")
+    .replace(/\r\n/g, "\n");
+  const actualHash = crypto
+    .createHash("sha256")
+    .update(contents, "utf8")
+    .digest("hex");
   if (actualHash !== expectedHash) {
     failures.push(`${file} changed; the four original stitch icons must remain byte-for-byte identical.`);
   }

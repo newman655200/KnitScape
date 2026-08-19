@@ -5,8 +5,18 @@ import {
   startNeedleArrangement,
   updateNeedleInput,
 } from "../actions/patternEditing.js";
+import { fitChart } from "../actions/zoomFit.js";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE } from "../state.js";
+
+function startAndFitNeedleArrangement() {
+  startNeedleArrangement();
+  fitChart();
+}
+
+function applyAndFitNeedleArrangement() {
+  if (applyNeedleArrangement()) fitChart();
+}
 
 export function needleArrangementControls() {
   const language = GLOBAL_STATE.language;
@@ -16,7 +26,7 @@ export function needleArrangementControls() {
       class="btn solid"
       data-code-guide-key="needle.start"
       type="button"
-      @click=${startNeedleArrangement}>
+      @click=${startAndFitNeedleArrangement}>
       ${t("needle.start", language)}
     </button>
     <div class="needle-inputs">
@@ -42,7 +52,7 @@ export function needleArrangementControls() {
       class="btn solid primary"
       data-code-guide-key="needle.apply"
       type="button"
-      @click=${applyNeedleArrangement}>
+      @click=${applyAndFitNeedleArrangement}>
       ${t("needle.apply", language)}
     </button>
   </section>`;

@@ -27,6 +27,7 @@ assert.match(controlsSource, /GLOBAL_STATE\.needleInputs\.map\(/);
 assert.match(controlsSource, /startNeedleArrangement/);
 assert.match(controlsSource, /applyNeedleArrangement/);
 assert.match(controlsSource, /updateNeedleInput/);
+assert.match(controlsSource, /fitChart\(\)/);
 assert.match(controlsSource, /aria-invalid/);
 
 assert.equal((toolbarSource.match(/data-code-guide-key="stitch\.symbol"/g) || []).length, 1);

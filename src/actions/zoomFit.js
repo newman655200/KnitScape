@@ -61,23 +61,6 @@ export function zoomSimulationAtPoint(pt, simScale) {
   });
 }
 
-export function zoomAtPoint(pt, scale) {
-  if (scale < MIN_SCALE || scale > MAX_SCALE) return;
-
-  const start = {
-    x: (pt.x - GLOBAL_STATE.chartPan.x) / GLOBAL_STATE.scale,
-    y: (pt.y - GLOBAL_STATE.chartPan.y) / GLOBAL_STATE.scale,
-  };
-
-  dispatch({
-    scale,
-    chartPan: {
-      x: pt.x - start.x * scale,
-      y: pt.y - start.y * scale,
-    },
-  });
-}
-
 export function fitChart() {
   const editors = [
     [document.querySelector("#cam-editor-pane .pattern-editor-viewport"), GLOBAL_STATE.camBitmap],

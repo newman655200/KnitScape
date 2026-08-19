@@ -5,8 +5,8 @@ export function drawYarnColors(yarnColorCanvas) {
     let { scale, yarnPalette, yarnSequence, needleBitmap } = state;
 
     let lastDrawn = null;
-    let chartWidth = needleBitmap.width;
-    let chartHeight = needleBitmap.height;
+    let needleWidth = needleBitmap.width;
+    let needleHeight = needleBitmap.height;
 
     let yarnHeight = yarnSequence.height;
 
@@ -14,18 +14,18 @@ export function drawYarnColors(yarnColorCanvas) {
       // Draws only the pixels that have changed
       const ctx = yarnColorCanvas.getContext("2d");
 
-      for (let y = 0; y < chartHeight; y++) {
+      for (let y = 0; y < needleHeight; y++) {
         let paletteIndex = yarnSequence.pixel(
           0,
-          (chartHeight - y - 1) % yarnHeight
+          (needleHeight - y - 1) % yarnHeight
         );
 
         if (
           lastDrawn == null ||
-          lastDrawn.pixel(0, (chartHeight - y - 1) % yarnHeight) != paletteIndex
+          lastDrawn.pixel(0, (needleHeight - y - 1) % yarnHeight) != paletteIndex
         ) {
           ctx.fillStyle = yarnPalette[paletteIndex];
-          ctx.fillRect(0, y * scale, chartWidth * scale, scale);
+          ctx.fillRect(0, y * scale, needleWidth * scale, scale);
         }
       }
       lastDrawn = yarnSequence;
@@ -33,7 +33,7 @@ export function drawYarnColors(yarnColorCanvas) {
 
     lastDrawn = null;
 
-    sizeCanvasToBitmap(yarnColorCanvas, chartWidth, chartHeight);
+    sizeCanvasToBitmap(yarnColorCanvas, needleWidth, needleHeight);
     draw();
 
     return {
@@ -41,18 +41,18 @@ export function drawYarnColors(yarnColorCanvas) {
         yarnSequence = state.yarnSequence;
 
         if (
-          chartWidth != state.needleBitmap.width ||
-          chartHeight != state.needleBitmap.height ||
+          needleWidth != state.needleBitmap.width ||
+          needleHeight != state.needleBitmap.height ||
           yarnHeight != state.yarnSequence.height ||
           scale != state.scale
         ) {
-          chartWidth = state.needleBitmap.width;
-          chartHeight = state.needleBitmap.height;
+          needleWidth = state.needleBitmap.width;
+          needleHeight = state.needleBitmap.height;
           yarnHeight = state.yarnSequence.height;
           scale = state.scale;
 
           lastDrawn = null;
-          sizeCanvasToBitmap(yarnColorCanvas, chartWidth, chartHeight);
+          sizeCanvasToBitmap(yarnColorCanvas, needleWidth, needleHeight);
         }
 
         if (yarnPalette != state.yarnPalette) {

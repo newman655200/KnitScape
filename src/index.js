@@ -6,7 +6,6 @@ import { fitChart } from "./actions/zoomFit.js";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
 import { isCodeGuideMode } from "./codeGuide/mode.js";
 import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
-import { drawSymbolPicker } from "./components/drawSymbolPicker.js";
 import { drawYarnColors } from "./components/drawYarnColors.js";
 import { createAppRenderer } from "./components/renderApp.js";
 import { runSimulation } from "./components/runSimulation.js";
@@ -87,6 +86,9 @@ function init() {
     document
       .querySelector("#site > .gutter")
       ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"
+    document
+      .querySelector("#pattern-editors > .gutter")
+      ?.setAttribute("data-code-guide-key", "layout.editor-split"); // data-code-guide-key="layout.editor-split"
     initCodeGuideEvents();
   } else {
     bitmapPointerInteraction(camInteractionCanvas);
@@ -112,7 +114,6 @@ function init() {
       gridCanvas: needleGridCanvas,
       interactionCanvas: needleInteractionCanvas,
     }),
-    drawSymbolPicker(),
     runSimulation(),
   ]);
 

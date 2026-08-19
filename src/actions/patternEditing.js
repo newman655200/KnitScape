@@ -5,7 +5,7 @@ import {
   validateNeedleInputs,
 } from "../needleArrangement/transform.js";
 import { GLOBAL_STATE, dispatch } from "../state.js";
-import { resizeYarnSequenceToChartHeight } from "./yarnSequenceRows.js";
+import { resizeYarnSequenceToNeedleHeight } from "./yarnSequenceRows.js";
 
 const PATTERN_FIELDS = new Set(["camBitmap", "needleBitmap"]);
 
@@ -21,7 +21,7 @@ function normalizedDimension(value) {
 }
 
 function needleYarnSequence(height) {
-  return resizeYarnSequenceToChartHeight(
+  return resizeYarnSequenceToNeedleHeight(
     GLOBAL_STATE.yarnSequence,
     height,
     GLOBAL_STATE.activeYarn

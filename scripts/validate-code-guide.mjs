@@ -5,8 +5,6 @@ const root = process.cwd();
 const REQUIRED_KEYS = [
   "taskbar.brand",
   "taskbar.title",
-  "taskbar.width",
-  "taskbar.height",
   "taskbar.language",
   "taskbar.undo",
   "taskbar.new",
@@ -15,7 +13,6 @@ const REQUIRED_KEYS = [
   "taskbar.library",
   "taskbar.settings",
   "taskbar.fullscreen",
-  "left.add-repeat",
   "machine.gauge",
   "machine.needle-pitch",
   "yarn.length-current",
@@ -33,6 +30,15 @@ const REQUIRED_KEYS = [
   "yarn.texture-clear",
   "yarn.performance",
   "stitch.symbol",
+  "cam.width",
+  "cam.height",
+  "cam.symbols",
+  "cam.grid",
+  "needle.width",
+  "needle.height",
+  "needle.start",
+  "needle.input",
+  "needle.apply",
   "palette.edit",
   "palette.add",
   "palette.label",
@@ -40,24 +46,16 @@ const REQUIRED_KEYS = [
   "palette.color",
   "palette.shuffle",
   "palette.randomize",
-  "repeat.width",
-  "repeat.height",
-  "repeat.tool",
-  "repeat.exit",
-  "repeat.area-width",
-  "repeat.area-height",
   "chart.zoom-out",
   "chart.zoom-range",
   "chart.zoom-in",
   "chart.fit",
-  "chart.cols",
-  "chart.rows",
-  "chart.yarn-sequence",
-  "chart.yarn-color",
-  "chart.symbols",
-  "chart.grid",
-  "chart.repeat",
+  "needle.yarn-sequence",
+  "needle.yarn-color",
+  "needle.symbols",
+  "needle.grid",
   "layout.split",
+  "layout.editor-split",
   "simulation.canvas",
   "simulation.flip",
   "simulation.zoom-out",
@@ -234,14 +232,12 @@ requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
 ]);
 requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
   "重叠画布源码层",
-  "chart.yarn-sequence",
-  "纱线序列层",
-  "chart.yarn-color",
-  "纱线颜色层",
-  "chart.symbols",
-  "针法符号层",
-  "chart.grid",
-  "网格层",
+  "cam.symbols",
+  "三角座针法层",
+  "needle.yarn-sequence",
+  "排针纱线序列层",
+  "needle.symbols",
+  "排针针法层",
 ]);
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
@@ -250,8 +246,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
-  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[\s*\{\s*key:\s*["']chart\.yarn-sequence["']\s*,\s*label:\s*["']纱线序列层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.yarn-color["']\s*,\s*label:\s*["']纱线颜色层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.symbols["']\s*,\s*label:\s*["']针法符号层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.grid["']\s*,\s*label:\s*["']网格层["']\s*,?\s*\}\s*,?\s*\]\s*;/,
-  "must define the exact four central chart layer options"
+  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.yarn-color[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
+  "must define the six cam and needle canvas layer options"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
@@ -392,13 +388,14 @@ requireSourcePattern(
   "initCodeGuideEvents must register cancelable blocked events and keydown in capture phase"
 );
 requireSourceTokens("src/index.js", [
-  'import { isCodeGuideMode } from "./codeGuide/mode"',
-  'import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents"',
+  'import { isCodeGuideMode } from "./codeGuide/mode.js"',
+  'import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js"',
   'data-code-guide-key="layout.split"',
+  'data-code-guide-key="layout.editor-split"',
 ]);
 requireSourcePattern(
   "src/index.js",
-  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{\s*initCodeGuideEvents\(\)\s*;?\s*\}\s*else\s*\{\s*isMobile\(\)\s*\?\s*initTouch\(\)\s*:\s*initKeyboard\(\)\s*;?\s*\}/,
+  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?initCodeGuideEvents\(\)[\s\S]*?\}\s*else\s*\{[\s\S]*?isMobile\(\)\s*\?\s*initTouch\([^)]*\)\s*:\s*initKeyboard\([^)]*\)/,
   "must initialize guide interception instead of keyboard or touch business listeners in guide mode"
 );
 requireSourceTokens("src/views/view.js", [

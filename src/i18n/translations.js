@@ -13,7 +13,6 @@ export const translations = {
     "taskbar.fullscreen": "全屏",
     "taskbar.language": "语言",
 
-    "left.addRepeat": "添加花型",
     "left.yarnPlyPanel": "双纱参数",
     "machine.gauge": "机号 G",
     "machine.needlePitch": "针距",
@@ -74,17 +73,18 @@ export const translations = {
     "yarnSequence.removeRow": "减少行",
     "yarnSequence.help": "先选择色纱，再点击或拖动左下角色块，设置每一行使用的色纱。",
 
-    "repeatTools.brush": "画笔",
-    "repeatTools.exit": "退出",
-
-    "repeatCanvas.adjustHeight": "调整 repeat 作用区高度",
-    "repeatCanvas.adjustWidth": "调整 repeat 作用区宽度",
+    "cam.title": "三角座排列",
+    "needle.title": "排针排列",
+    "needle.start": "开始排针",
+    "needle.apply": "应用排针",
+    "needle.input": "排针输入 {index}",
+    "needle.error.empty": "不能为空",
+    "needle.error.characters": "只能输入数字",
+    "needle.error.row": "行号超出三角座范围",
 
     "chartTools.zoomOut": "缩小",
     "chartTools.zoomIn": "放大",
     "chartTools.fit": "适配",
-    "chartTools.cols": "列",
-    "chartTools.rows": "行",
 
     "settings.title": "设置",
     "settings.invertScroll": "反转滚轮",
@@ -147,7 +147,6 @@ export const translations = {
     "taskbar.fullscreen": "全螢幕",
     "taskbar.language": "語言",
 
-    "left.addRepeat": "新增花型",
     "left.yarnPlyPanel": "雙紗參數",
     "machine.gauge": "機號 G",
     "machine.needlePitch": "針距",
@@ -208,17 +207,18 @@ export const translations = {
     "yarnSequence.removeRow": "減少行",
     "yarnSequence.help": "先選擇色紗，再點擊或拖動左下角色塊，設定每一行使用的色紗。",
 
-    "repeatTools.brush": "畫筆",
-    "repeatTools.exit": "退出",
-
-    "repeatCanvas.adjustHeight": "調整 repeat 作用區高度",
-    "repeatCanvas.adjustWidth": "調整 repeat 作用區寬度",
+    "cam.title": "三角座排列",
+    "needle.title": "排針排列",
+    "needle.start": "開始排針",
+    "needle.apply": "套用排針",
+    "needle.input": "排針輸入 {index}",
+    "needle.error.empty": "不可留空",
+    "needle.error.characters": "只能輸入數字",
+    "needle.error.row": "行號超出三角座範圍",
 
     "chartTools.zoomOut": "縮小",
     "chartTools.zoomIn": "放大",
     "chartTools.fit": "適配",
-    "chartTools.cols": "列",
-    "chartTools.rows": "行",
 
     "settings.title": "設定",
     "settings.invertScroll": "反轉滾輪",
@@ -281,7 +281,6 @@ export const translations = {
     "taskbar.fullscreen": "Fullscreen",
     "taskbar.language": "Language",
 
-    "left.addRepeat": "Add Motif",
     "left.yarnPlyPanel": "Two-Yarn Settings",
     "machine.gauge": "Machine Gauge",
     "machine.needlePitch": "Needle Pitch",
@@ -342,17 +341,18 @@ export const translations = {
     "yarnSequence.removeRow": "Remove Row",
     "yarnSequence.help": "Select a yarn first, then click or drag the lower-left color blocks to set the yarn used by each row.",
 
-    "repeatTools.brush": "Brush",
-    "repeatTools.exit": "Exit",
-
-    "repeatCanvas.adjustHeight": "Adjust repeat area height",
-    "repeatCanvas.adjustWidth": "Adjust repeat area width",
+    "cam.title": "Cam Arrangement",
+    "needle.title": "Needle Arrangement",
+    "needle.start": "Start Needle Arrangement",
+    "needle.apply": "Apply Arrangement",
+    "needle.input": "Needle input {index}",
+    "needle.error.empty": "This field is required",
+    "needle.error.characters": "Use digits only",
+    "needle.error.row": "Row number is outside the cam arrangement",
 
     "chartTools.zoomOut": "Zoom Out",
     "chartTools.zoomIn": "Zoom In",
     "chartTools.fit": "Fit",
-    "chartTools.cols": "Cols",
-    "chartTools.rows": "Rows",
 
     "settings.title": "Settings",
     "settings.invertScroll": "Invert Scroll",
@@ -415,7 +415,6 @@ export const translations = {
     "taskbar.fullscreen": "Toàn màn hình",
     "taskbar.language": "Ngôn ngữ",
 
-    "left.addRepeat": "Thêm mẫu",
     "left.yarnPlyPanel": "Thông số hai sợi",
     "machine.gauge": "Cỡ máy G",
     "machine.needlePitch": "Bước kim",
@@ -476,17 +475,18 @@ export const translations = {
     "yarnSequence.removeRow": "Bớt hàng",
     "yarnSequence.help": "Chọn sợi trước, rồi bấm hoặc kéo các ô màu ở góc dưới bên trái để đặt sợi dùng cho từng hàng.",
 
-    "repeatTools.brush": "Bút vẽ",
-    "repeatTools.exit": "Thoát",
-
-    "repeatCanvas.adjustHeight": "Điều chỉnh chiều cao vùng repeat",
-    "repeatCanvas.adjustWidth": "Điều chỉnh chiều rộng vùng repeat",
+    "cam.title": "Sắp xếp cam",
+    "needle.title": "Sắp xếp kim",
+    "needle.start": "Bắt đầu sắp xếp kim",
+    "needle.apply": "Áp dụng sắp xếp",
+    "needle.input": "Đầu vào kim {index}",
+    "needle.error.empty": "Không được để trống",
+    "needle.error.characters": "Chỉ được nhập chữ số",
+    "needle.error.row": "Số hàng nằm ngoài phạm vi sắp xếp cam",
 
     "chartTools.zoomOut": "Thu nhỏ",
     "chartTools.zoomIn": "Phóng to",
     "chartTools.fit": "Vừa khung",
-    "chartTools.cols": "Cột",
-    "chartTools.rows": "Hàng",
 
     "settings.title": "Cài đặt",
     "settings.invertScroll": "Đảo chiều cuộn",

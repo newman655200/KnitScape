@@ -56,14 +56,14 @@ export function bitmapEditor({ field, titleKey, showYarn = false }) {
           ? html`<div id="needle-yarn-sequence">
               <canvas
                 id="yarn-sequence-canvas"
-                data-code-guide-key="chart.yarn-sequence"></canvas>
+                data-code-guide-key="needle.yarn-sequence"></canvas>
             </div>`
           : nothing}
         <div class="pattern-canvas-stack">
           ${showYarn
             ? html`<canvas
                 id="yarn-color-canvas"
-                data-code-guide-key="chart.yarn-color"></canvas>`
+                data-code-guide-key="needle.yarn-color"></canvas>`
             : nothing}
           <canvas
             id=${symbolCanvasId}

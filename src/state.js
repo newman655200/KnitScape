@@ -33,14 +33,11 @@ let GLOBAL_STATE = {
   appliedNeedleInputs: ["1", "2", "3", "4"],
   needleInputErrors: [null, null, null, null],
 
-  chartBackground: "#ffffff",
   symbolPalette: {},
   symbolMap: DEFAULT_SYMBOLS,
   patternLibrary: DEFAULT_PATTERN_LIBRARY,
 
-  scale: 15, // Number of pixels for each chart cell
-  pos: { x: -1, y: -1 }, // Mouse position in chart
-  chartPan: { x: 0, y: 0 }, // Pan value for the chart editor view
+  scale: 15,
 
   simScale: 1,
   simPan: { x: 0, y: 0 },
@@ -56,44 +53,13 @@ let GLOBAL_STATE = {
   yarnSequence: new Bimp(1, 60, Array(60).fill(0)),
   yarnPlies: DEFAULT_YARN_PLIES.map((ply) => ({ ...ply })),
 
-  editingRepeat: 0,
-  repeatPos: [-1, -1],
-  selectedChartCell: null,
-  selectedRepeatCell: null,
-
-  repeats: [
-    {
-      bitmap: Bimp.empty(4, 8, DEFAULT_STITCH_SYMBOL_INDEX),
-      pos: [0, 0],
-      area: [48, 60],
-    },
-  ],
-
-  repeatLibrary: [
-    {
-      title: "blank",
-      bitmap: new Bimp(2, 2, [0, 0, 0, 0]),
-    },
-    {
-      title: "checks",
-      bitmap: new Bimp(2, 2, [0, 2, 2, 0]),
-    },
-    {
-      title: "stripe",
-      bitmap: new Bimp(2, 2, [0, 2, 0, 2]),
-    },
-  ], // Library of motifs which can be used as repeats
-
-  // chart: Bimp.empty(5, 5, DEFAULT_STITCH_SYMBOL_INDEX),
-  chart: Bimp.empty(48, 60, DEFAULT_STITCH_SYMBOL_INDEX),
-
   reverseScroll: false,
   grid: true,
   symbolLineWidth: 3,
   flipped: false,
 
   // PUNCH CARD
-  punchcardMode: false, // constrains repeat width to a punchcard-friendly width
+  punchcardMode: false, // constrains pattern width to a punchcard-friendly width
   machine: "th860",
   punchVerticalRepeats: 5,
   rows: 40, //punchcard rows
@@ -103,7 +69,6 @@ let GLOBAL_STATE = {
   showLibrary: false,
   showSettings: false,
   showDownload: false,
-  showRepeatLibrary: false,
   debug: false,
 
   snapshots: [], // Array of snapshot history

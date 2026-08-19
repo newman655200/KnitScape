@@ -96,13 +96,13 @@ export function downloadSilverKnitTxt() {
 
 export function downloadKniterate() {
   const width = GLOBAL_STATE.needleBitmap.width;
-  const chartHeight = GLOBAL_STATE.needleBitmap.height;
+  const needleHeight = GLOBAL_STATE.needleBitmap.height;
   const colors = [];
 
-  for (let y = 0; y < chartHeight; y++) {
+  for (let y = 0; y < needleHeight; y++) {
     let paletteIndex = GLOBAL_STATE.yarnSequence.pixel(
       0,
-      (chartHeight - y - 1) % GLOBAL_STATE.yarnSequence.height
+      (needleHeight - y - 1) % GLOBAL_STATE.yarnSequence.height
     );
 
     colors.push(new Array(width).fill(paletteIndex).join(""));

@@ -16,14 +16,11 @@ export const SNAPSHOT_FIELDS = [
   "yarnPalette",
   "yarnSequence",
   "yarnPlies",
-  "repeats",
   "camBitmap",
   "needleBitmap",
   "needleInputs",
   "appliedNeedleInputs",
 ];
-
-export const LAYERS = ["chart", "repeats", "yarn"];
 
 export const DEFAULT_YARN_COLOR = "rgba(190,190,190,1)";
 
@@ -79,7 +76,3 @@ export const DEFAULT_STITCH_SYMBOL_INDEX = DEFAULT_SYMBOLS.indexOf(
 );
 
 export const DEFAULT_PATTERN_LIBRARY = import.meta.glob("../examples/*.json");
-
-export const toolData = {
-  brush: { icon: "fa-solid fa-paintbrush", hotkey: "b" },
-};

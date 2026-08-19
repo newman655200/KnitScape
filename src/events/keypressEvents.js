@@ -1,5 +1,5 @@
 import { GLOBAL_STATE, dispatch, undo } from "../state";
-import { toolData } from "../constants";
+import { selectPatternSymbol } from "../actions/patternEditing.js";
 
 const ctrlShortcuts = {
   a: () => console.log("select all?"),
@@ -8,14 +8,6 @@ const ctrlShortcuts = {
 };
 
 const hotkeys = {
-  // grab the tools from the global tool constants and reformat them for the hotkeymap
-  ...Object.fromEntries(
-    Object.entries(toolData).map(([toolId, toolData]) => [
-      toolData.hotkey,
-      () => dispatch({ activeTool: toolId }),
-    ])
-  ),
-
   // Misc
   g: () => dispatch({ grid: !GLOBAL_STATE.grid }),
 
@@ -25,8 +17,6 @@ const hotkeys = {
       showLibrary: false,
       showSettings: false,
       showDownload: false,
-      editingRepeat: -1,
-      showRepeatLibrary: false,
     }),
   d: () =>
     dispatch({
@@ -35,7 +25,9 @@ const hotkeys = {
 };
 
 function symbolSwitch(index) {
-  if (index <= GLOBAL_STATE.symbolMap.length) dispatch({ activeSymbol: index });
+  if (index >= 0 && index < GLOBAL_STATE.symbolMap.length) {
+    selectPatternSymbol(index);
+  }
 }
 
 export function addKeypressListeners() {

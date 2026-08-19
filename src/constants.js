@@ -17,6 +17,10 @@ export const SNAPSHOT_FIELDS = [
   "yarnSequence",
   "yarnPlies",
   "repeats",
+  "camBitmap",
+  "needleBitmap",
+  "needleInputs",
+  "appliedNeedleInputs",
 ];
 
 export const LAYERS = ["chart", "repeats", "yarn"];

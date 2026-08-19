@@ -11,6 +11,13 @@ import {
   DEFAULT_MACHINE_GAUGE,
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
+import { cloneBitmap } from "./needleArrangement/transform.js";
+
+const defaultCamBitmap = Bimp.empty(
+  48,
+  60,
+  DEFAULT_STITCH_SYMBOL_INDEX
+);
 
 let GLOBAL_STATE = {
   language: getInitialLanguage(),
@@ -19,6 +26,12 @@ let GLOBAL_STATE = {
 
   activeTool: null,
   activeSymbol: 0,
+
+  camBitmap: defaultCamBitmap,
+  needleBitmap: cloneBitmap(defaultCamBitmap),
+  needleInputs: ["1", "2", "3", "4"],
+  appliedNeedleInputs: ["1", "2", "3", "4"],
+  needleInputErrors: [null, null, null, null],
 
   chartBackground: "#ffffff",
   symbolPalette: {},

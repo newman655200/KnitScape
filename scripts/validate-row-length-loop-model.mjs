@@ -75,13 +75,12 @@ assert.equal(fs.existsSync("src/simulation/YarnForce.js"), false);
 
 const technicalDoc = fs.readFileSync("KnitScape_当前功能与算法.md", "utf8");
 for (const heading of [
-  "项目当前定位",
+  "项目定位",
   "当前已实现功能",
-  "实际运行架构",
+  "当前数据流",
   "核心数据结构",
   "已实现算法",
-  "技术栈与开发方式",
-  "当前验证结果",
+  "技术栈与验证",
   "当前明确未实现",
   "理论与使用边界",
 ]) {

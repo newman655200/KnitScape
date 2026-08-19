@@ -62,7 +62,6 @@ let GLOBAL_STATE = {
   punchcardMode: false, // constrains pattern width to a punchcard-friendly width
   machine: "th860",
   punchVerticalRepeats: 5,
-  rows: 40, //punchcard rows
   numSides: 8, //number of punch sides
 
   // Various UI pane states

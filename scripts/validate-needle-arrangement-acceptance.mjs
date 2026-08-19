@@ -20,6 +20,7 @@ try {
   const state = await server.ssrLoadModule("/src/state.js");
   const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
   const actions = await server.ssrLoadModule("/src/actions/patternEditing.js");
+  const punchcard = await server.ssrLoadModule("/src/punchcard.js");
 
   const camBitmap = new Bimp(8, 4, [
     0, 0, 0, 0, 0, 0, 2, 2,
@@ -33,19 +34,24 @@ try {
     needleInputs: ["1", "2", "3", "4"],
     appliedNeedleInputs: ["1", "2", "3", "4"],
     needleInputErrors: [null, null, null, null],
+    punchVerticalRepeats: 5,
   });
+
+  assert.equal(punchcard.punchcardRowCount(), 10);
 
   assert.equal(actions.applyNeedleArrangement(), true);
   assert.deepEqual(
     [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
     [4, 8]
   );
+  assert.equal(punchcard.punchcardRowCount(), 40);
 
   const appliedBitmap = state.GLOBAL_STATE.needleBitmap;
   actions.updateNeedleInput(2, "5");
   assert.equal(actions.applyNeedleArrangement(), false);
   assert.equal(state.GLOBAL_STATE.needleBitmap, appliedBitmap);
   assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
+  assert.equal(punchcard.punchcardRowCount(), 40);
 
   actions.startNeedleArrangement();
   assert.notEqual(state.GLOBAL_STATE.needleBitmap, state.GLOBAL_STATE.camBitmap);
@@ -53,6 +59,9 @@ try {
     state.GLOBAL_STATE.needleBitmap.toJSON(),
     state.GLOBAL_STATE.camBitmap.toJSON()
   );
+  assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
+  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
+  assert.equal(punchcard.punchcardRowCount(), 20);
 
   state.undo();
   assert.deepEqual(
@@ -65,6 +74,7 @@ try {
   );
   assert.deepEqual(state.GLOBAL_STATE.needleInputs, ["1", "2", "3", "4"]);
   assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
+  assert.equal(punchcard.punchcardRowCount(), 10);
 
   const runSimulation = fs.readFileSync("src/components/runSimulation.js", "utf8");
   const drawYarnColors = fs.readFileSync("src/components/drawYarnColors.js", "utf8");

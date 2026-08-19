@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createServer } from "vite";
+
+globalThis.Path2D = class {};
+globalThis.devicePixelRatio = 1;
 
 const read = (path) => fs.readFileSync(path, "utf8");
 const viewSource = read("src/views/view.js");
@@ -45,5 +49,115 @@ assert.match(
 );
 assert.equal((indexSource.match(/drawBitmapEditor\(\{/g) || []).length, 2);
 assert.equal((indexSource.match(/bitmapPointerInteraction\(/g) || []).length, 2);
+
+class MockContext {
+  constructor() {
+    this.strokes = 0;
+  }
+
+  resetTransform() {}
+  clearRect() {}
+  translate() {}
+  save() {}
+  scale() {}
+  fillRect() {}
+  restore() {}
+  beginPath() {}
+  moveTo() {}
+  lineTo() {}
+  stroke() {
+    this.strokes += 1;
+  }
+}
+
+class MockCanvas {
+  constructor() {
+    this.context = new MockContext();
+    this.style = {};
+    this.sizeWrites = 0;
+    this._width = 0;
+    this._height = 0;
+  }
+
+  get width() {
+    return this._width;
+  }
+
+  set width(value) {
+    this._width = value;
+    this.sizeWrites += 1;
+  }
+
+  get height() {
+    return this._height;
+  }
+
+  set height(value) {
+    this._height = value;
+    this.sizeWrites += 1;
+  }
+
+  getContext() {
+    return this.context;
+  }
+}
+
+const server = await createServer({
+  appType: "custom",
+  logLevel: "silent",
+  server: { middlewareMode: true },
+});
+
+try {
+  const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
+  const { drawBitmapEditor } = await server.ssrLoadModule(
+    "/src/components/drawBitmapEditor.js"
+  );
+  const symbolCanvas = new MockCanvas();
+  const gridCanvas = new MockCanvas();
+  const interactionCanvas = new MockCanvas();
+  const initialBitmap = Bimp.empty(2, 2, 1);
+  const initialState = {
+    camBitmap: initialBitmap,
+    scale: 20,
+    symbolMap: ["knit", "purl", "slip", "tuck"],
+    symbolLineWidth: 3,
+    grid: true,
+  };
+  const component = drawBitmapEditor({
+    field: "camBitmap",
+    symbolCanvas,
+    gridCanvas,
+    interactionCanvas,
+  })({ state: initialState });
+  const initialSizeWrites = [symbolCanvas, gridCanvas, interactionCanvas]
+    .reduce((sum, canvas) => sum + canvas.sizeWrites, 0);
+  const initialStrokes = symbolCanvas.context.strokes;
+  const startPos = { x: 0, y: 0 };
+  const nextBitmap = initialBitmap.line(startPos, startPos, 0);
+
+  component.syncState(
+    {
+      ...initialState,
+      camBitmap: nextBitmap,
+      patternEdit: { field: "camBitmap", startPos, endPos: startPos },
+    },
+    ["camBitmap", "patternEdit"]
+  );
+
+  assert.equal(
+    [symbolCanvas, gridCanvas, interactionCanvas]
+      .reduce((sum, canvas) => sum + canvas.sizeWrites, 0),
+    initialSizeWrites,
+    "drawing one cell must not resize the canvases"
+  );
+  assert.equal(
+    symbolCanvas.context.strokes - initialStrokes,
+    1,
+    "drawing one cell must redraw only that cell"
+  );
+} finally {
+  await server.close();
+}
 
 console.log("PASS: reusable dual pattern editor is configured.");

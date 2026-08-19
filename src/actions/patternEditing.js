@@ -55,6 +55,7 @@ export function drawPatternLine(field, startPos, endPos) {
   const bitmap = patternBitmap(field);
   dispatch({
     [field]: bitmap.line(startPos, endPos, GLOBAL_STATE.activeSymbol),
+    patternEdit: { field, startPos, endPos },
   });
 }
 
@@ -62,8 +63,6 @@ export function startNeedleArrangement() {
   const needleBitmap = cloneBitmap(GLOBAL_STATE.camBitmap);
   dispatch({
     needleBitmap,
-    appliedNeedleInputs: [...GLOBAL_STATE.needleInputs],
-    needleInputErrors: [null, null, null, null],
     yarnSequence: needleYarnSequence(needleBitmap.height),
   });
 }

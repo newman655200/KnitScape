@@ -63,8 +63,12 @@ assert.match(importersSource, /needleBitmap/);
 assert.match(exportersSource, /serializePattern\(GLOBAL_STATE\)/);
 assert.doesNotMatch(exportersSource, /GLOBAL_STATE\.repeats|GLOBAL_STATE\.chart/);
 assert.match(punchcardSource, /GLOBAL_STATE\.needleBitmap/);
+assert.match(punchcardSource, /needleBitmap\.height\s*\*\s*GLOBAL_STATE\.punchVerticalRepeats/);
+assert.doesNotMatch(punchcardSource, /GLOBAL_STATE\.rows/);
 assert.doesNotMatch(punchcardSource, /GLOBAL_STATE\.repeats|GLOBAL_STATE\.chart/);
-assert.match(downloadModalSource, /GLOBAL_STATE\.needleBitmap\.height/);
+assert.doesNotMatch(stateSource, /\brows\s*:/);
+assert.doesNotMatch(importersSource, /\brows\s*:/);
+assert.doesNotMatch(downloadModalSource, /\brows\s*:/);
 
 for (const obsoleteFile of [
   "src/components/generateChart.js",

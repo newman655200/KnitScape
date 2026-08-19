@@ -43,7 +43,6 @@ export function loadJSON(patternJSON) {
       height: pattern.needleBitmap.height,
       fillYarn: 0,
     }),
-    rows: pattern.needleBitmap.height * GLOBAL_STATE.punchVerticalRepeats,
   });
 
   fitChart();
@@ -65,7 +64,6 @@ export function newPattern() {
     needleInputs: [...DEFAULT_NEEDLE_INPUTS],
     appliedNeedleInputs: [...DEFAULT_NEEDLE_INPUTS],
     needleInputErrors: [null, null, null, null],
-    rows: needleBitmap.height * GLOBAL_STATE.punchVerticalRepeats,
   });
   fitChart();
 }

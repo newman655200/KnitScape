@@ -53,7 +53,7 @@ export function downloadModal() {
             dispatch({
               punchVerticalRepeats: Number(e.target.value),
               rows:
-                Number(e.target.value) * GLOBAL_STATE.repeats[0].bitmap.height,
+                Number(e.target.value) * GLOBAL_STATE.needleBitmap.height,
             })} />
       </label>
 

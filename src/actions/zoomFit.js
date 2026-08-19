@@ -35,9 +35,7 @@ export function toggleFullscreen() {
 }
 
 export function centerZoom(scale) {
-  let bbox = document.getElementById("desktop").getBoundingClientRect();
-
-  zoomAtPoint({ x: bbox.width / 2, y: bbox.height / 2 }, scale);
+  dispatch({ scale: Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale)) });
 }
 
 export function centerZoomSimulation(scale) {
@@ -81,24 +79,25 @@ export function zoomAtPoint(pt, scale) {
 }
 
 export function fitChart() {
-  const { width, height } = devicePixelBoundingBox(
-    document.getElementById("desktop")
-  );
+  const editors = [
+    [document.querySelector("#cam-editor-pane .pattern-editor-viewport"), GLOBAL_STATE.camBitmap],
+    [document.querySelector("#needle-editor-pane .pattern-editor-viewport"), GLOBAL_STATE.needleBitmap],
+  ];
+  const fittedScales = editors
+    .filter(([element]) => element)
+    .map(([element, bitmap]) => {
+      const { width, height } = devicePixelBoundingBox(element);
+      return Math.floor(
+        0.85 * Math.min(width / bitmap.width, height / bitmap.height)
+      );
+    });
 
-  const scale = Math.floor(
-    0.9 *
-      Math.min(
-        Math.floor(width / GLOBAL_STATE.chart.width),
-        Math.floor(height / GLOBAL_STATE.chart.height)
-      )
-  );
-
+  if (fittedScales.length === 0) return;
   dispatch({
-    scale,
-    chartPan: {
-      x: (width - scale * GLOBAL_STATE.chart.width) / 2 / devicePixelRatio,
-      y: (height - scale * GLOBAL_STATE.chart.height) / 2 / devicePixelRatio,
-    },
+    scale: Math.max(
+      MIN_SCALE,
+      Math.min(MAX_SCALE, ...fittedScales)
+    ),
   });
 }
 

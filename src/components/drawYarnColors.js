@@ -2,11 +2,11 @@ import { sizeCanvasToBitmap } from "../actions/zoomFit";
 
 export function drawYarnColors(yarnColorCanvas) {
   return ({ state }) => {
-    let { scale, yarnPalette, yarnSequence, chart } = state;
+    let { scale, yarnPalette, yarnSequence, needleBitmap } = state;
 
     let lastDrawn = null;
-    let chartWidth = chart.width;
-    let chartHeight = chart.height;
+    let chartWidth = needleBitmap.width;
+    let chartHeight = needleBitmap.height;
 
     let yarnHeight = yarnSequence.height;
 
@@ -33,6 +33,7 @@ export function drawYarnColors(yarnColorCanvas) {
 
     lastDrawn = null;
 
+    sizeCanvasToBitmap(yarnColorCanvas, chartWidth, chartHeight);
     draw();
 
     return {
@@ -40,17 +41,18 @@ export function drawYarnColors(yarnColorCanvas) {
         yarnSequence = state.yarnSequence;
 
         if (
-          chartWidth != state.chart.width ||
-          chartHeight != state.chart.height ||
+          chartWidth != state.needleBitmap.width ||
+          chartHeight != state.needleBitmap.height ||
           yarnHeight != state.yarnSequence.height ||
           scale != state.scale
         ) {
-          chartWidth = state.chart.width;
-          chartHeight = state.chart.height;
+          chartWidth = state.needleBitmap.width;
+          chartHeight = state.needleBitmap.height;
           yarnHeight = state.yarnSequence.height;
           scale = state.scale;
 
           lastDrawn = null;
+          sizeCanvasToBitmap(yarnColorCanvas, chartWidth, chartHeight);
         }
 
         if (yarnPalette != state.yarnPalette) {

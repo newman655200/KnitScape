@@ -1,7 +1,5 @@
 import { html } from "lit-html";
-import { fitChart } from "../actions/zoomFit";
-import { resizeChartArea } from "../actions/repeatDimensions";
-import { applySelectedSymbol } from "../actions/selectedCell";
+import { selectPatternSymbol } from "../actions/patternEditing.js";
 import { GLOBAL_STATE } from "../state";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import purlIconUrl from "../assets/symbols/purl.svg";
@@ -15,18 +13,6 @@ const SYMBOL_ICON_URLS = {
   slip: slipIconUrl,
   tuck: tuckIconUrl,
 };
-
-function updateChartWidth(newWidth) {
-  const width = Math.max(5, Math.min(500, Math.floor(Number(newWidth) || 5)));
-  resizeChartArea(width, GLOBAL_STATE.chart.height);
-  fitChart();
-}
-
-function updateChartHeight(newHeight) {
-  const height = Math.max(5, Math.min(500, Math.floor(Number(newHeight) || 5)));
-  resizeChartArea(GLOBAL_STATE.chart.width, height);
-  fitChart();
-}
 
 export function chartEditorToolbar() {
   const language = GLOBAL_STATE.language;
@@ -42,7 +28,7 @@ export function chartEditorToolbar() {
               ? "current"
               : ""}"
             type="button"
-            @click=${() => applySelectedSymbol(index)}>
+            @click=${() => selectPatternSymbol(index)}>
             <img
               class="symbol-preview-image"
               src=${SYMBOL_ICON_URLS[symbolName]}
@@ -52,30 +38,6 @@ export function chartEditorToolbar() {
           </button>`
         )}
       </div>
-    </div>
-    <div id="chart-size-controls">
-      <label>
-        <span>${t("taskbar.width", language)}</span>
-        <input
-          data-code-guide-key="taskbar.width"
-          class="input"
-          type="number"
-          .value=${GLOBAL_STATE.chart.width}
-          @change=${(event) => updateChartWidth(event.target.value)}
-          min="5"
-          max="500" />
-      </label>
-      <label>
-        <span>${t("taskbar.height", language)}</span>
-        <input
-          data-code-guide-key="taskbar.height"
-          class="input"
-          type="number"
-          .value=${GLOBAL_STATE.chart.height}
-          @change=${(event) => updateChartHeight(event.target.value)}
-          min="5"
-          max="500" />
-      </label>
     </div>
   </section>`;
 }

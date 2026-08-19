@@ -5,6 +5,184 @@
     url("/assets/fonts/NP-VariableVF.woff2") format("woff2-variations");
 }
 
+/* Triangle-cam and needle-arrangement editors */
+#pattern-editors {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+#pattern-editors > .gutter {
+  background: #747b80;
+  border-top: 1px solid #90969a;
+  border-bottom: 1px solid #4d5357;
+  cursor: row-resize;
+}
+
+.pattern-editor-pane {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--app-background);
+}
+
+.pattern-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  color: var(--text);
+  background: #565d62;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.pattern-editor-header h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pattern-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pattern-size-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #f1f2f2;
+  font-size: 0.72rem;
+}
+
+.pattern-size-controls input {
+  width: 4rem;
+  height: 1.65rem;
+  color: var(--ink);
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 7px;
+}
+
+.pattern-editor-viewport {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem;
+  background: var(--app-background);
+  box-shadow: inset 0 0 0 1px rgba(36, 40, 43, 0.08);
+}
+
+.pattern-canvas-row {
+  min-width: max-content;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.pattern-canvas-stack {
+  position: relative;
+  flex: none;
+  background: #fff;
+  outline: 1px solid #2f3437;
+}
+
+.pattern-symbol-canvas {
+  position: relative;
+  z-index: 1;
+}
+
+.pattern-grid-canvas,
+.pattern-interaction-canvas,
+#yarn-color-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.pattern-grid-canvas {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pattern-interaction-canvas {
+  z-index: 3;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+#yarn-color-canvas {
+  z-index: 0;
+  pointer-events: none;
+}
+
+#needle-yarn-sequence {
+  flex: none;
+  outline: 1px solid #2f3437;
+}
+
+#needle-arrangement-controls {
+  position: relative;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.65rem;
+  color: #f1f2f2;
+  background: #4f565b;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.needle-inputs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(3.8rem, 1fr));
+  gap: 0.4rem;
+}
+
+.needle-inputs label {
+  display: grid;
+  gap: 0.15rem;
+  color: #f1f2f2;
+  font-size: 0.68rem;
+}
+
+.needle-inputs input {
+  width: 100%;
+  min-width: 0;
+  height: 1.7rem;
+  color: var(--ink);
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 7px;
+  text-align: center;
+}
+
+.needle-inputs label.invalid input {
+  border-color: #d85656;
+  box-shadow: 0 0 0 2px rgba(216, 86, 86, 0.22);
+}
+
+.needle-inputs small {
+  max-width: 7rem;
+  color: #ffd7d7;
+  line-height: 1.1;
+}
+
+@media (max-width: 1080px) {
+  #needle-arrangement-controls {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .needle-inputs {
+    order: 3;
+    width: 100%;
+  }
+}
+
 body {
   --font-size: 0.92rem;
   width: 100vw;

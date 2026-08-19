@@ -2,77 +2,41 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
-import { StateMonitor } from "./state";
-
-import { fitChart } from "./actions/zoomFit";
-
-import { view } from "./views/view";
-
-import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas";
-
-// Chart View Canvas Layers
-import { drawYarnColors } from "./components/drawYarnColors";
-import { drawSymbols } from "./components/drawSymbols";
-import { drawGrid } from "./components/drawGrid";
-import { drawRepeats } from "./components/drawRepeats";
-
-// Pointer/keyboard interaction
-import { addKeypressListeners } from "./events/keypressEvents";
-import { desktopPointerPanZoom } from "./events/desktopPointerPanZoom";
-import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction";
-import { repeatPointerInteraction } from "./events/repeatPointerInteraction";
-import { simulationPointerInteraction } from "./events/simulationPointerInteraction";
-// import { repeatLibraryDragInteraction } from "./events/repeatLibraryDragInteraction";
-
-// Touch interaction
-import { desktopTouchPanZoom } from "./events/desktopTouchPanZoom";
-import { colorSequenceTouchInteraction } from "./events/colorSequenceTouchInteraction";
-import { repeatTouchInteraction } from "./events/repeatTouchInteraction";
-import { simulationTouchInteraction } from "./events/simulationTouchInteraction";
-
-import { drawSymbolPicker } from "./components/drawSymbolPicker";
-// import { drawRepeatLibrary } from "./components/drawRepeatLibrary";
-import { resizeCanvases } from "./components/resizeCanvases";
-import { runSimulation } from "./components/runSimulation";
-import { closeModals } from "./events/closeModals";
-import { generateChart } from "./components/generateChart";
-import { isMobile } from "./utils";
-import { isCodeGuideMode } from "./codeGuide/mode";
-import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
-import { createAppRenderer } from "./components/renderApp";
-
-let symbolCanvas,
-  gridCanvas,
-  yarnColorCanvas,
-  desktop,
-  repeatContainer,
-  yarnSequenceEditorCanvas,
-  simContainer,
-  repeatLibrary;
+import { fitChart } from "./actions/zoomFit.js";
+import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
+import { isCodeGuideMode } from "./codeGuide/mode.js";
+import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
+import { drawSymbolPicker } from "./components/drawSymbolPicker.js";
+import { drawYarnColors } from "./components/drawYarnColors.js";
+import { createAppRenderer } from "./components/renderApp.js";
+import { runSimulation } from "./components/runSimulation.js";
+import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas.js";
+import { bitmapPointerInteraction } from "./events/bitmapPointerInteraction.js";
+import { closeModals } from "./events/closeModals.js";
+import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction.js";
+import { colorSequenceTouchInteraction } from "./events/colorSequenceTouchInteraction.js";
+import { addKeypressListeners } from "./events/keypressEvents.js";
+import { simulationPointerInteraction } from "./events/simulationPointerInteraction.js";
+import { simulationTouchInteraction } from "./events/simulationTouchInteraction.js";
+import { StateMonitor } from "./state.js";
+import { isMobile } from "./utils.js";
+import { view } from "./views/view.js";
 
 const appRenderer = createAppRenderer({
   renderView: () => render(view(), document.body),
 });
 
-function initKeyboard() {
+function initKeyboard(yarnSequenceCanvasElement, simContainer) {
   addKeypressListeners();
-
-  desktopPointerPanZoom(desktop);
-  repeatPointerInteraction(repeatContainer);
-  colorSequencePointerInteraction(yarnSequenceEditorCanvas);
+  colorSequencePointerInteraction(yarnSequenceCanvasElement);
   simulationPointerInteraction(simContainer);
-  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
-function initTouch() {
+function initTouch(yarnSequenceCanvasElement, simContainer) {
   document.body.style.setProperty("--font-size", "1.1rem");
-
-  desktopTouchPanZoom(desktop);
-  repeatTouchInteraction(repeatContainer);
-  colorSequenceTouchInteraction(yarnSequenceEditorCanvas);
+  colorSequenceTouchInteraction(yarnSequenceCanvasElement);
   simulationTouchInteraction(simContainer);
-  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
@@ -90,14 +54,21 @@ function measureWindow() {
 function init() {
   appRenderer.renderInitial();
 
-  symbolCanvas = document.getElementById("symbol-canvas");
-  gridCanvas = document.getElementById("grid");
-  yarnColorCanvas = document.getElementById("yarn-color-canvas");
-  yarnSequenceEditorCanvas = document.getElementById("yarn-sequence-canvas");
-  desktop = document.getElementById("desktop");
-  repeatContainer = document.getElementById("repeat-container");
-  simContainer = document.getElementById("sim-container");
-  repeatLibrary = document.getElementById("repeat-library");
+  const camSymbolCanvas = document.getElementById("cam-symbol-canvas");
+  const camGridCanvas = document.getElementById("cam-grid");
+  const camInteractionCanvas = document.getElementById(
+    "cam-interaction-canvas"
+  );
+  const needleSymbolCanvas = document.getElementById("symbol-canvas");
+  const needleGridCanvas = document.getElementById("grid");
+  const needleInteractionCanvas = document.getElementById(
+    "needle-interaction-canvas"
+  );
+  const yarnColorCanvas = document.getElementById("yarn-color-canvas");
+  const yarnSequenceCanvasElement = document.getElementById(
+    "yarn-sequence-canvas"
+  );
+  const simContainer = document.getElementById("sim-container");
 
   Split(["#chart-pane", "#sim-pane"], {
     sizes: [60, 40],
@@ -105,31 +76,44 @@ function init() {
     gutterSize: 11,
   });
 
+  Split(["#cam-editor-pane", "#needle-editor-pane"], {
+    sizes: [50, 50],
+    minSize: 90,
+    gutterSize: 9,
+    direction: "vertical",
+  });
+
   if (isCodeGuideMode()) {
     document
       .querySelector("#site > .gutter")
       ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"
-  }
-
-  if (isCodeGuideMode()) {
     initCodeGuideEvents();
   } else {
-    isMobile() ? initTouch() : initKeyboard();
+    bitmapPointerInteraction(camInteractionCanvas);
+    bitmapPointerInteraction(needleInteractionCanvas);
+    isMobile()
+      ? initTouch(yarnSequenceCanvasElement, simContainer)
+      : initKeyboard(yarnSequenceCanvasElement, simContainer);
   }
 
   StateMonitor.register([
     () => appRenderer,
-    resizeCanvases([symbolCanvas, gridCanvas, yarnColorCanvas]),
-    yarnSequenceCanvas({
-      canvas: yarnSequenceEditorCanvas,
-    }),
-    drawSymbols(symbolCanvas),
+    yarnSequenceCanvas({ canvas: yarnSequenceCanvasElement }),
     drawYarnColors(yarnColorCanvas),
-    drawGrid(gridCanvas),
-    drawRepeats(),
+    drawBitmapEditor({
+      field: "camBitmap",
+      symbolCanvas: camSymbolCanvas,
+      gridCanvas: camGridCanvas,
+      interactionCanvas: camInteractionCanvas,
+    }),
+    drawBitmapEditor({
+      field: "needleBitmap",
+      symbolCanvas: needleSymbolCanvas,
+      gridCanvas: needleGridCanvas,
+      interactionCanvas: needleInteractionCanvas,
+    }),
     drawSymbolPicker(),
     runSimulation(),
-    generateChart(),
   ]);
 
   measureWindow();

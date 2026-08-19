@@ -28,6 +28,13 @@ function needleYarnSequence(height) {
   );
 }
 
+export function selectPatternSymbol(symbolIndex) {
+  dispatch({
+    activeSymbol: symbolIndex,
+    activeTool: "brush",
+  });
+}
+
 export function resizePatternBitmap(field, width, height) {
   const bitmap = patternBitmap(field);
   const resized = bitmap.resize(

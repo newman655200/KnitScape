@@ -23,6 +23,7 @@
     "validate:yarn-length-parameters": "node scripts/validate-yarn-length-parameters.mjs",
     "validate:yarn-sequence-editor": "node --experimental-default-type=module scripts/validate-yarn-sequence-editor.mjs",
     "validate:central-stitch-toolbar": "node scripts/validate-central-stitch-toolbar.mjs",
+    "validate:needle-arrangement-transform": "node --experimental-default-type=module scripts/validate-needle-arrangement-transform.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",

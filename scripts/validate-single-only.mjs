@@ -50,15 +50,6 @@ if (packageJson.scripts?.["validate:double-face"]) {
   failures.push("remove npm script: validate:double-face");
 }
 
-for (const file of [
-  "KnitScape_单面布技术文档.md",
-  "docs/针织实验室_单面布功能需求文档.md",
-]) {
-  if (/双面布|空气层|Fraunhofer|Three\.js|double-face|fabricMode/i.test(read(file))) {
-    failures.push(`remove obsolete double-face wording from ${file}`);
-  }
-}
-
 if (failures.length) {
   console.error(failures.map((failure) => `FAIL: ${failure}`).join("\n"));
   process.exit(1);

@@ -1,5 +1,6 @@
 node_modules
 dist
+.superpowers/
 
 # Local offline/runtime bundles and reference photos.
 安装环境/

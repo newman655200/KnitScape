@@ -12,14 +12,27 @@ import {
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
 import { cloneBitmap } from "./needleArrangement/transform.js";
+import {
+  DEFAULT_CANVAS_HEIGHT,
+  DEFAULT_CANVAS_WIDTH,
+  DEFAULT_UNIT_HEIGHT,
+  DEFAULT_UNIT_WIDTH,
+  withDerivedPatternBitmaps,
+} from "./patternDerivation.js";
 
-const defaultCamBitmap = Bimp.empty(
-  48,
-  60,
+const defaultCamUnitBitmap = Bimp.empty(
+  DEFAULT_UNIT_WIDTH,
+  DEFAULT_UNIT_HEIGHT,
   DEFAULT_STITCH_SYMBOL_INDEX
 );
+const PATTERN_SOURCE_FIELDS = new Set([
+  "canvasWidth",
+  "canvasHeight",
+  "camUnitBitmap",
+  "needleUnitBitmap",
+]);
 
-let GLOBAL_STATE = {
+let GLOBAL_STATE = withDerivedPatternBitmaps({
   language: getInitialLanguage(),
   editingPalette: false,
   transforming: false,
@@ -27,8 +40,11 @@ let GLOBAL_STATE = {
   activeTool: null,
   activeSymbol: 0,
 
-  camBitmap: defaultCamBitmap,
-  needleBitmap: cloneBitmap(defaultCamBitmap),
+  canvasWidth: DEFAULT_CANVAS_WIDTH,
+  canvasHeight: DEFAULT_CANVAS_HEIGHT,
+  chartPan: { x: 0, y: 0 },
+  camUnitBitmap: defaultCamUnitBitmap,
+  needleUnitBitmap: cloneBitmap(defaultCamUnitBitmap),
   needleInputs: ["1", "2", "3", "4"],
   appliedNeedleInputs: ["1", "2", "3", "4"],
   needleInputErrors: [null, null, null, null],
@@ -73,11 +89,21 @@ let GLOBAL_STATE = {
   snapshots: [], // Array of snapshot history
   lastSnapshot: 0, // time of last snapshot
   heldKeys: new Set(), // Keys that are currently held down
-};
+});
+
+function changesWithDerivedBitmaps(changes) {
+  if (!changes.some((field) => PATTERN_SOURCE_FIELDS.has(field))) {
+    return changes;
+  }
+
+  return [...changes, "camBitmap", "needleBitmap"];
+}
 
 function loadWorkspace(workspace) {
-  GLOBAL_STATE = { ...GLOBAL_STATE, ...workspace };
+  const changes = changesWithDerivedBitmaps(Object.keys(workspace));
+  GLOBAL_STATE = withDerivedPatternBitmaps({ ...GLOBAL_STATE, ...workspace });
   GLOBAL_STATE.updateSim = true;
+  StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
 function shouldSnapshot(action) {
@@ -92,7 +118,7 @@ function shouldSnapshot(action) {
 }
 
 function snapshotUpdate(action) {
-  GLOBAL_STATE = {
+  GLOBAL_STATE = withDerivedPatternBitmaps({
     ...GLOBAL_STATE,
     ...action,
     snapshots: [
@@ -102,13 +128,13 @@ function snapshotUpdate(action) {
       ...GLOBAL_STATE.snapshots,
     ],
     lastSnapshot: Date.now(),
-  };
+  });
 
   return GLOBAL_STATE;
 }
 
 function normalUpdate(action) {
-  GLOBAL_STATE = { ...GLOBAL_STATE, ...action };
+  GLOBAL_STATE = withDerivedPatternBitmaps({ ...GLOBAL_STATE, ...action });
   return GLOBAL_STATE;
 }
 
@@ -120,18 +146,18 @@ function undo() {
   if (GLOBAL_STATE.snapshots.length < 1) return;
   const changes = Object.keys(GLOBAL_STATE.snapshots[0]);
 
-  GLOBAL_STATE = {
+  GLOBAL_STATE = withDerivedPatternBitmaps({
     ...GLOBAL_STATE,
     ...GLOBAL_STATE.snapshots[0],
     lastSnapshot: 0,
     snapshots: GLOBAL_STATE.snapshots.slice(1),
-  };
+  });
 
-  StateMonitor.syncState(GLOBAL_STATE, changes);
+  StateMonitor.syncState(GLOBAL_STATE, changesWithDerivedBitmaps(changes));
 }
 
 function dispatch(action) {
-  const changes = Object.keys(action);
+  const changes = changesWithDerivedBitmaps(Object.keys(action));
   StateMonitor.syncState(updateState(action), changes);
 }
 

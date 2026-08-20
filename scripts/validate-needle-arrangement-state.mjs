@@ -10,8 +10,11 @@ const punchcardSource = fs.readFileSync("src/punchcard.js", "utf8");
 const downloadModalSource = fs.readFileSync("src/views/downloadModal.js", "utf8");
 
 for (const field of [
-  "camBitmap",
-  "needleBitmap",
+  "canvasWidth",
+  "canvasHeight",
+  "chartPan",
+  "camUnitBitmap",
+  "needleUnitBitmap",
   "needleInputs",
   "appliedNeedleInputs",
   "needleInputErrors",
@@ -31,15 +34,20 @@ for (const legacyField of [
   assert.doesNotMatch(stateSource, new RegExp(`\\b${legacyField}\\s*:`));
 }
 
-assert.match(stateSource, /cloneBitmap\(defaultCamBitmap\)/);
+assert.match(stateSource, /cloneBitmap\(defaultCamUnitBitmap\)/);
 
 for (const snapshotField of [
-  "camBitmap",
-  "needleBitmap",
+  "canvasWidth",
+  "canvasHeight",
+  "camUnitBitmap",
+  "needleUnitBitmap",
   "needleInputs",
   "appliedNeedleInputs",
 ]) {
   assert.match(constantsSource, new RegExp(`"${snapshotField}"`));
+}
+for (const derivedField of ["camBitmap", "needleBitmap"]) {
+  assert.doesNotMatch(constantsSource, new RegExp(`"${derivedField}"`));
 }
 assert.doesNotMatch(constantsSource, /"repeats"|toolData|LAYERS/);
 

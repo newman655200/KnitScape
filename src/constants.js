@@ -16,8 +16,10 @@ export const SNAPSHOT_FIELDS = [
   "yarnPalette",
   "yarnSequence",
   "yarnPlies",
-  "camBitmap",
-  "needleBitmap",
+  "canvasWidth",
+  "canvasHeight",
+  "camUnitBitmap",
+  "needleUnitBitmap",
   "needleInputs",
   "appliedNeedleInputs",
 ];

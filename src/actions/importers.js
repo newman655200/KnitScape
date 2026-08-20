@@ -44,7 +44,7 @@ export function loadJSON(patternJSON) {
     appliedNeedleInputs: pattern.appliedNeedleInputs,
     needleInputErrors: [null, null, null, null],
     yarnPalette: Array.isArray(pattern.yarnPalette) && pattern.yarnPalette.length
-      ? pattern.yarnPalette
+      ? [...pattern.yarnPalette]
       : [DEFAULT_YARN_COLOR],
     yarnPlies: cloneYarnPlies(pattern.yarnPlies),
     yarnSequence: normalizeYarnSequence(pattern.yarnSequence, {

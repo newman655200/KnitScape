@@ -192,6 +192,28 @@ try {
     endPos: { x: 0, y: 3 },
   });
 
+  const unitBeforeSecondDown = state.GLOBAL_STATE.camUnitBitmap;
+  const fullBeforeSecondDown = state.GLOBAL_STATE.camBitmap;
+  const editBeforeSecondDown = state.GLOBAL_STATE.patternEdit;
+  const transformingBeforeSecondDown = state.GLOBAL_STATE.transforming;
+  const secondDown = pointerEvent({
+    clientX: 145,
+    clientY: 55,
+    pointerId: 6,
+  });
+  canvas.emit("pointerdown", secondDown);
+  assert.equal(secondDown.prevented, false);
+  assert.equal(
+    state.GLOBAL_STATE.camUnitBitmap,
+    unitBeforeSecondDown,
+    "a second primary pointerdown cannot start another stroke"
+  );
+  assert.equal(state.GLOBAL_STATE.camBitmap, fullBeforeSecondDown);
+  assert.equal(state.GLOBAL_STATE.patternEdit, editBeforeSecondDown);
+  assert.equal(state.GLOBAL_STATE.transforming, transformingBeforeSecondDown);
+  assert.equal(canvas.captureCount, 1);
+  assert.deepEqual([...canvas.capturedPointers], [3]);
+
   assert.equal(canvas.listenerCount("pointermove"), 1);
   assert.equal(canvas.listenerCount("pointerup"), 1);
   assert.equal(canvas.listenerCount("pointercancel"), 1);
@@ -272,10 +294,14 @@ try {
   );
   assert.equal(canvas.releaseCount, 1, "matching pointer cleanup runs exactly once");
 
-  canvas.emit(
-    "pointerdown",
-    pointerEvent({ clientX: 125, clientY: 55, pointerId: 5 })
-  );
+  const restartedDown = pointerEvent({
+    clientX: 125,
+    clientY: 55,
+    pointerId: 5,
+  });
+  canvas.emit("pointerdown", restartedDown);
+  assert.equal(restartedDown.prevented, true);
+  assert.equal(canvas.captureCount, 2, "a new stroke is accepted after cleanup");
   assert.equal(state.GLOBAL_STATE.transforming, true);
   assert.deepEqual([...canvas.capturedPointers], [5]);
   canvas.emit("lostpointercapture", { pointerId: 99 });

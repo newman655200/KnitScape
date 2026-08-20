@@ -7,6 +7,10 @@ globalThis.devicePixelRatio = 2;
 class CanvasContextDouble {
   constructor() {
     this.operations = [];
+    this.resetDrawingState();
+  }
+
+  resetDrawingState() {
     this.fillStyle = "#000000";
     this.strokeStyle = "#000000";
     this.lineWidth = 1;
@@ -30,7 +34,12 @@ class CanvasContextDouble {
   }
 
   save() {
-    this.stack.push({ ...this.transform });
+    this.stack.push({
+      transform: { ...this.transform },
+      fillStyle: this.fillStyle,
+      strokeStyle: this.strokeStyle,
+      lineWidth: this.lineWidth,
+    });
     this.operations.push({ type: "save" });
   }
 
@@ -52,7 +61,11 @@ class CanvasContextDouble {
   }
 
   restore() {
-    this.transform = this.stack.pop();
+    const state = this.stack.pop();
+    this.transform = state.transform;
+    this.fillStyle = state.fillStyle;
+    this.strokeStyle = state.strokeStyle;
+    this.lineWidth = state.lineWidth;
     this.operations.push({ type: "restore" });
   }
 
@@ -69,7 +82,16 @@ class CanvasContextDouble {
   }
 
   stroke(path) {
-    this.operations.push({ type: "stroke", path, strokeStyle: this.strokeStyle });
+    this.operations.push({
+      type: "stroke",
+      path,
+      strokeStyle: this.strokeStyle,
+      lineWidth: this.lineWidth,
+      x: this.transform.x,
+      y: this.transform.y,
+      scaleX: this.transform.scaleX,
+      scaleY: this.transform.scaleY,
+    });
   }
 }
 
@@ -89,6 +111,7 @@ class CanvasDouble {
   set width(value) {
     this._width = value;
     this.sizeWrites += 1;
+    this.context.resetDrawingState();
   }
 
   get height() {
@@ -98,6 +121,7 @@ class CanvasDouble {
   set height(value) {
     this._height = value;
     this.sizeWrites += 1;
+    this.context.resetDrawingState();
   }
 
   getContext(kind) {
@@ -116,6 +140,21 @@ function operationCount(canvases) {
   return canvases.map((canvas) => canvas.context.operations.length);
 }
 
+function operationAt(canvas, type, x, y) {
+  return canvas.context.operations.find(
+    (operation) =>
+      operation.type === type && operation.x === x && operation.y === y
+  );
+}
+
+function assertRenderedCell(canvas, { x, y, fillStyle, strokeStyle, path }) {
+  const fill = operationAt(canvas, "fillRect", x, y);
+  const stroke = operationAt(canvas, "stroke", x, y);
+  assert.equal(fill?.fillStyle, fillStyle);
+  assert.equal(stroke?.strokeStyle, strokeStyle);
+  assert.equal(stroke?.path, path);
+}
+
 const server = await createServer({
   appType: "custom",
   logLevel: "silent",
@@ -124,6 +163,7 @@ const server = await createServer({
 
 try {
   const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
+  const { SYMBOL_PATHS } = await server.ssrLoadModule("/src/constants.js");
   const { tileUnitToCanvas } = await server.ssrLoadModule(
     "/src/patternDerivation.js"
   );
@@ -143,7 +183,7 @@ try {
     unitGridCanvas,
     interactionCanvas,
   ];
-  const unit = new Bimp(2, 2, [0, 2, 1, 3]);
+  const unit = new Bimp(2, 2, [0, 1, 2, 3]);
   const full = tileUnitToCanvas(5, 4, unit);
   const initialState = {
     camBitmap: full,
@@ -190,10 +230,49 @@ try {
   );
   assert.equal(fullGridCanvas.context.operations.filter(({ type }) => type === "stroke").length, 1);
   assert.equal(unitGridCanvas.context.operations.filter(({ type }) => type === "stroke").length, 1);
+  const fullGridStroke = fullGridCanvas.context.operations.find(
+    ({ type }) => type === "stroke"
+  );
+  const unitGridStroke = unitGridCanvas.context.operations.find(
+    ({ type }) => type === "stroke"
+  );
+  assert.deepEqual(
+    [fullGridStroke.strokeStyle, fullGridStroke.lineWidth],
+    ["#2f3437", 1]
+  );
+  assert.deepEqual(
+    [unitGridStroke.strokeStyle, unitGridStroke.lineWidth],
+    ["#2f3437", 1]
+  );
 
-  const fullTopLeft = fullFills.find(({ x, y }) => x === 0 && y === 0);
-  const unitTopLeft = unitFills.find(({ x, y }) => x === 0 && y === 0);
-  assert.equal(fullTopLeft.fillStyle === "#f4f4f4", unitTopLeft.fillStyle === "#f2f2f2", "visual top-left cells represent the same unit pixel");
+  assertRenderedCell(fullSymbolCanvas, {
+    x: 0,
+    y: 0,
+    fillStyle: "#f4f4f4",
+    strokeStyle: "#2f3437",
+    path: SYMBOL_PATHS.slip,
+  });
+  assertRenderedCell(fullSymbolCanvas, {
+    x: 0,
+    y: 60,
+    fillStyle: "#b9b9b9",
+    strokeStyle: "#2f3437",
+    path: SYMBOL_PATHS.knit,
+  });
+  assertRenderedCell(unitSymbolCanvas, {
+    x: 0,
+    y: 0,
+    fillStyle: "#f2f2f2",
+    strokeStyle: "#111111",
+    path: SYMBOL_PATHS.slip,
+  });
+  assertRenderedCell(unitSymbolCanvas, {
+    x: 0,
+    y: 20,
+    fillStyle: "#050505",
+    strokeStyle: "#f7f7f7",
+    path: SYMBOL_PATHS.knit,
+  });
 
   const initialSizeWrites = canvases.map((canvas) => canvas.sizeWrites);
   const beforeEditOps = operationCount(canvases);

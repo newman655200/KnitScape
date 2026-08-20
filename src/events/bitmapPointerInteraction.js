@@ -32,9 +32,12 @@ export function positionInEditableUnit(
 }
 
 export function bitmapPointerInteraction(canvas) {
+  let activePointerId = null;
+
   canvas.addEventListener("pointerdown", (event) => {
     if (GLOBAL_STATE.activeTool !== "brush") return;
     if (event.button !== 0) return;
+    if (activePointerId !== null) return;
 
     const field = canvas.dataset.unitField;
     const unit = GLOBAL_STATE[field];
@@ -49,12 +52,13 @@ export function bitmapPointerInteraction(canvas) {
 
     event.preventDefault();
     dispatch({ transforming: true });
-    const activePointerId = event.pointerId;
-    canvas.setPointerCapture(activePointerId);
+    activePointerId = event.pointerId;
+    const strokePointerId = activePointerId;
+    canvas.setPointerCapture(strokePointerId);
     let ended = false;
 
     const move = (moveEvent) => {
-      if (moveEvent.pointerId !== activePointerId) return;
+      if (moveEvent.pointerId !== strokePointerId) return;
 
       const nextPosition = positionInEditableUnit(
         canvas,
@@ -77,16 +81,17 @@ export function bitmapPointerInteraction(canvas) {
     };
 
     const end = (endEvent) => {
-      if (endEvent.pointerId !== activePointerId || ended) return;
+      if (endEvent.pointerId !== strokePointerId || ended) return;
 
       ended = true;
       canvas.removeEventListener("pointermove", move);
       canvas.removeEventListener("pointerup", end);
       canvas.removeEventListener("pointercancel", end);
       canvas.removeEventListener("lostpointercapture", end);
+      activePointerId = null;
       dispatch({ transforming: false });
-      if (canvas.hasPointerCapture(activePointerId)) {
-        canvas.releasePointerCapture(activePointerId);
+      if (canvas.hasPointerCapture(strokePointerId)) {
+        canvas.releasePointerCapture(strokePointerId);
       }
     };
 

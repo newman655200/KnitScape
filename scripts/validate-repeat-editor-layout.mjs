@@ -3,25 +3,18 @@ import fs from "node:fs";
 import { JSDOM } from "jsdom";
 import { createServer } from "vite";
 
-const server = await createServer({
-  appType: "custom",
-  logLevel: "silent",
-  server: { middlewareMode: true },
-});
-const dom = new JSDOM("<!doctype html><html><body></body></html>");
-Object.assign(globalThis, {
-  window: dom.window,
-  document: dom.window.document,
-  Document: dom.window.Document,
-  Node: dom.window.Node,
-  HTMLElement: dom.window.HTMLElement,
-  customElements: dom.window.customElements,
-  devicePixelRatio: 2,
-  Path2D: class {},
-});
-
-const { render } = await server.ssrLoadModule(
-  "/node_modules/lit-html/lit-html.js"
+const browserGlobals = [
+  "window",
+  "document",
+  "Document",
+  "Node",
+  "HTMLElement",
+  "customElements",
+  "devicePixelRatio",
+  "Path2D",
+];
+const previousGlobals = new Map(
+  browserGlobals.map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)])
 );
 
 function assertEditor(editor, { prefix, fullCanvasId, gridCanvasId }) {
@@ -71,7 +64,100 @@ function assertEditor(editor, { prefix, fullCanvasId, gridCanvasId }) {
   }
 }
 
+function cssRules(source) {
+  return [...source.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((match) => ({
+    selectors: match[1].split(",").map((selector) => selector.trim()),
+    declarations: match[2],
+  }));
+}
+
+function declarationBlocksFor(source, selector) {
+  const blocks = cssRules(source)
+    .filter((candidate) => candidate.selectors.includes(selector))
+    .map((candidate) => candidate.declarations);
+  assert.ok(blocks.length > 0, `CSS rule for ${selector} exists`);
+  return blocks;
+}
+
+function assertDeclaration(source, selector, declaration) {
+  assert.ok(
+    declarationBlocksFor(source, selector).some((block) => declaration.test(block)),
+    `${selector} owns ${declaration}`
+  );
+}
+
+function assertLayoutCss(source) {
+  assertDeclaration(source, ".pattern-editor-viewport", /overflow:\s*hidden\b/);
+  assertDeclaration(source, ".pattern-editor-stage", /display:\s*grid\b/);
+  assertDeclaration(
+    source,
+    ".pattern-editor-stage",
+    /grid-template-columns:\s*var\(--chart-cell-size\)\s+minmax\(0,\s*1fr\)/
+  );
+  assertDeclaration(source, ".yarn-sequence-gutter", /overflow:\s*hidden\b/);
+  assertDeclaration(
+    source,
+    ".yarn-sequence-gutter",
+    /width:\s*var\(--chart-cell-size\)/
+  );
+  assertDeclaration(source, ".yarn-sequence-gutter", /border-right:\s*[^;]+;/);
+  assertDeclaration(source, ".yarn-sequence-gutter", /z-index:\s*\d+/);
+  assertDeclaration(source, ".pattern-grid-window", /overflow:\s*hidden\b/);
+  assertDeclaration(source, ".pattern-grid-window", /position:\s*relative\b/);
+  assertDeclaration(source, ".yarn-sequence-track", /position:\s*absolute\b/);
+  assertDeclaration(source, ".yarn-sequence-track", /will-change:\s*transform\b/);
+  assertDeclaration(source, ".pattern-canvas-transform", /position:\s*absolute\b/);
+  assertDeclaration(
+    source,
+    ".pattern-canvas-transform",
+    /will-change:\s*transform\b/
+  );
+  assertDeclaration(source, ".pattern-canvas-stack", /position:\s*relative\b/);
+  assertDeclaration(source, ".pattern-interaction-canvas", /z-index:\s*[4-9]/);
+  assertDeclaration(source, ".pattern-interaction-canvas", /touch-action:\s*none\b/);
+  assert.doesNotMatch(source, /\.pattern-canvas-row\s*\{/);
+  assert.doesNotMatch(source, /#needle-yarn-sequence\s*\{/);
+}
+
+function withoutDeclaration(source, selector, property) {
+  let removed = false;
+  const result = source.replace(/([^{}]+)\{([^{}]*)\}/g, (rule, selectors, declarations) => {
+    if (!selectors.split(",").map((item) => item.trim()).includes(selector)) {
+      return rule;
+    }
+    const nextDeclarations = declarations.replace(
+      new RegExp(`\\s*${property}\\s*:\\s*[^;]+;`),
+      ""
+    );
+    removed ||= nextDeclarations !== declarations;
+    return `${selectors}{${nextDeclarations}}`;
+  });
+  assert.ok(removed, `removed ${property} from ${selector}`);
+  return result;
+}
+
+let server;
+let dom;
 try {
+  server = await createServer({
+    appType: "custom",
+    logLevel: "silent",
+    server: { middlewareMode: true },
+  });
+  dom = new JSDOM("<!doctype html><html><body></body></html>");
+  Object.assign(globalThis, {
+    window: dom.window,
+    document: dom.window.document,
+    Document: dom.window.Document,
+    Node: dom.window.Node,
+    HTMLElement: dom.window.HTMLElement,
+    customElements: dom.window.customElements,
+    devicePixelRatio: 2,
+    Path2D: class {},
+  });
+  const { render } = await server.ssrLoadModule(
+    "/node_modules/lit-html/lit-html.js"
+  );
   const { bitmapEditor } = await server.ssrLoadModule("/src/views/bitmapEditor.js");
   const host = document.createElement("main");
   document.body.append(host);
@@ -104,20 +190,55 @@ try {
     fullCanvasId: "symbol-canvas",
     gridCanvasId: "grid",
   });
+  const ids = [...host.querySelectorAll("[id]")].map((element) => element.id);
+  assert.equal(new Set(ids).size, ids.length, "editor IDs are globally unique");
 } finally {
-  await server.close();
-  dom.window.close();
+  try {
+    if (server) await server.close();
+  } finally {
+    try {
+      if (dom) dom.window.close();
+    } finally {
+      for (const [name, descriptor] of previousGlobals) {
+        if (descriptor) {
+          Object.defineProperty(globalThis, name, descriptor);
+        } else {
+          delete globalThis[name];
+        }
+      }
+    }
+  }
 }
 
 const styles = fs.readFileSync("styles.css", "utf8");
-assert.match(styles, /\.pattern-editor-viewport\s*\{[\s\S]*?overflow:\s*hidden/);
-assert.match(styles, /\.pattern-editor-stage\s*\{[\s\S]*?display:\s*grid[\s\S]*?grid-template-columns:\s*var\(--chart-cell-size\)\s+minmax\(0,\s*1fr\)/);
-assert.match(styles, /\.yarn-sequence-gutter\s*\{[\s\S]*?width:\s*var\(--chart-cell-size\)[\s\S]*?border-right:[\s\S]*?z-index:/);
-assert.match(styles, /\.pattern-grid-window\s*\{[\s\S]*?overflow:\s*hidden/);
-assert.match(styles, /\.yarn-sequence-track\s*\{[\s\S]*?position:\s*absolute[\s\S]*?will-change:\s*transform/);
-assert.match(styles, /\.pattern-canvas-transform\s*\{[\s\S]*?position:\s*absolute[\s\S]*?will-change:\s*transform/);
-assert.match(styles, /\.pattern-interaction-canvas\s*\{[\s\S]*?z-index:\s*[4-9][\s\S]*?touch-action:\s*none/);
-assert.doesNotMatch(styles, /\.pattern-canvas-row\s*\{/);
-assert.doesNotMatch(styles, /#needle-yarn-sequence\s*\{/);
+const viewSource = fs.readFileSync("src/views/view.js", "utf8");
+assertLayoutCss(styles);
+assert.doesNotMatch(viewSource, /showYarn:\s*true/);
+assert.doesNotMatch(
+  declarationBlocksFor(styles, ".pattern-canvas-stack").join("\n"),
+  /flex:\s*none\b/
+);
+
+const stylesWithoutGutterZIndex = withoutDeclaration(
+  styles,
+  ".yarn-sequence-gutter",
+  "z-index"
+);
+assert.match(
+  stylesWithoutGutterZIndex,
+  /\.yarn-sequence-gutter\s*\{[\s\S]*?border-right:[\s\S]*?z-index:/,
+  "the prior cross-rule regex would have accepted z-index from a later rule"
+);
+assert.throws(
+  () => assertLayoutCss(stylesWithoutGutterZIndex),
+  /\.yarn-sequence-gutter owns \/z-index/
+);
+assert.throws(
+  () =>
+    assertLayoutCss(
+      withoutDeclaration(styles, ".yarn-sequence-gutter", "overflow")
+    ),
+  /\.yarn-sequence-gutter owns \/overflow/
+);
 
 console.log("PASS: repeat editor uses a clipped grid stage with an independent yarn gutter.");

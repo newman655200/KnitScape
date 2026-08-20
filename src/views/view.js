@@ -42,7 +42,6 @@ export function view() {
                 unitField: "needleUnitBitmap",
                 prefix: "needle",
                 titleKey: "needle.title",
-                showYarn: true,
                 showNeedleControls: true,
               })}
             </div>

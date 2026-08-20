@@ -43,6 +43,7 @@ for (const snapshotField of [
   "needleUnitBitmap",
   "needleInputs",
   "appliedNeedleInputs",
+  "needleInputErrors",
 ]) {
   assert.match(constantsSource, new RegExp(`"${snapshotField}"`));
 }
@@ -68,7 +69,7 @@ assert.match(
 );
 assert.doesNotMatch(
   actionsSource,
-  /new Set\(\["camBitmap", "needleBitmap"\]\)/
+  /const PATTERN_FIELDS = new Set\(\["camBitmap", "needleBitmap"\]\)/
 );
 assert.match(actionsSource, /validateNeedleInputs\(/);
 assert.match(actionsSource, /buildNeedleBitmap\(/);

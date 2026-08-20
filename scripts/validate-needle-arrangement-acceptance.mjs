@@ -65,20 +65,6 @@ try {
   assert.equal(state.GLOBAL_STATE.yarnSequence, yarnSequence);
   assert.equal(punchcard.punchcardRowCount(), 405);
 
-  actions.startNeedleArrangement();
-  assert.notEqual(state.GLOBAL_STATE.needleUnitBitmap, state.GLOBAL_STATE.camUnitBitmap);
-  assert.deepEqual(
-    state.GLOBAL_STATE.needleUnitBitmap.toJSON(),
-    state.GLOBAL_STATE.camUnitBitmap.toJSON()
-  );
-  assert.deepEqual(
-    [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
-    [72, 81]
-  );
-  assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
-  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
-  assert.equal(punchcard.punchcardRowCount(), 405);
-
   state.undo();
   assert.deepEqual(
     [state.GLOBAL_STATE.camUnitBitmap.width, state.GLOBAL_STATE.camUnitBitmap.height],
@@ -94,6 +80,20 @@ try {
   );
   assert.deepEqual(state.GLOBAL_STATE.needleInputs, ["1", "2", "3", "4"]);
   assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
+  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, null, null]);
+
+  actions.startNeedleArrangement();
+  assert.notEqual(state.GLOBAL_STATE.needleUnitBitmap, state.GLOBAL_STATE.camUnitBitmap);
+  assert.deepEqual(
+    state.GLOBAL_STATE.needleUnitBitmap.toJSON(),
+    state.GLOBAL_STATE.camUnitBitmap.toJSON()
+  );
+  assert.deepEqual(
+    [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
+    [72, 81]
+  );
+  assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
+  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, null, null]);
   assert.equal(punchcard.punchcardRowCount(), 405);
 
   const runSimulation = fs.readFileSync("src/components/runSimulation.js", "utf8");

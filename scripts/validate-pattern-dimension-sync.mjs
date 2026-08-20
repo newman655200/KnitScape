@@ -31,6 +31,7 @@ try {
     drawPatternLine,
     normalizeCanvasDimension,
     resizePatternCanvas,
+    resizePatternBitmap,
     startNeedleArrangement,
     updateNeedleInput,
   } = await server.ssrLoadModule("/src/actions/patternEditing.js");
@@ -78,8 +79,13 @@ try {
 
   assert.equal(normalizeCanvasDimension("72"), 72);
   assert.equal(normalizeCanvasDimension(81), 81);
+  assert.equal(normalizeCanvasDimension("0"), 5);
+  assert.equal(normalizeCanvasDimension("501"), 500);
   assert.equal(normalizeCanvasDimension("4.9"), 5);
+  assert.equal(normalizeCanvasDimension("499.9"), 499);
   assert.equal(normalizeCanvasDimension("999"), 500);
+  assert.equal(normalizeCanvasDimension(""), 5);
+  assert.equal(normalizeCanvasDimension(Number.NaN), 5);
   resizePatternCanvas("4", "999");
   assert.deepEqual(
     [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
@@ -87,11 +93,38 @@ try {
   );
   resizePatternCanvas(72, 81);
 
+  resizePatternBitmap("camBitmap", "73", "82");
+  assert.deepEqual(
+    [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
+    [73, 82]
+  );
+  resizePatternBitmap("needleBitmap", 72, 81);
+  assert.deepEqual(
+    [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
+    [72, 81]
+  );
+  assert.throws(
+    () => resizePatternBitmap("unknownBitmap", 6, 7),
+    /Unknown pattern bitmap field/
+  );
+
   const camUnitBeforeInvalidDraw = state.GLOBAL_STATE.camUnitBitmap;
   const camBitmapBeforeInvalidDraw = state.GLOBAL_STATE.camBitmap;
-  assert.equal(drawPatternLine("camUnitBitmap", { x: -1, y: 0 }, { x: 0, y: 0 }), false);
-  assert.equal(state.GLOBAL_STATE.camUnitBitmap, camUnitBeforeInvalidDraw);
-  assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeInvalidDraw);
+  const patternEditBeforeInvalidDraw = state.GLOBAL_STATE.patternEdit;
+  for (const [startPos, endPos] of [
+    [{ x: -1, y: 0 }, { x: 0, y: 0 }],
+    [{ x: 8, y: 0 }, { x: 0, y: 0 }],
+    [{ x: 0, y: 4 }, { x: 0, y: 0 }],
+    [{ x: 0, y: 0 }, { x: 8, y: 0 }],
+    [{ x: 0, y: 0 }, { x: 0, y: 4 }],
+    [{ x: 0.5, y: 0 }, { x: 0, y: 0 }],
+    [{ x: 0, y: 0 }, { x: Number.NaN, y: 0 }],
+  ]) {
+    assert.equal(drawPatternLine("camUnitBitmap", startPos, endPos), false);
+    assert.equal(state.GLOBAL_STATE.camUnitBitmap, camUnitBeforeInvalidDraw);
+    assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeInvalidDraw);
+    assert.equal(state.GLOBAL_STATE.patternEdit, patternEditBeforeInvalidDraw);
+  }
   assert.throws(
     () => drawPatternLine("camBitmap", { x: 0, y: 0 }, { x: 0, y: 0 }),
     /Unknown pattern bitmap field/
@@ -102,11 +135,15 @@ try {
   );
 
   const camBitmapBeforeDraw = state.GLOBAL_STATE.camBitmap;
-  assert.equal(drawPatternLine("camUnitBitmap", { x: 0, y: 0 }, { x: 0, y: 0 }), true);
+  const legalStart = { x: 0, y: 0 };
+  const legalEnd = { x: 0, y: 0 };
+  assert.equal(drawPatternLine("camUnitBitmap", legalStart, legalEnd), true);
   assert.notEqual(state.GLOBAL_STATE.camUnitBitmap, camUnitBeforeInvalidDraw);
   assert.notEqual(state.GLOBAL_STATE.camBitmap, camBitmapBeforeDraw);
   assert.equal(state.GLOBAL_STATE.camUnitBitmap.pixel(0, 0), 2);
   assert.equal(state.GLOBAL_STATE.camBitmap.pixel(0, 0), 2);
+  assert.notEqual(state.GLOBAL_STATE.patternEdit.startPos, legalStart);
+  assert.notEqual(state.GLOBAL_STATE.patternEdit.endPos, legalEnd);
 
   const needleBitmapBeforeDraw = state.GLOBAL_STATE.needleBitmap;
   assert.equal(

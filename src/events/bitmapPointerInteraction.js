@@ -1,6 +1,11 @@
 import { drawPatternLine } from "../actions/patternEditing.js";
 import { GLOBAL_STATE, dispatch } from "../state.js";
 
+const SOURCE_FIELDS = {
+  camBitmap: "camUnitBitmap",
+  needleBitmap: "needleUnitBitmap",
+};
+
 function positionAtPointer(canvas, event, bitmap) {
   const bounds = canvas.getBoundingClientRect();
   const displayX = Math.floor(
@@ -22,10 +27,11 @@ export function bitmapPointerInteraction(canvas) {
     if (event.pointerType === "mouse" && event.button !== 0) return;
 
     event.preventDefault();
-    const field = canvas.dataset.patternField;
-    const bitmap = GLOBAL_STATE[field];
+    const displayField = canvas.dataset.patternField;
+    const field = SOURCE_FIELDS[displayField] || displayField;
+    const bitmap = GLOBAL_STATE[displayField];
     let position = positionAtPointer(canvas, event, bitmap);
-    drawPatternLine(field, position, position);
+    if (!drawPatternLine(field, position, position)) return;
     dispatch({ transforming: true });
     canvas.setPointerCapture(event.pointerId);
 
@@ -33,7 +39,7 @@ export function bitmapPointerInteraction(canvas) {
       const nextPosition = positionAtPointer(
         canvas,
         moveEvent,
-        GLOBAL_STATE[field]
+        GLOBAL_STATE[displayField]
       );
       if (nextPosition.x === position.x && nextPosition.y === position.y) return;
       drawPatternLine(field, position, nextPosition);

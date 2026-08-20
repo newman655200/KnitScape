@@ -22,6 +22,7 @@ export const SNAPSHOT_FIELDS = [
   "needleUnitBitmap",
   "needleInputs",
   "appliedNeedleInputs",
+  "needleInputErrors",
 ];
 
 export const DEFAULT_YARN_COLOR = "rgba(190,190,190,1)";

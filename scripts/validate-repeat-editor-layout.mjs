@@ -53,15 +53,10 @@ function assertEditor(editor, { prefix, fullCanvasId, gridCanvasId }) {
   }
 
   const interaction = stack.querySelector(`#${prefix}-interaction-canvas`);
-  assert.equal(interaction.dataset.patternField, `${prefix}Bitmap`);
   assert.equal(interaction.dataset.fullField, `${prefix}Bitmap`);
   assert.equal(interaction.dataset.unitField, `${prefix}UnitBitmap`);
-
-  if (prefix === "needle") {
-    assert.ok(stack.querySelector("#yarn-color-canvas"));
-  } else {
-    assert.equal(stack.querySelector("#yarn-color-canvas"), null);
-  }
+  assert.equal(interaction.dataset.patternField, undefined);
+  assert.equal(stack.querySelector("#yarn-color-canvas"), null);
 }
 
 function cssRules(source) {
@@ -113,6 +108,14 @@ function assertLayoutCss(source) {
     /will-change:\s*transform\b/
   );
   assertDeclaration(source, ".pattern-canvas-stack", /position:\s*relative\b/);
+  assertDeclaration(source, ".pattern-symbol-canvas", /z-index:\s*1\b/);
+  assertDeclaration(source, ".pattern-symbol-canvas", /pointer-events:\s*none\b/);
+  assertDeclaration(source, ".pattern-grid-canvas", /z-index:\s*2\b/);
+  assertDeclaration(source, ".pattern-grid-canvas", /pointer-events:\s*none\b/);
+  assertDeclaration(source, ".pattern-unit-symbol-canvas", /z-index:\s*3\b/);
+  assertDeclaration(source, ".pattern-unit-symbol-canvas", /pointer-events:\s*none\b/);
+  assertDeclaration(source, ".pattern-unit-grid-canvas", /z-index:\s*4\b/);
+  assertDeclaration(source, ".pattern-unit-grid-canvas", /pointer-events:\s*none\b/);
   assertDeclaration(source, ".pattern-interaction-canvas", /z-index:\s*[4-9]/);
   assertDeclaration(source, ".pattern-interaction-canvas", /touch-action:\s*none\b/);
   assert.doesNotMatch(source, /\.pattern-canvas-row\s*\{/);

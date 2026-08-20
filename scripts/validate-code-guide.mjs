@@ -49,7 +49,6 @@ const REQUIRED_KEYS = [
   "chart.zoom-in",
   "chart.fit",
   "needle.yarn-sequence",
-  "needle.yarn-color",
   "needle.symbols",
   "needle.grid",
   "layout.split",
@@ -244,8 +243,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
-  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.yarn-color[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
-  "must define the six cam and needle canvas layer options"
+  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
+  "must define the five active cam and needle canvas layer options"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",

@@ -45,11 +45,6 @@ export function bitmapEditor({
         <div class="pattern-grid-window" data-editor-prefix=${prefix}>
           <div class="pattern-canvas-transform">
             <div class="pattern-canvas-stack">
-              ${prefix === "needle"
-                ? html`<canvas
-                    id="yarn-color-canvas"
-                    data-code-guide-key="needle.yarn-color"></canvas>`
-                : nothing}
               <canvas
                 id=${symbolCanvasId}
                 class="pattern-symbol-canvas"
@@ -67,7 +62,6 @@ export function bitmapEditor({
               <canvas
                 id="${prefix}-interaction-canvas"
                 class="pattern-interaction-canvas"
-                data-pattern-field=${fullField}
                 data-full-field=${fullField}
                 data-unit-field=${unitField}
                 aria-label=${t(titleKey, language)}></canvas>

@@ -109,15 +109,16 @@
 .pattern-symbol-canvas {
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
 
 .pattern-grid-canvas,
 .pattern-unit-symbol-canvas,
 .pattern-unit-grid-canvas,
-.pattern-interaction-canvas,
-#yarn-color-canvas {
+.pattern-interaction-canvas {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
 }
 
 .pattern-grid-canvas {
@@ -139,11 +140,6 @@
   z-index: 5;
   cursor: crosshair;
   touch-action: none;
-}
-
-#yarn-color-canvas {
-  z-index: 0;
-  pointer-events: none;
 }
 
 #needle-arrangement-controls {

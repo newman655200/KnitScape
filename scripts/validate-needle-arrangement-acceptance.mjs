@@ -97,11 +97,9 @@ try {
   assert.equal(punchcard.punchcardRowCount(), 405);
 
   const runSimulation = fs.readFileSync("src/components/runSimulation.js", "utf8");
-  const drawYarnColors = fs.readFileSync("src/components/drawYarnColors.js", "utf8");
   assert.match(runSimulation, /GLOBAL_STATE\.needleBitmap/);
   assert.doesNotMatch(runSimulation, /GLOBAL_STATE\.camBitmap/);
-  assert.match(drawYarnColors, /needleBitmap/);
-  assert.doesNotMatch(drawYarnColors, /camBitmap/);
+  assert.equal(fs.existsSync("src/components/drawYarnColors.js"), false);
 
   console.log("PASS: needle arrangement updates its repeat unit while preview remains canvas-derived.");
 } finally {

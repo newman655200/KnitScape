@@ -1,46 +1,72 @@
 import { drawPatternLine } from "../actions/patternEditing.js";
 import { GLOBAL_STATE, dispatch } from "../state.js";
 
-const SOURCE_FIELDS = {
-  camBitmap: "camUnitBitmap",
-  needleBitmap: "needleUnitBitmap",
-};
-
-function positionAtPointer(canvas, event, bitmap) {
+export function positionInEditableUnit(
+  canvas,
+  event,
+  unit,
+  scale,
+  dpr = globalThis.devicePixelRatio
+) {
   const bounds = canvas.getBoundingClientRect();
-  const displayX = Math.floor(
-    ((event.clientX - bounds.left) / bounds.width) * bitmap.width
-  );
-  const displayY = Math.floor(
-    ((event.clientY - bounds.top) / bounds.height) * bitmap.height
-  );
+  const ratio = Number.isFinite(Number(dpr)) && Number(dpr) > 0 ? Number(dpr) : 1;
+  const cellSize = Number(scale) / ratio;
+  if (!Number.isFinite(cellSize) || cellSize <= 0) return null;
+
+  const displayX = Math.floor((event.clientX - bounds.left) / cellSize);
+  const displayY = Math.floor((event.clientY - bounds.top) / cellSize);
+
+  if (
+    displayX < 0 ||
+    displayY < 0 ||
+    displayX >= unit.width ||
+    displayY >= unit.height
+  ) {
+    return null;
+  }
 
   return {
-    x: Math.max(0, Math.min(bitmap.width - 1, displayX)),
-    y: Math.max(0, Math.min(bitmap.height - 1, bitmap.height - displayY - 1)),
+    x: displayX,
+    y: unit.height - displayY - 1,
   };
 }
 
 export function bitmapPointerInteraction(canvas) {
   canvas.addEventListener("pointerdown", (event) => {
     if (GLOBAL_STATE.activeTool !== "brush") return;
-    if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (event.button !== 0) return;
+
+    const field = canvas.dataset.unitField;
+    const unit = GLOBAL_STATE[field];
+    let position = positionInEditableUnit(
+      canvas,
+      event,
+      unit,
+      GLOBAL_STATE.scale
+    );
+    if (position === null) return;
+    if (!drawPatternLine(field, position, position)) return;
 
     event.preventDefault();
-    const displayField = canvas.dataset.patternField;
-    const field = SOURCE_FIELDS[displayField] || displayField;
-    const bitmap = GLOBAL_STATE[displayField];
-    let position = positionAtPointer(canvas, event, bitmap);
-    if (!drawPatternLine(field, position, position)) return;
     dispatch({ transforming: true });
     canvas.setPointerCapture(event.pointerId);
 
     const move = (moveEvent) => {
-      const nextPosition = positionAtPointer(
+      const nextPosition = positionInEditableUnit(
         canvas,
         moveEvent,
-        GLOBAL_STATE[displayField]
+        GLOBAL_STATE[field],
+        GLOBAL_STATE.scale
       );
+      if (nextPosition === null) {
+        position = null;
+        return;
+      }
+      if (position === null) {
+        drawPatternLine(field, nextPosition, nextPosition);
+        position = nextPosition;
+        return;
+      }
       if (nextPosition.x === position.x && nextPosition.y === position.y) return;
       drawPatternLine(field, position, nextPosition);
       position = nextPosition;

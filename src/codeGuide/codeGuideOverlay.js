@@ -16,7 +16,6 @@ const CHART_LAYER_OPTIONS = [
   { key: "cam.symbols", label: "三角座针法层" },
   { key: "cam.grid", label: "三角座网格层" },
   { key: "needle.yarn-sequence", label: "排针纱线序列层" },
-  { key: "needle.yarn-color", label: "排针纱线颜色层" },
   { key: "needle.symbols", label: "排针针法层" },
   { key: "needle.grid", label: "排针网格层" },
 ];

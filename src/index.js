@@ -6,7 +6,6 @@ import { fitChart } from "./actions/zoomFit.js";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
 import { isCodeGuideMode } from "./codeGuide/mode.js";
 import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
-import { drawYarnColors } from "./components/drawYarnColors.js";
 import { createAppRenderer } from "./components/renderApp.js";
 import { runSimulation } from "./components/runSimulation.js";
 import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas.js";
@@ -55,15 +54,20 @@ function init() {
 
   const camSymbolCanvas = document.getElementById("cam-symbol-canvas");
   const camGridCanvas = document.getElementById("cam-grid");
+  const camUnitSymbolCanvas = document.getElementById("cam-unit-symbol-canvas");
+  const camUnitGridCanvas = document.getElementById("cam-unit-grid");
   const camInteractionCanvas = document.getElementById(
     "cam-interaction-canvas"
   );
   const needleSymbolCanvas = document.getElementById("symbol-canvas");
   const needleGridCanvas = document.getElementById("grid");
+  const needleUnitSymbolCanvas = document.getElementById(
+    "needle-unit-symbol-canvas"
+  );
+  const needleUnitGridCanvas = document.getElementById("needle-unit-grid");
   const needleInteractionCanvas = document.getElementById(
     "needle-interaction-canvas"
   );
-  const yarnColorCanvas = document.getElementById("yarn-color-canvas");
   const yarnSequenceCanvasElement = document.getElementById(
     "needle-yarn-sequence-canvas"
   );
@@ -101,17 +105,22 @@ function init() {
   StateMonitor.register([
     () => appRenderer,
     yarnSequenceCanvas({ canvas: yarnSequenceCanvasElement }),
-    drawYarnColors(yarnColorCanvas),
     drawBitmapEditor({
-      field: "camBitmap",
-      symbolCanvas: camSymbolCanvas,
-      gridCanvas: camGridCanvas,
+      fullField: "camBitmap",
+      unitField: "camUnitBitmap",
+      fullSymbolCanvas: camSymbolCanvas,
+      fullGridCanvas: camGridCanvas,
+      unitSymbolCanvas: camUnitSymbolCanvas,
+      unitGridCanvas: camUnitGridCanvas,
       interactionCanvas: camInteractionCanvas,
     }),
     drawBitmapEditor({
-      field: "needleBitmap",
-      symbolCanvas: needleSymbolCanvas,
-      gridCanvas: needleGridCanvas,
+      fullField: "needleBitmap",
+      unitField: "needleUnitBitmap",
+      fullSymbolCanvas: needleSymbolCanvas,
+      fullGridCanvas: needleGridCanvas,
+      unitSymbolCanvas: needleUnitSymbolCanvas,
+      unitGridCanvas: needleUnitGridCanvas,
       interactionCanvas: needleInteractionCanvas,
     }),
     runSimulation(),

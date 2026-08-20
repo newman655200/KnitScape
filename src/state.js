@@ -91,8 +91,12 @@ let GLOBAL_STATE = withDerivedPatternBitmaps({
   heldKeys: new Set(), // Keys that are currently held down
 });
 
+function changesAffectPattern(changes) {
+  return changes.some((field) => PATTERN_SOURCE_FIELDS.has(field));
+}
+
 function changesWithDerivedBitmaps(changes) {
-  if (!changes.some((field) => PATTERN_SOURCE_FIELDS.has(field))) {
+  if (!changesAffectPattern(changes)) {
     return changes;
   }
 
@@ -100,8 +104,12 @@ function changesWithDerivedBitmaps(changes) {
 }
 
 function loadWorkspace(workspace) {
-  const changes = changesWithDerivedBitmaps(Object.keys(workspace));
-  GLOBAL_STATE = withDerivedPatternBitmaps({ ...GLOBAL_STATE, ...workspace });
+  const workspaceChanges = Object.keys(workspace);
+  const changes = changesWithDerivedBitmaps(workspaceChanges);
+  const nextState = { ...GLOBAL_STATE, ...workspace };
+  GLOBAL_STATE = changesAffectPattern(workspaceChanges)
+    ? withDerivedPatternBitmaps(nextState)
+    : nextState;
   GLOBAL_STATE.updateSim = true;
   StateMonitor.syncState(GLOBAL_STATE, changes);
 }
@@ -118,7 +126,7 @@ function shouldSnapshot(action) {
 }
 
 function snapshotUpdate(action) {
-  GLOBAL_STATE = withDerivedPatternBitmaps({
+  const nextState = {
     ...GLOBAL_STATE,
     ...action,
     snapshots: [
@@ -128,13 +136,19 @@ function snapshotUpdate(action) {
       ...GLOBAL_STATE.snapshots,
     ],
     lastSnapshot: Date.now(),
-  });
+  };
+  GLOBAL_STATE = changesAffectPattern(Object.keys(action))
+    ? withDerivedPatternBitmaps(nextState)
+    : nextState;
 
   return GLOBAL_STATE;
 }
 
 function normalUpdate(action) {
-  GLOBAL_STATE = withDerivedPatternBitmaps({ ...GLOBAL_STATE, ...action });
+  const nextState = { ...GLOBAL_STATE, ...action };
+  GLOBAL_STATE = changesAffectPattern(Object.keys(action))
+    ? withDerivedPatternBitmaps(nextState)
+    : nextState;
   return GLOBAL_STATE;
 }
 

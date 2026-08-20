@@ -122,6 +122,34 @@ try {
     needleUnitBitmap: loadedNeedleUnit,
   });
   assertDerivedPatternBitmaps(state.GLOBAL_STATE);
+  assert.deepEqual(observedChanges.at(-1), [
+    "canvasWidth",
+    "canvasHeight",
+    "camUnitBitmap",
+    "needleUnitBitmap",
+    "camBitmap",
+    "needleBitmap",
+  ]);
+
+  const camBitmapBeforeUnrelatedDispatch = state.GLOBAL_STATE.camBitmap;
+  const needleBitmapBeforeUnrelatedDispatch = state.GLOBAL_STATE.needleBitmap;
+  state.dispatch({ grid: false });
+  assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeUnrelatedDispatch);
+  assert.equal(
+    state.GLOBAL_STATE.needleBitmap,
+    needleBitmapBeforeUnrelatedDispatch
+  );
+  assert.deepEqual(observedChanges.at(-1), ["grid"]);
+
+  state.dispatch({ yarnPalette: [...state.GLOBAL_STATE.yarnPalette] });
+  assert.equal(state.GLOBAL_STATE.snapshots.length, 1);
+  assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeUnrelatedDispatch);
+  assert.equal(
+    state.GLOBAL_STATE.needleBitmap,
+    needleBitmapBeforeUnrelatedDispatch
+  );
+  assert.deepEqual(observedChanges.at(-1), ["yarnPalette"]);
+  state.dispatch({ lastSnapshot: 0 });
 
   const snapshotCamUnit = new SsrBimp(1, 2, [1, 2]);
   const snapshotNeedleUnit = new SsrBimp(1, 2, [3, 0]);
@@ -131,7 +159,7 @@ try {
     camUnitBitmap: snapshotCamUnit,
     needleUnitBitmap: snapshotNeedleUnit,
   });
-  assert.equal(state.GLOBAL_STATE.snapshots.length, 1);
+  assert.equal(state.GLOBAL_STATE.snapshots.length, 2);
   assertDerivedPatternBitmaps(state.GLOBAL_STATE);
   assert.deepEqual(observedChanges.at(-1), [
     "canvasWidth",

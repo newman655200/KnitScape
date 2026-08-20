@@ -103,7 +103,7 @@ const sourceExpectations = [
   ["src/views/yarnPicker.js", ["yarns.title"]],
   ["src/views/yarnLengthReadout.js", ["machine.gauge", "yarnLength.current"]],
   ["src/views/chartEditorToolbar.js", ["symbols.title"]],
-  ["src/views/bitmapEditor.js", ["taskbar.width", "taskbar.height"]],
+  ["src/views/chartEditorToolbar.js", ["taskbar.width", "taskbar.height"]],
   ["src/views/needleArrangementControls.js", ["needle.start", "needle.input", "needle.apply"]],
   ["src/views/chartTools.js", ["chartTools.zoomOut", "chartTools.fit"]],
   ["src/views/settingsModal.js", ["settings.title", "settings.grid"]],

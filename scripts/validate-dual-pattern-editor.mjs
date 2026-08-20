@@ -17,25 +17,39 @@ const indexSource = read("src/index.js");
 assert.equal((viewSource.match(/chartEditorToolbar\(\)/g) || []).length, 1);
 assert.match(viewSource, /bitmapEditor\(\{\s*field:\s*"camBitmap"/);
 assert.match(viewSource, /bitmapEditor\(\{\s*field:\s*"needleBitmap"/);
-assert.match(viewSource, /needleArrangementControls\(\)/);
+assert.doesNotMatch(
+  viewSource,
+  /import\s*\{\s*needleArrangementControls\s*\}\s*from/
+);
+assert.doesNotMatch(viewSource, /\$\{needleArrangementControls\(\)\}/);
+assert.match(viewSource, /showNeedleControls:\s*true/);
 assert.doesNotMatch(viewSource, /repeatTools|repeatCanvas/);
 
 assert.match(editorSource, /export function bitmapEditor\(/);
-assert.match(editorSource, /resizePatternBitmap\(field,/);
 assert.match(editorSource, /data-pattern-field=/);
-assert.match(editorSource, /type="number"/);
-assert.match(editorSource, /min="1"/);
-assert.match(editorSource, /max="500"/);
+assert.doesNotMatch(editorSource, /resizePatternBitmap|fitChart|type="number"|pattern-size-controls|taskbar\.width|taskbar\.height/);
+assert.match(editorSource, /showNeedleControls\s*=\s*false/);
+assert.match(editorSource, /showNeedleControls\s*\?\s*needleArrangementControls\(\)\s*:\s*nothing/);
+assert.match(editorSource, /<header class="pattern-editor-header">[\s\S]*?<\/header>[\s\S]*?needleArrangementControls\(\)[\s\S]*?<div class="pattern-editor-viewport">/);
 
 assert.match(controlsSource, /GLOBAL_STATE\.needleInputs\.map\(/);
 assert.match(controlsSource, /startNeedleArrangement/);
 assert.match(controlsSource, /applyNeedleArrangement/);
 assert.match(controlsSource, /updateNeedleInput/);
-assert.match(controlsSource, /fitChart\(\)/);
+assert.doesNotMatch(controlsSource, /fitChart|startAndFitNeedleArrangement|applyAndFitNeedleArrangement/);
+assert.match(controlsSource, /@click=\$\{startNeedleArrangement\}/);
+assert.match(controlsSource, /@click=\$\{applyNeedleArrangement\}/);
 assert.match(controlsSource, /aria-invalid/);
+assert.ok(
+  controlsSource.indexOf('data-code-guide-key="needle.start"') <
+    controlsSource.indexOf('class="needle-inputs"') &&
+    controlsSource.indexOf('class="needle-inputs"') <
+      controlsSource.indexOf('data-code-guide-key="needle.apply"'),
+  "needle controls must render Start, inputs, Apply"
+);
 
 assert.equal((toolbarSource.match(/data-code-guide-key="stitch\.symbol"/g) || []).length, 1);
-assert.doesNotMatch(toolbarSource, /chart-size-controls|resizeChartArea/);
+assert.match(toolbarSource, /chart-size-controls/);
 
 assert.match(rendererSource, /export function drawBitmapEditor\(/);
 assert.match(rendererSource, /state\[field\]/);

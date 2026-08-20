@@ -7,7 +7,6 @@ import { GLOBAL_STATE, dispatch } from "../state.js";
 import { resizeYarnSequenceToNeedleHeight } from "./yarnSequenceRows.js";
 
 const PATTERN_FIELDS = new Set(["camUnitBitmap", "needleUnitBitmap"]);
-const LEGACY_PATTERN_FIELDS = new Set(["camBitmap", "needleBitmap"]);
 
 function patternBitmap(field) {
   if (!PATTERN_FIELDS.has(field)) {
@@ -44,14 +43,6 @@ export function resizePatternCanvas(width, height) {
     canvasHeight,
     yarnSequence: needleYarnSequence(canvasHeight),
   });
-}
-
-// Temporary adapter for the dual editor until it sends canvas dimensions directly.
-export function resizePatternBitmap(_field, width, height) {
-  if (!LEGACY_PATTERN_FIELDS.has(_field)) {
-    throw new Error(`Unknown pattern bitmap field: ${_field}`);
-  }
-  resizePatternCanvas(width, height);
 }
 
 function pointIsWithinBitmap(point, bitmap) {

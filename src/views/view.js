@@ -11,7 +11,6 @@ import { debugPane } from "./debugPane";
 import { leftBar } from "./leftBar";
 import { chartEditorToolbar } from "./chartEditorToolbar";
 import { bitmapEditor } from "./bitmapEditor.js";
-import { needleArrangementControls } from "./needleArrangementControls.js";
 
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
@@ -31,7 +30,6 @@ export function view() {
           ${leftBar()}
           <main id="chart-workspace">
             ${chartEditorToolbar()}
-            ${needleArrangementControls()}
             <div id="pattern-editors">
               ${bitmapEditor({
                 field: "camBitmap",
@@ -41,6 +39,7 @@ export function view() {
                 field: "needleBitmap",
                 titleKey: "needle.title",
                 showYarn: true,
+                showNeedleControls: true,
               })}
             </div>
             ${chartTools()}

@@ -15,6 +15,7 @@
     "validate:single-ui": "node scripts/validate-single-face-ui-labels.mjs",
     "validate:i18n": "node scripts/validate-language-switching.mjs",
     "validate:pattern-dimensions": "node scripts/validate-pattern-dimension-sync.mjs",
+    "validate:dimension-input-focus": "node scripts/validate-dimension-input-focus.mjs",
     "validate:two-ply-yarn": "node scripts/validate-two-ply-yarn.mjs",
     "validate:sim-wheel-performance": "node scripts/validate-simulation-wheel-performance.mjs",
     "validate:no-yarn-length-simulation": "node scripts/validate-no-yarn-length-simulation.mjs",

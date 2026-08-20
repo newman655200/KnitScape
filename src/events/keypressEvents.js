@@ -30,8 +30,19 @@ function symbolSwitch(index) {
   }
 }
 
+export function isEditableTarget(target) {
+  const tagName = target?.tagName?.toUpperCase();
+  return (
+    tagName === "INPUT" ||
+    tagName === "SELECT" ||
+    tagName === "TEXTAREA" ||
+    target?.isContentEditable === true
+  );
+}
+
 export function addKeypressListeners() {
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
     // if (
     //   !(
     //     GLOBAL_STATE.showSettings ||

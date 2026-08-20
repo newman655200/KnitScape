@@ -1,17 +1,15 @@
 import { html, nothing } from "lit-html";
 
-import { resizePatternBitmap } from "../actions/patternEditing.js";
-import { fitChart } from "../actions/zoomFit.js";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE } from "../state.js";
+import { needleArrangementControls } from "./needleArrangementControls.js";
 
-function resize(field, width, height) {
-  resizePatternBitmap(field, width, height);
-  fitChart();
-}
-
-export function bitmapEditor({ field, titleKey, showYarn = false }) {
-  const bitmap = GLOBAL_STATE[field];
+export function bitmapEditor({
+  field,
+  titleKey,
+  showYarn = false,
+  showNeedleControls = false,
+}) {
   const prefix = field === "camBitmap" ? "cam" : "needle";
   const symbolCanvasId = prefix === "needle" ? "symbol-canvas" : `${prefix}-symbol-canvas`;
   const gridCanvasId = prefix === "needle" ? "grid" : `${prefix}-grid`;
@@ -23,33 +21,8 @@ export function bitmapEditor({ field, titleKey, showYarn = false }) {
     data-pattern-field=${field}>
     <header class="pattern-editor-header">
       <h2>${t(titleKey, language)}</h2>
-      <div class="pattern-size-controls">
-        <label>
-          <span>${t("taskbar.width", language)}</span>
-          <input
-            data-code-guide-key="${prefix}.width"
-            class="input"
-            type="number"
-            min="1"
-            max="500"
-            .value=${String(bitmap.width)}
-            @change=${(event) =>
-              resize(field, event.target.value, bitmap.height)} />
-        </label>
-        <label>
-          <span>${t("taskbar.height", language)}</span>
-          <input
-            data-code-guide-key="${prefix}.height"
-            class="input"
-            type="number"
-            min="1"
-            max="500"
-            .value=${String(bitmap.height)}
-            @change=${(event) =>
-              resize(field, bitmap.width, event.target.value)} />
-        </label>
-      </div>
     </header>
+    ${showNeedleControls ? needleArrangementControls() : nothing}
     <div class="pattern-editor-viewport">
       <div class="pattern-canvas-row">
         ${showYarn

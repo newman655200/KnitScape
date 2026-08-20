@@ -55,7 +55,8 @@ for (const key of [
 }
 assert.match(`${bitmapEditor}\n${view}`, /camBitmap/);
 assert.match(`${bitmapEditor}\n${view}`, /needleBitmap/);
-assert.match(bitmapEditor, /pattern-size-controls/);
+assert.match(toolbar, /chart-size-controls/);
+assert.doesNotMatch(bitmapEditor, /pattern-size-controls/);
 
 assert.match(leftBar, /importYarnScanTexture/);
 assert.match(leftBar, /yarn-texture-import-button/);

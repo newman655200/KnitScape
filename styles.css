@@ -44,29 +44,6 @@
   font-weight: 700;
 }
 
-.pattern-size-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.pattern-size-controls label {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: #f1f2f2;
-  font-size: 0.72rem;
-}
-
-.pattern-size-controls input {
-  width: 4rem;
-  height: 1.65rem;
-  color: var(--ink);
-  background: var(--input-background);
-  border: 1px solid var(--panel-border);
-  border-radius: 7px;
-}
-
 .pattern-editor-viewport {
   min-height: 0;
   flex: 1;
@@ -1332,6 +1309,51 @@ button.btn:hover {
   gap: 0.28rem;
 }
 
+.chart-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.chart-size-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--muted-ink);
+  font-size: 0.72rem;
+}
+
+.pattern-dimension-input {
+  width: 4.25rem;
+  height: 1.8rem;
+  color: #111;
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 7px;
+}
+
+.pattern-dimension-input:focus,
+.pattern-dimension-input:active,
+.pattern-dimension-input:invalid {
+  color: #111;
+}
+
+.pattern-dimension-input::selection {
+  color: #111;
+}
+
+.pattern-dimension-input[type="number"] {
+  appearance: auto;
+  -moz-appearance: auto;
+  -webkit-appearance: auto;
+}
+
+.pattern-dimension-input[type="number"]::-webkit-inner-spin-button,
+.pattern-dimension-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: auto;
+  opacity: 1;
+}
+
 button.btn.chart-stitch-button {
   min-width: 3.75rem;
   min-height: 3.65rem;
@@ -1446,6 +1468,11 @@ button.btn.chart-stitch-button.current {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chart-size-controls {
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   button.btn.chart-stitch-button {

@@ -31,7 +31,6 @@ try {
     drawPatternLine,
     normalizeCanvasDimension,
     resizePatternCanvas,
-    resizePatternBitmap,
     startNeedleArrangement,
     updateNeedleInput,
   } = await server.ssrLoadModule("/src/actions/patternEditing.js");
@@ -92,21 +91,6 @@ try {
     [5, 500]
   );
   resizePatternCanvas(72, 81);
-
-  resizePatternBitmap("camBitmap", "73", "82");
-  assert.deepEqual(
-    [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
-    [73, 82]
-  );
-  resizePatternBitmap("needleBitmap", 72, 81);
-  assert.deepEqual(
-    [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
-    [72, 81]
-  );
-  assert.throws(
-    () => resizePatternBitmap("unknownBitmap", 6, 7),
-    /Unknown pattern bitmap field/
-  );
 
   const camUnitBeforeInvalidDraw = state.GLOBAL_STATE.camUnitBitmap;
   const camBitmapBeforeInvalidDraw = state.GLOBAL_STATE.camBitmap;

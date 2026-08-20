@@ -1,5 +1,8 @@
 import { html } from "lit-html";
-import { selectPatternSymbol } from "../actions/patternEditing.js";
+import {
+  resizePatternCanvas,
+  selectPatternSymbol,
+} from "../actions/patternEditing.js";
 import { GLOBAL_STATE } from "../state";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import purlIconUrl from "../assets/symbols/purl.svg";
@@ -13,6 +16,13 @@ const SYMBOL_ICON_URLS = {
   slip: slipIconUrl,
   tuck: tuckIconUrl,
 };
+
+function commitDimension(field, value) {
+  resizePatternCanvas(
+    field === "width" ? value : GLOBAL_STATE.canvasWidth,
+    field === "height" ? value : GLOBAL_STATE.canvasHeight
+  );
+}
 
 export function chartEditorToolbar() {
   const language = GLOBAL_STATE.language;
@@ -37,6 +47,38 @@ export function chartEditorToolbar() {
             <span>${t(`symbols.${symbolName}`, language)}</span>
           </button>`
         )}
+      </div>
+      <div class="chart-size-controls">
+        <label>
+          <span>${t("taskbar.width", language)}</span>
+          <input
+            data-code-guide-key="canvas.width"
+            class="input pattern-dimension-input"
+            type="number"
+            min="5"
+            max="500"
+            step="1"
+            .value=${String(GLOBAL_STATE.canvasWidth)}
+            @change=${(event) => commitDimension("width", event.target.value)}
+            @keydown=${(event) => {
+              if (event.key === "Enter") event.currentTarget.blur();
+            }} />
+        </label>
+        <label>
+          <span>${t("taskbar.height", language)}</span>
+          <input
+            data-code-guide-key="canvas.height"
+            class="input pattern-dimension-input"
+            type="number"
+            min="5"
+            max="500"
+            step="1"
+            .value=${String(GLOBAL_STATE.canvasHeight)}
+            @change=${(event) => commitDimension("height", event.target.value)}
+            @keydown=${(event) => {
+              if (event.key === "Enter") event.currentTarget.blur();
+            }} />
+        </label>
       </div>
     </div>
   </section>`;

@@ -40,9 +40,45 @@ assert.match(
 for (const asset of ["knit.svg", "purl.svg", "slip.svg", "tuck.svg"]) {
   assert.match(toolbar, new RegExp(asset.replace(".", "\\.")));
 }
-assert.doesNotMatch(toolbar, /taskbar\.width|taskbar\.height/);
+assert.match(toolbar, /import\s*\{[\s\S]*?resizePatternCanvas[\s\S]*?\}\s*from\s*["']\.\.\/actions\/patternEditing\.js["']/);
+assert.match(toolbar, /function\s+commitDimension\s*\(\s*field\s*,\s*value\s*\)\s*\{[\s\S]*?resizePatternCanvas\([\s\S]*?GLOBAL_STATE\.canvasWidth[\s\S]*?GLOBAL_STATE\.canvasHeight/);
+assert.match(toolbar, /class="chart-size-controls"/);
+assert.equal((toolbar.match(/class="input pattern-dimension-input"/g) || []).length, 2);
+for (const [field, label] of [
+  ["width", "taskbar.width"],
+  ["height", "taskbar.height"],
+]) {
+  assert.match(toolbar, new RegExp(`data-code-guide-key="canvas\\.${field}"`));
+  assert.match(toolbar, new RegExp(`t\\("${label}", language\\)`));
+  assert.match(
+    toolbar,
+    new RegExp(`commitDimension\\("${field}", event\\.target\\.value\\)`)
+  );
+}
+assert.equal((toolbar.match(/type="number"/g) || []).length, 2);
+assert.equal((toolbar.match(/min="5"/g) || []).length, 2);
+assert.equal((toolbar.match(/max="500"/g) || []).length, 2);
+assert.equal((toolbar.match(/step="1"/g) || []).length, 2);
+assert.match(toolbar, /\.value=\$\{String\(GLOBAL_STATE\.canvasWidth\)\}/);
+assert.match(toolbar, /\.value=\$\{String\(GLOBAL_STATE\.canvasHeight\)\}/);
+assert.match(toolbar, /event\.key\s*===\s*["']Enter["'][\s\S]*?blur\(\)/);
+const stitchButtonsEnd = toolbar.indexOf(
+  "</div>",
+  toolbar.indexOf("GLOBAL_STATE.symbolMap.map")
+);
+const sizeControlsStart = toolbar.indexOf('class="chart-size-controls"');
+assert.ok(sizeControlsStart > toolbar.indexOf('class="chart-stitch-buttons"'));
+assert.ok(sizeControlsStart > stitchButtonsEnd, "size controls must follow all stitch buttons");
 assert.doesNotMatch(leftBar, /symbolPicker|SYMBOL_ICON_URLS|left\.addRepeat/);
 assert.match(styles, /--preview-background:\s*#4a5055/);
 assert.match(styles, /--accent:\s*#a96882/);
+assert.match(styles, /\.chart-size-controls\s*\{[\s\S]*?display:\s*flex/);
+assert.match(styles, /\.pattern-dimension-input\s*\{[\s\S]*?color:\s*#111/);
+assert.match(styles, /\.pattern-dimension-input:focus[\s\S]*?color:\s*#111/);
+assert.match(styles, /\.pattern-dimension-input:active[\s\S]*?color:\s*#111/);
+assert.match(styles, /\.pattern-dimension-input:invalid[\s\S]*?color:\s*#111/);
+assert.match(styles, /\.pattern-dimension-input::selection\s*\{[\s\S]*?color:\s*(?:#111|black)/);
+assert.match(styles, /\.pattern-dimension-input\[type="number"\]\s*\{[\s\S]*?(?:-webkit-appearance:\s*auto|appearance:\s*auto)/);
+assert.match(styles, /\.pattern-dimension-input\[type="number"\]::\-webkit-inner-spin-button,[\s\S]*?\.pattern-dimension-input\[type="number"\]::\-webkit-outer-spin-button\s*\{[\s\S]*?-webkit-appearance:\s*auto[\s\S]*?opacity:\s*1/);
 
 console.log("PASS: the shared stitch toolbar and original icons are protected.");

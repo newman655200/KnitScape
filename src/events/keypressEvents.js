@@ -62,6 +62,7 @@ export function addKeypressListeners() {
   });
 
   window.addEventListener("keyup", (e) => {
+    if (!GLOBAL_STATE.heldKeys.has(e.key)) return;
     const newHeldKeys = new Set(GLOBAL_STATE.heldKeys);
     newHeldKeys.delete(e.key);
     dispatch({ heldKeys: newHeldKeys });

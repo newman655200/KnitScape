@@ -56,7 +56,21 @@ const simulation = [
 ].map(read).join("\n");
 
 assert.match(bitmapEditor, /id="yarn-sequence-canvas"/);
-assert.match(bitmapEditor, /field === "camBitmap" \? "cam" : "needle"/);
+assert.match(
+  bitmapEditor,
+  /export function bitmapEditor\(\{\s*fullField,\s*unitField,\s*prefix,/
+);
+assert.match(bitmapEditor, /symbolCanvasId = prefix === "needle"/);
+assert.match(bitmapEditor, /gridCanvasId = prefix === "needle"/);
+assert.match(bitmapEditor, /id=\$\{symbolCanvasId\}/);
+assert.match(bitmapEditor, /id=\$\{gridCanvasId\}/);
+assert.match(bitmapEditor, /id="\$\{prefix\}-interaction-canvas"/);
+assert.match(bitmapEditor, /data-code-guide-key="\$\{prefix\}\.symbols"/);
+assert.match(bitmapEditor, /data-code-guide-key="\$\{prefix\}\.grid"/);
+assert.match(bitmapEditor, /id="needle-yarn-sequence"/);
+assert.match(bitmapEditor, /id="yarn-color-canvas"/);
+assert.match(bitmapEditor, /data-code-guide-key="needle\.yarn-sequence"/);
+assert.match(bitmapEditor, /data-code-guide-key="needle\.yarn-color"/);
 for (const source of [pointer, touch]) {
   assert.match(source, /beginTexturePreviewInteraction/);
   assert.match(source, /endTexturePreviewInteraction/);

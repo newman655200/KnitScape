@@ -10,6 +10,7 @@ import { createAppRenderer } from "./components/renderApp.js";
 import { runSimulation } from "./components/runSimulation.js";
 import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas.js";
 import { bitmapPointerInteraction } from "./events/bitmapPointerInteraction.js";
+import { chartPointerPanZoom } from "./events/chartPointerPanZoom.js";
 import { closeModals } from "./events/closeModals.js";
 import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction.js";
 import { colorSequenceTouchInteraction } from "./events/colorSequenceTouchInteraction.js";
@@ -68,6 +69,9 @@ function init() {
   const needleInteractionCanvas = document.getElementById(
     "needle-interaction-canvas"
   );
+  const chartWindows = [
+    ...document.querySelectorAll(".pattern-grid-window"),
+  ];
   const yarnSequenceCanvasElement = document.getElementById(
     "needle-yarn-sequence-canvas"
   );
@@ -95,6 +99,7 @@ function init() {
       ?.setAttribute("data-code-guide-key", "layout.editor-split"); // data-code-guide-key="layout.editor-split"
     initCodeGuideEvents();
   } else {
+    chartWindows.forEach(chartPointerPanZoom);
     bitmapPointerInteraction(camInteractionCanvas);
     bitmapPointerInteraction(needleInteractionCanvas);
     isMobile()
@@ -131,4 +136,7 @@ function init() {
 }
 
 window.onload = init;
-window.onresize = measureWindow;
+window.onresize = () => {
+  measureWindow();
+  fitChart();
+};

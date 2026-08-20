@@ -32,6 +32,7 @@
     "validate:repeat-editor-layout": "node scripts/validate-repeat-editor-layout.mjs",
     "validate:repeat-unit-rendering": "node scripts/validate-repeat-unit-rendering.mjs",
     "validate:bitmap-pointer-unit-boundary": "node scripts/validate-bitmap-pointer-unit-boundary.mjs",
+    "validate:shared-chart-viewport": "node scripts/validate-shared-chart-viewport.mjs",
     "validate:needle-arrangement-acceptance": "node scripts/validate-needle-arrangement-acceptance.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",

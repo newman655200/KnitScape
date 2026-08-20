@@ -1,5 +1,6 @@
 import { html, nothing } from "lit-html";
 
+import { cssCellSize } from "../chartViewport.js";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE } from "../state.js";
 import { needleArrangementControls } from "./needleArrangementControls.js";
@@ -14,11 +15,8 @@ export function bitmapEditor({
   const symbolCanvasId = prefix === "needle" ? "symbol-canvas" : `${prefix}-symbol-canvas`;
   const gridCanvasId = prefix === "needle" ? "grid" : `${prefix}-grid`;
   const language = GLOBAL_STATE.language;
-  const scale = Number(GLOBAL_STATE.scale);
-  const deviceScale = Number(globalThis.devicePixelRatio);
-  const chartCellSize =
-    (Number.isFinite(scale) && scale > 0 ? scale : 1) /
-    (Number.isFinite(deviceScale) && deviceScale > 0 ? deviceScale : 1);
+  const chartCellSize = cssCellSize(GLOBAL_STATE.scale);
+  const chartPan = GLOBAL_STATE.chartPan || { x: 0, y: 0 };
 
   return html`<section
     id="${prefix}-editor-pane"
@@ -34,7 +32,9 @@ export function bitmapEditor({
         class="pattern-editor-stage"
         style="--chart-cell-size: ${chartCellSize}px">
         <div class="yarn-sequence-gutter">
-          <div class="yarn-sequence-track">
+          <div
+            class="yarn-sequence-track"
+            style="transform: translateY(${chartPan.y}px)">
             <canvas
               id="${prefix}-yarn-sequence-canvas"
               ${prefix === "needle"
@@ -43,7 +43,9 @@ export function bitmapEditor({
           </div>
         </div>
         <div class="pattern-grid-window" data-editor-prefix=${prefix}>
-          <div class="pattern-canvas-transform">
+          <div
+            class="pattern-canvas-transform"
+            style="transform: translate(${chartPan.x}px, ${chartPan.y}px)">
             <div class="pattern-canvas-stack">
               <canvas
                 id=${symbolCanvasId}

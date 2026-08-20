@@ -1,8 +1,11 @@
 import { GLOBAL_STATE, dispatch } from "../state";
-import { devicePixelBoundingBox } from "../utils";
 import {
-  MIN_SCALE,
-  MAX_SCALE,
+  clampChartScale,
+  cssCellSize,
+  fitVisibleCells,
+  zoomViewportAtPoint,
+} from "../chartViewport.js";
+import {
   MIN_SIM_SCALE,
   MAX_SIM_SCALE,
 } from "../constants";
@@ -35,7 +38,19 @@ export function toggleFullscreen() {
 }
 
 export function centerZoom(scale) {
-  dispatch({ scale: Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale)) });
+  const nextScale = clampChartScale(scale);
+  if (nextScale === GLOBAL_STATE.scale) return;
+
+  const gridWindow = document.querySelector(".pattern-grid-window");
+  if (!gridWindow) return;
+  const bounds = gridWindow.getBoundingClientRect();
+  const viewport = zoomViewportAtPoint({
+    pan: GLOBAL_STATE.chartPan,
+    scale: GLOBAL_STATE.scale,
+    nextScale,
+    point: { x: bounds.width / 2, y: bounds.height / 2 },
+  });
+  dispatch({ scale: viewport.scale, chartPan: viewport.pan });
 }
 
 export function centerZoomSimulation(scale) {
@@ -62,36 +77,40 @@ export function zoomSimulationAtPoint(pt, simScale) {
 }
 
 export function fitChart() {
-  const editors = [
-    [document.querySelector("#cam-editor-pane .pattern-editor-viewport"), GLOBAL_STATE.camBitmap],
-    [document.querySelector("#needle-editor-pane .pattern-editor-viewport"), GLOBAL_STATE.needleBitmap],
-  ];
-  const fittedScales = editors
-    .filter(([element]) => element)
-    .map(([element, bitmap]) => {
-      const { width, height } = devicePixelBoundingBox(element);
-      return Math.floor(
-        0.85 * Math.min(width / bitmap.width, height / bitmap.height)
-      );
+  const editorViewports = [
+    document.querySelector("#cam-editor-pane .pattern-editor-viewport"),
+    document.querySelector("#needle-editor-pane .pattern-editor-viewport"),
+  ].filter(Boolean);
+  const fittedScales = editorViewports
+    .map((element) => {
+      const bounds = element.getBoundingClientRect();
+      const style = globalThis.getComputedStyle?.(element);
+      const horizontalPadding =
+        Number.parseFloat(style?.paddingLeft || 0) +
+        Number.parseFloat(style?.paddingRight || 0);
+      const verticalPadding =
+        Number.parseFloat(style?.paddingTop || 0) +
+        Number.parseFloat(style?.paddingBottom || 0);
+      const width = (Number(element.clientWidth) || bounds.width) - horizontalPadding;
+      const height = (Number(element.clientHeight) || bounds.height) - verticalPadding;
+
+      return fitVisibleCells({
+        viewportWidth: Math.max(0, width),
+        viewportHeight: Math.max(0, height),
+      }).scale;
     });
 
   if (fittedScales.length === 0) return;
   dispatch({
-    scale: Math.max(
-      MIN_SCALE,
-      Math.min(MAX_SCALE, ...fittedScales)
-    ),
+    scale: Math.min(...fittedScales),
+    chartPan: { x: 0, y: 0 },
   });
 }
 
 export function sizeCanvasToBitmap(canvas, bitmapWidth, bitmapHeight) {
   canvas.width = GLOBAL_STATE.scale * bitmapWidth;
   canvas.height = GLOBAL_STATE.scale * bitmapHeight;
-  canvas.style.width = `${
-    (GLOBAL_STATE.scale * bitmapWidth) / devicePixelRatio
-  }px`;
+  canvas.style.width = `${cssCellSize(GLOBAL_STATE.scale) * bitmapWidth}px`;
 
-  canvas.style.height = `${
-    (GLOBAL_STATE.scale * bitmapHeight) / devicePixelRatio
-  }px`;
+  canvas.style.height = `${cssCellSize(GLOBAL_STATE.scale) * bitmapHeight}px`;
 }

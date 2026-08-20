@@ -22,59 +22,79 @@ try {
   const actions = await server.ssrLoadModule("/src/actions/patternEditing.js");
   const punchcard = await server.ssrLoadModule("/src/punchcard.js");
 
-  const camBitmap = new Bimp(8, 4, [
+  const camUnitBitmap = new Bimp(8, 4, [
     0, 0, 0, 0, 0, 0, 2, 2,
     0, 0, 0, 0, 2, 2, 0, 0,
     0, 0, 2, 2, 0, 0, 0, 0,
     2, 2, 0, 0, 0, 0, 0, 0,
   ]);
+  const yarnSequence = new Bimp(1, 81, Array.from({ length: 81 }, (_, row) => row % 4));
   state.loadWorkspace({
-    camBitmap,
-    needleBitmap: Bimp.empty(3, 2, 1),
+    canvasWidth: 72,
+    canvasHeight: 81,
+    camUnitBitmap,
+    needleUnitBitmap: Bimp.empty(3, 2, 1),
+    yarnSequence,
     needleInputs: ["1", "2", "3", "4"],
     appliedNeedleInputs: ["1", "2", "3", "4"],
     needleInputErrors: [null, null, null, null],
     punchVerticalRepeats: 5,
   });
 
-  assert.equal(punchcard.punchcardRowCount(), 10);
+  assert.equal(punchcard.punchcardRowCount(), 405);
 
   assert.equal(actions.applyNeedleArrangement(), true);
   assert.deepEqual(
-    [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
+    [state.GLOBAL_STATE.needleUnitBitmap.width, state.GLOBAL_STATE.needleUnitBitmap.height],
     [4, 8]
   );
-  assert.equal(punchcard.punchcardRowCount(), 40);
+  assert.deepEqual(
+    [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
+    [72, 81]
+  );
+  assert.equal(state.GLOBAL_STATE.yarnSequence, yarnSequence);
+  assert.equal(punchcard.punchcardRowCount(), 405);
 
+  const appliedUnit = state.GLOBAL_STATE.needleUnitBitmap;
   const appliedBitmap = state.GLOBAL_STATE.needleBitmap;
   actions.updateNeedleInput(2, "5");
   assert.equal(actions.applyNeedleArrangement(), false);
+  assert.equal(state.GLOBAL_STATE.needleUnitBitmap, appliedUnit);
   assert.equal(state.GLOBAL_STATE.needleBitmap, appliedBitmap);
   assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
-  assert.equal(punchcard.punchcardRowCount(), 40);
+  assert.equal(state.GLOBAL_STATE.yarnSequence, yarnSequence);
+  assert.equal(punchcard.punchcardRowCount(), 405);
 
   actions.startNeedleArrangement();
-  assert.notEqual(state.GLOBAL_STATE.needleBitmap, state.GLOBAL_STATE.camBitmap);
+  assert.notEqual(state.GLOBAL_STATE.needleUnitBitmap, state.GLOBAL_STATE.camUnitBitmap);
   assert.deepEqual(
-    state.GLOBAL_STATE.needleBitmap.toJSON(),
-    state.GLOBAL_STATE.camBitmap.toJSON()
-  );
-  assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
-  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
-  assert.equal(punchcard.punchcardRowCount(), 20);
-
-  state.undo();
-  assert.deepEqual(
-    [state.GLOBAL_STATE.camBitmap.width, state.GLOBAL_STATE.camBitmap.height],
-    [8, 4]
+    state.GLOBAL_STATE.needleUnitBitmap.toJSON(),
+    state.GLOBAL_STATE.camUnitBitmap.toJSON()
   );
   assert.deepEqual(
     [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
+    [72, 81]
+  );
+  assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
+  assert.deepEqual(state.GLOBAL_STATE.needleInputErrors, [null, null, "row", null]);
+  assert.equal(punchcard.punchcardRowCount(), 405);
+
+  state.undo();
+  assert.deepEqual(
+    [state.GLOBAL_STATE.camUnitBitmap.width, state.GLOBAL_STATE.camUnitBitmap.height],
+    [8, 4]
+  );
+  assert.deepEqual(
+    [state.GLOBAL_STATE.needleUnitBitmap.width, state.GLOBAL_STATE.needleUnitBitmap.height],
     [3, 2]
+  );
+  assert.deepEqual(
+    [state.GLOBAL_STATE.needleBitmap.width, state.GLOBAL_STATE.needleBitmap.height],
+    [72, 81]
   );
   assert.deepEqual(state.GLOBAL_STATE.needleInputs, ["1", "2", "3", "4"]);
   assert.deepEqual(state.GLOBAL_STATE.appliedNeedleInputs, ["1", "2", "3", "4"]);
-  assert.equal(punchcard.punchcardRowCount(), 10);
+  assert.equal(punchcard.punchcardRowCount(), 405);
 
   const runSimulation = fs.readFileSync("src/components/runSimulation.js", "utf8");
   const drawYarnColors = fs.readFileSync("src/components/drawYarnColors.js", "utf8");
@@ -83,7 +103,7 @@ try {
   assert.match(drawYarnColors, /needleBitmap/);
   assert.doesNotMatch(drawYarnColors, /camBitmap/);
 
-  console.log("PASS: needle arrangement acceptance flow is atomic and preview-owned.");
+  console.log("PASS: needle arrangement updates its repeat unit while preview remains canvas-derived.");
 } finally {
   await server.close();
 }

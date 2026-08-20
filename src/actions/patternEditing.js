@@ -1,4 +1,3 @@
-import { DEFAULT_STITCH_SYMBOL_INDEX } from "../constants.js";
 import {
   buildNeedleBitmap,
   cloneBitmap,
@@ -7,7 +6,7 @@ import {
 import { GLOBAL_STATE, dispatch } from "../state.js";
 import { resizeYarnSequenceToNeedleHeight } from "./yarnSequenceRows.js";
 
-const PATTERN_FIELDS = new Set(["camBitmap", "needleBitmap"]);
+const PATTERN_FIELDS = new Set(["camUnitBitmap", "needleUnitBitmap"]);
 
 function patternBitmap(field) {
   if (!PATTERN_FIELDS.has(field)) {
@@ -16,8 +15,9 @@ function patternBitmap(field) {
   return GLOBAL_STATE[field];
 }
 
-function normalizedDimension(value) {
-  return Math.max(1, Math.min(500, Math.floor(Number(value) || 1)));
+export function normalizeCanvasDimension(value) {
+  const dimension = Math.floor(Number(value));
+  return Math.max(5, Math.min(500, Number.isFinite(dimension) ? dimension : 5));
 }
 
 function needleYarnSequence(height) {
@@ -35,36 +35,47 @@ export function selectPatternSymbol(symbolIndex) {
   });
 }
 
-export function resizePatternBitmap(field, width, height) {
-  const bitmap = patternBitmap(field);
-  const resized = bitmap.resize(
-    normalizedDimension(width),
-    normalizedDimension(height),
-    DEFAULT_STITCH_SYMBOL_INDEX
+export function resizePatternCanvas(width, height) {
+  const canvasWidth = normalizeCanvasDimension(width);
+  const canvasHeight = normalizeCanvasDimension(height);
+  dispatch({
+    canvasWidth,
+    canvasHeight,
+    yarnSequence: needleYarnSequence(canvasHeight),
+  });
+}
+
+// Temporary adapter for the dual editor until it sends canvas dimensions directly.
+export function resizePatternBitmap(_field, width, height) {
+  resizePatternCanvas(width, height);
+}
+
+function pointIsWithinBitmap(point, bitmap) {
+  return (
+    Number.isInteger(point?.x) &&
+    Number.isInteger(point?.y) &&
+    point.x >= 0 &&
+    point.x < bitmap.width &&
+    point.y >= 0 &&
+    point.y < bitmap.height
   );
-  const action = { [field]: resized };
-
-  if (field === "needleBitmap") {
-    action.yarnSequence = needleYarnSequence(resized.height);
-  }
-
-  dispatch(action);
 }
 
 export function drawPatternLine(field, startPos, endPos) {
   const bitmap = patternBitmap(field);
+  if (!pointIsWithinBitmap(startPos, bitmap) || !pointIsWithinBitmap(endPos, bitmap)) {
+    return false;
+  }
+
   dispatch({
     [field]: bitmap.line(startPos, endPos, GLOBAL_STATE.activeSymbol),
     patternEdit: { field, startPos, endPos },
   });
+  return true;
 }
 
 export function startNeedleArrangement() {
-  const needleBitmap = cloneBitmap(GLOBAL_STATE.camBitmap);
-  dispatch({
-    needleBitmap,
-    yarnSequence: needleYarnSequence(needleBitmap.height),
-  });
+  dispatch({ needleUnitBitmap: cloneBitmap(GLOBAL_STATE.camUnitBitmap) });
 }
 
 export function updateNeedleInput(index, value) {
@@ -80,7 +91,7 @@ export function updateNeedleInput(index, value) {
 export function applyNeedleArrangement() {
   const validation = validateNeedleInputs(
     GLOBAL_STATE.needleInputs,
-    GLOBAL_STATE.camBitmap.height
+    GLOBAL_STATE.camUnitBitmap.height
   );
 
   if (!validation.valid) {
@@ -88,15 +99,14 @@ export function applyNeedleArrangement() {
     return false;
   }
 
-  const needleBitmap = buildNeedleBitmap(
-    GLOBAL_STATE.camBitmap,
+  const needleUnitBitmap = buildNeedleBitmap(
+    GLOBAL_STATE.camUnitBitmap,
     validation.sequence
   );
   dispatch({
-    needleBitmap,
+    needleUnitBitmap,
     appliedNeedleInputs: [...GLOBAL_STATE.needleInputs],
     needleInputErrors: validation.errors,
-    yarnSequence: needleYarnSequence(needleBitmap.height),
   });
   return true;
 }

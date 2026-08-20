@@ -52,7 +52,8 @@ for (const derivedField of ["camBitmap", "needleBitmap"]) {
 assert.doesNotMatch(constantsSource, /"repeats"|toolData|LAYERS/);
 
 for (const action of [
-  "resizePatternBitmap",
+  "normalizeCanvasDimension",
+  "resizePatternCanvas",
   "drawPatternLine",
   "startNeedleArrangement",
   "updateNeedleInput",
@@ -61,6 +62,14 @@ for (const action of [
   assert.match(actionsSource, new RegExp(`export function ${action}\\(`));
 }
 
+assert.match(
+  actionsSource,
+  /new Set\(\["camUnitBitmap", "needleUnitBitmap"\]\)/
+);
+assert.doesNotMatch(
+  actionsSource,
+  /new Set\(\["camBitmap", "needleBitmap"\]\)/
+);
 assert.match(actionsSource, /validateNeedleInputs\(/);
 assert.match(actionsSource, /buildNeedleBitmap\(/);
 assert.match(actionsSource, /resizeYarnSequenceToNeedleHeight\(/);

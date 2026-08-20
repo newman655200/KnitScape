@@ -16,14 +16,18 @@ class MockCanvas {
     this.listeners = new Map();
     this.capturedPointers = new Set();
     this.captureCount = 0;
+    this.releaseCount = 0;
   }
 
   addEventListener(type, callback) {
-    this.listeners.set(type, callback);
+    if (!this.listeners.has(type)) this.listeners.set(type, new Set());
+    this.listeners.get(type).add(callback);
   }
 
-  removeEventListener(type) {
-    this.listeners.delete(type);
+  removeEventListener(type, callback) {
+    const callbacks = this.listeners.get(type);
+    callbacks?.delete(callback);
+    if (callbacks?.size === 0) this.listeners.delete(type);
   }
 
   getBoundingClientRect() {
@@ -40,11 +44,23 @@ class MockCanvas {
   }
 
   releasePointerCapture(pointerId) {
+    this.releaseCount += 1;
     this.capturedPointers.delete(pointerId);
   }
 
+  losePointerCapture(pointerId) {
+    this.capturedPointers.delete(pointerId);
+    this.emit("lostpointercapture", { pointerId });
+  }
+
   emit(type, event) {
-    this.listeners.get(type)?.(event);
+    for (const callback of [...(this.listeners.get(type) ?? [])]) {
+      callback(event);
+    }
+  }
+
+  listenerCount(type) {
+    return this.listeners.get(type)?.size ?? 0;
   }
 }
 
@@ -176,6 +192,41 @@ try {
     endPos: { x: 0, y: 3 },
   });
 
+  assert.equal(canvas.listenerCount("pointermove"), 1);
+  assert.equal(canvas.listenerCount("pointerup"), 1);
+  assert.equal(canvas.listenerCount("pointercancel"), 1);
+  assert.equal(canvas.listenerCount("lostpointercapture"), 1);
+  const unitBeforeForeignPointer = state.GLOBAL_STATE.camUnitBitmap;
+  const editBeforeForeignPointer = state.GLOBAL_STATE.patternEdit;
+  canvas.emit(
+    "pointermove",
+    pointerEvent({ clientX: 145, clientY: 55, pointerId: 99 })
+  );
+  assert.equal(
+    state.GLOBAL_STATE.camUnitBitmap,
+    unitBeforeForeignPointer,
+    "another pointer cannot extend the active stroke"
+  );
+  assert.equal(state.GLOBAL_STATE.patternEdit, editBeforeForeignPointer);
+
+  for (const type of ["pointerup", "pointercancel"]) {
+    canvas.emit(
+      type,
+      pointerEvent({ clientX: 145, clientY: 55, pointerId: 99 })
+    );
+    assert.equal(
+      state.GLOBAL_STATE.transforming,
+      true,
+      `foreign ${type} cannot stop the active stroke`
+    );
+    assert.equal(canvas.listenerCount("pointermove"), 1);
+    assert.equal(canvas.listenerCount("pointerup"), 1);
+    assert.equal(canvas.listenerCount("pointercancel"), 1);
+    assert.equal(canvas.listenerCount("lostpointercapture"), 1);
+    assert.deepEqual([...canvas.capturedPointers], [3]);
+    assert.equal(canvas.releaseCount, 0);
+  }
+
   canvas.emit(
     "pointermove",
     pointerEvent({ clientX: 115, clientY: 55, pointerId: 3 })
@@ -209,6 +260,38 @@ try {
   );
   assert.equal(state.GLOBAL_STATE.transforming, false);
   assert.equal(canvas.capturedPointers.size, 0);
+  assert.equal(canvas.releaseCount, 1);
+  assert.equal(canvas.listenerCount("pointermove"), 0);
+  assert.equal(canvas.listenerCount("pointerup"), 0);
+  assert.equal(canvas.listenerCount("pointercancel"), 0);
+  assert.equal(canvas.listenerCount("lostpointercapture"), 0);
+
+  canvas.emit(
+    "pointerup",
+    pointerEvent({ clientX: 175, clientY: 55, pointerId: 3 })
+  );
+  assert.equal(canvas.releaseCount, 1, "matching pointer cleanup runs exactly once");
+
+  canvas.emit(
+    "pointerdown",
+    pointerEvent({ clientX: 125, clientY: 55, pointerId: 5 })
+  );
+  assert.equal(state.GLOBAL_STATE.transforming, true);
+  assert.deepEqual([...canvas.capturedPointers], [5]);
+  canvas.emit("lostpointercapture", { pointerId: 99 });
+  assert.equal(state.GLOBAL_STATE.transforming, true);
+  assert.equal(canvas.listenerCount("pointermove"), 1);
+  canvas.losePointerCapture(5);
+  assert.equal(
+    state.GLOBAL_STATE.transforming,
+    false,
+    "losing the initiating pointer capture ends the stroke"
+  );
+  assert.equal(canvas.releaseCount, 1, "already-lost capture is not released again");
+  assert.equal(canvas.listenerCount("pointermove"), 0);
+  assert.equal(canvas.listenerCount("pointerup"), 0);
+  assert.equal(canvas.listenerCount("pointercancel"), 0);
+  assert.equal(canvas.listenerCount("lostpointercapture"), 0);
 
   console.log("PASS: pointer drawing is clipped to the direct editable repeat unit.");
 } finally {

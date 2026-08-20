@@ -49,9 +49,13 @@ export function bitmapPointerInteraction(canvas) {
 
     event.preventDefault();
     dispatch({ transforming: true });
-    canvas.setPointerCapture(event.pointerId);
+    const activePointerId = event.pointerId;
+    canvas.setPointerCapture(activePointerId);
+    let ended = false;
 
     const move = (moveEvent) => {
+      if (moveEvent.pointerId !== activePointerId) return;
+
       const nextPosition = positionInEditableUnit(
         canvas,
         moveEvent,
@@ -73,17 +77,22 @@ export function bitmapPointerInteraction(canvas) {
     };
 
     const end = (endEvent) => {
-      dispatch({ transforming: false });
-      if (canvas.hasPointerCapture(endEvent.pointerId)) {
-        canvas.releasePointerCapture(endEvent.pointerId);
-      }
+      if (endEvent.pointerId !== activePointerId || ended) return;
+
+      ended = true;
       canvas.removeEventListener("pointermove", move);
       canvas.removeEventListener("pointerup", end);
       canvas.removeEventListener("pointercancel", end);
+      canvas.removeEventListener("lostpointercapture", end);
+      dispatch({ transforming: false });
+      if (canvas.hasPointerCapture(activePointerId)) {
+        canvas.releasePointerCapture(activePointerId);
+      }
     };
 
     canvas.addEventListener("pointermove", move);
     canvas.addEventListener("pointerup", end);
     canvas.addEventListener("pointercancel", end);
+    canvas.addEventListener("lostpointercapture", end);
   });
 }

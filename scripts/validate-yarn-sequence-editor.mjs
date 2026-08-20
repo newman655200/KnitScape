@@ -61,7 +61,7 @@ for (const source of [pointer, touch]) {
   assert.match(source, /beginTexturePreviewInteraction/);
   assert.match(source, /endTexturePreviewInteraction/);
 }
-assert.match(importers, /height:\s*pattern\.needleBitmap\.height/);
+assert.match(importers, /height:\s*pattern\.canvasHeight/);
 assert.match(exporters, /serializePattern\(GLOBAL_STATE\)/);
 assert.match(patternFile, /yarnSequence:\s*state\.yarnSequence\.toJSON\(\)/);
 assert.match(runSimulation, /GLOBAL_STATE\.yarnSequence/);

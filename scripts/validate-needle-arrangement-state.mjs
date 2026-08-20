@@ -66,8 +66,17 @@ assert.match(actionsSource, /buildNeedleBitmap\(/);
 assert.match(actionsSource, /resizeYarnSequenceToNeedleHeight\(/);
 
 assert.match(importersSource, /deserializePattern\(/);
-assert.match(importersSource, /camBitmap/);
-assert.match(importersSource, /needleBitmap/);
+for (const sourceField of [
+  "canvasWidth",
+  "canvasHeight",
+  "camUnitBitmap",
+  "needleUnitBitmap",
+]) {
+  assert.match(importersSource, new RegExp(`\\b${sourceField}\\b`));
+}
+for (const derivedField of ["camBitmap", "needleBitmap"]) {
+  assert.doesNotMatch(importersSource, new RegExp(`\\b${derivedField}\\b`));
+}
 assert.match(exportersSource, /serializePattern\(GLOBAL_STATE\)/);
 assert.doesNotMatch(exportersSource, /GLOBAL_STATE\.repeats|GLOBAL_STATE\.chart/);
 assert.match(punchcardSource, /GLOBAL_STATE\.needleBitmap/);

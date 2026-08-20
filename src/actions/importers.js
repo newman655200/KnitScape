@@ -10,6 +10,12 @@ import { normalizeYarnPly } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "./yarnSequenceRows";
 import { cloneBitmap } from "../needleArrangement/transform.js";
 import {
+  DEFAULT_CANVAS_HEIGHT,
+  DEFAULT_CANVAS_WIDTH,
+  DEFAULT_UNIT_HEIGHT,
+  DEFAULT_UNIT_WIDTH,
+} from "../patternDerivation.js";
+import {
   DEFAULT_NEEDLE_INPUTS,
   deserializePattern,
 } from "../patternFile.js";
@@ -30,8 +36,10 @@ export function loadJSON(patternJSON) {
   const pattern = deserializePattern(patternJSON);
 
   dispatch({
-    camBitmap: pattern.camBitmap,
-    needleBitmap: pattern.needleBitmap,
+    canvasWidth: pattern.canvasWidth,
+    canvasHeight: pattern.canvasHeight,
+    camUnitBitmap: pattern.camUnitBitmap,
+    needleUnitBitmap: pattern.needleUnitBitmap,
     needleInputs: pattern.needleInputs,
     appliedNeedleInputs: pattern.appliedNeedleInputs,
     needleInputErrors: [null, null, null, null],
@@ -40,7 +48,7 @@ export function loadJSON(patternJSON) {
       : [DEFAULT_YARN_COLOR],
     yarnPlies: cloneYarnPlies(pattern.yarnPlies),
     yarnSequence: normalizeYarnSequence(pattern.yarnSequence, {
-      height: pattern.needleBitmap.height,
+      height: pattern.canvasHeight,
       fillYarn: 0,
     }),
   });
@@ -49,18 +57,24 @@ export function loadJSON(patternJSON) {
 }
 
 export function newPattern() {
-  const camBitmap = Bimp.empty(30, 40, DEFAULT_STITCH_SYMBOL_INDEX);
-  const needleBitmap = cloneBitmap(camBitmap);
+  const camUnitBitmap = Bimp.empty(
+    DEFAULT_UNIT_WIDTH,
+    DEFAULT_UNIT_HEIGHT,
+    DEFAULT_STITCH_SYMBOL_INDEX
+  );
+  const needleUnitBitmap = cloneBitmap(camUnitBitmap);
 
   dispatch({
+    canvasWidth: DEFAULT_CANVAS_WIDTH,
+    canvasHeight: DEFAULT_CANVAS_HEIGHT,
+    camUnitBitmap,
+    needleUnitBitmap,
     yarnSequence: normalizeYarnSequence(undefined, {
-      height: needleBitmap.height,
+      height: DEFAULT_CANVAS_HEIGHT,
       fillYarn: 0,
     }),
     yarnPalette: [DEFAULT_YARN_COLOR],
     yarnPlies: cloneYarnPlies(),
-    camBitmap,
-    needleBitmap,
     needleInputs: [...DEFAULT_NEEDLE_INPUTS],
     appliedNeedleInputs: [...DEFAULT_NEEDLE_INPUTS],
     needleInputErrors: [null, null, null, null],

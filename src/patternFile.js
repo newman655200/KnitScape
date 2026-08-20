@@ -1,16 +1,17 @@
 import { Bimp } from "./lib/Bimp.js";
 import { cloneBitmap } from "./needleArrangement/transform.js";
+import { withDerivedPatternBitmaps } from "./patternDerivation.js";
 
-export const PATTERN_SCHEMA_VERSION = 2;
+export const PATTERN_SCHEMA_VERSION = 3;
 export const DEFAULT_NEEDLE_INPUTS = Object.freeze(["1", "2", "3", "4"]);
-const LEGACY_DEFAULT_STITCH_SYMBOL_INDEX = 1;
+const MIN_CANVAS_DIMENSION = 5;
+const MAX_CANVAS_DIMENSION = 500;
 
 function positiveInteger(value, label) {
-  const normalized = Number(value);
-  if (!Number.isInteger(normalized) || normalized < 1) {
+  if (typeof value !== "number" || !Number.isInteger(value) || value < 1) {
     throw new Error(`${label} must be a positive integer.`);
   }
-  return normalized;
+  return value;
 }
 
 function bitmapFromJSON(value, label) {
@@ -27,6 +28,19 @@ function bitmapFromJSON(value, label) {
   return new Bimp(width, height, value.pixels);
 }
 
+function canvasDimension(value, label) {
+  const normalized = positiveInteger(value, label);
+  if (
+    normalized < MIN_CANVAS_DIMENSION ||
+    normalized > MAX_CANVAS_DIMENSION
+  ) {
+    throw new Error(
+      `${label} must be between ${MIN_CANVAS_DIMENSION} and ${MAX_CANVAS_DIMENSION}.`
+    );
+  }
+  return normalized;
+}
+
 function normalizeInputs(value, label, fallback = DEFAULT_NEEDLE_INPUTS) {
   const inputs = value === undefined ? fallback : value;
   if (!Array.isArray(inputs) || inputs.length !== 4) {
@@ -35,75 +49,7 @@ function normalizeInputs(value, label, fallback = DEFAULT_NEEDLE_INPUTS) {
   return inputs.map((input) => String(input ?? ""));
 }
 
-export function expandLegacyRepeats(pattern) {
-  const width = positiveInteger(pattern.width, "width");
-  const height = positiveInteger(pattern.height, "height");
-  if (!Array.isArray(pattern.repeats) || pattern.repeats.length === 0) {
-    throw new Error("Legacy pattern must contain at least one repeat.");
-  }
-
-  let bitmap = Bimp.empty(
-    width,
-    height,
-    LEGACY_DEFAULT_STITCH_SYMBOL_INDEX
-  );
-
-  pattern.repeats.forEach((repeat, index) => {
-    const repeatBitmap = bitmapFromJSON(
-      repeat?.bitmap,
-      `repeats[${index}].bitmap`
-    );
-    if (!Array.isArray(repeat.area) || repeat.area.length !== 2) {
-      throw new Error(`repeats[${index}].area must contain width and height.`);
-    }
-    if (!Array.isArray(repeat.pos) || repeat.pos.length !== 2) {
-      throw new Error(`repeats[${index}].pos must contain x and y.`);
-    }
-
-    const areaWidth = positiveInteger(repeat.area[0], `repeats[${index}].area[0]`);
-    const areaHeight = positiveInteger(repeat.area[1], `repeats[${index}].area[1]`);
-    const pos = repeat.pos.map((coordinate, axis) => {
-      const normalized = Number(coordinate);
-      if (!Number.isInteger(normalized)) {
-        throw new Error(`repeats[${index}].pos[${axis}] must be an integer.`);
-      }
-      return normalized;
-    });
-
-    const tiled = Bimp.fromTile(
-      areaWidth,
-      areaHeight,
-      repeatBitmap.vFlip()
-    ).vFlip();
-    bitmap = bitmap.overlay(tiled, pos);
-  });
-
-  return bitmap;
-}
-
-export function deserializePattern(pattern) {
-  if (!pattern || typeof pattern !== "object") {
-    throw new Error("Pattern file must contain an object.");
-  }
-
-  if (
-    pattern.schemaVersion !== undefined &&
-    pattern.schemaVersion !== PATTERN_SCHEMA_VERSION
-  ) {
-    throw new Error(`Unsupported pattern schema version ${pattern.schemaVersion}.`);
-  }
-
-  let camBitmap;
-  let needleBitmap;
-
-  if (pattern.schemaVersion === PATTERN_SCHEMA_VERSION) {
-    camBitmap = bitmapFromJSON(pattern.camBitmap, "camBitmap");
-    needleBitmap = bitmapFromJSON(pattern.needleBitmap, "needleBitmap");
-  } else {
-    camBitmap = expandLegacyRepeats(pattern);
-    needleBitmap = cloneBitmap(camBitmap);
-  }
-
+function deserializedPattern(pattern, source) {
   const needleInputs = normalizeInputs(pattern.needleInputs, "needleInputs");
   const appliedNeedleInputs = normalizeInputs(
     pattern.appliedNeedleInputs,
@@ -111,23 +57,76 @@ export function deserializePattern(pattern) {
     needleInputs
   );
 
-  return {
+  return withDerivedPatternBitmaps({
     schemaVersion: PATTERN_SCHEMA_VERSION,
-    camBitmap,
-    needleBitmap,
+    ...source,
     needleInputs,
     appliedNeedleInputs,
     yarnPalette: pattern.yarnPalette,
     yarnSequence: pattern.yarnSequence,
     yarnPlies: pattern.yarnPlies,
-  };
+  });
+}
+
+function deserializeV3(pattern) {
+  return deserializedPattern(pattern, {
+    canvasWidth: canvasDimension(pattern.canvasWidth, "canvasWidth"),
+    canvasHeight: canvasDimension(pattern.canvasHeight, "canvasHeight"),
+    camUnitBitmap: bitmapFromJSON(pattern.camUnitBitmap, "camUnitBitmap"),
+    needleUnitBitmap: bitmapFromJSON(
+      pattern.needleUnitBitmap,
+      "needleUnitBitmap"
+    ),
+  });
+}
+
+function migrateV2(pattern) {
+  return deserializedPattern(pattern, {
+    canvasWidth: 60,
+    canvasHeight: 60,
+    camUnitBitmap: bitmapFromJSON(pattern.camBitmap, "camBitmap"),
+    needleUnitBitmap: bitmapFromJSON(pattern.needleBitmap, "needleBitmap"),
+  });
+}
+
+function migrateLegacyRepeats(pattern) {
+  if (pattern.repeats.length === 0) {
+    throw new Error("Legacy pattern must contain at least one repeat.");
+  }
+
+  const camUnitBitmap = bitmapFromJSON(
+    pattern.repeats[0]?.bitmap,
+    "repeats[0].bitmap"
+  );
+
+  return deserializedPattern(pattern, {
+    canvasWidth: canvasDimension(pattern.width, "width"),
+    canvasHeight: canvasDimension(pattern.height, "height"),
+    camUnitBitmap,
+    needleUnitBitmap: cloneBitmap(camUnitBitmap),
+  });
+}
+
+export function deserializePattern(pattern) {
+  if (!pattern || typeof pattern !== "object") {
+    throw new Error("Pattern file must contain an object.");
+  }
+
+  if (pattern.schemaVersion === 3) return deserializeV3(pattern);
+  if (pattern.schemaVersion === 2) return migrateV2(pattern);
+  if (pattern.schemaVersion === undefined && Array.isArray(pattern.repeats)) {
+    return migrateLegacyRepeats(pattern);
+  }
+  throw new Error(`Unsupported pattern schema version ${pattern.schemaVersion}.`);
 }
 
 export function serializePattern(state) {
   return {
     schemaVersion: PATTERN_SCHEMA_VERSION,
-    camBitmap: state.camBitmap.toJSON(),
-    needleBitmap: state.needleBitmap.toJSON(),
+    canvasWidth: state.canvasWidth,
+    canvasHeight: state.canvasHeight,
+    camUnitBitmap: state.camUnitBitmap.toJSON(),
+    needleUnitBitmap: state.needleUnitBitmap.toJSON(),
     needleInputs: [...state.needleInputs],
     appliedNeedleInputs: [...state.appliedNeedleInputs],
     yarnPalette: state.yarnPalette,

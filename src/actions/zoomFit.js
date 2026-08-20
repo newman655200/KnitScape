@@ -94,17 +94,43 @@ export function fitChart() {
       const width = (Number(element.clientWidth) || bounds.width) - horizontalPadding;
       const height = (Number(element.clientHeight) || bounds.height) - verticalPadding;
 
+      if (
+        !Number.isFinite(width) ||
+        !Number.isFinite(height) ||
+        width <= 0 ||
+        height <= 0
+      ) {
+        return null;
+      }
+
       return fitVisibleCells({
         viewportWidth: Math.max(0, width),
         viewportHeight: Math.max(0, height),
       }).scale;
-    });
+    })
+    .filter((scale) => Number.isFinite(scale) && scale > 0);
 
   if (fittedScales.length === 0) return;
   dispatch({
     scale: Math.min(...fittedScales),
     chartPan: { x: 0, y: 0 },
   });
+}
+
+export function createChartFitScheduler({
+  fit = fitChart,
+  requestFrame = (callback) => globalThis.requestAnimationFrame(callback),
+} = {}) {
+  let framePending = false;
+
+  return function scheduleChartFit() {
+    if (framePending) return;
+    framePending = true;
+    requestFrame(() => {
+      framePending = false;
+      fit();
+    });
+  };
 }
 
 export function sizeCanvasToBitmap(canvas, bitmapWidth, bitmapHeight) {

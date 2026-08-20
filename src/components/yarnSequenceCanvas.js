@@ -1,8 +1,14 @@
 import { sizeCanvasToBitmap } from "../actions/zoomFit";
 
+function pixelRatio() {
+  const ratio = Number(globalThis.devicePixelRatio);
+  return Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+}
+
 export function yarnSequenceCanvas({ canvas }) {
   return ({ state }) => {
     let { scale, yarnSequence, yarnPalette } = state;
+    let dpr = pixelRatio();
 
     let width = yarnSequence.width;
     let height = yarnSequence.height;
@@ -56,6 +62,8 @@ export function yarnSequenceCanvas({ canvas }) {
 
     return {
       syncState(state) {
+        const nextDpr = pixelRatio();
+        const dprChanged = dpr !== nextDpr;
         if (yarnPalette != state.yarnPalette) {
           yarnPalette = state.yarnPalette;
           lastDrawn = null;
@@ -63,12 +71,14 @@ export function yarnSequenceCanvas({ canvas }) {
 
         if (
           scale != state.scale ||
+          dprChanged ||
           width != state.yarnSequence.width ||
           height != state.yarnSequence.height
         ) {
           width = state.yarnSequence.width;
           height = state.yarnSequence.height;
           scale = state.scale;
+          dpr = nextDpr;
 
           sizeCanvasToBitmap(canvas, width, height, scale);
           lastDrawn = null;

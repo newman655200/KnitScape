@@ -43,7 +43,18 @@ export function zoomViewportAtPoint({
   point,
   devicePixelRatio = globalThis.devicePixelRatio,
 }) {
-  if (nextScale < MIN_SCALE || nextScale > MAX_SCALE) {
+  if (
+    !Number.isFinite(scale) ||
+    !Number.isFinite(nextScale) ||
+    !Number.isFinite(pan?.x) ||
+    !Number.isFinite(pan?.y) ||
+    !Number.isFinite(point?.x) ||
+    !Number.isFinite(point?.y) ||
+    scale < MIN_SCALE ||
+    scale > MAX_SCALE ||
+    nextScale < MIN_SCALE ||
+    nextScale > MAX_SCALE
+  ) {
     return { scale, pan };
   }
 

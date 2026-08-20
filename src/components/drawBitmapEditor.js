@@ -93,6 +93,7 @@ export function drawBitmapEditor({
     let fullBitmap = state[fullField];
     let unitBitmap = state[unitField];
     let scale = state.scale;
+    let dpr = pixelRatio();
     let symbolMap = state.symbolMap;
     let symbolLineWidth = state.symbolLineWidth;
     let grid = state.grid;
@@ -135,6 +136,8 @@ export function drawBitmapEditor({
         const nextFullBitmap = nextState[fullField];
         const nextUnitBitmap = nextState[unitField];
         const scaleChanged = scale !== nextState.scale;
+        const nextDpr = pixelRatio();
+        const dprChanged = dpr !== nextDpr;
         const fullGeometryChanged = bitmapGeometryChanged(
           fullBitmap,
           nextFullBitmap
@@ -153,11 +156,12 @@ export function drawBitmapEditor({
         fullBitmap = nextFullBitmap;
         unitBitmap = nextUnitBitmap;
         scale = nextState.scale;
+        dpr = nextDpr;
         symbolMap = nextState.symbolMap;
         symbolLineWidth = nextState.symbolLineWidth;
         grid = nextState.grid;
 
-        if (scaleChanged || fullGeometryChanged) {
+        if (scaleChanged || dprChanged || fullGeometryChanged) {
           for (const canvas of [
             fullSymbolCanvas,
             fullGridCanvas,
@@ -166,7 +170,7 @@ export function drawBitmapEditor({
             sizeCanvas(canvas, fullBitmap, scale);
           }
         }
-        if (scaleChanged || unitGeometryChanged) {
+        if (scaleChanged || dprChanged || unitGeometryChanged) {
           for (const canvas of [unitSymbolCanvas, unitGridCanvas]) {
             sizeCanvas(canvas, unitBitmap, scale);
           }
@@ -174,6 +178,7 @@ export function drawBitmapEditor({
 
         if (
           scaleChanged ||
+          dprChanged ||
           fullGeometryChanged ||
           fullBitmapChanged ||
           symbolStyleChanged
@@ -182,16 +187,17 @@ export function drawBitmapEditor({
         }
         if (
           scaleChanged ||
+          dprChanged ||
           unitGeometryChanged ||
           unitBitmapChanged ||
           symbolStyleChanged
         ) {
           drawUnitSymbols();
         }
-        if (scaleChanged || fullGeometryChanged || gridChanged) {
+        if (scaleChanged || dprChanged || fullGeometryChanged || gridChanged) {
           drawGrid(fullGridCanvas, fullBitmap, scale, grid);
         }
-        if (scaleChanged || unitGeometryChanged || gridChanged) {
+        if (scaleChanged || dprChanged || unitGeometryChanged || gridChanged) {
           drawGrid(unitGridCanvas, unitBitmap, scale, grid);
         }
       },

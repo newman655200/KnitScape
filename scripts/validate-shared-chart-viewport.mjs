@@ -74,6 +74,7 @@ class EventTargetDouble {
       clientX: 0,
       clientY: 0,
       deltaY: 0,
+      deltaMode: 0,
       ...properties,
       preventDefault() {
         preventDefaultCalls += 1;
@@ -113,6 +114,42 @@ class EventTargetDouble {
   listenerCount(type) {
     return (this.listeners.get(type) || []).length;
   }
+}
+
+class RenderContextDouble {
+  constructor() {
+    this.operations = 0;
+  }
+
+  record() { this.operations += 1; }
+  resetTransform() { this.record(); }
+  clearRect() { this.record(); }
+  translate() { this.record(); }
+  save() { this.record(); }
+  scale() { this.record(); }
+  stroke() { this.record(); }
+  restore() { this.record(); }
+  beginPath() { this.record(); }
+  moveTo() { this.record(); }
+  lineTo() { this.record(); }
+  setTransform() { this.record(); }
+  fillRect() { this.record(); }
+}
+
+class RenderCanvasDouble {
+  constructor() {
+    this.context = new RenderContextDouble();
+    this.style = {};
+    this.sizeWrites = 0;
+    this._width = 0;
+    this._height = 0;
+  }
+
+  get width() { return this._width; }
+  set width(value) { this._width = value; this.sizeWrites += 1; }
+  get height() { return this._height; }
+  set height(value) { this._height = value; this.sizeWrites += 1; }
+  getContext() { return this.context; }
 }
 
 let server;
@@ -182,6 +219,101 @@ try {
     originalNodes,
     "stable Lit templates retain transform nodes across pan rerenders"
   );
+
+  const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
+  const { drawBitmapEditor } = await server.ssrLoadModule(
+    "/src/components/drawBitmapEditor.js"
+  );
+  const { yarnSequenceCanvas } = await server.ssrLoadModule(
+    "/src/components/yarnSequenceCanvas.js"
+  );
+  globalThis.devicePixelRatio = 1;
+  const bitmapCanvases = Array.from({ length: 5 }, () => new RenderCanvasDouble());
+  const [
+    fullSymbolCanvas,
+    fullGridCanvas,
+    unitSymbolCanvas,
+    unitGridCanvas,
+    interactionCanvas,
+  ] = bitmapCanvases;
+  const bitmap = Bimp.empty(2, 2, 1);
+  const bitmapState = {
+    camBitmap: bitmap,
+    camUnitBitmap: bitmap,
+    scale: 20,
+    symbolMap: ["knit", "purl", "slip", "tuck"],
+    symbolLineWidth: 3,
+    grid: true,
+  };
+  const bitmapComponent = drawBitmapEditor({
+    fullField: "camBitmap",
+    unitField: "camUnitBitmap",
+    fullSymbolCanvas,
+    fullGridCanvas,
+    unitSymbolCanvas,
+    unitGridCanvas,
+    interactionCanvas,
+  })({ state: bitmapState });
+  const bitmapWritesAtDpr1 = bitmapCanvases.map((canvas) => canvas.sizeWrites);
+  const bitmapOperationsAtDpr1 = bitmapCanvases.map(
+    (canvas) => canvas.context.operations
+  );
+  assert.equal(fullSymbolCanvas.style.width, "40px");
+  globalThis.devicePixelRatio = 2;
+  bitmapComponent.syncState(bitmapState, ["chartPan"]);
+  assert.equal(fullSymbolCanvas.width, 40);
+  assert.equal(fullSymbolCanvas.height, 40);
+  assert.equal(fullSymbolCanvas.style.width, "20px");
+  assert.deepEqual(
+    bitmapCanvases.map((canvas) => canvas.sizeWrites),
+    bitmapWritesAtDpr1.map((writes) => writes + 2),
+    "same-scale DPR change resets all bitmap canvas dimensions"
+  );
+  for (const index of [0, 1, 2, 3]) {
+    assert.ok(
+      bitmapCanvases[index].context.operations > bitmapOperationsAtDpr1[index],
+      "same-scale DPR change redraws full and unit bitmap layers"
+    );
+  }
+  const stableBitmapWrites = bitmapCanvases.map((canvas) => canvas.sizeWrites);
+  const stableBitmapOperations = bitmapCanvases.map(
+    (canvas) => canvas.context.operations
+  );
+  bitmapComponent.syncState(bitmapState, ["chartPan"]);
+  assert.deepEqual(bitmapCanvases.map((canvas) => canvas.sizeWrites), stableBitmapWrites);
+  assert.deepEqual(
+    bitmapCanvases.map((canvas) => canvas.context.operations),
+    stableBitmapOperations,
+    "pan-only bitmap sync stays fast when DPR is unchanged"
+  );
+
+  stateModule.dispatch({ scale: 20 });
+  globalThis.devicePixelRatio = 1;
+  const yarnCanvas = new RenderCanvasDouble();
+  const yarnState = {
+    scale: 20,
+    yarnSequence: new Bimp(1, 2, [0, 0]),
+    yarnPalette: ["#000000"],
+  };
+  const yarnComponent = yarnSequenceCanvas({ canvas: yarnCanvas })({
+    state: yarnState,
+  });
+  const yarnWritesAtDpr1 = yarnCanvas.sizeWrites;
+  const yarnOperationsAtDpr1 = yarnCanvas.context.operations;
+  assert.equal(yarnCanvas.style.height, "40px");
+  globalThis.devicePixelRatio = 2;
+  yarnComponent.syncState(yarnState, ["chartPan"]);
+  assert.equal(yarnCanvas.width, 20);
+  assert.equal(yarnCanvas.height, 40);
+  assert.equal(yarnCanvas.style.width, "10px");
+  assert.equal(yarnCanvas.style.height, "20px");
+  assert.equal(yarnCanvas.sizeWrites, yarnWritesAtDpr1 + 2);
+  assert.ok(yarnCanvas.context.operations > yarnOperationsAtDpr1);
+  const stableYarnWrites = yarnCanvas.sizeWrites;
+  const stableYarnOperations = yarnCanvas.context.operations;
+  yarnComponent.syncState(yarnState, ["chartPan"]);
+  assert.equal(yarnCanvas.sizeWrites, stableYarnWrites);
+  assert.equal(yarnCanvas.context.operations, stableYarnOperations);
 
   const viewport = await server.ssrLoadModule("/src/chartViewport.js");
   assert.equal(viewport.cssCellSize(20, 2), 10);
@@ -256,6 +388,30 @@ try {
   });
   assert.equal(boundaryZoom.scale, 100);
   assert.equal(boundaryZoom.pan, boundaryPan, "out-of-range zoom preserves pan identity");
+  for (const overrides of [
+    { nextScale: Number.NaN },
+    { nextScale: Number.POSITIVE_INFINITY },
+    { scale: Number.NaN },
+    { scale: Number.NEGATIVE_INFINITY },
+    { pan: { x: Number.POSITIVE_INFINITY, y: 0 } },
+    { point: { x: 0, y: Number.NaN } },
+  ]) {
+    const input = {
+      pan: { x: 10, y: 20 },
+      scale: 20,
+      nextScale: 24,
+      point: { x: 100, y: 120 },
+      devicePixelRatio: 1,
+      ...overrides,
+    };
+    const result = viewport.zoomViewportAtPoint(input);
+    assert.equal(result.pan, input.pan, "invalid viewport input preserves pan identity");
+    assert.equal(
+      Object.is(result.scale, input.scale),
+      true,
+      "invalid viewport input preserves current scale"
+    );
+  }
 
   const { chartPointerPanZoom } = await server.ssrLoadModule(
     "/src/events/chartPointerPanZoom.js"
@@ -272,8 +428,14 @@ try {
     width: 300,
     height: 280,
   });
-  chartPointerPanZoom(firstWindow);
-  chartPointerPanZoom(secondWindow);
+  const firstWheelFrames = [];
+  const secondWheelFrames = [];
+  chartPointerPanZoom(firstWindow, {
+    requestFrame: (callback) => firstWheelFrames.push(callback),
+  });
+  chartPointerPanZoom(secondWindow, {
+    requestFrame: (callback) => secondWheelFrames.push(callback),
+  });
   assert.deepEqual(firstWindow.listenerOptions("wheel"), [{ passive: false }]);
   assert.deepEqual(secondWindow.listenerOptions("wheel"), [{ passive: false }]);
 
@@ -295,12 +457,27 @@ try {
     reverseScroll: false,
   });
   observedChanges.length = 0;
-  const wheelIn = firstWindow.dispatch("wheel", {
+  for (let index = 0; index < 4; index++) {
+    const tinyWheel = firstWindow.dispatch("wheel", {
+      clientX: 150,
+      clientY: 180,
+      deltaY: -20,
+    });
+    assert.equal(tinyWheel.preventDefaultCalls(), 1);
+  }
+  assert.equal(observedChanges.length, 0, "tiny wheel events never dispatch synchronously");
+  assert.equal(firstWheelFrames.length, 1, "tiny wheel events share one frame");
+  firstWheelFrames.shift()();
+  assert.equal(observedChanges.length, 0, "subthreshold wheel delta is retained");
+  const thresholdWheel = firstWindow.dispatch("wheel", {
     clientX: 150,
     clientY: 180,
-    deltaY: -1,
+    deltaY: -20,
   });
-  assert.equal(wheelIn.preventDefaultCalls(), 1);
+  assert.equal(thresholdWheel.preventDefaultCalls(), 1);
+  assert.equal(observedChanges.length, 0);
+  assert.equal(firstWheelFrames.length, 1);
+  firstWheelFrames.shift()();
   assert.deepEqual(observedChanges.at(-1), {
     changes: ["scale", "chartPan"],
     scale: 21,
@@ -309,14 +486,87 @@ try {
   assert.equal(stateModule.GLOBAL_STATE.scale, 21);
   assert.deepEqual(stateModule.GLOBAL_STATE.chartPan, { x: -5, y: -6 });
 
-  stateModule.dispatch({ reverseScroll: true });
+  stateModule.dispatch({ scale: 20, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 140,
+    clientY: 170,
+    deltaY: -160,
+  });
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -140,
+  });
+  assert.equal(firstWheelFrames.length, 1, "large wheel events coalesce per frame");
+  assert.equal(observedChanges.length, 0);
+  firstWheelFrames.shift()();
+  assert.equal(observedChanges.length, 1, "one frame produces one wheel dispatch");
+  assert.equal(stateModule.GLOBAL_STATE.scale, 23);
+
+  stateModule.dispatch({ scale: 20, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -2.5,
+    deltaMode: 1,
+  });
+  assert.equal(observedChanges.length, 0);
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 21, "line deltas normalize to pixels");
+
+  stateModule.dispatch({ scale: 20, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -2500,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 30);
+  assert.equal(firstWheelFrames.length, 1, "capped wheel residual schedules another frame");
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 40);
+  assert.equal(firstWheelFrames.length, 1);
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 45);
+  assert.equal(firstWheelFrames.length, 0, "wheel residual drains without another event");
+  assert.equal(observedChanges.length, 3, "large gesture dispatches at most once per frame");
+
+  stateModule.dispatch({ scale: 95, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -1000,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 100, "wheel overshoot reaches MAX_SCALE");
+  assert.equal(observedChanges.length, 1);
+
+  stateModule.dispatch({ scale: 7, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: 1000,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 5, "wheel overshoot reaches MIN_SCALE");
+  assert.equal(observedChanges.length, 1);
+
+  stateModule.dispatch({ scale: 20, chartPan: { x: 0, y: 0 }, reverseScroll: true });
   observedChanges.length = 0;
   secondWindow.dispatch("wheel", {
     clientX: 550,
     clientY: 220,
     deltaY: -1,
+    deltaMode: 2,
   });
-  assert.equal(stateModule.GLOBAL_STATE.scale, 20, "reverse scroll flips zoom direction");
+  assert.equal(observedChanges.length, 0);
+  secondWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 18, "page deltas and reverse scroll are honored");
   assert.deepEqual(observedChanges.at(-1).changes, ["scale", "chartPan"]);
 
   const maxPan = { x: 12, y: 15 };
@@ -325,9 +575,11 @@ try {
   const boundaryWheel = firstWindow.dispatch("wheel", {
     clientX: 130,
     clientY: 140,
-    deltaY: -1,
+    deltaY: -100,
   });
   assert.equal(boundaryWheel.preventDefaultCalls(), 1);
+  assert.equal(observedChanges.length, 0);
+  firstWheelFrames.shift()();
   assert.equal(observedChanges.length, 0, "wheel boundary is a dispatch-free no-op");
   assert.equal(stateModule.GLOBAL_STATE.chartPan, maxPan);
 
@@ -409,15 +661,35 @@ try {
   assert.equal(auxLeft.preventDefaultCalls(), 0);
 
   const zoomFit = await server.ssrLoadModule("/src/actions/zoomFit.js");
+  assert.equal(typeof zoomFit.createChartFitScheduler, "function");
+  const fitFrames = [];
+  let scheduledFits = 0;
+  const scheduleChartFit = zoomFit.createChartFitScheduler({
+    fit: () => {
+      scheduledFits += 1;
+    },
+    requestFrame: (callback) => fitFrames.push(callback),
+  });
+  scheduleChartFit();
+  scheduleChartFit();
+  scheduleChartFit();
+  assert.equal(fitFrames.length, 1, "fit requests coalesce into one frame");
+  assert.equal(scheduledFits, 0);
+  fitFrames.shift()();
+  assert.equal(scheduledFits, 1, "one frame runs one chart fit");
+  scheduleChartFit();
+  assert.equal(fitFrames.length, 1, "scheduler accepts a later frame");
   const originalDocument = globalThis.document;
   const originalGetComputedStyle = globalThis.getComputedStyle;
-  const viewports = [
-    { clientWidth: 364, clientHeight: 344 },
-    { clientWidth: 347, clientHeight: 328 },
-  ].map((dimensions) => ({
-    ...dimensions,
-    getBoundingClientRect: () => ({ width: dimensions.clientWidth, height: dimensions.clientHeight }),
-  }));
+  function viewportDouble(clientWidth, clientHeight) {
+    return {
+      clientWidth,
+      clientHeight,
+      getBoundingClientRect: () => ({ width: clientWidth, height: clientHeight }),
+    };
+  }
+  const viewports = [viewportDouble(364, 344), viewportDouble(347, 328)];
+  let fitViewports = viewports;
   globalThis.document = {
     querySelector(selector) {
       if (selector === ".pattern-grid-window") {
@@ -426,10 +698,10 @@ try {
         };
       }
       if (selector === "#cam-editor-pane .pattern-editor-viewport") {
-        return viewports[0];
+        return fitViewports[0];
       }
       if (selector === "#needle-editor-pane .pattern-editor-viewport") {
-        return viewports[1];
+        return fitViewports[1];
       }
       assert.fail(`unexpected selector: ${selector}`);
     },
@@ -443,6 +715,12 @@ try {
   const centerPan = { x: 10, y: 20 };
   stateModule.dispatch({ scale: 20, chartPan: centerPan });
   observedChanges.length = 0;
+  for (const invalidScale of [Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]) {
+    zoomFit.centerZoom(invalidScale);
+  }
+  assert.equal(observedChanges.length, 0, "nonfinite center zoom never dispatches");
+  assert.equal(stateModule.GLOBAL_STATE.scale, 20);
+  assert.equal(stateModule.GLOBAL_STATE.chartPan, centerPan);
   zoomFit.centerZoom(101);
   assert.equal(observedChanges.length, 0, "zoom above MAX_SCALE does not dispatch");
   assert.equal(stateModule.GLOBAL_STATE.scale, 20);
@@ -466,6 +744,25 @@ try {
     scale: 19,
     pan: { x: 0, y: 0 },
   });
+  fitViewports = [viewportDouble(364, 344), viewportDouble(0, 0)];
+  observedChanges.length = 0;
+  zoomFit.fitChart();
+  assert.deepEqual(observedChanges.at(-1), {
+    changes: ["scale", "chartPan"],
+    scale: 20,
+    pan: { x: 0, y: 0 },
+  });
+  const noFitPan = { x: 7, y: 9 };
+  stateModule.dispatch({ scale: 20, chartPan: noFitPan });
+  observedChanges.length = 0;
+  fitViewports = [
+    viewportDouble(0, 0),
+    viewportDouble(Number.NaN, Number.POSITIVE_INFINITY),
+  ];
+  zoomFit.fitChart();
+  assert.equal(observedChanges.length, 0, "no usable pane makes fit a no-op");
+  assert.equal(stateModule.GLOBAL_STATE.scale, 20);
+  assert.equal(stateModule.GLOBAL_STATE.chartPan, noFitPan);
   globalThis.document = originalDocument;
   globalThis.getComputedStyle = originalGetComputedStyle;
 } finally {
@@ -494,7 +791,13 @@ assert.doesNotMatch(stateSource, /\b(?:chartScale|camPan|needlePan)\b/);
 assert.doesNotMatch(editorSource, /\b(?:chartScale|camPan|needlePan)\b/);
 assert.match(indexSource, /querySelectorAll\(\s*"\.pattern-grid-window"\s*\)/);
 assert.match(indexSource, /chartWindows\.forEach\(\s*chartPointerPanZoom\s*\)/);
-assert.match(indexSource, /window\.onresize\s*=\s*\(\)\s*=>\s*\{\s*measureWindow\(\);\s*fitChart\(\);\s*\}/);
+assert.equal(
+  (indexSource.match(/onDragEnd:\s*scheduleChartFit/g) || []).length,
+  2,
+  "both Split instances schedule a fit after dragging"
+);
+assert.match(indexSource, /const scheduleChartFit\s*=\s*createChartFitScheduler\(\)/);
+assert.match(indexSource, /window\.onresize\s*=\s*\(\)\s*=>\s*\{\s*measureWindow\(\);\s*scheduleChartFit\(\);\s*\}/);
 assert.match(
   styles,
   /\.pattern-editor-stage\s*\{[\s\S]*?width:\s*min\(100%,\s*calc\(\(var\(--visible-cells\) \+ 1\) \* var\(--chart-cell-size\)\)\)[\s\S]*?height:\s*min\(100%,\s*calc\(var\(--visible-cells\) \* var\(--chart-cell-size\)\)\)/

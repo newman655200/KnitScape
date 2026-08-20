@@ -2,7 +2,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
-import { fitChart } from "./actions/zoomFit.js";
+import { createChartFitScheduler, fitChart } from "./actions/zoomFit.js";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
 import { isCodeGuideMode } from "./codeGuide/mode.js";
 import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
@@ -24,6 +24,7 @@ import { view } from "./views/view.js";
 const appRenderer = createAppRenderer({
   renderView: () => render(view(), document.body),
 });
+const scheduleChartFit = createChartFitScheduler();
 
 function initKeyboard(yarnSequenceCanvasElement, simContainer) {
   addKeypressListeners();
@@ -81,6 +82,7 @@ function init() {
     sizes: [60, 40],
     minSize: 100,
     gutterSize: 11,
+    onDragEnd: scheduleChartFit,
   });
 
   Split(["#cam-editor-pane", "#needle-editor-pane"], {
@@ -88,6 +90,7 @@ function init() {
     minSize: 90,
     gutterSize: 9,
     direction: "vertical",
+    onDragEnd: scheduleChartFit,
   });
 
   if (isCodeGuideMode()) {
@@ -138,5 +141,5 @@ function init() {
 window.onload = init;
 window.onresize = () => {
   measureWindow();
-  fitChart();
+  scheduleChartFit();
 };

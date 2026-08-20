@@ -127,6 +127,22 @@ assert.throws(
   () => deserializePattern({ ...serialized, needleInputs: ["1", "2", "3"] }),
   /needleInputs/
 );
+assert.throws(
+  () => deserializePattern({ ...serialized, needleInputs: undefined }),
+  /needleInputs/
+);
+assert.throws(
+  () =>
+    deserializePattern({
+      ...serialized,
+      needleInputs: ["1", 2, "3", "4"],
+    }),
+  /needleInputs/
+);
+assert.throws(
+  () => deserializePattern({ ...serialized, appliedNeedleInputs: undefined }),
+  /appliedNeedleInputs/
+);
 
 for (const filename of ["hat mosaic.json", "sunset dots.json", "pseudoweave.json"]) {
   const example = JSON.parse(

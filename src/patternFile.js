@@ -41,7 +41,7 @@ function canvasDimension(value, label) {
   return normalized;
 }
 
-function normalizeInputs(value, label, fallback = DEFAULT_NEEDLE_INPUTS) {
+function normalizeMigratedInputs(value, label, fallback = DEFAULT_NEEDLE_INPUTS) {
   const inputs = value === undefined ? fallback : value;
   if (!Array.isArray(inputs) || inputs.length !== 4) {
     throw new Error(`${label} must contain four input strings.`);
@@ -49,7 +49,18 @@ function normalizeInputs(value, label, fallback = DEFAULT_NEEDLE_INPUTS) {
   return inputs.map((input) => String(input ?? ""));
 }
 
-function deserializedPattern(pattern, source) {
+function normalizeV3Inputs(value, label) {
+  if (
+    !Array.isArray(value) ||
+    value.length !== 4 ||
+    value.some((input) => typeof input !== "string")
+  ) {
+    throw new Error(`${label} must contain four input strings.`);
+  }
+  return [...value];
+}
+
+function deserializedPattern(pattern, source, normalizeInputs) {
   const needleInputs = normalizeInputs(pattern.needleInputs, "needleInputs");
   const appliedNeedleInputs = normalizeInputs(
     pattern.appliedNeedleInputs,
@@ -69,24 +80,32 @@ function deserializedPattern(pattern, source) {
 }
 
 function deserializeV3(pattern) {
-  return deserializedPattern(pattern, {
-    canvasWidth: canvasDimension(pattern.canvasWidth, "canvasWidth"),
-    canvasHeight: canvasDimension(pattern.canvasHeight, "canvasHeight"),
-    camUnitBitmap: bitmapFromJSON(pattern.camUnitBitmap, "camUnitBitmap"),
-    needleUnitBitmap: bitmapFromJSON(
-      pattern.needleUnitBitmap,
-      "needleUnitBitmap"
-    ),
-  });
+  return deserializedPattern(
+    pattern,
+    {
+      canvasWidth: canvasDimension(pattern.canvasWidth, "canvasWidth"),
+      canvasHeight: canvasDimension(pattern.canvasHeight, "canvasHeight"),
+      camUnitBitmap: bitmapFromJSON(pattern.camUnitBitmap, "camUnitBitmap"),
+      needleUnitBitmap: bitmapFromJSON(
+        pattern.needleUnitBitmap,
+        "needleUnitBitmap"
+      ),
+    },
+    normalizeV3Inputs
+  );
 }
 
 function migrateV2(pattern) {
-  return deserializedPattern(pattern, {
-    canvasWidth: 60,
-    canvasHeight: 60,
-    camUnitBitmap: bitmapFromJSON(pattern.camBitmap, "camBitmap"),
-    needleUnitBitmap: bitmapFromJSON(pattern.needleBitmap, "needleBitmap"),
-  });
+  return deserializedPattern(
+    pattern,
+    {
+      canvasWidth: 60,
+      canvasHeight: 60,
+      camUnitBitmap: bitmapFromJSON(pattern.camBitmap, "camBitmap"),
+      needleUnitBitmap: bitmapFromJSON(pattern.needleBitmap, "needleBitmap"),
+    },
+    normalizeMigratedInputs
+  );
 }
 
 function migrateLegacyRepeats(pattern) {
@@ -99,12 +118,16 @@ function migrateLegacyRepeats(pattern) {
     "repeats[0].bitmap"
   );
 
-  return deserializedPattern(pattern, {
-    canvasWidth: canvasDimension(pattern.width, "width"),
-    canvasHeight: canvasDimension(pattern.height, "height"),
-    camUnitBitmap,
-    needleUnitBitmap: cloneBitmap(camUnitBitmap),
-  });
+  return deserializedPattern(
+    pattern,
+    {
+      canvasWidth: canvasDimension(pattern.width, "width"),
+      canvasHeight: canvasDimension(pattern.height, "height"),
+      camUnitBitmap,
+      needleUnitBitmap: cloneBitmap(camUnitBitmap),
+    },
+    normalizeMigratedInputs
+  );
 }
 
 export function deserializePattern(pattern) {

@@ -210,6 +210,23 @@ try {
     }).scale,
     40
   );
+  const cssFirstFit = viewport.fitVisibleCells({
+    viewportWidth: 350,
+    viewportHeight: 336,
+    devicePixelRatio: 2,
+  });
+  assert.equal(
+    cssFirstFit.scale,
+    40,
+    "fit floors the 20.588px CSS cell before applying DPR"
+  );
+  const fractionalDprFit = viewport.fitVisibleCells({
+    viewportWidth: 350,
+    viewportHeight: 336,
+    devicePixelRatio: 1.25,
+  });
+  assert.equal(fractionalDprFit.scale, 25);
+  assert.equal(Number.isFinite(fractionalDprFit.scale), true);
   assert.equal(
     viewport.fitVisibleCells({
       viewportWidth: 17,
@@ -423,7 +440,17 @@ try {
     paddingTop: "12px",
     paddingBottom: "12px",
   });
-  stateModule.dispatch({ scale: 20, chartPan: { x: 10, y: 20 } });
+  const centerPan = { x: 10, y: 20 };
+  stateModule.dispatch({ scale: 20, chartPan: centerPan });
+  observedChanges.length = 0;
+  zoomFit.centerZoom(101);
+  assert.equal(observedChanges.length, 0, "zoom above MAX_SCALE does not dispatch");
+  assert.equal(stateModule.GLOBAL_STATE.scale, 20);
+  assert.equal(stateModule.GLOBAL_STATE.chartPan, centerPan);
+  zoomFit.centerZoom(4);
+  assert.equal(observedChanges.length, 0, "zoom below MIN_SCALE does not dispatch");
+  assert.equal(stateModule.GLOBAL_STATE.scale, 20);
+  assert.equal(stateModule.GLOBAL_STATE.chartPan, centerPan);
   observedChanges.length = 0;
   zoomFit.centerZoom(22);
   assert.deepEqual(observedChanges.at(-1), {

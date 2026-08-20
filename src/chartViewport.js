@@ -22,12 +22,13 @@ export function fitVisibleCells({
   devicePixelRatio = globalThis.devicePixelRatio,
 }) {
   const ratio = safeDevicePixelRatio(devicePixelRatio);
-  const scale = Math.floor(
+  const cssScale = Math.floor(
     Math.min(
       Number(viewportWidth) / (visibleColumns + gutterColumns),
       Number(viewportHeight) / visibleRows
-    ) * ratio
+    )
   );
+  const scale = cssScale * ratio;
 
   return {
     scale: clampChartScale(scale),

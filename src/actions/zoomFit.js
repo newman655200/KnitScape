@@ -1,6 +1,5 @@
 import { GLOBAL_STATE, dispatch } from "../state";
 import {
-  clampChartScale,
   cssCellSize,
   fitVisibleCells,
   zoomViewportAtPoint,
@@ -38,7 +37,7 @@ export function toggleFullscreen() {
 }
 
 export function centerZoom(scale) {
-  const nextScale = clampChartScale(scale);
+  const nextScale = Number(scale);
   if (nextScale === GLOBAL_STATE.scale) return;
 
   const gridWindow = document.querySelector(".pattern-grid-window");
@@ -50,6 +49,7 @@ export function centerZoom(scale) {
     nextScale,
     point: { x: bounds.width / 2, y: bounds.height / 2 },
   });
+  if (viewport.scale === GLOBAL_STATE.scale) return;
   dispatch({ scale: viewport.scale, chartPan: viewport.pan });
 }
 

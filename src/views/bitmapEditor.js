@@ -9,12 +9,16 @@ export function bitmapEditor({
   unitField,
   prefix,
   titleKey,
-  showYarn = false,
   showNeedleControls = false,
 }) {
   const symbolCanvasId = prefix === "needle" ? "symbol-canvas" : `${prefix}-symbol-canvas`;
   const gridCanvasId = prefix === "needle" ? "grid" : `${prefix}-grid`;
   const language = GLOBAL_STATE.language;
+  const scale = Number(GLOBAL_STATE.scale);
+  const deviceScale = Number(globalThis.devicePixelRatio);
+  const chartCellSize =
+    (Number.isFinite(scale) && scale > 0 ? scale : 1) /
+    (Number.isFinite(deviceScale) && deviceScale > 0 ? deviceScale : 1);
 
   return html`<section
     id="${prefix}-editor-pane"
@@ -26,34 +30,49 @@ export function bitmapEditor({
     </header>
     ${showNeedleControls ? needleArrangementControls() : nothing}
     <div class="pattern-editor-viewport">
-      <div class="pattern-canvas-row">
-        ${showYarn
-          ? html`<div id="needle-yarn-sequence">
+      <div
+        class="pattern-editor-stage"
+        style="--chart-cell-size: ${chartCellSize}px">
+        <div class="yarn-sequence-gutter">
+          <div class="yarn-sequence-track">
+            <canvas
+              id="${prefix}-yarn-sequence-canvas"
+              ${prefix === "needle"
+                ? html`data-code-guide-key="needle.yarn-sequence"`
+                : nothing}></canvas>
+          </div>
+        </div>
+        <div class="pattern-grid-window" data-editor-prefix=${prefix}>
+          <div class="pattern-canvas-transform">
+            <div class="pattern-canvas-stack">
+              ${prefix === "needle"
+                ? html`<canvas
+                    id="yarn-color-canvas"
+                    data-code-guide-key="needle.yarn-color"></canvas>`
+                : nothing}
               <canvas
-                id="yarn-sequence-canvas"
-                data-code-guide-key="needle.yarn-sequence"></canvas>
-            </div>`
-          : nothing}
-        <div class="pattern-canvas-stack">
-          ${showYarn
-            ? html`<canvas
-                id="yarn-color-canvas"
-                data-code-guide-key="needle.yarn-color"></canvas>`
-            : nothing}
-          <canvas
-            id=${symbolCanvasId}
-            class="pattern-symbol-canvas"
-            data-code-guide-key="${prefix}.symbols"></canvas>
-          <canvas
-            id=${gridCanvasId}
-            class="pattern-grid-canvas"
-            data-code-guide-key="${prefix}.grid"></canvas>
-          <canvas
-            id="${prefix}-interaction-canvas"
-            class="pattern-interaction-canvas"
-            data-pattern-field=${fullField}
-            data-unit-field=${unitField}
-            aria-label=${t(titleKey, language)}></canvas>
+                id=${symbolCanvasId}
+                class="pattern-symbol-canvas"
+                data-code-guide-key="${prefix}.symbols"></canvas>
+              <canvas
+                id=${gridCanvasId}
+                class="pattern-grid-canvas"
+                data-code-guide-key="${prefix}.grid"></canvas>
+              <canvas
+                id="${prefix}-unit-symbol-canvas"
+                class="pattern-unit-symbol-canvas"></canvas>
+              <canvas
+                id="${prefix}-unit-grid"
+                class="pattern-unit-grid-canvas"></canvas>
+              <canvas
+                id="${prefix}-interaction-canvas"
+                class="pattern-interaction-canvas"
+                data-pattern-field=${fullField}
+                data-full-field=${fullField}
+                data-unit-field=${unitField}
+                aria-label=${t(titleKey, language)}></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>

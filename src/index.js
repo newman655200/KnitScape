@@ -65,7 +65,7 @@ function init() {
   );
   const yarnColorCanvas = document.getElementById("yarn-color-canvas");
   const yarnSequenceCanvasElement = document.getElementById(
-    "yarn-sequence-canvas"
+    "needle-yarn-sequence-canvas"
   );
   const simContainer = document.getElementById("sim-container");
 

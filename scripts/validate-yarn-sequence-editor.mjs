@@ -55,7 +55,7 @@ const simulation = [
   "src/simulation/drawYarnSimulation.js",
 ].map(read).join("\n");
 
-assert.match(bitmapEditor, /id="yarn-sequence-canvas"/);
+assert.match(bitmapEditor, /id="\$\{prefix\}-yarn-sequence-canvas"/);
 assert.match(
   bitmapEditor,
   /export function bitmapEditor\(\{\s*fullField,\s*unitField,\s*prefix,/
@@ -67,7 +67,10 @@ assert.match(bitmapEditor, /id=\$\{gridCanvasId\}/);
 assert.match(bitmapEditor, /id="\$\{prefix\}-interaction-canvas"/);
 assert.match(bitmapEditor, /data-code-guide-key="\$\{prefix\}\.symbols"/);
 assert.match(bitmapEditor, /data-code-guide-key="\$\{prefix\}\.grid"/);
-assert.match(bitmapEditor, /id="needle-yarn-sequence"/);
+assert.match(bitmapEditor, /class="yarn-sequence-gutter"/);
+assert.match(bitmapEditor, /class="yarn-sequence-track"/);
+assert.match(bitmapEditor, /class="pattern-grid-window"/);
+assert.match(bitmapEditor, /class="pattern-canvas-transform"/);
 assert.match(bitmapEditor, /id="yarn-color-canvas"/);
 assert.match(bitmapEditor, /data-code-guide-key="needle\.yarn-sequence"/);
 assert.match(bitmapEditor, /data-code-guide-key="needle\.yarn-color"/);

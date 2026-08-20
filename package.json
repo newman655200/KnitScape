@@ -29,6 +29,7 @@
     "validate:pattern-file-v3": "node --experimental-default-type=module scripts/validate-pattern-file-v3.mjs",
     "validate:needle-arrangement-state": "node scripts/validate-needle-arrangement-state.mjs",
     "validate:dual-pattern-editor": "node scripts/validate-dual-pattern-editor.mjs",
+    "validate:repeat-editor-layout": "node scripts/validate-repeat-editor-layout.mjs",
     "validate:bitmap-pointer-unit-boundary": "node scripts/validate-bitmap-pointer-unit-boundary.mjs",
     "validate:needle-arrangement-acceptance": "node scripts/validate-needle-arrangement-acceptance.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",

@@ -71,7 +71,9 @@ assert.match(bitmapEditor, /class="yarn-sequence-gutter"/);
 assert.match(bitmapEditor, /class="yarn-sequence-track"/);
 assert.match(bitmapEditor, /class="pattern-grid-window"/);
 assert.match(bitmapEditor, /class="pattern-canvas-transform"/);
+assert.match(bitmapEditor, /data-code-guide-key="cam\.yarn-sequence"/);
 assert.match(bitmapEditor, /data-code-guide-key="needle\.yarn-sequence"/);
+assert.match(bitmapEditor, /aria-label="\$\{t\(titleKey, language\)\} \$\{t\("yarnSequence\.title", language\)\}"/);
 assert.doesNotMatch(bitmapEditor, /yarn-color-canvas|needle\.yarn-color/);
 for (const source of [pointer, touch]) {
   assert.match(source, /beginTexturePreviewInteraction/);

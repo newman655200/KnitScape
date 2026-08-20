@@ -96,6 +96,11 @@
   will-change: transform;
 }
 
+.yarn-sequence-canvas {
+  cursor: crosshair;
+  touch-action: none;
+}
+
 .pattern-canvas-transform {
   position: absolute;
   top: 0;

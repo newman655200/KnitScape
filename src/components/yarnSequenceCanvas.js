@@ -1,4 +1,4 @@
-import { sizeCanvasToBitmap } from "../actions/zoomFit";
+import { cssCellSize } from "../chartViewport.js";
 
 function pixelRatio() {
   const ratio = Number(globalThis.devicePixelRatio);
@@ -13,6 +13,13 @@ export function yarnSequenceCanvas({ canvas }) {
     let width = yarnSequence.width;
     let height = yarnSequence.height;
     let lastDrawn = null;
+
+    function sizeCanvas() {
+      canvas.width = scale * width;
+      canvas.height = scale * height;
+      canvas.style.width = `${cssCellSize(scale, dpr) * width}px`;
+      canvas.style.height = `${cssCellSize(scale, dpr) * height}px`;
+    }
 
     function drawYarnSequenceGrid(ctx) {
       ctx.save();
@@ -57,7 +64,7 @@ export function yarnSequenceCanvas({ canvas }) {
       lastDrawn = yarnSequence;
     }
 
-    sizeCanvasToBitmap(canvas, width, height, scale);
+    sizeCanvas();
     draw();
 
     return {
@@ -80,7 +87,7 @@ export function yarnSequenceCanvas({ canvas }) {
           scale = state.scale;
           dpr = nextDpr;
 
-          sizeCanvasToBitmap(canvas, width, height, scale);
+          sizeCanvas();
           lastDrawn = null;
         }
 

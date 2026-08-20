@@ -23,6 +23,7 @@
     "validate:yarn-length-gauge": "node --experimental-default-type=module scripts/validate-yarn-length-gauge.mjs",
     "validate:yarn-length-parameters": "node scripts/validate-yarn-length-parameters.mjs",
     "validate:yarn-sequence-editor": "node --experimental-default-type=module scripts/validate-yarn-sequence-editor.mjs",
+    "validate:shared-yarn-gutters": "node --experimental-default-type=module scripts/validate-shared-yarn-gutters.mjs",
     "validate:central-stitch-toolbar": "node scripts/validate-central-stitch-toolbar.mjs",
     "validate:needle-arrangement-transform": "node --experimental-default-type=module scripts/validate-needle-arrangement-transform.mjs",
     "validate:pattern-unit-derivation": "node --experimental-default-type=module scripts/validate-pattern-unit-derivation.mjs",

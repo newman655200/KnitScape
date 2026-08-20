@@ -37,9 +37,11 @@ export function bitmapEditor({
             style="transform: translateY(${chartPan.y}px)">
             <canvas
               id="${prefix}-yarn-sequence-canvas"
+              class="yarn-sequence-canvas"
+              aria-label="${t(titleKey, language)} ${t("yarnSequence.title", language)}"
               ${prefix === "needle"
                 ? html`data-code-guide-key="needle.yarn-sequence"`
-                : nothing}></canvas>
+                : html`data-code-guide-key="cam.yarn-sequence"`}></canvas>
           </div>
         </div>
         <div class="pattern-grid-window" data-editor-prefix=${prefix}>

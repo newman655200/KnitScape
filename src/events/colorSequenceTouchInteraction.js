@@ -5,49 +5,65 @@ import {
 } from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
 
-function brushColor(e, colorCanvas) {
-  let pos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
-  dispatch({
-    yarnSequence: GLOBAL_STATE.yarnSequence.brush(
-      { x: pos.x, y: pos.y },
-      GLOBAL_STATE.activeYarn
-    ),
-  });
+function touchWithId(event, identifier) {
+  return [...(event.touches || [])].find((touch) => touch.identifier === identifier);
+}
 
-  function move(e) {
-    let newPos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
-    if (newPos.x == pos.x && newPos.y == pos.y) return;
-
-    const updated = GLOBAL_STATE.yarnSequence.line(
-      { x: pos.x, y: pos.y },
-      { x: newPos.x, y: newPos.y },
-      GLOBAL_STATE.activeYarn
-    );
-
-    dispatch({ yarnSequence: updated });
-
-    pos = newPos;
-  }
-
-  function end() {
-    dispatch({ transforming: false });
-    endTexturePreviewInteraction();
-
-    colorCanvas.removeEventListener("touchmove", move);
-    colorCanvas.removeEventListener("touchcancel", end);
-    colorCanvas.removeEventListener("touchend", end);
-  }
-
-  colorCanvas.addEventListener("touchmove", move);
-  colorCanvas.addEventListener("touchcancel", end);
-  colorCanvas.addEventListener("touchend", end);
+function changedTouchWithId(event, identifier) {
+  return [...(event.changedTouches || [])].find(
+    (touch) => touch.identifier === identifier
+  );
 }
 
 export function colorSequenceTouchInteraction(canvas) {
-  canvas.addEventListener("touchstart", (e) => {
-    dispatch({ transforming: true });
+  let activeTouchId = null;
+
+  canvas.addEventListener("touchstart", (event) => {
+    if (activeTouchId !== null) return;
+    const touch = event.changedTouches?.[0] || event.touches?.[0];
+    if (!touch) return;
+
+    let position = colorSequencePosAtCoords(touch, canvas);
+    dispatch({
+      yarnSequence: GLOBAL_STATE.yarnSequence.brush(position, GLOBAL_STATE.activeYarn),
+      transforming: true,
+    });
+    event.preventDefault();
     beginTexturePreviewInteraction();
 
-    brushColor(e, canvas);
+    activeTouchId = touch.identifier;
+    const strokeTouchId = activeTouchId;
+    let ended = false;
+
+    const move = (moveEvent) => {
+      const nextTouch = touchWithId(moveEvent, strokeTouchId);
+      if (!nextTouch) return;
+      const nextPosition = colorSequencePosAtCoords(nextTouch, canvas);
+      if (nextPosition.x === position.x && nextPosition.y === position.y) return;
+      dispatch({
+        yarnSequence: GLOBAL_STATE.yarnSequence.line(
+          position,
+          nextPosition,
+          GLOBAL_STATE.activeYarn
+        ),
+      });
+      position = nextPosition;
+      moveEvent.preventDefault();
+    };
+
+    const end = (endEvent) => {
+      if (ended || !changedTouchWithId(endEvent, strokeTouchId)) return;
+      ended = true;
+      canvas.removeEventListener("touchmove", move);
+      canvas.removeEventListener("touchcancel", end);
+      canvas.removeEventListener("touchend", end);
+      activeTouchId = null;
+      dispatch({ transforming: false });
+      endTexturePreviewInteraction();
+    };
+
+    canvas.addEventListener("touchmove", move);
+    canvas.addEventListener("touchcancel", end);
+    canvas.addEventListener("touchend", end);
   });
 }

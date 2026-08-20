@@ -26,16 +26,16 @@ const appRenderer = createAppRenderer({
 });
 const scheduleChartFit = createChartFitScheduler();
 
-function initKeyboard(yarnSequenceCanvasElement, simContainer) {
+function initKeyboard(yarnSequenceCanvasElements, simContainer) {
   addKeypressListeners();
-  colorSequencePointerInteraction(yarnSequenceCanvasElement);
+  yarnSequenceCanvasElements.forEach(colorSequencePointerInteraction);
   simulationPointerInteraction(simContainer);
   closeModals();
 }
 
-function initTouch(yarnSequenceCanvasElement, simContainer) {
+function initTouch(yarnSequenceCanvasElements, simContainer) {
   document.body.style.setProperty("--font-size", "1.1rem");
-  colorSequenceTouchInteraction(yarnSequenceCanvasElement);
+  yarnSequenceCanvasElements.forEach(colorSequenceTouchInteraction);
   simulationTouchInteraction(simContainer);
   closeModals();
 }
@@ -73,9 +73,16 @@ function init() {
   const chartWindows = [
     ...document.querySelectorAll(".pattern-grid-window"),
   ];
-  const yarnSequenceCanvasElement = document.getElementById(
+  const camYarnSequenceCanvas = document.getElementById(
+    "cam-yarn-sequence-canvas"
+  );
+  const needleYarnSequenceCanvas = document.getElementById(
     "needle-yarn-sequence-canvas"
   );
+  const yarnSequenceCanvasElements = [
+    camYarnSequenceCanvas,
+    needleYarnSequenceCanvas,
+  ];
   const simContainer = document.getElementById("sim-container");
 
   Split(["#chart-pane", "#sim-pane"], {
@@ -106,13 +113,14 @@ function init() {
     bitmapPointerInteraction(camInteractionCanvas);
     bitmapPointerInteraction(needleInteractionCanvas);
     isMobile()
-      ? initTouch(yarnSequenceCanvasElement, simContainer)
-      : initKeyboard(yarnSequenceCanvasElement, simContainer);
+      ? initTouch(yarnSequenceCanvasElements, simContainer)
+      : initKeyboard(yarnSequenceCanvasElements, simContainer);
   }
 
   StateMonitor.register([
     () => appRenderer,
-    yarnSequenceCanvas({ canvas: yarnSequenceCanvasElement }),
+    yarnSequenceCanvas({ canvas: camYarnSequenceCanvas }),
+    yarnSequenceCanvas({ canvas: needleYarnSequenceCanvas }),
     drawBitmapEditor({
       fullField: "camBitmap",
       unitField: "camUnitBitmap",

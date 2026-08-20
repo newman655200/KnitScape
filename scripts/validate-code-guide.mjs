@@ -32,6 +32,7 @@ const REQUIRED_KEYS = [
   "stitch.symbol",
   "canvas.width",
   "canvas.height",
+  "cam.yarn-sequence",
   "cam.symbols",
   "cam.grid",
   "needle.start",

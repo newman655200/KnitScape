@@ -12,14 +12,25 @@ export function devicePixelBoundingBox(el) {
 
 export function colorSequencePosAtCoords(event, target) {
   const bounds = target.getBoundingClientRect();
+  const ratio = Number(globalThis.devicePixelRatio);
+  const dpr = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+  const requestedCellSize = Number(GLOBAL_STATE.scale) / dpr;
+  const cellSize =
+    Number.isFinite(requestedCellSize) && requestedCellSize > 0
+      ? requestedCellSize
+      : 1;
+  const sequence = GLOBAL_STATE.yarnSequence;
+  const maxX = Math.max(0, sequence.width - 1);
+  const maxY = Math.max(0, sequence.height - 1);
+  const displayX = Math.floor((event.clientX - bounds.left) / cellSize);
+  const displayY = Math.floor((event.clientY - bounds.top) / cellSize);
 
-  const x = Math.floor(
-    ((event.clientX - bounds.x) / GLOBAL_STATE.scale) * devicePixelRatio
-  );
-  const y = Math.floor(
-    ((event.clientY - bounds.y) / GLOBAL_STATE.scale) * devicePixelRatio
-  );
-  return { x, y: GLOBAL_STATE.yarnSequence.height - y - 1 };
+  return {
+    x: Number.isFinite(displayX) ? Math.max(0, Math.min(maxX, displayX)) : 0,
+    y: Number.isFinite(displayY)
+      ? Math.max(0, Math.min(maxY, sequence.height - displayY - 1))
+      : 0,
+  };
 }
 
 export function posAtCoords(event, target) {

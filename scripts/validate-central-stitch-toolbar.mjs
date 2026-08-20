@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import fs from "node:fs";
+import { JSDOM } from "jsdom";
 import { createServer } from "vite";
 
 const read = (file) => fs.readFileSync(file, "utf8");
@@ -91,11 +92,31 @@ const server = await createServer({
   logLevel: "silent",
   server: { middlewareMode: true },
 });
+let previousDomGlobals = new Map();
 
 try {
+  const { window } = new JSDOM(
+    "<!doctype html><html><body><div id=\"toolbar-root\"></div></body></html>"
+  );
+  const domGlobals = [
+    "window",
+    "document",
+    "Node",
+    "Element",
+    "HTMLElement",
+    "Event",
+    "CustomEvent",
+  ];
+  previousDomGlobals = new Map(
+    domGlobals.map((name) => [name, globalThis[name]])
+  );
+  for (const name of domGlobals) globalThis[name] = window[name];
   const state = await server.ssrLoadModule("/src/state.js");
   const { chartEditorToolbar, commitDimension, handleDimensionKeydown } =
     await server.ssrLoadModule("/src/views/chartEditorToolbar.js");
+  const { render } = await server.ssrLoadModule(
+    "/node_modules/lit-html/lit-html.js"
+  );
   let stateSynchronizations = 0;
   state.StateMonitor.register([
     () => ({
@@ -106,6 +127,39 @@ try {
   ]);
 
   state.loadWorkspace({ canvasWidth: 60, canvasHeight: 60 });
+  const toolbarRoot = document.querySelector("#toolbar-root");
+  render(chartEditorToolbar(), toolbarRoot);
+  const widthInput = toolbarRoot.querySelector(
+    'input[data-code-guide-key="canvas.width"]'
+  );
+  assert.ok(widthInput, "toolbar must render a real width input");
+  widthInput.value = "60.9";
+  state.dispatch({ grid: !state.GLOBAL_STATE.grid });
+  render(chartEditorToolbar(), toolbarRoot);
+  assert.equal(
+    toolbarRoot.querySelector('input[data-code-guide-key="canvas.width"]'),
+    widthInput,
+    "unrelated renders must preserve the width input element"
+  );
+  assert.equal(widthInput.value, "60.9");
+
+  const dispatchDimensionChange = (input) => {
+    const event = new window.Event("change", { bubbles: true });
+    input.dispatchEvent(event);
+  };
+  let observedCurrentTarget = null;
+  widthInput.addEventListener("change", (event) => {
+    observedCurrentTarget = event.currentTarget;
+  });
+  dispatchDimensionChange(widthInput);
+  assert.equal(observedCurrentTarget, widthInput);
+  assert.equal(state.GLOBAL_STATE.canvasWidth, 60);
+  assert.equal(widthInput.value, "60");
+  widthInput.value = "999";
+  dispatchDimensionChange(widthInput);
+  assert.equal(state.GLOBAL_STATE.canvasWidth, 500);
+  assert.equal(widthInput.value, "500");
+
   for (const { field, value, expected } of [
     { field: "width", value: "60.8", expected: 60 },
     { field: "height", value: "", expected: 5 },
@@ -140,12 +194,12 @@ try {
     currentTarget: { blur: () => assert.fail("non-Enter must not blur") },
   });
 
-  const editingInput = { value: "unfinished" };
-  state.dispatch({ grid: !state.GLOBAL_STATE.grid });
-  chartEditorToolbar();
-  assert.equal(editingInput.value, "unfinished");
 } finally {
   await server.close();
+  for (const [name, value] of previousDomGlobals) {
+    if (value === undefined) delete globalThis[name];
+    else globalThis[name] = value;
+  }
 }
 
 console.log("PASS: the shared stitch toolbar and original icons are protected.");

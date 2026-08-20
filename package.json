@@ -49,6 +49,7 @@
     "vite": "^4.4.7"
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "jsdom": "^26.0.0"
   }
 }

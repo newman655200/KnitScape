@@ -15,8 +15,8 @@ const interactionSource = read("src/events/bitmapPointerInteraction.js");
 const indexSource = read("src/index.js");
 
 assert.equal((viewSource.match(/chartEditorToolbar\(\)/g) || []).length, 1);
-assert.match(viewSource, /bitmapEditor\(\{\s*field:\s*"camBitmap"/);
-assert.match(viewSource, /bitmapEditor\(\{\s*field:\s*"needleBitmap"/);
+assert.match(viewSource, /bitmapEditor\(\{\s*fullField:\s*"camBitmap",\s*unitField:\s*"camUnitBitmap",\s*prefix:\s*"cam"/);
+assert.match(viewSource, /bitmapEditor\(\{\s*fullField:\s*"needleBitmap",\s*unitField:\s*"needleUnitBitmap",\s*prefix:\s*"needle"/);
 assert.doesNotMatch(
   viewSource,
   /import\s*\{\s*needleArrangementControls\s*\}\s*from/
@@ -26,7 +26,11 @@ assert.match(viewSource, /showNeedleControls:\s*true/);
 assert.doesNotMatch(viewSource, /repeatTools|repeatCanvas/);
 
 assert.match(editorSource, /export function bitmapEditor\(/);
-assert.match(editorSource, /data-pattern-field=/);
+for (const field of ["fullField", "unitField", "prefix"]) {
+  assert.match(editorSource, new RegExp(`\\b${field}\\b`));
+}
+assert.match(editorSource, /data-pattern-field=\$\{fullField\}/);
+assert.match(editorSource, /data-unit-field=\$\{unitField\}/);
 assert.doesNotMatch(editorSource, /resizePatternBitmap|fitChart|type="number"|pattern-size-controls|taskbar\.width|taskbar\.height/);
 assert.match(editorSource, /showNeedleControls\s*=\s*false/);
 assert.match(editorSource, /showNeedleControls\s*\?\s*needleArrangementControls\(\)\s*:\s*nothing/);

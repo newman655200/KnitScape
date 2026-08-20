@@ -17,11 +17,17 @@ const SYMBOL_ICON_URLS = {
   tuck: tuckIconUrl,
 };
 
-function commitDimension(field, value) {
+export function commitDimension(field, input) {
+  const stateField = field === "width" ? "canvasWidth" : "canvasHeight";
   resizePatternCanvas(
-    field === "width" ? value : GLOBAL_STATE.canvasWidth,
-    field === "height" ? value : GLOBAL_STATE.canvasHeight
+    field === "width" ? input.value : GLOBAL_STATE.canvasWidth,
+    field === "height" ? input.value : GLOBAL_STATE.canvasHeight
   );
+  input.value = String(GLOBAL_STATE[stateField]);
+}
+
+export function handleDimensionKeydown(event) {
+  if (event.key === "Enter") event.currentTarget.blur();
 }
 
 export function chartEditorToolbar() {
@@ -59,10 +65,8 @@ export function chartEditorToolbar() {
             max="500"
             step="1"
             .value=${String(GLOBAL_STATE.canvasWidth)}
-            @change=${(event) => commitDimension("width", event.target.value)}
-            @keydown=${(event) => {
-              if (event.key === "Enter") event.currentTarget.blur();
-            }} />
+            @change=${(event) => commitDimension("width", event.currentTarget)}
+            @keydown=${handleDimensionKeydown} />
         </label>
         <label>
           <span>${t("taskbar.height", language)}</span>
@@ -74,10 +78,8 @@ export function chartEditorToolbar() {
             max="500"
             step="1"
             .value=${String(GLOBAL_STATE.canvasHeight)}
-            @change=${(event) => commitDimension("height", event.target.value)}
-            @keydown=${(event) => {
-              if (event.key === "Enter") event.currentTarget.blur();
-            }} />
+            @change=${(event) => commitDimension("height", event.currentTarget)}
+            @keydown=${handleDimensionKeydown} />
         </label>
       </div>
     </div>

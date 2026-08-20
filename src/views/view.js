@@ -32,11 +32,15 @@ export function view() {
             ${chartEditorToolbar()}
             <div id="pattern-editors">
               ${bitmapEditor({
-                field: "camBitmap",
+                fullField: "camBitmap",
+                unitField: "camUnitBitmap",
+                prefix: "cam",
                 titleKey: "cam.title",
               })}
               ${bitmapEditor({
-                field: "needleBitmap",
+                fullField: "needleBitmap",
+                unitField: "needleUnitBitmap",
+                prefix: "needle",
                 titleKey: "needle.title",
                 showYarn: true,
                 showNeedleControls: true,

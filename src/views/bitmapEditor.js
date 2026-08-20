@@ -5,12 +5,13 @@ import { GLOBAL_STATE } from "../state.js";
 import { needleArrangementControls } from "./needleArrangementControls.js";
 
 export function bitmapEditor({
-  field,
+  fullField,
+  unitField,
+  prefix,
   titleKey,
   showYarn = false,
   showNeedleControls = false,
 }) {
-  const prefix = field === "camBitmap" ? "cam" : "needle";
   const symbolCanvasId = prefix === "needle" ? "symbol-canvas" : `${prefix}-symbol-canvas`;
   const gridCanvasId = prefix === "needle" ? "grid" : `${prefix}-grid`;
   const language = GLOBAL_STATE.language;
@@ -18,7 +19,8 @@ export function bitmapEditor({
   return html`<section
     id="${prefix}-editor-pane"
     class="pattern-editor-pane"
-    data-pattern-field=${field}>
+    data-pattern-field=${fullField}
+    data-unit-field=${unitField}>
     <header class="pattern-editor-header">
       <h2>${t(titleKey, language)}</h2>
     </header>
@@ -49,7 +51,8 @@ export function bitmapEditor({
           <canvas
             id="${prefix}-interaction-canvas"
             class="pattern-interaction-canvas"
-            data-pattern-field=${field}
+            data-pattern-field=${fullField}
+            data-unit-field=${unitField}
             aria-label=${t(titleKey, language)}></canvas>
         </div>
       </div>

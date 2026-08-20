@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import fs from "node:fs";
+import { createServer } from "vite";
 
 const read = (file) => fs.readFileSync(file, "utf8");
 const expectedIconHashes = {
@@ -41,7 +42,7 @@ for (const asset of ["knit.svg", "purl.svg", "slip.svg", "tuck.svg"]) {
   assert.match(toolbar, new RegExp(asset.replace(".", "\\.")));
 }
 assert.match(toolbar, /import\s*\{[\s\S]*?resizePatternCanvas[\s\S]*?\}\s*from\s*["']\.\.\/actions\/patternEditing\.js["']/);
-assert.match(toolbar, /function\s+commitDimension\s*\(\s*field\s*,\s*value\s*\)\s*\{[\s\S]*?resizePatternCanvas\([\s\S]*?GLOBAL_STATE\.canvasWidth[\s\S]*?GLOBAL_STATE\.canvasHeight/);
+assert.match(toolbar, /export function commitDimension\s*\(\s*field\s*,\s*input\s*\)\s*\{[\s\S]*?resizePatternCanvas\([\s\S]*?input\.value[\s\S]*?input\.value\s*=\s*String\(GLOBAL_STATE\[/);
 assert.match(toolbar, /class="chart-size-controls"/);
 assert.equal((toolbar.match(/class="input pattern-dimension-input"/g) || []).length, 2);
 for (const [field, label] of [
@@ -52,7 +53,7 @@ for (const [field, label] of [
   assert.match(toolbar, new RegExp(`t\\("${label}", language\\)`));
   assert.match(
     toolbar,
-    new RegExp(`commitDimension\\("${field}", event\\.target\\.value\\)`)
+    new RegExp(`commitDimension\\("${field}", event\\.currentTarget\\)`)
   );
 }
 assert.equal((toolbar.match(/type="number"/g) || []).length, 2);
@@ -61,7 +62,8 @@ assert.equal((toolbar.match(/max="500"/g) || []).length, 2);
 assert.equal((toolbar.match(/step="1"/g) || []).length, 2);
 assert.match(toolbar, /\.value=\$\{String\(GLOBAL_STATE\.canvasWidth\)\}/);
 assert.match(toolbar, /\.value=\$\{String\(GLOBAL_STATE\.canvasHeight\)\}/);
-assert.match(toolbar, /event\.key\s*===\s*["']Enter["'][\s\S]*?blur\(\)/);
+assert.match(toolbar, /export function handleDimensionKeydown[\s\S]*?event\.key\s*===\s*["']Enter["'][\s\S]*?blur\(\)/);
+assert.equal((toolbar.match(/@keydown=\$\{handleDimensionKeydown\}/g) || []).length, 2);
 const stitchButtonsEnd = toolbar.indexOf(
   "</div>",
   toolbar.indexOf("GLOBAL_STATE.symbolMap.map")
@@ -80,5 +82,70 @@ assert.match(styles, /\.pattern-dimension-input:invalid[\s\S]*?color:\s*#111/);
 assert.match(styles, /\.pattern-dimension-input::selection\s*\{[\s\S]*?color:\s*(?:#111|black)/);
 assert.match(styles, /\.pattern-dimension-input\[type="number"\]\s*\{[\s\S]*?(?:-webkit-appearance:\s*auto|appearance:\s*auto)/);
 assert.match(styles, /\.pattern-dimension-input\[type="number"\]::\-webkit-inner-spin-button,[\s\S]*?\.pattern-dimension-input\[type="number"\]::\-webkit-outer-spin-button\s*\{[\s\S]*?-webkit-appearance:\s*auto[\s\S]*?opacity:\s*1/);
+assert.doesNotMatch(styles, /\.needle-inputs\s*\{[\s\S]*?order:\s*3/);
+assert.match(styles, /@media\s*\(max-width:\s*1080px\)[\s\S]*?\.needle-inputs\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
+
+globalThis.Path2D = class {};
+const server = await createServer({
+  appType: "custom",
+  logLevel: "silent",
+  server: { middlewareMode: true },
+});
+
+try {
+  const state = await server.ssrLoadModule("/src/state.js");
+  const { chartEditorToolbar, commitDimension, handleDimensionKeydown } =
+    await server.ssrLoadModule("/src/views/chartEditorToolbar.js");
+  let stateSynchronizations = 0;
+  state.StateMonitor.register([
+    () => ({
+      syncState() {
+        stateSynchronizations += 1;
+      },
+    }),
+  ]);
+
+  state.loadWorkspace({ canvasWidth: 60, canvasHeight: 60 });
+  for (const { field, value, expected } of [
+    { field: "width", value: "60.8", expected: 60 },
+    { field: "height", value: "", expected: 5 },
+    { field: "width", value: "4", expected: 5 },
+    { field: "height", value: "501", expected: 500 },
+  ]) {
+    const input = { value };
+    commitDimension(field, input);
+    const stateField = field === "width" ? "canvasWidth" : "canvasHeight";
+    assert.equal(state.GLOBAL_STATE[stateField], expected);
+    assert.equal(input.value, String(expected));
+  }
+
+  state.loadWorkspace({ canvasWidth: 60, canvasHeight: 60 });
+  stateSynchronizations = 0;
+  let blurCount = 0;
+  const enterInput = {
+    value: "77",
+    blur() {
+      blurCount += 1;
+      commitDimension("width", this);
+    },
+  };
+  handleDimensionKeydown({ key: "Enter", currentTarget: enterInput });
+  assert.equal(blurCount, 1);
+  assert.equal(stateSynchronizations, 1);
+  assert.equal(state.GLOBAL_STATE.canvasWidth, 77);
+  assert.equal(enterInput.value, "77");
+
+  handleDimensionKeydown({
+    key: "x",
+    currentTarget: { blur: () => assert.fail("non-Enter must not blur") },
+  });
+
+  const editingInput = { value: "unfinished" };
+  state.dispatch({ grid: !state.GLOBAL_STATE.grid });
+  chartEditorToolbar();
+  assert.equal(editingInput.value, "unfinished");
+} finally {
+  await server.close();
+}
 
 console.log("PASS: the shared stitch toolbar and original icons are protected.");

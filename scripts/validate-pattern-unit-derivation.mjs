@@ -29,20 +29,50 @@ assert.deepEqual(tileUnitToCanvas(3, 5, tiledUnit).make2d(), [
   [2, 3, 2],
 ]);
 
+function assertDerivedPatternBitmaps(state) {
+  const expectedCamBitmap = tileUnitToCanvas(
+    state.canvasWidth,
+    state.canvasHeight,
+    state.camUnitBitmap
+  );
+  const expectedNeedleBitmap = tileUnitToCanvas(
+    state.canvasWidth,
+    state.canvasHeight,
+    state.needleUnitBitmap
+  );
+
+  assert.deepEqual(
+    [state.camBitmap.width, state.camBitmap.height],
+    [state.canvasWidth, state.canvasHeight]
+  );
+  assert.deepEqual(
+    [state.needleBitmap.width, state.needleBitmap.height],
+    [state.canvasWidth, state.canvasHeight]
+  );
+  assert.deepEqual(state.camBitmap.make2d(), expectedCamBitmap.make2d());
+  assert.deepEqual(
+    state.needleBitmap.make2d(),
+    expectedNeedleBitmap.make2d()
+  );
+  assert.notEqual(state.camBitmap, state.camUnitBitmap);
+  assert.notEqual(state.needleBitmap, state.needleUnitBitmap);
+  assert.notEqual(state.camBitmap, state.needleBitmap);
+}
+
+const needleUnit = new Bimp(1, 3, [1, 2, 3]);
 const derived = derivePatternBitmaps({
   canvasWidth: 7,
   canvasHeight: 9,
   camUnitBitmap: tiledUnit,
-  needleUnitBitmap: new Bimp(1, 3, [1, 2, 3]),
+  needleUnitBitmap: needleUnit,
 });
-assert.deepEqual(
-  [derived.camBitmap.width, derived.camBitmap.height],
-  [7, 9]
-);
-assert.deepEqual(
-  [derived.needleBitmap.width, derived.needleBitmap.height],
-  [7, 9]
-);
+assertDerivedPatternBitmaps({
+  canvasWidth: 7,
+  canvasHeight: 9,
+  camUnitBitmap: tiledUnit,
+  needleUnitBitmap: needleUnit,
+  ...derived,
+});
 
 globalThis.Path2D = class {
   constructor() {}
@@ -69,13 +99,10 @@ try {
       state.GLOBAL_STATE.camUnitBitmap.height,
       state.GLOBAL_STATE.needleUnitBitmap.width,
       state.GLOBAL_STATE.needleUnitBitmap.height,
-      state.GLOBAL_STATE.camBitmap.width,
-      state.GLOBAL_STATE.camBitmap.height,
-      state.GLOBAL_STATE.needleBitmap.width,
-      state.GLOBAL_STATE.needleBitmap.height,
     ],
-    [60, 60, 8, 4, 8, 4, 60, 60, 60, 60]
+    [60, 60, 8, 4, 8, 4]
   );
+  assertDerivedPatternBitmaps(state.GLOBAL_STATE);
 
   const observedChanges = [];
   state.StateMonitor.register([
@@ -94,46 +121,62 @@ try {
     camUnitBitmap: loadedCamUnit,
     needleUnitBitmap: loadedNeedleUnit,
   });
-  assert.deepEqual(
-    state.GLOBAL_STATE.camBitmap.make2d(),
-    tileUnitToCanvas(3, 5, loadedCamUnit).make2d()
-  );
-  assert.deepEqual(
-    state.GLOBAL_STATE.needleBitmap.make2d(),
-    tileUnitToCanvas(3, 5, loadedNeedleUnit).make2d()
-  );
+  assertDerivedPatternBitmaps(state.GLOBAL_STATE);
 
-  const dispatchedCamUnit = new SsrBimp(1, 2, [1, 2]);
+  const snapshotCamUnit = new SsrBimp(1, 2, [1, 2]);
+  const snapshotNeedleUnit = new SsrBimp(1, 2, [3, 0]);
   state.dispatch({
     canvasWidth: 4,
     canvasHeight: 6,
-    camUnitBitmap: dispatchedCamUnit,
+    camUnitBitmap: snapshotCamUnit,
+    needleUnitBitmap: snapshotNeedleUnit,
   });
-  assert.deepEqual(
-    [state.GLOBAL_STATE.camBitmap.width, state.GLOBAL_STATE.camBitmap.height],
-    [4, 6]
-  );
-  assert.deepEqual(
-    state.GLOBAL_STATE.camBitmap.make2d(),
-    tileUnitToCanvas(4, 6, dispatchedCamUnit).make2d()
-  );
+  assert.equal(state.GLOBAL_STATE.snapshots.length, 1);
+  assertDerivedPatternBitmaps(state.GLOBAL_STATE);
   assert.deepEqual(observedChanges.at(-1), [
     "canvasWidth",
     "canvasHeight",
     "camUnitBitmap",
+    "needleUnitBitmap",
     "camBitmap",
     "needleBitmap",
   ]);
+
+  state.dispatch({ lastSnapshot: Date.now() });
+  const snapshotCount = state.GLOBAL_STATE.snapshots.length;
+  const normalCamUnit = new SsrBimp(2, 1, [2, 1]);
+  const normalNeedleUnit = new SsrBimp(2, 1, [0, 3]);
+  state.dispatch({
+    canvasWidth: 5,
+    canvasHeight: 3,
+    camUnitBitmap: normalCamUnit,
+    needleUnitBitmap: normalNeedleUnit,
+  });
+  assert.equal(state.GLOBAL_STATE.snapshots.length, snapshotCount);
+  assertDerivedPatternBitmaps(state.GLOBAL_STATE);
+  assert.deepEqual(observedChanges.at(-1), [
+    "canvasWidth",
+    "canvasHeight",
+    "camUnitBitmap",
+    "needleUnitBitmap",
+    "camBitmap",
+    "needleBitmap",
+  ]);
+  assert.throws(
+    () =>
+      assertDerivedPatternBitmaps({
+        ...state.GLOBAL_STATE,
+        needleBitmap: state.GLOBAL_STATE.camBitmap,
+      }),
+    assert.AssertionError
+  );
 
   state.undo();
   assert.deepEqual(
     [state.GLOBAL_STATE.canvasWidth, state.GLOBAL_STATE.canvasHeight],
     [3, 5]
   );
-  assert.deepEqual(
-    state.GLOBAL_STATE.camBitmap.make2d(),
-    tileUnitToCanvas(3, 5, loadedCamUnit).make2d()
-  );
+  assertDerivedPatternBitmaps(state.GLOBAL_STATE);
   for (const field of [
     "canvasWidth",
     "canvasHeight",

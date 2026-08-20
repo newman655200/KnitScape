@@ -51,6 +51,11 @@ export function chartPointerPanZoom(
       dispatch({ scale: viewport.scale, chartPan: viewport.pan });
     }
 
+    const reachedOutwardBoundary =
+      (nextScale === MAX_SCALE && scaleDirection > 0) ||
+      (nextScale === MIN_SCALE && scaleDirection < 0);
+    if (reachedOutwardBoundary) wheelDelta = 0;
+
     if (Math.abs(wheelDelta) >= WHEEL_STEP_PIXELS) scheduleWheelFrame();
   };
 
@@ -65,7 +70,14 @@ export function chartPointerPanZoom(
     (event) => {
       event.preventDefault();
       const bounds = gridWindow.getBoundingClientRect();
-      wheelDelta += normalizedWheelDelta(event, bounds.height);
+      const nextDelta = normalizedWheelDelta(event, bounds.height);
+      const reversesSubthresholdResidue =
+        wheelDelta !== 0 &&
+        Math.abs(wheelDelta) < WHEEL_STEP_PIXELS &&
+        nextDelta !== 0 &&
+        Math.sign(nextDelta) !== Math.sign(wheelDelta);
+      if (reversesSubthresholdResidue) wheelDelta = 0;
+      wheelDelta += nextDelta;
       wheelPoint = {
         x: event.clientX - bounds.left,
         y: event.clientY - bounds.top,

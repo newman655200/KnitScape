@@ -521,6 +521,27 @@ try {
   firstWindow.dispatch("wheel", {
     clientX: 150,
     clientY: 180,
+    deltaY: 60,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(observedChanges.length, 0, "subthreshold residue does not dispatch");
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -100,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(
+    stateModule.GLOBAL_STATE.scale,
+    21,
+    "a reversed gesture discards the previous subthreshold residue"
+  );
+
+  stateModule.dispatch({ scale: 20, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
     deltaY: -2500,
   });
   firstWheelFrames.shift()();
@@ -582,6 +603,103 @@ try {
   firstWheelFrames.shift()();
   assert.equal(observedChanges.length, 0, "wheel boundary is a dispatch-free no-op");
   assert.equal(stateModule.GLOBAL_STATE.chartPan, maxPan);
+
+  stateModule.dispatch({ scale: 99, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -1150,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 100);
+  assert.equal(firstWheelFrames.length, 0, "MAX_SCALE discards an outward drain frame");
+
+  stateModule.dispatch({ scale: 99, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -150,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 100);
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: 100,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(
+    stateModule.GLOBAL_STATE.scale,
+    99,
+    "MAX_SCALE clears outward residue so reversal responds immediately"
+  );
+
+  stateModule.dispatch({ scale: 6, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: 1150,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 5);
+  assert.equal(firstWheelFrames.length, 0, "MIN_SCALE discards an outward drain frame");
+
+  stateModule.dispatch({ scale: 6, chartPan: { x: 0, y: 0 }, reverseScroll: false });
+  observedChanges.length = 0;
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: 150,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 5);
+  firstWindow.dispatch("wheel", {
+    clientX: 150,
+    clientY: 180,
+    deltaY: -100,
+  });
+  firstWheelFrames.shift()();
+  assert.equal(
+    stateModule.GLOBAL_STATE.scale,
+    6,
+    "MIN_SCALE clears outward residue so reversal responds immediately"
+  );
+
+  stateModule.dispatch({ scale: 99, chartPan: { x: 0, y: 0 }, reverseScroll: true });
+  secondWindow.dispatch("wheel", {
+    clientX: 550,
+    clientY: 220,
+    deltaY: 1150,
+  });
+  secondWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 100);
+  assert.equal(
+    secondWheelFrames.length,
+    0,
+    "reverseScroll discards the mapped outward drain frame"
+  );
+
+  stateModule.dispatch({ scale: 99, chartPan: { x: 0, y: 0 }, reverseScroll: true });
+  observedChanges.length = 0;
+  secondWindow.dispatch("wheel", {
+    clientX: 550,
+    clientY: 220,
+    deltaY: 150,
+  });
+  secondWheelFrames.shift()();
+  assert.equal(stateModule.GLOBAL_STATE.scale, 100);
+  secondWindow.dispatch("wheel", {
+    clientX: 550,
+    clientY: 220,
+    deltaY: -100,
+  });
+  secondWheelFrames.shift()();
+  assert.equal(
+    stateModule.GLOBAL_STATE.scale,
+    99,
+    "reverseScroll clears the correct outward residue at MAX_SCALE"
+  );
 
   const leftDown = firstWindow.dispatch("pointerdown", {
     button: 0,

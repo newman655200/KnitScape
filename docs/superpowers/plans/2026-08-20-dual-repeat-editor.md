@@ -10,6 +10,38 @@
 
 ---
 
+## 执行进度（2026-08-20 午间暂停）
+
+当前分支：`codex/one-shot-uniform-yarn-length`
+
+最新业务代码提交：`a4fee38 fix: preserve repeat unit editing invariants`
+
+工作树状态：干净，无未提交文件。
+
+### 已完成并通过双阶段审查
+
+- Task 1：循环单元派生层完成。`camUnitBitmap` / `needleUnitBitmap` 成为源数据，60×60 完整位图按顶部对齐方式派生；无关状态更新不会重建派生图。实现及修复提交：`465987a`、`7aa243f`、`44cd737`。
+- Task 2：JSON v3、v2 迁移、旧 repeat 迁移完成。全部 15 个示例会动态参与验证，`loadJSON()` / `newPattern()` 有真实状态测试，导入色板不再与缓存 JSON 共用数组。实现及修复提交：`c52417d`、`c5f11d0`、`13bc582`。
+
+### 已实现，下午先完成复审
+
+- Task 3：尺寸、绘制、开始排针和应用排针已经改为操作循环单元源数据；`8×4 + 1/2/3/4` 生成 `4×8` 排针单元，完整画布尺寸不变；越界绘制不修改状态；撤销会同步恢复输入错误。实现及质量修复提交：`b37e50f`、`a4fee38`。
+- Task 3 规格审查已通过。第一次代码质量审查提出的画笔字段中间态、撤销错误一致性、临时适配器校验、坐标别名和边界测试问题均已在 `a4fee38` 修复。
+- 用户要求暂停时，Task 3 的代码质量复审正在运行，已经中止，尚未取得复审结论。
+
+### 当前验证状态
+
+- 开始实施前：`npm run build` 与当时全部 25 项 `validate:*` 均通过。
+- Task 3 最新聚焦验证通过：`validate:bitmap-pointer-unit-boundary`、`validate:needle-arrangement-transform`、`validate:pattern-dimensions`、`validate:needle-arrangement-acceptance`、`validate:needle-arrangement-state`、`validate:dual-pattern-editor`、`validate:pattern-unit-derivation`、`validate:pattern-file-v3` 和 `npm run build`。
+- `npm install` 报告仓库原有 7 个依赖审计提示（1 moderate、6 high）；本 UI 任务未擅自升级依赖。
+
+### 下午恢复顺序
+
+1. 重新进行 Task 3 代码质量复审，审查范围 `13bc582..a4fee38`；确认通过后将 Task 3 标记完成。
+2. 从 Task 4 开始继续严格执行“实现 → 规格审查 → 代码质量审查”。
+3. Task 4–8 完成前，页面仍不会完整呈现最终的顶部尺寸布局、黑色 8×4 单元、16×16 视角、同步缩放拖拽和双固定色纱栏；不要把当前浏览器外观当作最终结果。
+4. Task 9 运行全部验证、生产构建和九项浏览器人工验收，然后进行整体代码审查与分支收尾。
+
 ## 实施约束
 
 - 所有业务代码改动按测试驱动顺序完成：先补失败验证并确认失败，再写最小实现并确认通过。
@@ -29,7 +61,7 @@
 - Modify: `package.json`
 - Modify: `scripts/validate-needle-arrangement-state.mjs`
 
-- [ ] **Step 1: 写纯函数和默认状态的失败验证**
+- [x] **Step 1: 写纯函数和默认状态的失败验证**
 
 在 `scripts/validate-pattern-unit-derivation.mjs` 中覆盖以下事实：
 
@@ -72,13 +104,13 @@ assert.deepEqual([derived.needleBitmap.width, derived.needleBitmap.height], [5, 
 
 再通过 Vite SSR 载入 `src/state.js`，断言默认 `canvasWidth/canvasHeight` 为 60×60、两个 unit 为 8×4、两个派生 bitmap 为 60×60，并断言 `loadWorkspace()`、普通 `dispatch()` 和 `undo()` 后派生 bitmap 都与当前 unit/尺寸一致。
 
-- [ ] **Step 2: 运行验证，确认红灯**
+- [x] **Step 2: 运行验证，确认红灯**
 
 Run: `node scripts/validate-pattern-unit-derivation.mjs`
 
 Expected: 因 `src/patternDerivation.js` 不存在或新状态字段不存在而失败。
 
-- [ ] **Step 3: 实现顶部对齐的派生函数**
+- [x] **Step 3: 实现顶部对齐的派生函数**
 
 在 `src/patternDerivation.js` 中加入明确的唯一派生入口：
 
@@ -116,7 +148,7 @@ export function withDerivedPatternBitmaps(state) {
 
 `vFlip() -> fromTile() -> vFlip()` 保证视觉顶部第一行从 unit 的顶部第一行开始，即完整画布高度不是 unit 高度倍数时也不发生顶部错相。
 
-- [ ] **Step 4: 把状态所有权切换到 unit 和画布尺寸**
+- [x] **Step 4: 把状态所有权切换到 unit 和画布尺寸**
 
 在 `src/state.js` 中：
 
@@ -143,7 +175,7 @@ function changesAffectPattern(changes) {
 
 `SNAPSHOT_FIELDS` 改为包含 `canvasWidth`、`canvasHeight`、`camUnitBitmap`、`needleUnitBitmap`，移除 `camBitmap`、`needleBitmap`。`dispatch()` 和 `undo()` 在源字段恢复后给 `StateMonitor.syncState` 的 changes 追加 `camBitmap`、`needleBitmap`。
 
-- [ ] **Step 5: 更新状态所有权验证与 npm 命令**
+- [x] **Step 5: 更新状态所有权验证与 npm 命令**
 
 在 `scripts/validate-needle-arrangement-state.mjs` 中把旧的“不能有 repeats”断言保留，但将业务字段期望改为：
 
@@ -169,13 +201,13 @@ assert.match(constantsSource, /"needleUnitBitmap"/);
 "validate:pattern-unit-derivation": "node --experimental-default-type=module scripts/validate-pattern-unit-derivation.mjs"
 ```
 
-- [ ] **Step 6: 运行验证，确认绿灯**
+- [x] **Step 6: 运行验证，确认绿灯**
 
 Run: `npm run validate:pattern-unit-derivation && npm run validate:needle-arrangement-state`
 
 Expected: 两条命令均输出 `PASS`。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ```bash
 git add src/patternDerivation.js src/state.js src/constants.js scripts/validate-pattern-unit-derivation.mjs scripts/validate-needle-arrangement-state.mjs package.json
@@ -193,7 +225,7 @@ git commit -m "refactor: derive charts from repeat units"
 - Modify: `package.json`
 - Modify: `examples/*.json` only if an example is intentionally re-saved; otherwise leave examples untouched and rely on migration
 
-- [ ] **Step 1: 写 JSON v3 往返与迁移失败验证**
+- [x] **Step 1: 写 JSON v3 往返与迁移失败验证**
 
 将 v2 验证升级为 `scripts/validate-pattern-file-v3.mjs`，至少构造三份内存数据：
 
@@ -219,13 +251,13 @@ const v3State = {
 - repeat 旧格式采用第一个 repeat 的原始 bitmap 作为 cam unit，needle unit 是深拷贝，完整画布优先取旧 `width/height`；
 - unit 像素数量错误、画布尺寸不在 5–500、输入不是四项时抛出带字段名的错误。
 
-- [ ] **Step 2: 运行验证，确认红灯**
+- [x] **Step 2: 运行验证，确认红灯**
 
 Run: `node --experimental-default-type=module scripts/validate-pattern-file-v3.mjs`
 
 Expected: 当前 `PATTERN_SCHEMA_VERSION === 2`，因此版本、字段或迁移断言失败。
 
-- [ ] **Step 3: 实现 v3 格式**
+- [x] **Step 3: 实现 v3 格式**
 
 把 `PATTERN_SCHEMA_VERSION` 改为 3。`serializePattern()` 返回：
 
@@ -257,7 +289,7 @@ throw new Error(`Unsupported pattern schema version ${pattern.schemaVersion}.`);
 
 迁移 repeat 时不再把 repeat 展开后当成唯一数据；取 `repeats[0].bitmap` 为 unit。v2 的完整位图本身作为 unit 保存，不裁剪。所有分支最终返回 source fields，并调用统一派生函数生成兼容用的 `camBitmap/needleBitmap`。
 
-- [ ] **Step 4: 更新导入与新建项目**
+- [x] **Step 4: 更新导入与新建项目**
 
 `src/actions/importers.js` 的 `loadJSON()` 只 dispatch source fields；`yarnSequence` 规范到 `canvasHeight`。`newPattern()` 创建 60×60 画布、8×4 cam unit、其深拷贝 needle unit，并创建 60 行色纱：
 
@@ -275,7 +307,7 @@ dispatch({
 });
 ```
 
-- [ ] **Step 5: 替换 npm 命令并运行迁移回归**
+- [x] **Step 5: 替换 npm 命令并运行迁移回归**
 
 将 `validate:pattern-file-v2` 替换为：
 
@@ -287,7 +319,7 @@ Run: `npm run validate:pattern-file-v3 && npm run validate:yarn-sequence-editor`
 
 Expected: 两条命令均输出 `PASS`，现有 examples 无需批量改写即可载入。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ```bash
 git add src/patternFile.js src/actions/importers.js scripts/validate-pattern-file-v3.mjs scripts/validate-pattern-file-v2.mjs package.json
@@ -304,7 +336,7 @@ git commit -m "feat: migrate pattern files to repeat units"
 - Modify: `scripts/validate-needle-arrangement-acceptance.mjs`
 - Modify: `scripts/validate-needle-arrangement-transform.mjs`
 
-- [ ] **Step 1: 把动作验收改成新行为并确认失败**
+- [x] **Step 1: 把动作验收改成新行为并确认失败**
 
 更新验证，明确断言：
 
@@ -348,7 +380,7 @@ Run: `npm run validate:pattern-dimensions && npm run validate:needle-arrangement
 
 Expected: 当前动作仍直接 resize/写入完整 bitmap，因此失败。
 
-- [ ] **Step 2: 实现统一画布尺寸动作**
+- [x] **Step 2: 实现统一画布尺寸动作**
 
 删除 `resizePatternBitmap(field, width, height)`，新增：
 
@@ -374,7 +406,7 @@ export function resizePatternCanvas(width, height) {
 
 横向和纵向输入都调用这一动作；unit 尺寸永不随完整画布尺寸改变。
 
-- [ ] **Step 3: 将绘制和排针转换切换到 unit**
+- [x] **Step 3: 将绘制和排针转换切换到 unit**
 
 允许绘制的字段只包括 `camUnitBitmap`、`needleUnitBitmap`。`drawPatternLine()` 对越界点直接返回 `false`，合法绘制 dispatch unit 与 `patternEdit`：
 
@@ -397,13 +429,13 @@ const needleUnitBitmap = buildNeedleBitmap(
 
 成功后只写 `needleUnitBitmap`、`appliedNeedleInputs` 和清空后的错误；不改完整画布尺寸与色纱高度。保持现有转换公式，使 8×4 + 1234 得到 4×8。
 
-- [ ] **Step 4: 运行动作与撤销回归**
+- [x] **Step 4: 运行动作与撤销回归**
 
 Run: `npm run validate:needle-arrangement-transform && npm run validate:pattern-dimensions && npm run validate:needle-arrangement-acceptance && npm run validate:pattern-unit-derivation`
 
 Expected: 四条命令均输出 `PASS`，撤销后 source fields 与派生 bitmap 一致。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add src/actions/patternEditing.js src/needleArrangement/transform.js scripts/validate-pattern-dimension-sync.mjs scripts/validate-needle-arrangement-acceptance.mjs scripts/validate-needle-arrangement-transform.mjs

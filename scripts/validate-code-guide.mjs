@@ -357,8 +357,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideEvents.js",
-  /const\s+BLOCKED_EVENTS\s*=\s*\[\s*["']pointerdown["']\s*,\s*["']pointerup["']\s*,\s*["']click["']\s*,\s*["']input["']\s*,\s*["']change["']\s*,\s*["']wheel["']\s*,\s*["']contextmenu["']\s*,?\s*\]\s*;/,
-  "must define the exact blocked event list"
+  /const\s+BLOCKED_EVENTS\s*=\s*\[\s*["']mousedown["']\s*,\s*["']touchstart["']\s*,\s*["']pointerdown["']\s*,\s*["']pointerup["']\s*,\s*["']click["']\s*,\s*["']input["']\s*,\s*["']change["']\s*,\s*["']wheel["']\s*,\s*["']contextmenu["']\s*,?\s*\]\s*;/,
+  "must block Split mouse and touch drag starts in addition to annotated controls"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideEvents.js",
@@ -395,6 +395,11 @@ requireSourcePattern(
   "src/index.js",
   /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?initCodeGuideEvents\(\)[\s\S]*?\}\s*else\s*\{[\s\S]*?isMobile\(\)\s*\?\s*initTouch\([^)]*\)\s*:\s*initKeyboard\([^)]*\)/,
   "must initialize guide interception instead of keyboard or touch business listeners in guide mode"
+);
+requireSourcePattern(
+  "src/index.js",
+  /Split\(\["#chart-pane",\s*"#sim-pane"\][\s\S]*?Split\(\["#cam-editor-pane",\s*"#needle-editor-pane"\][\s\S]*?if\s*\(\s*isCodeGuideMode\(\)\s*\)/,
+  "must initialize both Split layouts before choosing code-guide or ordinary interactions"
 );
 requireSourceTokens("src/views/view.js", [
   'import { codeGuideOverlay } from "../codeGuide/codeGuideOverlay"',
@@ -554,6 +559,8 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
         events.initCodeGuideEvents(documentTarget);
 
         const expectedRegistrations = [
+          ["mousedown", { capture: true, passive: false }],
+          ["touchstart", { capture: true, passive: false }],
           ["pointerdown", { capture: true, passive: false }],
           ["pointerup", { capture: true, passive: false }],
           ["click", { capture: true, passive: false }],
@@ -609,7 +616,72 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
 
         const click = callbackFor("click");
         const keydown = callbackFor("keydown");
-        if (typeof click === "function" && typeof keydown === "function") {
+        const mouseDown = callbackFor("mousedown");
+        const touchStart = callbackFor("touchstart");
+        if (
+          typeof click === "function" &&
+          typeof keydown === "function" &&
+          typeof mouseDown === "function" &&
+          typeof touchStart === "function"
+        ) {
+          const { JSDOM } = await import("jsdom");
+          for (const eventName of ["mousedown", "touchstart"]) {
+            const guideDom = new JSDOM("<!doctype html><body></body>");
+            const normalDom = new JSDOM("<!doctype html><body></body>");
+            const elementBeforeDomTest = globalThis.Element;
+            try {
+              globalThis.Element = guideDom.window.Element;
+              const guideGutter = guideDom.window.document.createElement("div");
+              guideGutter.dataset.codeGuideKey = "layout.split";
+              guideDom.window.document.body.append(guideGutter);
+              let guideDragStarts = 0;
+              let guideLayoutSize = 50;
+              guideGutter.addEventListener(eventName, () => {
+                guideDragStarts += 1;
+                guideLayoutSize = 60;
+              });
+              events.initCodeGuideEvents(guideDom.window.document);
+              const guideStart = new guideDom.window.Event(eventName, {
+                bubbles: true,
+                cancelable: true,
+              });
+              guideGutter.dispatchEvent(guideStart);
+              if (
+                !guideStart.defaultPrevented ||
+                guideDragStarts !== 0 ||
+                guideLayoutSize !== 50
+              ) {
+                failures.push(
+                  `guide ${eventName} must not reach the Split gutter drag handler`
+                );
+              }
+
+              const normalGutter = normalDom.window.document.createElement("div");
+              normalDom.window.document.body.append(normalGutter);
+              let normalDragStarts = 0;
+              let normalLayoutSize = 50;
+              normalGutter.addEventListener(eventName, () => {
+                normalDragStarts += 1;
+                normalLayoutSize = 60;
+              });
+              normalGutter.dispatchEvent(
+                new normalDom.window.Event(eventName, {
+                  bubbles: true,
+                  cancelable: true,
+                })
+              );
+              if (normalDragStarts !== 1 || normalLayoutSize !== 60) {
+                failures.push(
+                  `ordinary ${eventName} must still reach the Split gutter drag handler`
+                );
+              }
+            } finally {
+              globalThis.Element = elementBeforeDomTest;
+              guideDom.window.close();
+              normalDom.window.close();
+            }
+          }
+
           state.clearActiveCodeGuideKey();
           const annotatedClick = fakeEvent(
             new FakeElement("annotated", "annotated-click")

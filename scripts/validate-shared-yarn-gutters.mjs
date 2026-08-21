@@ -97,6 +97,13 @@ class CanvasDouble extends EventTargetDouble {
   getContext() { return this.context; }
 }
 
+function fillAtVisualRow(canvas, fillStart, visualY) {
+  return canvas.context.fills
+    .slice(fillStart)
+    .filter((fill) => fill.x === 0 && fill.y === visualY)
+    .at(-1);
+}
+
 const server = await createServer({ appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
 try {
   globalThis.devicePixelRatio = 2;
@@ -119,8 +126,10 @@ try {
   stateModule.dispatch(state);
   const cam = new CanvasDouble({ left: 100, top: 200, width: 10, height: 40 });
   const needle = new CanvasDouble({ left: 400, top: 300, width: 10, height: 40 });
-  const camRenderer = yarnSequenceCanvas({ canvas: cam })({ state });
-  const needleRenderer = yarnSequenceCanvas({ canvas: needle })({ state });
+  stateModule.StateMonitor.register([
+    yarnSequenceCanvas({ canvas: cam }),
+    yarnSequenceCanvas({ canvas: needle }),
+  ]);
   assert.deepEqual([cam.width, cam.height], [20, 60]);
   assert.deepEqual([needle.width, needle.height], [20, 60]);
   assert.deepEqual(
@@ -132,29 +141,25 @@ try {
 
   const camSizeWrites = cam.sizeWrites;
   const camOperations = cam.context.operations;
-  camRenderer.syncState({ ...state, chartPan: { x: 999, y: -50 } }, ["chartPan"]);
+  stateModule.dispatch({ chartPan: { x: 999, y: -50 } });
   assert.equal(cam.sizeWrites, camSizeWrites, "pan-only updates do not resize the gutter");
   assert.equal(cam.context.operations, camOperations, "pan-only updates do not redraw the gutter");
 
-  const paletteState = { ...state, yarnPalette: ["#aa0000", "#00aa00"] };
-  camRenderer.syncState(paletteState, ["yarnPalette"]);
-  needleRenderer.syncState(paletteState, ["yarnPalette"]);
+  stateModule.dispatch({ yarnPalette: ["#aa0000", "#00aa00"] });
   assert.equal(cam.context.fills.at(-2).color, "#00aa00", "palette changes repaint existing sequence rows");
   assert.equal(needle.context.fills.at(-2).color, "#00aa00");
   const grown = new Bimp(1, 4, [0, 1, 0, 1]);
-  const grownState = { ...paletteState, canvasHeight: 4, yarnSequence: grown, scale: 30 };
-  camRenderer.syncState(grownState, ["canvasHeight", "yarnSequence", "scale"]);
-  needleRenderer.syncState(grownState, ["canvasHeight", "yarnSequence", "scale"]);
+  stateModule.dispatch({ canvasHeight: 4, yarnSequence: grown, scale: 30 });
   assert.deepEqual([cam.width, cam.height], [30, 120]);
   assert.deepEqual([needle.width, needle.height], [30, 120]);
 
   const sequenceOnlyOperations = cam.context.operations;
   const sequenceOnly = new Bimp(1, 4, [1, 1, 0, 1]);
-  camRenderer.syncState({ ...grownState, yarnSequence: sequenceOnly }, ["yarnSequence"]);
+  stateModule.dispatch({ yarnSequence: sequenceOnly });
   assert.ok(cam.context.operations > sequenceOnlyOperations, "sequence-only updates redraw the gutter");
   const dprSizeWrites = cam.sizeWrites;
   globalThis.devicePixelRatio = 1;
-  camRenderer.syncState({ ...grownState, yarnSequence: sequenceOnly }, ["scale"]);
+  stateModule.dispatch({ chartPan: { x: 998, y: -50 } });
   assert.ok(cam.sizeWrites > dprSizeWrites, "DPR changes resize and redraw the gutter");
   globalThis.devicePixelRatio = 2;
 
@@ -169,22 +174,47 @@ try {
 
   colorSequencePointerInteraction(cam);
   assert.equal(cam.emit("pointerdown", { button: 1, pointerId: 3 }).prevented(), 0, "middle click does not paint");
+  const camFillStart = cam.context.fills.length;
+  const needleFillStart = needle.context.fills.length;
   cam.emit("pointerdown", { button: 0, pointerId: 4, clientY: cam.rect.top + 1 });
   cam.emit("pointermove", { pointerId: 4, clientY: cam.rect.top + 39 });
   cam.emit("pointerup", { pointerId: 4 });
   assert.equal(stateModule.GLOBAL_STATE.yarnSequence.pixel(0, 3), 1);
   assert.equal(stateModule.GLOBAL_STATE.yarnSequence.pixel(0, 0), 1);
   assert.equal(stateModule.GLOBAL_STATE.transforming, false);
+  assert.deepEqual(
+    fillAtVisualRow(cam, camFillStart, 60),
+    { color: "#00aa00", x: 0, y: 60, width: 20, height: 20 },
+    "CAM editing repaints its shared bottom row"
+  );
+  assert.deepEqual(
+    fillAtVisualRow(needle, needleFillStart, 60),
+    { color: "#00aa00", x: 0, y: 60, width: 20, height: 20 },
+    "CAM editing repaints the same bottom row in NEEDLE"
+  );
   for (const type of ["pointermove", "pointerup", "pointercancel", "lostpointercapture"]) {
     assert.equal(cam.listenerCount(type), 0, `${type} cleanup is balanced`);
   }
 
   colorSequenceTouchInteraction(needle);
+  stateModule.dispatch({ activeYarn: 0 });
+  const camTouchFillStart = cam.context.fills.length;
+  const needleTouchFillStart = needle.context.fills.length;
   const touch = { identifier: 7, clientX: needle.rect.left + 1, clientY: needle.rect.top + 39 };
   needle.emit("touchstart", { touches: [touch], changedTouches: [touch] });
   needle.emit("touchend", { touches: [], changedTouches: [touch] });
-  assert.equal(stateModule.GLOBAL_STATE.yarnSequence.pixel(0, 0), 1, "needle touch edits the shared sequence");
+  assert.equal(stateModule.GLOBAL_STATE.yarnSequence.pixel(0, 0), 0, "needle touch edits the shared sequence");
   assert.equal(stateModule.GLOBAL_STATE.transforming, false);
+  assert.deepEqual(
+    fillAtVisualRow(needle, needleTouchFillStart, 60),
+    { color: "#aa0000", x: 0, y: 60, width: 20, height: 20 },
+    "NEEDLE editing repaints its shared bottom row"
+  );
+  assert.deepEqual(
+    fillAtVisualRow(cam, camTouchFillStart, 60),
+    { color: "#aa0000", x: 0, y: 60, width: 20, height: 20 },
+    "NEEDLE editing repaints the same bottom row in CAM"
+  );
 
   const { resizePatternCanvas, applyNeedleArrangement } = await server.ssrLoadModule(
     "/src/actions/patternEditing.js"

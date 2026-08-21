@@ -10,37 +10,37 @@
 
 ---
 
-## 执行进度（2026-08-20 午间暂停）
+## 执行进度（2026-08-21 最终集成）
 
 当前分支：`codex/one-shot-uniform-yarn-length`
 
-最新业务代码提交：`a4fee38 fix: preserve repeat unit editing invariants`
+最新已审查业务代码提交：`43bfcbe fix: preserve guide rendering across bfcache`
 
-工作树状态：干净，无未提交文件。
+Task 9 文档变更由包含本进度记录的提交保存；其后的浏览器人工验收、整体终审和分支收尾由主任务继续执行。
 
-### 已完成并通过双阶段审查
+### Tasks 1–8 已完成并通过规格与代码质量审查
 
 - Task 1：循环单元派生层完成。`camUnitBitmap` / `needleUnitBitmap` 成为源数据，60×60 完整位图按顶部对齐方式派生；无关状态更新不会重建派生图。实现及修复提交：`465987a`、`7aa243f`、`44cd737`。
 - Task 2：JSON v3、v2 迁移、旧 repeat 迁移完成。全部 15 个示例会动态参与验证，`loadJSON()` / `newPattern()` 有真实状态测试，导入色板不再与缓存 JSON 共用数组。实现及修复提交：`c52417d`、`c5f11d0`、`13bc582`。
-
-### 已实现，下午先完成复审
-
 - Task 3：尺寸、绘制、开始排针和应用排针已经改为操作循环单元源数据；`8×4 + 1/2/3/4` 生成 `4×8` 排针单元，完整画布尺寸不变；越界绘制不修改状态；撤销会同步恢复输入错误。实现及质量修复提交：`b37e50f`、`a4fee38`。
-- Task 3 规格审查已通过。第一次代码质量审查提出的画笔字段中间态、撤销错误一致性、临时适配器校验、坐标别名和边界测试问题均已在 `a4fee38` 修复。
-- 用户要求暂停时，Task 3 的代码质量复审正在运行，已经中止，尚未取得复审结论。
+- Task 4：共用针法栏后的全局尺寸输入、排针标题下控制区、输入焦点和黑字/原生步进交互完成。实现及修复提交：`2690aa9`、`f9e613e`、`b13f82e`、`d96e4d0`、`25b5de6`。
+- Task 5：固定 gutter、裁剪网格窗口和不交叉布局完成。实现及验证加固提交：`37620c6`、`4fb7dc4`。
+- Task 6：灰色完整平铺层、黑色可编辑单元层和单元命中边界完成。实现及修复提交：`1eef4f9`、`13b9b95`、`67957da`。
+- Task 7：共享 16×16 初始视角、滚轮缩放、中键平移、DPR/边界/残差处理完成。实现及修复提交：`64452e0`、`538626e`、`6145760`、`b3a4ee0`。
+- Task 8：两个固定 gutter 共用同一色纱序列和纵向变换，代码导览拖拽保护、全局笔画生命周期及 BFCache 渲染恢复完成。实现及修复提交：`7d8aaec`、`b17dc16`、`1a559ce`、`43bfcbe`。
 
-### 当前验证状态
+### Task 9 当前状态
 
-- 开始实施前：`npm run build` 与当时全部 25 项 `validate:*` 均通过。
-- Task 3 最新聚焦验证通过：`validate:bitmap-pointer-unit-boundary`、`validate:needle-arrangement-transform`、`validate:pattern-dimensions`、`validate:needle-arrangement-acceptance`、`validate:needle-arrangement-state`、`validate:dual-pattern-editor`、`validate:pattern-unit-derivation`、`validate:pattern-file-v3` 和 `npm run build`。
-- `npm install` 报告仓库原有 7 个依赖审计提示（1 moderate、6 high）；本 UI 任务未擅自升级依赖。
+- 首轮全量基线：从 `package.json` 动态运行全部 32 个 `validate:*`，结果 `32 / 32` 通过，没有需要放宽或替换的旧架构断言；`npm run build` 通过，Vite 转换 667 个模块。
+- 代码导览：指定的 10 个 key 已逐项核对 DOM、definitions 和验证；`npm run generate:code-guide-lines` 生成 57 个真实行号且文件无变化；`validate:code-guide` 通过。
+- 文档与界面标签：本计划和 `KnitScape_当前功能与算法.md` 已按当前架构更新；`src/i18n/translations.js` 已检查，现有用户可见标签无误，因此未修改。
+- 修改后首次全量验证发现 `validate:row-length-loop-model` 仍保护总说明的固定章节标题；保留该有效契约并恢复准确章节后，最终全部 32 个 `validate:*` 再次 `32 / 32` 通过，`npm run build` 通过并转换 667 个模块。九项浏览器人工验收、整体代码审查和分支收尾仍待主任务执行。
 
-### 下午恢复顺序
+### 主任务后续步骤
 
-1. 重新进行 Task 3 代码质量复审，审查范围 `13bc582..a4fee38`；确认通过后将 Task 3 标记完成。
-2. 从 Task 4 开始继续严格执行“实现 → 规格审查 → 代码质量审查”。
-3. Task 4–8 完成前，页面仍不会完整呈现最终的顶部尺寸布局、黑色 8×4 单元、16×16 视角、同步缩放拖拽和双固定色纱栏；不要把当前浏览器外观当作最终结果。
-4. Task 9 运行全部验证、生产构建和九项浏览器人工验收，然后进行整体代码审查与分支收尾。
+1. 对 Task 9 提交进行规格审查和代码质量审查。
+2. 启动临时开发服务器，完成 Task 9 Step 5 的九项浏览器人工验收并停止服务器。
+3. 完成整体代码审查和分支收尾；未完成上述步骤前不宣称最终交付结束。
 
 ## 实施约束
 
@@ -458,7 +458,7 @@ git commit -m "feat: edit and transform repeat units"
 - Create: `scripts/validate-dimension-input-focus.mjs`
 - Modify: `package.json`
 
-- [ ] **Step 1: 写布局与输入事件失败验证**
+- [x] **Step 1: 写布局与输入事件失败验证**
 
 静态验证应断言：
 
@@ -482,7 +482,7 @@ Run: `npm run validate:central-stitch-toolbar && npm run validate:dual-pattern-e
 
 Expected: 旧布局和缺失守卫导致失败。
 
-- [ ] **Step 2: 在顶部工具栏添加统一尺寸控件**
+- [x] **Step 2: 在顶部工具栏添加统一尺寸控件**
 
 在 `chartEditorToolbar.js` 增加一个提交辅助函数，只在 change 或 Enter 时读取 DOM 值：
 
@@ -496,7 +496,7 @@ function commitDimension(field, value) {
 
 四个针法按钮后渲染 `.chart-size-controls`，两个 label 的 input 明确使用 `.input.pattern-dimension-input`、`min="5"`、`max="500"`、`step="1"`。`@keydown` 只在 Enter 时 `blur()` 或调用同一 `commitDimension`，避免每个字符都重绘。
 
-- [ ] **Step 3: 把排针控件嵌入排针标题下方**
+- [x] **Step 3: 把排针控件嵌入排针标题下方**
 
 `bitmapEditor()` 改为按 `unitField`/`prefix` 接收配置；当 prefix 为 needle 时，在 header 后渲染 `needleArrangementControls()`。从 `view.js` 删除全局 `${needleArrangementControls()}`，两个调用改为：
 
@@ -518,7 +518,7 @@ bitmapEditor({
 
 移除排针控件里 start/apply 后的 `fitChart()`，保证点击按钮不改变共享视角。
 
-- [ ] **Step 4: 修复数字快捷键抢占输入**
+- [x] **Step 4: 修复数字快捷键抢占输入**
 
 在 `keypressEvents.js` 导出并使用：
 
@@ -536,7 +536,7 @@ export function isEditableTarget(target) {
 
 `keydown` 回调的第一行在该函数为 true 时直接返回；`keyup` 仍安全清理 held keys，但不要触发数字针法快捷键。
 
-- [ ] **Step 5: 恢复黑字和原生步进按钮**
+- [x] **Step 5: 恢复黑字和原生步进按钮**
 
 在 `styles.css` 后置覆盖：
 
@@ -563,7 +563,7 @@ export function isEditableTarget(target) {
 
 如果 `base.css` 的隐藏规则仍覆盖，再把它限定到不含 `.pattern-dimension-input` 的 number input；不能影响其他输入。
 
-- [ ] **Step 6: 运行布局与输入验证**
+- [x] **Step 6: 运行布局与输入验证**
 
 在 `package.json` 增加：
 
@@ -575,7 +575,7 @@ Run: `npm run validate:central-stitch-toolbar && npm run validate:dual-pattern-e
 
 Expected: 全部输出 `PASS`。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ```bash
 git add src/views/chartEditorToolbar.js src/views/bitmapEditor.js src/views/needleArrangementControls.js src/views/view.js src/events/keypressEvents.js styles.css base.css scripts/validate-central-stitch-toolbar.mjs scripts/validate-dual-pattern-editor.mjs scripts/validate-dimension-input-focus.mjs package.json
@@ -592,7 +592,7 @@ git commit -m "feat: move dimensions and needle controls"
 - Create: `scripts/validate-repeat-editor-layout.mjs`
 - Modify: `package.json`
 
-- [ ] **Step 1: 写 DOM/CSS 结构失败验证**
+- [x] **Step 1: 写 DOM/CSS 结构失败验证**
 
 验证每个 editor 都包含：
 
@@ -610,7 +610,7 @@ Run: `node scripts/validate-repeat-editor-layout.mjs`
 
 Expected: 当前只有 needle 色纱栏且 viewport 使用滚动布局，因此失败。
 
-- [ ] **Step 2: 重建可复用 editor 模板**
+- [x] **Step 2: 重建可复用 editor 模板**
 
 `bitmapEditor()` 输出如下层级，并为两个 pane 生成不同 ID：
 
@@ -637,7 +637,7 @@ Expected: 当前只有 needle 色纱栏且 viewport 使用滚动布局，因此�
 
 needle 使用同结构和 `needle-yarn-sequence-canvas`。实际 lit 模板中的 IDs 继续保留 `cam-symbol-canvas`、`symbol-canvas`、`cam-grid`、`grid` 以减少代码向导和现有验证迁移量；新 unit canvas 使用 `${prefix}-unit-symbol-canvas` 和 `${prefix}-unit-grid`。
 
-- [ ] **Step 3: 用 CSS 保证永不交叉**
+- [x] **Step 3: 用 CSS 保证永不交叉**
 
 实现以下布局规则：
 
@@ -677,7 +677,7 @@ needle 使用同结构和 `needle-yarn-sequence-canvas`。实际 lit 模板中�
 
 `.pattern-canvas-transform` 使用 x/y 共享 transform；`.yarn-sequence-track` 只使用 y transform。不要让任何色纱元素 absolute 到 `.pattern-grid-window` 内。
 
-- [ ] **Step 4: 运行结构验证**
+- [x] **Step 4: 运行结构验证**
 
 在 `package.json` 增加：
 
@@ -689,7 +689,7 @@ Run: `npm run validate:repeat-editor-layout && npm run validate:dual-pattern-edi
 
 Expected: 两条命令均输出 `PASS`。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add src/views/bitmapEditor.js styles.css scripts/validate-repeat-editor-layout.mjs scripts/validate-dual-pattern-editor.mjs package.json
@@ -708,7 +708,7 @@ git commit -m "feat: add clipped repeat editor layout"
 - Create: `scripts/validate-repeat-unit-rendering.mjs`
 - Modify: `package.json`
 
-- [ ] **Step 1: 写渲染和命中区域失败验证**
+- [x] **Step 1: 写渲染和命中区域失败验证**
 
 扩展 MockCanvas/MockContext，使其记录 `fillStyle`、`fillRect`、`strokeStyle`。验证：
 
@@ -735,7 +735,7 @@ Run: `node scripts/validate-repeat-unit-rendering.mjs`
 
 Expected: 当前 renderer 只有完整白色画布且交互允许整张图绘制，因此失败。
 
-- [ ] **Step 2: 将 renderer 参数改成 full + unit 两套画布**
+- [x] **Step 2: 将 renderer 参数改成 full + unit 两套画布**
 
 `drawBitmapEditor()` 接受：
 
@@ -767,7 +767,7 @@ const UNIT_LIGHT_STROKE = "#f2f2f2";
 
 unit 更新时允许完整重画 60×60 full 层和 8×4 unit 层；不得在每次 `chartPan` 变化时重设 canvas width/height 或重画像素，平移只由 DOM transform 完成。
 
-- [ ] **Step 3: 把左键绘制限制在黑色 unit**
+- [x] **Step 3: 把左键绘制限制在黑色 unit**
 
 `bitmapPointerInteraction(canvas)` 读取 `data-unit-field`。先根据 canvas 的 transformed bounding rect 和 `scale/devicePixelRatio` 得到从顶部计算的 display cell，再映射为 unit 的 Bimp y：
 
@@ -782,11 +782,11 @@ return { x, y: unit.height - displayY - 1 };
 
 左键只有得到非 null 坐标才开始 pointer capture 和 line 绘制。中键留给 Task 7 的平移分支。
 
-- [ ] **Step 4: 在入口注册新的画布引用**
+- [x] **Step 4: 在入口注册新的画布引用**
 
 `src/index.js` 为 cam 和 needle 各查询 full/unit/grid/interaction 画布，并分别注册一次 `drawBitmapEditor` 与 `bitmapPointerInteraction`。删除 `drawYarnColors(yarnColorCanvas)` 注册和旧 `yarn-color-canvas` 查询，保证灰色 full 层不再被单边色纱背景覆盖。
 
-- [ ] **Step 5: 运行渲染与交互验证**
+- [x] **Step 5: 运行渲染与交互验证**
 
 在 `package.json` 增加：
 
@@ -798,7 +798,7 @@ Run: `npm run validate:repeat-unit-rendering && npm run validate:dual-pattern-ed
 
 Expected: 全部输出 `PASS`；最后一项确认 pan 变化不触发昂贵重绘，unit 编辑会正确刷新派生结果。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ```bash
 git add src/components/drawBitmapEditor.js src/events/bitmapPointerInteraction.js src/index.js styles.css scripts/validate-dual-pattern-editor.mjs scripts/validate-repeat-unit-rendering.mjs package.json
@@ -819,7 +819,7 @@ git commit -m "feat: render editable black repeat units"
 - Create: `scripts/validate-shared-chart-viewport.mjs`
 - Modify: `package.json`
 
-- [ ] **Step 1: 写共享视口数学与事件失败验证**
+- [x] **Step 1: 写共享视口数学与事件失败验证**
 
 `scripts/validate-shared-chart-viewport.mjs` 直接测试纯函数：
 
@@ -851,7 +851,7 @@ Run: `node scripts/validate-shared-chart-viewport.mjs`
 
 Expected: 新模块和共享 `chartPan` 行为不存在，因此失败。
 
-- [ ] **Step 2: 实现无 DOM 的视口数学**
+- [x] **Step 2: 实现无 DOM 的视口数学**
 
 在 `src/chartViewport.js` 导出：
 
@@ -899,7 +899,7 @@ export function zoomViewportAtPoint({ pan, scale, nextScale, point, devicePixelR
 
 `clampScale` 使用现有 `MIN_SCALE/MAX_SCALE`。如果缩放请求已越界，返回当前 state，而不是改变锚点。
 
-- [ ] **Step 3: 实现滚轮和中键事件**
+- [x] **Step 3: 实现滚轮和中键事件**
 
 `chartPointerPanZoom(windowElement)`：
 
@@ -910,7 +910,7 @@ export function zoomViewportAtPoint({ pan, scale, nextScale, point, devicePixelR
 
 不要从旧版复制 `selectChartCell` 或空白区左键拖动逻辑。
 
-- [ ] **Step 4: 让两个 editor 使用同一 transform**
+- [x] **Step 4: 让两个 editor 使用同一 transform**
 
 `bitmapEditor()` 根据 `GLOBAL_STATE.scale/devicePixelRatio` 设置 `--chart-cell-size`，并设置：
 
@@ -921,13 +921,13 @@ const yarnTransform = `translateY(${GLOBAL_STATE.chartPan.y}px)`;
 
 两个 editor 都读取相同状态。色纱 track 只应用 `yarnTransform`，不读取 pan.x。
 
-- [ ] **Step 5: 将 fitChart 改成 16×16 初始视角**
+- [x] **Step 5: 将 fitChart 改成 16×16 初始视角**
 
 `fitChart()` 查询两个 `.pattern-editor-viewport` 外框的可用尺寸，按 16 个画布列 + 1 个 gutter 列、16 个画布行计算各自 scale，取两个 pane 中更小的 scale，dispatch `chartPan: {0,0}`。它不再根据完整 bitmap 60×60 缩到全图，也不能用当前 `.pattern-grid-window` 的尺寸反推 scale，避免和 CSS cell size 形成循环。初始 load/new/upload 后调用；window resize 先 `measureWindow()`，再 `fitChart()`。
 
 标准桌面下 `.pattern-editor-stage` 的右侧窗口尺寸等于 `16 * cssCellSize`，因此只显示 16×16；空间不足时 scale 下调，仍不显示超过 16×16。
 
-- [ ] **Step 6: 运行共享视口验证**
+- [x] **Step 6: 运行共享视口验证**
 
 在 `package.json` 增加：
 
@@ -939,7 +939,7 @@ Run: `npm run validate:shared-chart-viewport && npm run validate:repeat-editor-l
 
 Expected: 全部输出 `PASS`。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ```bash
 git add src/chartViewport.js src/events/chartPointerPanZoom.js src/actions/zoomFit.js src/views/bitmapEditor.js src/events/bitmapPointerInteraction.js src/index.js styles.css scripts/validate-shared-chart-viewport.mjs package.json
@@ -960,7 +960,7 @@ git commit -m "feat: synchronize repeat editor pan and zoom"
 - Create: `scripts/validate-shared-yarn-gutters.mjs`
 - Modify: `package.json`
 
-- [ ] **Step 1: 写双 gutter 共享行为失败验证**
+- [x] **Step 1: 写双 gutter 共享行为失败验证**
 
 验证入口注册两个 `yarnSequenceCanvas` 实例、两个 pointer/touch 交互目标，但所有事件只 dispatch 同一个 `yarnSequence`。Mock 两个 canvas 后：
 
@@ -980,13 +980,13 @@ Run: `node scripts/validate-shared-yarn-gutters.mjs`
 
 Expected: 当前只注册一个 needle 色纱 canvas，因此失败。
 
-- [ ] **Step 2: 让 yarn renderer 支持两个实例和纯纵向对齐**
+- [x] **Step 2: 让 yarn renderer 支持两个实例和纯纵向对齐**
 
 `yarnSequenceCanvas({ canvas })` 保持无 editor 私有状态；两个实例都读取相同 `state.yarnSequence/yarnPalette/scale`。canvas 本身保持完整 `canvasHeight` 高度，CSS track 使用 Task 7 的 `chartPan.y`；renderer 不写横向 transform。
 
 修正 `syncState()`：palette、sequence、scale 或高度任一变化时两边都能刷新；pan-only 变化不 resize canvas。
 
-- [ ] **Step 3: 注册两边相同色纱交互**
+- [x] **Step 3: 注册两边相同色纱交互**
 
 把 `initKeyboard`/`initTouch` 参数改为 yarn canvas 数组：
 
@@ -1001,7 +1001,7 @@ function initKeyboard(yarnCanvases, simContainer) {
 
 touch 同理。`colorSequencePosAtCoords()` 使用 canvas 的 transformed bounding rect 与 `scale/devicePixelRatio`，clamp 到 `0..yarnSequence.height - 1`，使两边修改同一行。任何一边 brush 后，StateMonitor 同步两个 renderer。
 
-- [ ] **Step 4: 运行色纱与尺寸回归**
+- [x] **Step 4: 运行色纱与尺寸回归**
 
 在 `package.json` 增加：
 
@@ -1013,7 +1013,7 @@ Run: `npm run validate:shared-yarn-gutters && npm run validate:yarn-sequence-edi
 
 Expected: 全部输出 `PASS`。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add src/components/yarnSequenceCanvas.js src/events/colorSequencePointerInteraction.js src/events/colorSequenceTouchInteraction.js src/actions/yarnSequenceRows.js src/index.js src/utils.js scripts/validate-yarn-sequence-editor.mjs scripts/validate-shared-yarn-gutters.mjs package.json
@@ -1032,7 +1032,7 @@ git commit -m "feat: share fixed yarn gutters across editors"
 - Modify: existing `scripts/validate-*.mjs` files whose old full-bitmap ownership assertions are obsolete
 - Modify: `package.json` only if the final aggregate script is added
 
-- [ ] **Step 1: 先运行全量验证，记录旧断言失败清单**
+- [x] **Step 1: 先运行全量验证，记录旧断言失败清单**
 
 PowerShell：
 
@@ -1049,7 +1049,7 @@ $package.scripts.PSObject.Properties |
 
 Expected: 新验证应已通过；仍引用旧尺寸控件、单色纱 canvas、v2 字段或直接 bitmap 所有权的旧验证会明确失败。逐个把断言更新为已批准设计，不删除与多语言、双纱、纹理、纱长、模拟性能有关的覆盖。
 
-- [ ] **Step 2: 更新代码向导映射**
+- [x] **Step 2: 更新代码向导映射**
 
 保留现有 key 语义，确保实际 DOM 上存在：
 
@@ -1072,7 +1072,7 @@ Run: `npm run generate:code-guide-lines && npm run validate:code-guide`
 
 Expected: 生成文件无手工漂移，代码向导验证输出 `PASS`。
 
-- [ ] **Step 3: 更新项目功能文档**
+- [x] **Step 3: 更新项目功能文档**
 
 在 `KnitScape_当前功能与算法.md` 记录：
 
@@ -1084,7 +1084,7 @@ Expected: 生成文件无手工漂移，代码向导验证输出 `PASS`。
 - 两个固定 gutter 共享 60 行色纱；
 - JSON v3 与 repeat/v2 迁移。
 
-- [ ] **Step 4: 运行全部自动验证与生产构建**
+- [x] **Step 4: 运行全部自动验证与生产构建**
 
 Run: `npm run build`
 
@@ -1110,7 +1110,7 @@ Run: `npm run dev -- --host 127.0.0.1`
 
 如需截图，保存到仓库外临时目录，不提交浏览器截图或 Vite 产物。
 
-- [ ] **Step 6: 检查 diff 和提交最终集成**
+- [x] **Step 6: 检查 diff 和提交最终集成**
 
 Run: `git status --short && git diff --check && git diff --stat`
 
@@ -1126,7 +1126,7 @@ git commit -m "docs: document dual repeat editor workflow"
 ## 最终完成标准
 
 - [ ] `git status --short` 为空。
-- [ ] 所有 `validate:*` 命令通过。
-- [ ] `npm run build` 通过。
+- [x] 所有 `validate:*` 命令通过。
+- [x] `npm run build` 通过。
 - [ ] 浏览器九项人工验收完成。
 - [ ] 提交历史按任务分离，无旧 repeat 多块功能、临时产物或派生 bitmap 业务写入。

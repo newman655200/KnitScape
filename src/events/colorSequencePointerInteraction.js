@@ -4,12 +4,15 @@ import {
   endTexturePreviewInteraction,
 } from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
+import { claimYarnStroke, releaseYarnStroke } from "./yarnStrokeCoordinator";
 
 export function colorSequencePointerInteraction(canvas) {
   let activePointerId = null;
 
   canvas.addEventListener("pointerdown", (event) => {
     if (event.button !== 0 || event.isPrimary === false || activePointerId !== null) return;
+    const stroke = {};
+    if (!claimYarnStroke(stroke)) return;
 
     let position = colorSequencePosAtCoords(event, canvas);
     dispatch({
@@ -22,7 +25,23 @@ export function colorSequencePointerInteraction(canvas) {
     activePointerId = event.pointerId;
     const strokePointerId = activePointerId;
     let ended = false;
-    canvas.setPointerCapture?.(strokePointerId);
+    let captured = false;
+    if (typeof canvas.setPointerCapture === "function") {
+      try {
+        canvas.setPointerCapture(strokePointerId);
+        captured =
+          typeof canvas.hasPointerCapture === "function"
+            ? canvas.hasPointerCapture(strokePointerId)
+            : true;
+      } catch {
+        captured = false;
+      }
+    }
+    const fallbackTarget = globalThis.window;
+    const eventTarget =
+      captured || typeof fallbackTarget?.addEventListener !== "function"
+        ? canvas
+        : fallbackTarget;
 
     const move = (moveEvent) => {
       if (moveEvent.pointerId !== strokePointerId) return;
@@ -41,21 +60,25 @@ export function colorSequencePointerInteraction(canvas) {
     const end = (endEvent) => {
       if (ended || endEvent.pointerId !== strokePointerId) return;
       ended = true;
-      canvas.removeEventListener("pointermove", move);
-      canvas.removeEventListener("pointerup", end);
-      canvas.removeEventListener("pointercancel", end);
-      canvas.removeEventListener("lostpointercapture", end);
+      eventTarget.removeEventListener("pointermove", move);
+      eventTarget.removeEventListener("pointerup", end);
+      eventTarget.removeEventListener("pointercancel", end);
+      if (captured) canvas.removeEventListener("lostpointercapture", end);
+      else if (eventTarget === canvas) canvas.removeEventListener("pointerleave", end);
       activePointerId = null;
-      dispatch({ transforming: false });
-      endTexturePreviewInteraction();
+      if (releaseYarnStroke(stroke)) {
+        dispatch({ transforming: false });
+        endTexturePreviewInteraction();
+      }
       if (canvas.hasPointerCapture?.(strokePointerId)) {
         canvas.releasePointerCapture(strokePointerId);
       }
     };
 
-    canvas.addEventListener("pointermove", move);
-    canvas.addEventListener("pointerup", end);
-    canvas.addEventListener("pointercancel", end);
-    canvas.addEventListener("lostpointercapture", end);
+    eventTarget.addEventListener("pointermove", move);
+    eventTarget.addEventListener("pointerup", end);
+    eventTarget.addEventListener("pointercancel", end);
+    if (captured) canvas.addEventListener("lostpointercapture", end);
+    else if (eventTarget === canvas) canvas.addEventListener("pointerleave", end);
   });
 }

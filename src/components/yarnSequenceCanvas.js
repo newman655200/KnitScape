@@ -40,24 +40,14 @@ export function yarnSequenceCanvas({ canvas }) {
 
     function draw() {
       const ctx = canvas.getContext("2d");
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-          let paletteIndex = yarnSequence.pixel(x, height - y - 1);
-
-          if (
-            lastDrawn == null ||
-            lastDrawn.pixel(x, height - y - 1) != paletteIndex
-          ) {
-            ctx.translate(x * scale, y * scale);
-
-            ctx.fillStyle = yarnPalette[paletteIndex];
-
-            ctx.clearRect(0, 0, scale, scale);
-            ctx.fillRect(0, 0, scale, scale);
-
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-          }
+          const paletteIndex = yarnSequence.pixel(x, height - y - 1);
+          ctx.fillStyle = yarnPalette[paletteIndex];
+          ctx.fillRect(x * scale, y * scale, scale, scale);
         }
       }
       drawYarnSequenceGrid(ctx);

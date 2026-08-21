@@ -230,6 +230,8 @@ requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
 ]);
 requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
   "重叠画布源码层",
+  "cam.yarn-sequence",
+  "三角座纱线序列层",
   "cam.symbols",
   "三角座针法层",
   "needle.yarn-sequence",
@@ -244,8 +246,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
-  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
-  "must define the five active cam and needle canvas layer options"
+  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.yarn-sequence[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
+  "must define the six active cam and needle canvas layer options"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
@@ -388,9 +390,15 @@ requireSourcePattern(
 requireSourceTokens("src/index.js", [
   'import { isCodeGuideMode } from "./codeGuide/mode.js"',
   'import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js"',
+  'import { subscribeCodeGuideState } from "./codeGuide/codeGuideState.js"',
   'data-code-guide-key="layout.split"',
   'data-code-guide-key="layout.editor-split"',
 ]);
+requireSourcePattern(
+  "src/index.js",
+  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*\)[\s\S]*?addEventListener\(\s*["']pagehide["']\s*,[\s\S]*?\{\s*once\s*:\s*true\s*,?\s*\}\s*\)/,
+  "must subscribe the app renderer once for code-guide state and release it on pagehide"
+);
 requireSourcePattern(
   "src/index.js",
   /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?initCodeGuideEvents\(\)[\s\S]*?\}\s*else\s*\{[\s\S]*?isMobile\(\)\s*\?\s*initTouch\([^)]*\)\s*:\s*initKeyboard\([^)]*\)/,
@@ -434,6 +442,8 @@ if (fs.existsSync(path.join(root, "styles.css"))) {
 
 if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relativePath)))) {
   let server;
+  let runtimeDom;
+  const previousGlobalDescriptors = {};
   try {
     const { createServer } = await import("vite");
     server = await createServer({
@@ -442,7 +452,48 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       appType: "custom",
       logLevel: "silent",
     });
-
+    const { JSDOM } = await import("jsdom");
+    runtimeDom = new JSDOM("<!doctype html><body></body>", {
+      pretendToBeVisual: true,
+      url: "http://localhost/?codeGuide=1",
+    });
+    for (const name of [
+      "window",
+      "document",
+      "Element",
+      "HTMLElement",
+      "navigator",
+      "requestAnimationFrame",
+      "cancelAnimationFrame",
+      "litIssuedWarnings",
+    ]) {
+      previousGlobalDescriptors[name] = Object.getOwnPropertyDescriptor(
+        globalThis,
+        name
+      );
+    }
+    for (const [name, value] of Object.entries({
+      window: runtimeDom.window,
+      document: runtimeDom.window.document,
+      Element: runtimeDom.window.Element,
+      HTMLElement: runtimeDom.window.HTMLElement,
+      navigator: runtimeDom.window.navigator,
+      requestAnimationFrame: runtimeDom.window.requestAnimationFrame.bind(
+        runtimeDom.window
+      ),
+      cancelAnimationFrame: runtimeDom.window.cancelAnimationFrame.bind(
+        runtimeDom.window
+      ),
+      litIssuedWarnings: new Set([
+        "Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.",
+      ]),
+    })) {
+      Object.defineProperty(globalThis, name, {
+        configurable: true,
+        value,
+        writable: true,
+      });
+    }
     const mode = await server.ssrLoadModule("/src/codeGuide/mode.js");
     const state = await server.ssrLoadModule("/src/codeGuide/codeGuideState.js");
     const map = await server.ssrLoadModule("/src/codeGuide/codeGuideMap.js");
@@ -451,6 +502,9 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
     );
     const events = await server.ssrLoadModule(
       "/src/codeGuide/codeGuideEvents.js"
+    );
+    const { createAppRenderer } = await server.ssrLoadModule(
+      "/src/components/renderApp.js"
     );
 
     if (typeof mode.isCodeGuideMode !== "function") {
@@ -468,6 +522,7 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       "getActiveCodeGuideKey",
       "setActiveCodeGuideKey",
       "clearActiveCodeGuideKey",
+      "subscribeCodeGuideState",
     ]) {
       if (typeof state[api] !== "function") {
         failures.push(`codeGuideState.js must export ${api} as a function`);
@@ -477,7 +532,8 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
     if (
       typeof state.getActiveCodeGuideKey === "function" &&
       typeof state.setActiveCodeGuideKey === "function" &&
-      typeof state.clearActiveCodeGuideKey === "function"
+      typeof state.clearActiveCodeGuideKey === "function" &&
+      typeof state.subscribeCodeGuideState === "function"
     ) {
       if (state.getActiveCodeGuideKey() !== null) {
         failures.push("code guide state must initially be null");
@@ -764,6 +820,98 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       }
     }
 
+    if (
+      typeof overlay.codeGuideOverlay === "function" &&
+      typeof state.subscribeCodeGuideState === "function" &&
+      typeof createAppRenderer === "function"
+    ) {
+      const { render } = await import("lit-html");
+      const frameQueue = [];
+      const renderGuide = () =>
+        render(overlay.codeGuideOverlay(), runtimeDom.window.document.body);
+      const renderer = createAppRenderer({
+        renderView: renderGuide,
+        requestFrame(callback) {
+          frameQueue.push(callback);
+          return frameQueue.length;
+        },
+      });
+      const flushGuideRender = (description) => {
+        const frame = frameQueue.shift();
+        if (typeof frame !== "function") {
+          failures.push(`${description} must schedule a DOM render`);
+          return;
+        }
+        frame();
+      };
+      const unsubscribe = state.subscribeCodeGuideState(renderer.syncState);
+
+      state.clearActiveCodeGuideKey();
+      renderer.renderInitial();
+      const annotatedCanvas = runtimeDom.window.document.createElement("canvas");
+      annotatedCanvas.dataset.codeGuideKey = "cam.symbols";
+      annotatedCanvas.tabIndex = 0;
+      runtimeDom.window.document.body.append(annotatedCanvas);
+      events.initCodeGuideEvents(runtimeDom.window.document);
+
+      annotatedCanvas.dispatchEvent(
+        new runtimeDom.window.MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      flushGuideRender("annotated click");
+      if (!runtimeDom.window.document.querySelector(".code-guide-drawer")) {
+        failures.push("annotated click must render the code guide drawer");
+      }
+
+      const camYarnButton = [...runtimeDom.window.document.querySelectorAll(
+        ".code-guide-layer-option"
+      )].find((button) => button.textContent.includes("三角座纱线序列层"));
+      if (!camYarnButton) {
+        failures.push("layer selector must expose the CAM yarn sequence layer");
+      } else {
+        camYarnButton.click();
+        flushGuideRender("layer selection");
+        const currentLayer = runtimeDom.window.document.querySelector(
+          ".code-guide-layer-option.current"
+        );
+        if (!currentLayer?.textContent.includes("三角座纱线序列层")) {
+          failures.push("layer selection must rerender the newly active guide");
+        }
+      }
+
+      runtimeDom.window.document.querySelector(".code-guide-close")?.click();
+      flushGuideRender("close button");
+      if (runtimeDom.window.document.querySelector(".code-guide-drawer")) {
+        failures.push("close button must remove the code guide drawer");
+      }
+
+      annotatedCanvas.click();
+      flushGuideRender("second annotated click");
+      const drawer = runtimeDom.window.document.querySelector(
+        ".code-guide-drawer"
+      );
+      drawer?.dispatchEvent(
+        new runtimeDom.window.KeyboardEvent("keydown", {
+          bubbles: true,
+          cancelable: true,
+          key: "Escape",
+        })
+      );
+      flushGuideRender("drawer Escape");
+      if (runtimeDom.window.document.querySelector(".code-guide-drawer")) {
+        failures.push("Escape must remove the code guide drawer");
+      }
+
+      unsubscribe();
+      state.setActiveCodeGuideKey("cam.grid");
+      if (frameQueue.length !== 0) {
+        failures.push("unsubscribed code guide listeners must not schedule renders");
+      }
+      state.clearActiveCodeGuideKey();
+    }
+
     const sampleEntry = { file: "src/views/taskbar.js", line: 11 };
     if (
       typeof map.absoluteCodeGuidePath === "function" &&
@@ -780,9 +928,14 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       failures.push("createVSCodeHref() must return the exact sample VS Code href");
     }
   } catch (error) {
-    failures.push(`unable to execute code guide modules: ${error.message}`);
+    failures.push(`unable to execute code guide modules: ${error.stack || error.message}`);
   } finally {
     await server?.close();
+    runtimeDom?.window.close();
+    for (const [name, descriptor] of Object.entries(previousGlobalDescriptors)) {
+      if (descriptor === undefined) delete globalThis[name];
+      else Object.defineProperty(globalThis, name, descriptor);
+    }
   }
 }
 

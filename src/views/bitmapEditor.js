@@ -38,6 +38,7 @@ export function bitmapEditor({
             <canvas
               id="${prefix}-yarn-sequence-canvas"
               class="yarn-sequence-canvas"
+              tabindex="0"
               aria-label="${t(titleKey, language)} ${t("yarnSequence.title", language)}"
               ${prefix === "needle"
                 ? html`data-code-guide-key="needle.yarn-sequence"`

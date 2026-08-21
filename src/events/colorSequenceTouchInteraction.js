@@ -4,6 +4,7 @@ import {
   endTexturePreviewInteraction,
 } from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
+import { claimYarnStroke, releaseYarnStroke } from "./yarnStrokeCoordinator";
 
 function touchWithId(event, identifier) {
   return [...(event.touches || [])].find((touch) => touch.identifier === identifier);
@@ -22,6 +23,8 @@ export function colorSequenceTouchInteraction(canvas) {
     if (activeTouchId !== null) return;
     const touch = event.changedTouches?.[0] || event.touches?.[0];
     if (!touch) return;
+    const stroke = {};
+    if (!claimYarnStroke(stroke)) return;
 
     let position = colorSequencePosAtCoords(touch, canvas);
     dispatch({
@@ -58,12 +61,14 @@ export function colorSequenceTouchInteraction(canvas) {
       canvas.removeEventListener("touchcancel", end);
       canvas.removeEventListener("touchend", end);
       activeTouchId = null;
-      dispatch({ transforming: false });
-      endTexturePreviewInteraction();
+      if (releaseYarnStroke(stroke)) {
+        dispatch({ transforming: false });
+        endTexturePreviewInteraction();
+      }
     };
 
-    canvas.addEventListener("touchmove", move);
+    canvas.addEventListener("touchmove", move, { passive: false });
     canvas.addEventListener("touchcancel", end);
     canvas.addEventListener("touchend", end);
-  });
+  }, { passive: false });
 }

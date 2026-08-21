@@ -5,6 +5,7 @@ import Split from "split.js";
 import { createChartFitScheduler, fitChart } from "./actions/zoomFit.js";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
 import { isCodeGuideMode } from "./codeGuide/mode.js";
+import { subscribeCodeGuideState } from "./codeGuide/codeGuideState.js";
 import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
 import { createAppRenderer } from "./components/renderApp.js";
 import { runSimulation } from "./components/runSimulation.js";
@@ -101,6 +102,12 @@ function init() {
   });
 
   if (isCodeGuideMode()) {
+    const unsubscribeCodeGuideState = subscribeCodeGuideState(
+      appRenderer.syncState
+    );
+    window.addEventListener("pagehide", unsubscribeCodeGuideState, {
+      once: true,
+    });
     document
       .querySelector("#site > .gutter")
       ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"

@@ -1,13 +1,25 @@
 let activeCodeGuideKey = null;
+const listeners = new Set();
+
+function updateActiveCodeGuideKey(key) {
+  if (activeCodeGuideKey === key) return;
+  activeCodeGuideKey = key;
+  listeners.forEach((listener) => listener());
+}
 
 export function getActiveCodeGuideKey() {
   return activeCodeGuideKey;
 }
 
 export function setActiveCodeGuideKey(key) {
-  activeCodeGuideKey = key;
+  updateActiveCodeGuideKey(key);
 }
 
 export function clearActiveCodeGuideKey() {
-  activeCodeGuideKey = null;
+  updateActiveCodeGuideKey(null);
+}
+
+export function subscribeCodeGuideState(listener) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }

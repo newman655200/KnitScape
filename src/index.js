@@ -102,12 +102,7 @@ function init() {
   });
 
   if (isCodeGuideMode()) {
-    const unsubscribeCodeGuideState = subscribeCodeGuideState(
-      appRenderer.syncState
-    );
-    window.addEventListener("pagehide", unsubscribeCodeGuideState, {
-      once: true,
-    });
+    subscribeCodeGuideState(appRenderer.syncState, window);
     document
       .querySelector("#site > .gutter")
       ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"

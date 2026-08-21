@@ -19,7 +19,19 @@ export function clearActiveCodeGuideKey() {
   updateActiveCodeGuideKey(null);
 }
 
-export function subscribeCodeGuideState(listener) {
+export function subscribeCodeGuideState(listener, pageTarget = null) {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+
+  function handlePageHide(event) {
+    if (event.persisted) return;
+    unsubscribe();
+  }
+
+  function unsubscribe() {
+    listeners.delete(listener);
+    pageTarget?.removeEventListener("pagehide", handlePageHide);
+  }
+
+  pageTarget?.addEventListener("pagehide", handlePageHide);
+  return unsubscribe;
 }

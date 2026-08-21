@@ -396,8 +396,8 @@ requireSourceTokens("src/index.js", [
 ]);
 requireSourcePattern(
   "src/index.js",
-  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*\)[\s\S]*?addEventListener\(\s*["']pagehide["']\s*,[\s\S]*?\{\s*once\s*:\s*true\s*,?\s*\}\s*\)/,
-  "must subscribe the app renderer once for code-guide state and release it on pagehide"
+  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*,\s*window\s*\)/,
+  "must subscribe the app renderer for the BFCache-safe page lifecycle"
 );
 requireSourcePattern(
   "src/index.js",
@@ -844,7 +844,15 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
         }
         frame();
       };
-      const unsubscribe = state.subscribeCodeGuideState(renderer.syncState);
+      const unsubscribe = state.subscribeCodeGuideState(
+        renderer.syncState,
+        runtimeDom.window
+      );
+      const dispatchPageHide = (persisted) => {
+        const event = new runtimeDom.window.Event("pagehide");
+        Object.defineProperty(event, "persisted", { value: persisted });
+        runtimeDom.window.dispatchEvent(event);
+      };
 
       state.clearActiveCodeGuideKey();
       renderer.renderInitial();
@@ -887,8 +895,9 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
         failures.push("close button must remove the code guide drawer");
       }
 
+      dispatchPageHide(true);
       annotatedCanvas.click();
-      flushGuideRender("second annotated click");
+      flushGuideRender("annotated click after BFCache restoration");
       const drawer = runtimeDom.window.document.querySelector(
         ".code-guide-drawer"
       );
@@ -904,12 +913,18 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
         failures.push("Escape must remove the code guide drawer");
       }
 
-      unsubscribe();
+      dispatchPageHide(false);
       state.setActiveCodeGuideKey("cam.grid");
       if (frameQueue.length !== 0) {
-        failures.push("unsubscribed code guide listeners must not schedule renders");
+        failures.push("final pagehide must unsubscribe code guide rendering");
       }
+      unsubscribe();
+      unsubscribe();
+      dispatchPageHide(false);
       state.clearActiveCodeGuideKey();
+      if (frameQueue.length !== 0) {
+        failures.push("code guide page cleanup must be safe and idempotent");
+      }
     }
 
     const sampleEntry = { file: "src/views/taskbar.js", line: 11 };

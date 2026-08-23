@@ -1,5 +1,5 @@
 import { GLOBAL_STATE, dispatch, undo } from "../state";
-import { selectPatternSymbol } from "../actions/patternEditing.js";
+import { toolData } from "../constants";
 
 const ctrlShortcuts = {
   a: () => console.log("select all?"),
@@ -8,6 +8,14 @@ const ctrlShortcuts = {
 };
 
 const hotkeys = {
+  // grab the tools from the global tool constants and reformat them for the hotkeymap
+  ...Object.fromEntries(
+    Object.entries(toolData).map(([toolId, toolData]) => [
+      toolData.hotkey,
+      () => dispatch({ activeTool: toolId }),
+    ])
+  ),
+
   // Misc
   g: () => dispatch({ grid: !GLOBAL_STATE.grid }),
 
@@ -17,6 +25,8 @@ const hotkeys = {
       showLibrary: false,
       showSettings: false,
       showDownload: false,
+      editingRepeat: -1,
+      showRepeatLibrary: false,
     }),
   d: () =>
     dispatch({
@@ -25,24 +35,11 @@ const hotkeys = {
 };
 
 function symbolSwitch(index) {
-  if (index >= 0 && index < GLOBAL_STATE.symbolMap.length) {
-    selectPatternSymbol(index);
-  }
-}
-
-export function isEditableTarget(target) {
-  const tagName = target?.tagName?.toUpperCase();
-  return (
-    tagName === "INPUT" ||
-    tagName === "SELECT" ||
-    tagName === "TEXTAREA" ||
-    target?.isContentEditable === true
-  );
+  if (index <= GLOBAL_STATE.symbolMap.length) dispatch({ activeSymbol: index });
 }
 
 export function addKeypressListeners() {
   window.addEventListener("keydown", (e) => {
-    if (isEditableTarget(e.target)) return;
     // if (
     //   !(
     //     GLOBAL_STATE.showSettings ||
@@ -62,7 +59,6 @@ export function addKeypressListeners() {
   });
 
   window.addEventListener("keyup", (e) => {
-    if (!GLOBAL_STATE.heldKeys.has(e.key)) return;
     const newHeldKeys = new Set(GLOBAL_STATE.heldKeys);
     newHeldKeys.delete(e.key);
     dispatch({ heldKeys: newHeldKeys });

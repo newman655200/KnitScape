@@ -2,42 +2,77 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
-import { createChartFitScheduler, fitChart } from "./actions/zoomFit.js";
-import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js";
-import { isCodeGuideMode } from "./codeGuide/mode.js";
-import { subscribeCodeGuideState } from "./codeGuide/codeGuideState.js";
-import { drawBitmapEditor } from "./components/drawBitmapEditor.js";
-import { createAppRenderer } from "./components/renderApp.js";
-import { runSimulation } from "./components/runSimulation.js";
-import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas.js";
-import { bitmapPointerInteraction } from "./events/bitmapPointerInteraction.js";
-import { chartPointerPanZoom } from "./events/chartPointerPanZoom.js";
-import { closeModals } from "./events/closeModals.js";
-import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction.js";
-import { colorSequenceTouchInteraction } from "./events/colorSequenceTouchInteraction.js";
-import { addKeypressListeners } from "./events/keypressEvents.js";
-import { simulationPointerInteraction } from "./events/simulationPointerInteraction.js";
-import { simulationTouchInteraction } from "./events/simulationTouchInteraction.js";
-import { StateMonitor } from "./state.js";
-import { isMobile } from "./utils.js";
-import { view } from "./views/view.js";
+import { StateMonitor } from "./state";
+
+import { fitChart } from "./actions/zoomFit";
+
+import { view } from "./views/view";
+
+import { yarnSequenceCanvas } from "./components/yarnSequenceCanvas";
+
+// Chart View Canvas Layers
+import { drawYarnColors } from "./components/drawYarnColors";
+import { drawSymbols } from "./components/drawSymbols";
+import { drawGrid } from "./components/drawGrid";
+import { drawRepeats } from "./components/drawRepeats";
+
+// Pointer/keyboard interaction
+import { addKeypressListeners } from "./events/keypressEvents";
+import { desktopPointerPanZoom } from "./events/desktopPointerPanZoom";
+import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction";
+import { repeatPointerInteraction } from "./events/repeatPointerInteraction";
+import { simulationPointerInteraction } from "./events/simulationPointerInteraction";
+// import { repeatLibraryDragInteraction } from "./events/repeatLibraryDragInteraction";
+
+// Touch interaction
+import { desktopTouchPanZoom } from "./events/desktopTouchPanZoom";
+import { colorSequenceTouchInteraction } from "./events/colorSequenceTouchInteraction";
+import { repeatTouchInteraction } from "./events/repeatTouchInteraction";
+import { simulationTouchInteraction } from "./events/simulationTouchInteraction";
+
+import { drawSymbolPicker } from "./components/drawSymbolPicker";
+// import { drawRepeatLibrary } from "./components/drawRepeatLibrary";
+import { resizeCanvases } from "./components/resizeCanvases";
+import { runSimulation } from "./components/runSimulation";
+import { closeModals } from "./events/closeModals";
+import { generateChart } from "./components/generateChart";
+import { isMobile } from "./utils";
+import { isCodeGuideMode } from "./codeGuide/mode";
+import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
+import { createAppRenderer } from "./components/renderApp";
+
+let symbolCanvas,
+  gridCanvas,
+  yarnColorCanvas,
+  desktop,
+  repeatContainer,
+  yarnSequenceEditorCanvas,
+  simContainer,
+  repeatLibrary;
 
 const appRenderer = createAppRenderer({
   renderView: () => render(view(), document.body),
 });
-const scheduleChartFit = createChartFitScheduler();
 
-function initKeyboard(yarnSequenceCanvasElements, simContainer) {
+function initKeyboard() {
   addKeypressListeners();
-  yarnSequenceCanvasElements.forEach(colorSequencePointerInteraction);
+
+  desktopPointerPanZoom(desktop);
+  repeatPointerInteraction(repeatContainer);
+  colorSequencePointerInteraction(yarnSequenceEditorCanvas);
   simulationPointerInteraction(simContainer);
+  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
-function initTouch(yarnSequenceCanvasElements, simContainer) {
+function initTouch() {
   document.body.style.setProperty("--font-size", "1.1rem");
-  yarnSequenceCanvasElements.forEach(colorSequenceTouchInteraction);
+
+  desktopTouchPanZoom(desktop);
+  repeatTouchInteraction(repeatContainer);
+  colorSequenceTouchInteraction(yarnSequenceEditorCanvas);
   simulationTouchInteraction(simContainer);
+  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
@@ -55,98 +90,46 @@ function measureWindow() {
 function init() {
   appRenderer.renderInitial();
 
-  const camSymbolCanvas = document.getElementById("cam-symbol-canvas");
-  const camGridCanvas = document.getElementById("cam-grid");
-  const camUnitSymbolCanvas = document.getElementById("cam-unit-symbol-canvas");
-  const camUnitGridCanvas = document.getElementById("cam-unit-grid");
-  const camInteractionCanvas = document.getElementById(
-    "cam-interaction-canvas"
-  );
-  const needleSymbolCanvas = document.getElementById("symbol-canvas");
-  const needleGridCanvas = document.getElementById("grid");
-  const needleUnitSymbolCanvas = document.getElementById(
-    "needle-unit-symbol-canvas"
-  );
-  const needleUnitGridCanvas = document.getElementById("needle-unit-grid");
-  const needleInteractionCanvas = document.getElementById(
-    "needle-interaction-canvas"
-  );
-  const chartWindows = [
-    ...document.querySelectorAll(".pattern-grid-window"),
-  ];
-  const camYarnSequenceCanvas = document.getElementById(
-    "cam-yarn-sequence-canvas"
-  );
-  const needleYarnSequenceCanvas = document.getElementById(
-    "needle-yarn-sequence-canvas"
-  );
-  const yarnSequenceCanvasElements = [
-    camYarnSequenceCanvas,
-    needleYarnSequenceCanvas,
-  ];
-  const simContainer = document.getElementById("sim-container");
+  symbolCanvas = document.getElementById("symbol-canvas");
+  gridCanvas = document.getElementById("grid");
+  yarnColorCanvas = document.getElementById("yarn-color-canvas");
+  yarnSequenceEditorCanvas = document.getElementById("yarn-sequence-canvas");
+  desktop = document.getElementById("desktop");
+  repeatContainer = document.getElementById("repeat-container");
+  simContainer = document.getElementById("sim-container");
+  repeatLibrary = document.getElementById("repeat-library");
 
   Split(["#chart-pane", "#sim-pane"], {
     sizes: [60, 40],
     minSize: 100,
     gutterSize: 11,
-    onDragEnd: scheduleChartFit,
-  });
-
-  Split(["#cam-editor-pane", "#needle-editor-pane"], {
-    sizes: [50, 50],
-    minSize: 90,
-    gutterSize: 9,
-    direction: "vertical",
-    onDragEnd: scheduleChartFit,
   });
 
   if (isCodeGuideMode()) {
-    const unsubscribeCodeGuideState = subscribeCodeGuideState(
-      appRenderer.syncState
-    );
-    window.addEventListener("pagehide", unsubscribeCodeGuideState, {
-      once: true,
-    });
     document
       .querySelector("#site > .gutter")
       ?.setAttribute("data-code-guide-key", "layout.split"); // data-code-guide-key="layout.split"
-    document
-      .querySelector("#pattern-editors > .gutter")
-      ?.setAttribute("data-code-guide-key", "layout.editor-split"); // data-code-guide-key="layout.editor-split"
+  }
+
+  if (isCodeGuideMode()) {
     initCodeGuideEvents();
   } else {
-    chartWindows.forEach(chartPointerPanZoom);
-    bitmapPointerInteraction(camInteractionCanvas);
-    bitmapPointerInteraction(needleInteractionCanvas);
-    isMobile()
-      ? initTouch(yarnSequenceCanvasElements, simContainer)
-      : initKeyboard(yarnSequenceCanvasElements, simContainer);
+    isMobile() ? initTouch() : initKeyboard();
   }
 
   StateMonitor.register([
     () => appRenderer,
-    yarnSequenceCanvas({ canvas: camYarnSequenceCanvas }),
-    yarnSequenceCanvas({ canvas: needleYarnSequenceCanvas }),
-    drawBitmapEditor({
-      fullField: "camBitmap",
-      unitField: "camUnitBitmap",
-      fullSymbolCanvas: camSymbolCanvas,
-      fullGridCanvas: camGridCanvas,
-      unitSymbolCanvas: camUnitSymbolCanvas,
-      unitGridCanvas: camUnitGridCanvas,
-      interactionCanvas: camInteractionCanvas,
+    resizeCanvases([symbolCanvas, gridCanvas, yarnColorCanvas]),
+    yarnSequenceCanvas({
+      canvas: yarnSequenceEditorCanvas,
     }),
-    drawBitmapEditor({
-      fullField: "needleBitmap",
-      unitField: "needleUnitBitmap",
-      fullSymbolCanvas: needleSymbolCanvas,
-      fullGridCanvas: needleGridCanvas,
-      unitSymbolCanvas: needleUnitSymbolCanvas,
-      unitGridCanvas: needleUnitGridCanvas,
-      interactionCanvas: needleInteractionCanvas,
-    }),
+    drawSymbols(symbolCanvas),
+    drawYarnColors(yarnColorCanvas),
+    drawGrid(gridCanvas),
+    drawRepeats(),
+    drawSymbolPicker(),
     runSimulation(),
+    generateChart(),
   ]);
 
   measureWindow();
@@ -154,7 +137,4 @@ function init() {
 }
 
 window.onload = init;
-window.onresize = () => {
-  measureWindow();
-  scheduleChartFit();
-};
+window.onresize = measureWindow;

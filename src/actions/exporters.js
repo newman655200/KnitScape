@@ -1,6 +1,5 @@
 import { GLOBAL_STATE } from "../state";
 import { download, makeBMP } from "../utils";
-import { serializePattern } from "../patternFile.js";
 
 export function downloadSVG() {
   const svg = document.getElementById("simulation");
@@ -66,7 +65,7 @@ export function downloadPNG() {
 export function downloadBMP() {
   download(
     makeBMP(
-      GLOBAL_STATE.needleBitmap,
+      GLOBAL_STATE.repeats[0].bitmap,
       GLOBAL_STATE.yarnSequence.pixels,
       GLOBAL_STATE.yarnPalette
     ).src
@@ -76,7 +75,7 @@ export function downloadBMP() {
 export function downloadSilverKnitTxt() {
   const text =
     "SilverKnit\n" +
-    GLOBAL_STATE.needleBitmap
+    GLOBAL_STATE.repeats[0].bitmap
       .make2d()
       .map((row) =>
         row
@@ -95,14 +94,14 @@ export function downloadSilverKnitTxt() {
 }
 
 export function downloadKniterate() {
-  const width = GLOBAL_STATE.needleBitmap.width;
-  const needleHeight = GLOBAL_STATE.needleBitmap.height;
+  const width = GLOBAL_STATE.chart.width;
+  const chartHeight = GLOBAL_STATE.chart.height;
   const colors = [];
 
-  for (let y = 0; y < needleHeight; y++) {
+  for (let y = 0; y < chartHeight; y++) {
     let paletteIndex = GLOBAL_STATE.yarnSequence.pixel(
       0,
-      (needleHeight - y - 1) % GLOBAL_STATE.yarnSequence.height
+      (chartHeight - y - 1) % GLOBAL_STATE.yarnSequence.height
     );
 
     colors.push(new Array(width).fill(paletteIndex).join(""));
@@ -112,7 +111,7 @@ export function downloadKniterate() {
     "FILE FORMAT : DAK\nYARNS\n" +
     colors.join("\n") +
     "\nYARN PALETTE\nSTITCH SYMBOLS\n" +
-    GLOBAL_STATE.needleBitmap
+    GLOBAL_STATE.chart
       .make2d()
       .map((row) =>
         row
@@ -135,7 +134,16 @@ export function downloadJSON() {
   const dataStr =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(
-      JSON.stringify(serializePattern(GLOBAL_STATE))
+      JSON.stringify({
+        width: GLOBAL_STATE.chart.width,
+        height: GLOBAL_STATE.chart.height,
+        repeats: GLOBAL_STATE.repeats.map(({ bitmap, pos, area }) => {
+          return { bitmap: bitmap.toJSON(), pos, area };
+        }),
+        yarnPalette: GLOBAL_STATE.yarnPalette,
+        yarnSequence: GLOBAL_STATE.yarnSequence.toJSON(),
+        yarnPlies: GLOBAL_STATE.yarnPlies,
+      })
     );
 
   download(dataStr, "pattern.json");

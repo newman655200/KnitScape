@@ -1,25 +1,12 @@
-import { cssCellSize } from "../chartViewport.js";
-
-function pixelRatio() {
-  const ratio = Number(globalThis.devicePixelRatio);
-  return Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
-}
+import { sizeCanvasToBitmap } from "../actions/zoomFit";
 
 export function yarnSequenceCanvas({ canvas }) {
   return ({ state }) => {
     let { scale, yarnSequence, yarnPalette } = state;
-    let dpr = pixelRatio();
 
     let width = yarnSequence.width;
     let height = yarnSequence.height;
     let lastDrawn = null;
-
-    function sizeCanvas() {
-      canvas.width = scale * width;
-      canvas.height = scale * height;
-      canvas.style.width = `${cssCellSize(scale, dpr) * width}px`;
-      canvas.style.height = `${cssCellSize(scale, dpr) * height}px`;
-    }
 
     function drawYarnSequenceGrid(ctx) {
       ctx.save();
@@ -40,27 +27,35 @@ export function yarnSequenceCanvas({ canvas }) {
 
     function draw() {
       const ctx = canvas.getContext("2d");
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-          const paletteIndex = yarnSequence.pixel(x, height - y - 1);
-          ctx.fillStyle = yarnPalette[paletteIndex];
-          ctx.fillRect(x * scale, y * scale, scale, scale);
+          let paletteIndex = yarnSequence.pixel(x, height - y - 1);
+
+          if (
+            lastDrawn == null ||
+            lastDrawn.pixel(x, height - y - 1) != paletteIndex
+          ) {
+            ctx.translate(x * scale, y * scale);
+
+            ctx.fillStyle = yarnPalette[paletteIndex];
+
+            ctx.clearRect(0, 0, scale, scale);
+            ctx.fillRect(0, 0, scale, scale);
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+          }
         }
       }
       drawYarnSequenceGrid(ctx);
       lastDrawn = yarnSequence;
     }
 
-    sizeCanvas();
+    sizeCanvasToBitmap(canvas, width, height, scale);
     draw();
 
     return {
       syncState(state) {
-        const nextDpr = pixelRatio();
-        const dprChanged = dpr !== nextDpr;
         if (yarnPalette != state.yarnPalette) {
           yarnPalette = state.yarnPalette;
           lastDrawn = null;
@@ -68,16 +63,14 @@ export function yarnSequenceCanvas({ canvas }) {
 
         if (
           scale != state.scale ||
-          dprChanged ||
           width != state.yarnSequence.width ||
           height != state.yarnSequence.height
         ) {
           width = state.yarnSequence.width;
           height = state.yarnSequence.height;
           scale = state.scale;
-          dpr = nextDpr;
 
-          sizeCanvas();
+          sizeCanvasToBitmap(canvas, width, height, scale);
           lastDrawn = null;
         }
 

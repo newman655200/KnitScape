@@ -112,7 +112,7 @@ export function runSimulation() {
       if (stopSim) stopSim();
 
       const simulationResult = simulate(
-        GLOBAL_STATE.needleBitmap,
+        GLOBAL_STATE.chart,
         GLOBAL_STATE.yarnSequence,
         GLOBAL_STATE.yarnPalette,
         GLOBAL_STATE.simScale,
@@ -136,13 +136,14 @@ export function runSimulation() {
     return {
       syncState(state, changes) {
         const found = [
-          "needleBitmap",
+          "repeats",
           "yarnPalette",
           "yarnSequence",
           "yarnPlies",
           "texturePerformanceMode",
           "texturePreviewInteractionActive",
           "machineGauge",
+          "chart",
         ].some((key) => changes.includes(key));
 
         if (found) {

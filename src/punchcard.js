@@ -27,32 +27,30 @@ function punch(x, y, r = machineConfigs[GLOBAL_STATE.machine].punchRadius) {
   return svg`<polygon points="${points.map((pt) => `${pt[0]},${pt[1]}`)}" />`;
 }
 
-export function punchcardRowCount() {
-  return (
-    GLOBAL_STATE.needleBitmap.height * GLOBAL_STATE.punchVerticalRepeats
-  );
-}
-
-function overlap(rows) {
+function overlap() {
   const { b, c, h, v, cols } = machineConfigs[GLOBAL_STATE.machine];
   const punches = [];
   for (let i = 0; i < cols; i++) {
     punches.push(punch(b + h / 2 + i * h, c + v / 2 - v));
     punches.push(punch(b + h / 2 + i * h, c + v / 2 - 2 * v));
 
-    punches.push(punch(b + h / 2 + i * h, c + v / 2 + rows * v));
+    punches.push(punch(b + h / 2 + i * h, c + v / 2 + GLOBAL_STATE.rows * v));
     punches.push(
-      punch(b + h / 2 + i * h, c + v / 2 + (rows + 1) * v)
+      punch(b + h / 2 + i * h, c + v / 2 + (GLOBAL_STATE.rows + 1) * v)
     );
   }
 
   return punches;
 }
 
-function pattern(rows) {
+function pattern() {
   const { b, h, c, v, cols } = machineConfigs[GLOBAL_STATE.machine];
 
-  const rp = Bimp.fromTile(cols, rows, GLOBAL_STATE.needleBitmap).make2d();
+  const rp = Bimp.fromTile(
+    cols,
+    GLOBAL_STATE.rows,
+    GLOBAL_STATE.repeats[0].bitmap
+  ).make2d();
   const punches = [];
 
   for (let y = 0; y < rp.length; y++) {
@@ -66,12 +64,12 @@ function pattern(rows) {
   return punches;
 }
 
-function belt(rows) {
+function belt() {
   const { b, h, c, v, cols, punchRadius } =
     machineConfigs[GLOBAL_STATE.machine];
   const punches = [];
 
-  for (let j = -2; j < rows + 2; j++) {
+  for (let j = -2; j < GLOBAL_STATE.rows + 2; j++) {
     punches.push(punch(b + h / 2 - 5.5, c + v / 2 + j * v, punchRadius - 0.25));
     punches.push(
       punch(
@@ -85,11 +83,11 @@ function belt(rows) {
   return punches;
 }
 
-function loop(rows) {
+function loop() {
   const { b, c, v, h, cols } = machineConfigs[GLOBAL_STATE.machine];
   const punches = [];
 
-  for (const i of [-1, 0, rows / 2 - 1, rows / 2]) {
+  for (const i of [-1, 0, GLOBAL_STATE.rows / 2 - 1, GLOBAL_STATE.rows / 2]) {
     punches.push(punch(b - 10.5, c + v + i * 2 * v));
     punches.push(punch(b + cols * h + 10.5, c + (i * 2 + 1) * v));
   }
@@ -97,9 +95,9 @@ function loop(rows) {
   return punches;
 }
 
-function cardHeight(rows) {
+function cardHeight() {
   const { v, c } = machineConfigs[GLOBAL_STATE.machine];
-  return rows * v + 2 * c;
+  return GLOBAL_STATE.rows * v + 2 * c;
 }
 
 function cardWidth() {
@@ -108,16 +106,14 @@ function cardWidth() {
 }
 
 export function punchCardSVG() {
-  const rows = punchcardRowCount();
-  const height = cardHeight(rows);
   return html`<svg
     id="punchcard"
-    viewBox="0 0 ${cardWidth()} ${height}"
+    viewBox="0 0 ${cardWidth()} ${cardHeight()}"
     width="${cardWidth()}mm"
-    height="${height}mm">
+    height="${cardHeight()}mm">
     <g stroke="black" stroke-width="0.5" fill="none">
-      <rect width="${cardWidth()}" height="${height}" />
-      ${overlap(rows)}${belt(rows)}${loop(rows)}${pattern(rows)}
+      <rect width="${cardWidth()}" height="${cardHeight()}" />
+      ${overlap()}${belt()}${loop()}${pattern()}
     </g>
   </svg>`;
 }

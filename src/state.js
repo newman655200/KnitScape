@@ -11,21 +11,8 @@ import {
   DEFAULT_MACHINE_GAUGE,
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
-import { cloneBitmap } from "./needleArrangement/transform.js";
-import {
-  DEFAULT_CANVAS_HEIGHT,
-  DEFAULT_CANVAS_WIDTH,
-  DEFAULT_UNIT_HEIGHT,
-  DEFAULT_UNIT_WIDTH,
-  withDerivedPatternBitmaps,
-} from "./patternDerivation.js";
 
-const defaultCamUnitBitmap = Bimp.empty(
-  DEFAULT_UNIT_WIDTH,
-  DEFAULT_UNIT_HEIGHT,
-  DEFAULT_STITCH_SYMBOL_INDEX
-);
-let GLOBAL_STATE = withDerivedPatternBitmaps({
+let GLOBAL_STATE = {
   language: getInitialLanguage(),
   editingPalette: false,
   transforming: false,
@@ -33,20 +20,14 @@ let GLOBAL_STATE = withDerivedPatternBitmaps({
   activeTool: null,
   activeSymbol: 0,
 
-  canvasWidth: DEFAULT_CANVAS_WIDTH,
-  canvasHeight: DEFAULT_CANVAS_HEIGHT,
-  chartPan: { x: 0, y: 0 },
-  camUnitBitmap: defaultCamUnitBitmap,
-  needleUnitBitmap: cloneBitmap(defaultCamUnitBitmap),
-  needleInputs: ["1", "2", "3", "4"],
-  appliedNeedleInputs: ["1", "2", "3", "4"],
-  needleInputErrors: [null, null, null, null],
-
+  chartBackground: "#ffffff",
   symbolPalette: {},
   symbolMap: DEFAULT_SYMBOLS,
   patternLibrary: DEFAULT_PATTERN_LIBRARY,
 
-  scale: 15,
+  scale: 15, // Number of pixels for each chart cell
+  pos: { x: -1, y: -1 }, // Mouse position in chart
+  chartPan: { x: 0, y: 0 }, // Pan value for the chart editor view
 
   simScale: 1,
   simPan: { x: 0, y: 0 },
@@ -62,60 +43,64 @@ let GLOBAL_STATE = withDerivedPatternBitmaps({
   yarnSequence: new Bimp(1, 60, Array(60).fill(0)),
   yarnPlies: DEFAULT_YARN_PLIES.map((ply) => ({ ...ply })),
 
+  editingRepeat: 0,
+  repeatPos: [-1, -1],
+  selectedChartCell: null,
+  selectedRepeatCell: null,
+
+  repeats: [
+    {
+      bitmap: Bimp.empty(4, 8, DEFAULT_STITCH_SYMBOL_INDEX),
+      pos: [0, 0],
+      area: [48, 60],
+    },
+  ],
+
+  repeatLibrary: [
+    {
+      title: "blank",
+      bitmap: new Bimp(2, 2, [0, 0, 0, 0]),
+    },
+    {
+      title: "checks",
+      bitmap: new Bimp(2, 2, [0, 2, 2, 0]),
+    },
+    {
+      title: "stripe",
+      bitmap: new Bimp(2, 2, [0, 2, 0, 2]),
+    },
+  ], // Library of motifs which can be used as repeats
+
+  // chart: Bimp.empty(5, 5, DEFAULT_STITCH_SYMBOL_INDEX),
+  chart: Bimp.empty(48, 60, DEFAULT_STITCH_SYMBOL_INDEX),
+
   reverseScroll: false,
   grid: true,
   symbolLineWidth: 3,
   flipped: false,
 
   // PUNCH CARD
-  punchcardMode: false, // constrains pattern width to a punchcard-friendly width
+  punchcardMode: false, // constrains repeat width to a punchcard-friendly width
   machine: "th860",
   punchVerticalRepeats: 5,
+  rows: 40, //punchcard rows
   numSides: 8, //number of punch sides
 
   // Various UI pane states
   showLibrary: false,
   showSettings: false,
   showDownload: false,
+  showRepeatLibrary: false,
   debug: false,
 
   snapshots: [], // Array of snapshot history
   lastSnapshot: 0, // time of last snapshot
   heldKeys: new Set(), // Keys that are currently held down
-});
-
-function derivedBitmapFields(changes) {
-  const dimensionsChanged =
-    changes.includes("canvasWidth") || changes.includes("canvasHeight");
-  const fields = [];
-  if (dimensionsChanged || changes.includes("camUnitBitmap")) {
-    fields.push("camBitmap");
-  }
-  if (dimensionsChanged || changes.includes("needleUnitBitmap")) {
-    fields.push("needleBitmap");
-  }
-  return fields;
-}
-
-function changesWithDerivedBitmaps(changes) {
-  return [
-    ...changes,
-    ...derivedBitmapFields(changes).filter((field) => !changes.includes(field)),
-  ];
-}
-
-function updateDerivedBitmaps(state, changes) {
-  const fields = derivedBitmapFields(changes);
-  return fields.length ? withDerivedPatternBitmaps(state, fields) : state;
-}
+};
 
 function loadWorkspace(workspace) {
-  const workspaceChanges = Object.keys(workspace);
-  const changes = changesWithDerivedBitmaps(workspaceChanges);
-  const nextState = { ...GLOBAL_STATE, ...workspace };
-  GLOBAL_STATE = updateDerivedBitmaps(nextState, workspaceChanges);
+  GLOBAL_STATE = { ...GLOBAL_STATE, ...workspace };
   GLOBAL_STATE.updateSim = true;
-  StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
 function shouldSnapshot(action) {
@@ -130,7 +115,7 @@ function shouldSnapshot(action) {
 }
 
 function snapshotUpdate(action) {
-  const nextState = {
+  GLOBAL_STATE = {
     ...GLOBAL_STATE,
     ...action,
     snapshots: [
@@ -141,14 +126,12 @@ function snapshotUpdate(action) {
     ],
     lastSnapshot: Date.now(),
   };
-  GLOBAL_STATE = updateDerivedBitmaps(nextState, Object.keys(action));
 
   return GLOBAL_STATE;
 }
 
 function normalUpdate(action) {
-  const nextState = { ...GLOBAL_STATE, ...action };
-  GLOBAL_STATE = updateDerivedBitmaps(nextState, Object.keys(action));
+  GLOBAL_STATE = { ...GLOBAL_STATE, ...action };
   return GLOBAL_STATE;
 }
 
@@ -160,18 +143,18 @@ function undo() {
   if (GLOBAL_STATE.snapshots.length < 1) return;
   const changes = Object.keys(GLOBAL_STATE.snapshots[0]);
 
-  GLOBAL_STATE = withDerivedPatternBitmaps({
+  GLOBAL_STATE = {
     ...GLOBAL_STATE,
     ...GLOBAL_STATE.snapshots[0],
     lastSnapshot: 0,
     snapshots: GLOBAL_STATE.snapshots.slice(1),
-  });
+  };
 
-  StateMonitor.syncState(GLOBAL_STATE, changesWithDerivedBitmaps(changes));
+  StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
 function dispatch(action) {
-  const changes = changesWithDerivedBitmaps(Object.keys(action));
+  const changes = Object.keys(action);
   StateMonitor.syncState(updateState(action), changes);
 }
 

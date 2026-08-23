@@ -5,6 +5,8 @@ const root = process.cwd();
 const REQUIRED_KEYS = [
   "taskbar.brand",
   "taskbar.title",
+  "taskbar.width",
+  "taskbar.height",
   "taskbar.language",
   "taskbar.undo",
   "taskbar.new",
@@ -13,6 +15,7 @@ const REQUIRED_KEYS = [
   "taskbar.library",
   "taskbar.settings",
   "taskbar.fullscreen",
+  "left.add-repeat",
   "machine.gauge",
   "machine.needle-pitch",
   "yarn.length-current",
@@ -30,14 +33,6 @@ const REQUIRED_KEYS = [
   "yarn.texture-clear",
   "yarn.performance",
   "stitch.symbol",
-  "canvas.width",
-  "canvas.height",
-  "cam.yarn-sequence",
-  "cam.symbols",
-  "cam.grid",
-  "needle.start",
-  "needle.input",
-  "needle.apply",
   "palette.edit",
   "palette.add",
   "palette.label",
@@ -45,15 +40,24 @@ const REQUIRED_KEYS = [
   "palette.color",
   "palette.shuffle",
   "palette.randomize",
+  "repeat.width",
+  "repeat.height",
+  "repeat.tool",
+  "repeat.exit",
+  "repeat.area-width",
+  "repeat.area-height",
   "chart.zoom-out",
   "chart.zoom-range",
   "chart.zoom-in",
   "chart.fit",
-  "needle.yarn-sequence",
-  "needle.symbols",
-  "needle.grid",
+  "chart.cols",
+  "chart.rows",
+  "chart.yarn-sequence",
+  "chart.yarn-color",
+  "chart.symbols",
+  "chart.grid",
+  "chart.repeat",
   "layout.split",
-  "layout.editor-split",
   "simulation.canvas",
   "simulation.flip",
   "simulation.zoom-out",
@@ -181,34 +185,6 @@ if (definitions && generatedLines) {
       failures.push(`unknown generated code guide line: ${key}`);
     }
   }
-
-  const chartFit = definitions["chart.fit"];
-  if (chartFit && typeof chartFit === "object" && !Array.isArray(chartFit)) {
-    const chartFitGuidance = [
-      chartFit.title,
-      chartFit.description,
-      chartFit.changeHint,
-    ].join(" ");
-    const semanticRequirements = [
-      [/16\s*[×xX]\s*16/, "must describe the 16×16 initial view"],
-      [/共享/, "must describe the shared editor viewport"],
-      [
-        /(?:重置|恢复)[^。；]*(?:平移|原点)|chartPan[^。；]*(?:0\s*[,，]\s*0|\{\s*x\s*:\s*0\s*,\s*y\s*:\s*0\s*\})/,
-        "must describe resetting the shared pan to the origin",
-      ],
-    ];
-
-    for (const [pattern, message] of semanticRequirements) {
-      if (!pattern.test(chartFitGuidance)) {
-        failures.push(`chart.fit ${message}`);
-      }
-    }
-    if (/完整图案[^。；]*居中/.test(chartFitGuidance)) {
-      failures.push(
-        "chart.fit must not claim that fitChart centers the complete pattern"
-      );
-    }
-  }
 }
 
 function requireSourceTokens(relativePath, tokens) {
@@ -258,14 +234,14 @@ requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
 ]);
 requireSourceTokens("src/codeGuide/codeGuideOverlay.js", [
   "重叠画布源码层",
-  "cam.yarn-sequence",
-  "三角座纱线序列层",
-  "cam.symbols",
-  "三角座针法层",
-  "needle.yarn-sequence",
-  "排针纱线序列层",
-  "needle.symbols",
-  "排针针法层",
+  "chart.yarn-sequence",
+  "纱线序列层",
+  "chart.yarn-color",
+  "纱线颜色层",
+  "chart.symbols",
+  "针法符号层",
+  "chart.grid",
+  "网格层",
 ]);
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
@@ -274,8 +250,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
-  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[[\s\S]*?cam\.yarn-sequence[\s\S]*?cam\.symbols[\s\S]*?cam\.grid[\s\S]*?needle\.yarn-sequence[\s\S]*?needle\.symbols[\s\S]*?needle\.grid[\s\S]*?\]\s*;/,
-  "must define the six active cam and needle canvas layer options"
+  /const\s+CHART_LAYER_OPTIONS\s*=\s*\[\s*\{\s*key:\s*["']chart\.yarn-sequence["']\s*,\s*label:\s*["']纱线序列层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.yarn-color["']\s*,\s*label:\s*["']纱线颜色层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.symbols["']\s*,\s*label:\s*["']针法符号层["']\s*,?\s*\}\s*,\s*\{\s*key:\s*["']chart\.grid["']\s*,\s*label:\s*["']网格层["']\s*,?\s*\}\s*,?\s*\]\s*;/,
+  "must define the exact four central chart layer options"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideOverlay.js",
@@ -416,26 +392,14 @@ requireSourcePattern(
   "initCodeGuideEvents must register cancelable blocked events and keydown in capture phase"
 );
 requireSourceTokens("src/index.js", [
-  'import { isCodeGuideMode } from "./codeGuide/mode.js"',
-  'import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents.js"',
-  'import { subscribeCodeGuideState } from "./codeGuide/codeGuideState.js"',
+  'import { isCodeGuideMode } from "./codeGuide/mode"',
+  'import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents"',
   'data-code-guide-key="layout.split"',
-  'data-code-guide-key="layout.editor-split"',
 ]);
 requireSourcePattern(
   "src/index.js",
-  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*\)[\s\S]*?addEventListener\(\s*["']pagehide["']\s*,[\s\S]*?\{\s*once\s*:\s*true\s*,?\s*\}\s*\)/,
-  "must subscribe the guide renderer and release it when the page closes"
-);
-requireSourcePattern(
-  "src/index.js",
-  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?initCodeGuideEvents\(\)[\s\S]*?\}\s*else\s*\{[\s\S]*?isMobile\(\)\s*\?\s*initTouch\([^)]*\)\s*:\s*initKeyboard\([^)]*\)/,
+  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{\s*initCodeGuideEvents\(\)\s*;?\s*\}\s*else\s*\{\s*isMobile\(\)\s*\?\s*initTouch\(\)\s*:\s*initKeyboard\(\)\s*;?\s*\}/,
   "must initialize guide interception instead of keyboard or touch business listeners in guide mode"
-);
-requireSourcePattern(
-  "src/index.js",
-  /Split\(\["#chart-pane",\s*"#sim-pane"\][\s\S]*?Split\(\["#cam-editor-pane",\s*"#needle-editor-pane"\][\s\S]*?if\s*\(\s*isCodeGuideMode\(\)\s*\)/,
-  "must initialize both Split layouts before choosing code-guide or ordinary interactions"
 );
 requireSourceTokens("src/views/view.js", [
   'import { codeGuideOverlay } from "../codeGuide/codeGuideOverlay"',
@@ -478,6 +442,7 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       appType: "custom",
       logLevel: "silent",
     });
+
     const mode = await server.ssrLoadModule("/src/codeGuide/mode.js");
     const state = await server.ssrLoadModule("/src/codeGuide/codeGuideState.js");
     const map = await server.ssrLoadModule("/src/codeGuide/codeGuideMap.js");
@@ -503,7 +468,6 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       "getActiveCodeGuideKey",
       "setActiveCodeGuideKey",
       "clearActiveCodeGuideKey",
-      "subscribeCodeGuideState",
     ]) {
       if (typeof state[api] !== "function") {
         failures.push(`codeGuideState.js must export ${api} as a function`);
@@ -513,8 +477,7 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
     if (
       typeof state.getActiveCodeGuideKey === "function" &&
       typeof state.setActiveCodeGuideKey === "function" &&
-      typeof state.clearActiveCodeGuideKey === "function" &&
-      typeof state.subscribeCodeGuideState === "function"
+      typeof state.clearActiveCodeGuideKey === "function"
     ) {
       if (state.getActiveCodeGuideKey() !== null) {
         failures.push("code guide state must initially be null");

@@ -49,12 +49,12 @@ export function yarnIndexForSequenceRow(yarnSequence, row) {
   return normalizedYarnIndex(sequence.pixel(0, sequenceRow));
 }
 
-export function resizeYarnSequenceToNeedleHeight(
+export function resizeYarnSequenceToChartHeight(
   yarnSequence,
-  needleHeight,
+  chartHeight,
   activeYarn = 0
 ) {
-  const nextHeight = normalizedHeight(needleHeight);
+  const nextHeight = normalizedHeight(chartHeight);
   const normalizedSequence = normalizeYarnSequence(yarnSequence, {
     height: Math.min(nextHeight, normalizedHeight(yarnSequence?.height)),
   });
@@ -76,7 +76,7 @@ export function resizeYarnSequenceToNeedleHeight(
 }
 
 export function resizeYarnSequenceRows(yarnSequence, requestedHeight, activeYarn) {
-  return resizeYarnSequenceToNeedleHeight(
+  return resizeYarnSequenceToChartHeight(
     yarnSequence,
     requestedHeight,
     activeYarn

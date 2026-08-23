@@ -46,9 +46,7 @@ assert.match(
 );
 
 const exporterSource = fs.readFileSync("src/actions/exporters.js", "utf8");
-const patternFileSource = fs.readFileSync("src/patternFile.js", "utf8");
-assert.match(exporterSource, /serializePattern\(GLOBAL_STATE\)/);
-assert.match(patternFileSource, /yarnPlies:\s*state\.yarnPlies/, "JSON export must include yarnPlies.");
+assert.match(exporterSource, /yarnPlies/, "JSON export must include yarnPlies.");
 
 const importerSource = fs.readFileSync("src/actions/importers.js", "utf8");
 assert.match(
@@ -229,8 +227,8 @@ assert.match(
   "JSON import must preserve yarn ply scan texture fields."
 );
 assert.match(
-  `${exporterSource}\n${patternFileSource}`,
-  /serializePattern\(GLOBAL_STATE\)[\s\S]*yarnPlies:\s*state\.yarnPlies/,
+  exporterSource,
+  /yarnPlies:\s*GLOBAL_STATE\.yarnPlies/,
   "JSON export must continue persisting yarnPlies including scan textures."
 );
 
@@ -409,9 +407,6 @@ function createCanvasHarness() {
   }
 
   globalThis.document = {
-    querySelector() {
-      return null;
-    },
     getElementById(id) {
       if (id == "sim-container") {
         return {
@@ -451,9 +446,6 @@ try {
   );
 
   globalThis.document = {
-    querySelector() {
-      return null;
-    },
     getElementById() {
       return {
         getBoundingClientRect() {

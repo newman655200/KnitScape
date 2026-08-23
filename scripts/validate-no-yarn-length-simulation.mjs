@@ -15,7 +15,6 @@ const leftBar = [
   .join("\n");
 const importers = read("src/actions/importers.js");
 const exporters = read("src/actions/exporters.js");
-const patternFile = read("src/patternFile.js");
 const runSimulation = read("src/components/runSimulation.js");
 const simulation = [
   "src/simulation/yarnSimulation.js",
@@ -46,8 +45,8 @@ for (const [source, pattern, message] of [
   ],
   [importers, /normalizeYarnPly/, "JSON import normalization must remain"],
   [
-    `${exporters}\n${patternFile}`,
-    /serializePattern\(GLOBAL_STATE\)[\s\S]*yarnPlies:\s*state\.yarnPlies/,
+    exporters,
+    /yarnPlies:\s*GLOBAL_STATE\.yarnPlies/,
     "JSON export persistence must remain",
   ],
   [

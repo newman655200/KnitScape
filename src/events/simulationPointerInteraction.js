@@ -125,6 +125,7 @@ export function simulationPointerInteraction(simContainer) {
   }, { passive: false });
 
   simContainer.addEventListener("pointerdown", (e) => {
+    dispatch({ editingRepeat: -1 });
 
     if (e.button !== 0) return;
     e.preventDefault();

@@ -1,8 +1,7 @@
 import { html } from "lit-html";
-import {
-  resizePatternCanvas,
-  selectPatternSymbol,
-} from "../actions/patternEditing.js";
+import { fitChart } from "../actions/zoomFit";
+import { resizeChartArea } from "../actions/repeatDimensions";
+import { applySelectedSymbol } from "../actions/selectedCell";
 import { GLOBAL_STATE } from "../state";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import purlIconUrl from "../assets/symbols/purl.svg";
@@ -17,17 +16,16 @@ const SYMBOL_ICON_URLS = {
   tuck: tuckIconUrl,
 };
 
-export function commitDimension(field, input) {
-  const stateField = field === "width" ? "canvasWidth" : "canvasHeight";
-  resizePatternCanvas(
-    field === "width" ? input.value : GLOBAL_STATE.canvasWidth,
-    field === "height" ? input.value : GLOBAL_STATE.canvasHeight
-  );
-  input.value = String(GLOBAL_STATE[stateField]);
+function updateChartWidth(newWidth) {
+  const width = Math.max(5, Math.min(500, Math.floor(Number(newWidth) || 5)));
+  resizeChartArea(width, GLOBAL_STATE.chart.height);
+  fitChart();
 }
 
-export function handleDimensionKeydown(event) {
-  if (event.key === "Enter") event.currentTarget.blur();
+function updateChartHeight(newHeight) {
+  const height = Math.max(5, Math.min(500, Math.floor(Number(newHeight) || 5)));
+  resizeChartArea(GLOBAL_STATE.chart.width, height);
+  fitChart();
 }
 
 export function chartEditorToolbar() {
@@ -44,7 +42,7 @@ export function chartEditorToolbar() {
               ? "current"
               : ""}"
             type="button"
-            @click=${() => selectPatternSymbol(index)}>
+            @click=${() => applySelectedSymbol(index)}>
             <img
               class="symbol-preview-image"
               src=${SYMBOL_ICON_URLS[symbolName]}
@@ -54,34 +52,30 @@ export function chartEditorToolbar() {
           </button>`
         )}
       </div>
-      <div class="chart-size-controls">
-        <label>
-          <span>${t("taskbar.width", language)}</span>
-          <input
-            data-code-guide-key="canvas.width"
-            class="input pattern-dimension-input"
-            type="number"
-            min="5"
-            max="500"
-            step="1"
-            .value=${String(GLOBAL_STATE.canvasWidth)}
-            @change=${(event) => commitDimension("width", event.currentTarget)}
-            @keydown=${handleDimensionKeydown} />
-        </label>
-        <label>
-          <span>${t("taskbar.height", language)}</span>
-          <input
-            data-code-guide-key="canvas.height"
-            class="input pattern-dimension-input"
-            type="number"
-            min="5"
-            max="500"
-            step="1"
-            .value=${String(GLOBAL_STATE.canvasHeight)}
-            @change=${(event) => commitDimension("height", event.currentTarget)}
-            @keydown=${handleDimensionKeydown} />
-        </label>
-      </div>
+    </div>
+    <div id="chart-size-controls">
+      <label>
+        <span>${t("taskbar.width", language)}</span>
+        <input
+          data-code-guide-key="taskbar.width"
+          class="input"
+          type="number"
+          .value=${GLOBAL_STATE.chart.width}
+          @change=${(event) => updateChartWidth(event.target.value)}
+          min="5"
+          max="500" />
+      </label>
+      <label>
+        <span>${t("taskbar.height", language)}</span>
+        <input
+          data-code-guide-key="taskbar.height"
+          class="input"
+          type="number"
+          .value=${GLOBAL_STATE.chart.height}
+          @change=${(event) => updateChartHeight(event.target.value)}
+          min="5"
+          max="500" />
+      </label>
     </div>
   </section>`;
 }

@@ -1,10 +1,8 @@
 import { GLOBAL_STATE, dispatch } from "../state";
+import { devicePixelBoundingBox } from "../utils";
 import {
-  cssCellSize,
-  fitVisibleCells,
-  zoomViewportAtPoint,
-} from "../chartViewport.js";
-import {
+  MIN_SCALE,
+  MAX_SCALE,
   MIN_SIM_SCALE,
   MAX_SIM_SCALE,
 } from "../constants";
@@ -37,20 +35,9 @@ export function toggleFullscreen() {
 }
 
 export function centerZoom(scale) {
-  const nextScale = Number(scale);
-  if (nextScale === GLOBAL_STATE.scale) return;
+  let bbox = document.getElementById("desktop").getBoundingClientRect();
 
-  const gridWindow = document.querySelector(".pattern-grid-window");
-  if (!gridWindow) return;
-  const bounds = gridWindow.getBoundingClientRect();
-  const viewport = zoomViewportAtPoint({
-    pan: GLOBAL_STATE.chartPan,
-    scale: GLOBAL_STATE.scale,
-    nextScale,
-    point: { x: bounds.width / 2, y: bounds.height / 2 },
-  });
-  if (viewport.scale === GLOBAL_STATE.scale) return;
-  dispatch({ scale: viewport.scale, chartPan: viewport.pan });
+  zoomAtPoint({ x: bbox.width / 2, y: bbox.height / 2 }, scale);
 }
 
 export function centerZoomSimulation(scale) {
@@ -76,67 +63,53 @@ export function zoomSimulationAtPoint(pt, simScale) {
   });
 }
 
-export function fitChart() {
-  const editorViewports = [
-    document.querySelector("#cam-editor-pane .pattern-editor-viewport"),
-    document.querySelector("#needle-editor-pane .pattern-editor-viewport"),
-  ].filter(Boolean);
-  const fittedScales = editorViewports
-    .map((element) => {
-      const bounds = element.getBoundingClientRect();
-      const style = globalThis.getComputedStyle?.(element);
-      const horizontalPadding =
-        Number.parseFloat(style?.paddingLeft || 0) +
-        Number.parseFloat(style?.paddingRight || 0);
-      const verticalPadding =
-        Number.parseFloat(style?.paddingTop || 0) +
-        Number.parseFloat(style?.paddingBottom || 0);
-      const width = (Number(element.clientWidth) || bounds.width) - horizontalPadding;
-      const height = (Number(element.clientHeight) || bounds.height) - verticalPadding;
+export function zoomAtPoint(pt, scale) {
+  if (scale < MIN_SCALE || scale > MAX_SCALE) return;
 
-      if (
-        !Number.isFinite(width) ||
-        !Number.isFinite(height) ||
-        width <= 0 ||
-        height <= 0
-      ) {
-        return null;
-      }
+  const start = {
+    x: (pt.x - GLOBAL_STATE.chartPan.x) / GLOBAL_STATE.scale,
+    y: (pt.y - GLOBAL_STATE.chartPan.y) / GLOBAL_STATE.scale,
+  };
 
-      return fitVisibleCells({
-        viewportWidth: Math.max(0, width),
-        viewportHeight: Math.max(0, height),
-      }).scale;
-    })
-    .filter((scale) => Number.isFinite(scale) && scale > 0);
-
-  if (fittedScales.length === 0) return;
   dispatch({
-    scale: Math.min(...fittedScales),
-    chartPan: { x: 0, y: 0 },
+    scale,
+    chartPan: {
+      x: pt.x - start.x * scale,
+      y: pt.y - start.y * scale,
+    },
   });
 }
 
-export function createChartFitScheduler({
-  fit = fitChart,
-  requestFrame = (callback) => globalThis.requestAnimationFrame(callback),
-} = {}) {
-  let framePending = false;
+export function fitChart() {
+  const { width, height } = devicePixelBoundingBox(
+    document.getElementById("desktop")
+  );
 
-  return function scheduleChartFit() {
-    if (framePending) return;
-    framePending = true;
-    requestFrame(() => {
-      framePending = false;
-      fit();
-    });
-  };
+  const scale = Math.floor(
+    0.9 *
+      Math.min(
+        Math.floor(width / GLOBAL_STATE.chart.width),
+        Math.floor(height / GLOBAL_STATE.chart.height)
+      )
+  );
+
+  dispatch({
+    scale,
+    chartPan: {
+      x: (width - scale * GLOBAL_STATE.chart.width) / 2 / devicePixelRatio,
+      y: (height - scale * GLOBAL_STATE.chart.height) / 2 / devicePixelRatio,
+    },
+  });
 }
 
 export function sizeCanvasToBitmap(canvas, bitmapWidth, bitmapHeight) {
   canvas.width = GLOBAL_STATE.scale * bitmapWidth;
   canvas.height = GLOBAL_STATE.scale * bitmapHeight;
-  canvas.style.width = `${cssCellSize(GLOBAL_STATE.scale) * bitmapWidth}px`;
+  canvas.style.width = `${
+    (GLOBAL_STATE.scale * bitmapWidth) / devicePixelRatio
+  }px`;
 
-  canvas.style.height = `${cssCellSize(GLOBAL_STATE.scale) * bitmapHeight}px`;
+  canvas.style.height = `${
+    (GLOBAL_STATE.scale * bitmapHeight) / devicePixelRatio
+  }px`;
 }

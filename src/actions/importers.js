@@ -8,17 +8,6 @@ import {
 } from "../constants";
 import { normalizeYarnPly } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "./yarnSequenceRows";
-import { cloneBitmap } from "../needleArrangement/transform.js";
-import {
-  DEFAULT_CANVAS_HEIGHT,
-  DEFAULT_CANVAS_WIDTH,
-  DEFAULT_UNIT_HEIGHT,
-  DEFAULT_UNIT_WIDTH,
-} from "../patternDerivation.js";
-import {
-  DEFAULT_NEEDLE_INPUTS,
-  deserializePattern,
-} from "../patternFile.js";
 
 function cloneYarnPlies(plies = DEFAULT_YARN_PLIES) {
   const source = Array.isArray(plies) && plies.length ? plies : DEFAULT_YARN_PLIES;
@@ -33,58 +22,65 @@ function cloneYarnPlies(plies = DEFAULT_YARN_PLIES) {
 }
 
 export function loadJSON(patternJSON) {
-  const pattern = deserializePattern(patternJSON);
+  let { yarnSequence, yarnPalette, yarnPlies, repeats, width, height } =
+    patternJSON;
+  const chart = Bimp.empty(width, height, DEFAULT_STITCH_SYMBOL_INDEX);
 
   dispatch({
-    canvasWidth: pattern.canvasWidth,
-    canvasHeight: pattern.canvasHeight,
-    camUnitBitmap: pattern.camUnitBitmap,
-    needleUnitBitmap: pattern.needleUnitBitmap,
-    needleInputs: pattern.needleInputs,
-    appliedNeedleInputs: pattern.appliedNeedleInputs,
-    needleInputErrors: [null, null, null, null],
-    yarnPalette: Array.isArray(pattern.yarnPalette) && pattern.yarnPalette.length
-      ? [...pattern.yarnPalette]
+    yarnPalette: Array.isArray(yarnPalette) && yarnPalette.length
+      ? yarnPalette
       : [DEFAULT_YARN_COLOR],
-    yarnPlies: cloneYarnPlies(pattern.yarnPlies),
-    yarnSequence: normalizeYarnSequence(pattern.yarnSequence, {
-      height: pattern.canvasHeight,
+    yarnPlies: cloneYarnPlies(yarnPlies),
+    width,
+    height,
+    yarnSequence: normalizeYarnSequence(yarnSequence, {
+      height: chart.height,
       fillYarn: 0,
     }),
+    chart,
+    repeats: repeats.map(({ bitmap, pos, area }) => {
+      return {
+        bitmap: Bimp.fromJSON(bitmap),
+        pos,
+        area,
+      };
+    }),
+    editingRepeat: 0,
+    selectedChartCell: null,
+    selectedRepeatCell: null,
   });
 
   fitChart();
 }
 
 export function newPattern() {
-  const camUnitBitmap = Bimp.empty(
-    DEFAULT_UNIT_WIDTH,
-    DEFAULT_UNIT_HEIGHT,
-    DEFAULT_STITCH_SYMBOL_INDEX
-  );
-  const needleUnitBitmap = cloneBitmap(camUnitBitmap);
+  const chart = Bimp.empty(30, 40, DEFAULT_STITCH_SYMBOL_INDEX);
 
   dispatch({
-    canvasWidth: DEFAULT_CANVAS_WIDTH,
-    canvasHeight: DEFAULT_CANVAS_HEIGHT,
-    camUnitBitmap,
-    needleUnitBitmap,
     yarnSequence: normalizeYarnSequence(undefined, {
-      height: DEFAULT_CANVAS_HEIGHT,
+      height: chart.height,
       fillYarn: 0,
     }),
     yarnPalette: [DEFAULT_YARN_COLOR],
     yarnPlies: cloneYarnPlies(),
-    needleInputs: [...DEFAULT_NEEDLE_INPUTS],
-    appliedNeedleInputs: [...DEFAULT_NEEDLE_INPUTS],
-    needleInputErrors: [null, null, null, null],
+    chart,
+    repeats: [
+      {
+        bitmap: Bimp.empty(4, 4, DEFAULT_STITCH_SYMBOL_INDEX),
+        area: [30, 40],
+        pos: [0, 0],
+      },
+    ],
+    editingRepeat: 0,
+    selectedChartCell: null,
+    selectedRepeatCell: null,
   });
   fitChart();
 }
 
 export function loadLibraryPattern(path) {
   dispatch({ showLibrary: false });
-  GLOBAL_STATE.patternLibrary[path]().then((mod) => loadJSON(mod.default || mod));
+  GLOBAL_STATE.patternLibrary[path]().then((mod) => loadJSON(mod));
 }
 
 export function uploadFile() {

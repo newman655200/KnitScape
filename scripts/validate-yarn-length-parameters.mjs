@@ -106,10 +106,9 @@ assert.match(
 );
 
 const exporterSource = read("src/actions/exporters.js");
-const patternFileSource = read("src/patternFile.js");
 assert.match(
-  `${exporterSource}\n${patternFileSource}`,
-  /serializePattern\(GLOBAL_STATE\)[\s\S]*yarnPlies:\s*state\.yarnPlies/,
+  exporterSource,
+  /yarnPlies:\s*GLOBAL_STATE\.yarnPlies/,
   "JSON export must persist yarnPlies, including lengthScaleY."
 );
 
@@ -164,9 +163,6 @@ try {
   };
   globalThis.window = {};
   globalThis.document = {
-    querySelector() {
-      return null;
-    },
     getElementById() {
       return {
         getBoundingClientRect() {

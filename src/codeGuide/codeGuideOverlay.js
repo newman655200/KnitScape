@@ -13,12 +13,10 @@ import {
 } from "./codeGuideMap";
 
 const CHART_LAYER_OPTIONS = [
-  { key: "cam.yarn-sequence", label: "三角座纱线序列层" },
-  { key: "cam.symbols", label: "三角座针法层" },
-  { key: "cam.grid", label: "三角座网格层" },
-  { key: "needle.yarn-sequence", label: "排针纱线序列层" },
-  { key: "needle.symbols", label: "排针针法层" },
-  { key: "needle.grid", label: "排针网格层" },
+  { key: "chart.yarn-sequence", label: "纱线序列层" },
+  { key: "chart.yarn-color", label: "纱线颜色层" },
+  { key: "chart.symbols", label: "针法符号层" },
+  { key: "chart.grid", label: "网格层" },
 ];
 
 let copyLabel = "复制位置";

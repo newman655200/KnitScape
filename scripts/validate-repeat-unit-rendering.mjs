@@ -280,7 +280,7 @@ try {
   const editedFull = tileUnitToCanvas(5, 4, editedUnit);
   component.syncState(
     { ...initialState, camBitmap: editedFull, camUnitBitmap: editedUnit },
-    ["camUnitBitmap", "camBitmap", "patternEdit"]
+    ["camUnitBitmap", "camBitmap"]
   );
   assert.deepEqual(canvases.map((canvas) => canvas.sizeWrites), initialSizeWrites, "same-size edits never resize canvases");
   assert.ok(fullSymbolCanvas.context.operations.length > beforeEditOps[0], "unit edit redraws tiled full symbols");

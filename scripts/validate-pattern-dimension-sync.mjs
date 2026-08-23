@@ -94,7 +94,6 @@ try {
 
   const camUnitBeforeInvalidDraw = state.GLOBAL_STATE.camUnitBitmap;
   const camBitmapBeforeInvalidDraw = state.GLOBAL_STATE.camBitmap;
-  const patternEditBeforeInvalidDraw = state.GLOBAL_STATE.patternEdit;
   for (const [startPos, endPos] of [
     [{ x: -1, y: 0 }, { x: 0, y: 0 }],
     [{ x: 8, y: 0 }, { x: 0, y: 0 }],
@@ -107,7 +106,6 @@ try {
     assert.equal(drawPatternLine("camUnitBitmap", startPos, endPos), false);
     assert.equal(state.GLOBAL_STATE.camUnitBitmap, camUnitBeforeInvalidDraw);
     assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeInvalidDraw);
-    assert.equal(state.GLOBAL_STATE.patternEdit, patternEditBeforeInvalidDraw);
   }
   assert.throws(
     () => drawPatternLine("camBitmap", { x: 0, y: 0 }, { x: 0, y: 0 }),
@@ -126,8 +124,6 @@ try {
   assert.notEqual(state.GLOBAL_STATE.camBitmap, camBitmapBeforeDraw);
   assert.equal(state.GLOBAL_STATE.camUnitBitmap.pixel(0, 0), 2);
   assert.equal(state.GLOBAL_STATE.camBitmap.pixel(0, 0), 2);
-  assert.notEqual(state.GLOBAL_STATE.patternEdit.startPos, legalStart);
-  assert.notEqual(state.GLOBAL_STATE.patternEdit.endPos, legalEnd);
 
   const needleBitmapBeforeDraw = state.GLOBAL_STATE.needleBitmap;
   assert.equal(

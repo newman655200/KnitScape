@@ -149,13 +149,11 @@ try {
   const outside = pointerEvent({ clientX: 185, clientY: 55, pointerId: 1 });
   const unitBeforeOutside = state.GLOBAL_STATE.camUnitBitmap;
   const fullBeforeOutside = state.GLOBAL_STATE.camBitmap;
-  const editBeforeOutside = state.GLOBAL_STATE.patternEdit;
   canvas.emit("pointerdown", outside);
   assert.equal(outside.prevented, false);
   assert.equal(canvas.captureCount, 0);
   assert.equal(state.GLOBAL_STATE.camUnitBitmap, unitBeforeOutside);
   assert.equal(state.GLOBAL_STATE.camBitmap, fullBeforeOutside);
-  assert.equal(state.GLOBAL_STATE.patternEdit, editBeforeOutside);
   assert.equal(state.GLOBAL_STATE.transforming, false);
 
   const middle = pointerEvent({
@@ -186,15 +184,9 @@ try {
   assert.equal(state.GLOBAL_STATE.transforming, true);
   assert.equal(state.GLOBAL_STATE.camUnitBitmap.pixel(0, 3), 2);
   assert.equal(state.GLOBAL_STATE.camBitmap.pixel(0, 59), 2, "unit edit updates the top-aligned derived full chart");
-  assert.deepEqual(state.GLOBAL_STATE.patternEdit, {
-    field: "camUnitBitmap",
-    startPos: { x: 0, y: 3 },
-    endPos: { x: 0, y: 3 },
-  });
 
   const unitBeforeSecondDown = state.GLOBAL_STATE.camUnitBitmap;
   const fullBeforeSecondDown = state.GLOBAL_STATE.camBitmap;
-  const editBeforeSecondDown = state.GLOBAL_STATE.patternEdit;
   const transformingBeforeSecondDown = state.GLOBAL_STATE.transforming;
   const secondDown = pointerEvent({
     clientX: 145,
@@ -209,7 +201,6 @@ try {
     "a second primary pointerdown cannot start another stroke"
   );
   assert.equal(state.GLOBAL_STATE.camBitmap, fullBeforeSecondDown);
-  assert.equal(state.GLOBAL_STATE.patternEdit, editBeforeSecondDown);
   assert.equal(state.GLOBAL_STATE.transforming, transformingBeforeSecondDown);
   assert.equal(canvas.captureCount, 1);
   assert.deepEqual([...canvas.capturedPointers], [3]);
@@ -219,7 +210,6 @@ try {
   assert.equal(canvas.listenerCount("pointercancel"), 1);
   assert.equal(canvas.listenerCount("lostpointercapture"), 1);
   const unitBeforeForeignPointer = state.GLOBAL_STATE.camUnitBitmap;
-  const editBeforeForeignPointer = state.GLOBAL_STATE.patternEdit;
   canvas.emit(
     "pointermove",
     pointerEvent({ clientX: 145, clientY: 55, pointerId: 99 })
@@ -229,7 +219,6 @@ try {
     unitBeforeForeignPointer,
     "another pointer cannot extend the active stroke"
   );
-  assert.equal(state.GLOBAL_STATE.patternEdit, editBeforeForeignPointer);
 
   for (const type of ["pointerup", "pointercancel"]) {
     canvas.emit(
@@ -270,11 +259,6 @@ try {
       "re-entry starts a new segment instead of bridging across gray space"
     );
   }
-  assert.deepEqual(state.GLOBAL_STATE.patternEdit, {
-    field: "camUnitBitmap",
-    startPos: { x: 7, y: 3 },
-    endPos: { x: 7, y: 3 },
-  });
 
   canvas.emit(
     "pointerup",

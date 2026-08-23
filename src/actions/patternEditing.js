@@ -64,11 +64,6 @@ export function drawPatternLine(field, startPos, endPos) {
 
   dispatch({
     [field]: bitmap.line(startPos, endPos, GLOBAL_STATE.activeSymbol),
-    patternEdit: {
-      field,
-      startPos: { ...startPos },
-      endPos: { ...endPos },
-    },
   });
   return true;
 }

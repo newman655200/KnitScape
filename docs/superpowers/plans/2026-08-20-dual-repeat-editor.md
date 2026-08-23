@@ -31,12 +31,12 @@ Task 9 的浏览器与专用自动验证混合验收已有证据；代码质量�
 
 ### Task 9 当前状态
 
-- 首轮全量基线：从 `package.json` 动态运行全部 32 个 `validate:*`，结果 `32 / 32` 通过，没有需要放宽或替换的旧架构断言；`npm run build` 通过，Vite 转换 667 个模块。
+- 全量基线与最新结果：从 `package.json` 动态运行全部 33 个 `validate:*`，结果 `33 / 33` 通过，没有需要放宽或替换的旧架构断言；`npm run build` 通过，Vite 转换 667 个模块。
 - 代码导览：指定的 10 个 key 已逐项核对 DOM、definitions 和验证；`npm run generate:code-guide-lines` 生成 57 个真实行号且文件无变化；`validate:code-guide` 通过。
 - 文档与界面标签：本计划和 `KnitScape_当前功能与算法.md` 已按当前架构更新；`src/i18n/translations.js` 已检查，现有用户可见标签无误，因此未修改。
-- 修改后首次全量验证发现 `validate:row-length-loop-model` 仍保护总说明的固定章节标题；保留该有效契约并恢复准确章节后，全部 32 个 `validate:*` 再次 `32 / 32` 通过，`npm run build` 通过并转换 667 个模块。
+- 修改后首次全量验证发现 `validate:row-length-loop-model` 仍保护总说明的固定章节标题；保留该有效契约并恢复准确章节。随后新增 `validate:derived-export-consumers`，通过真实 `state.js`、真实导出器和真实 `utils.download` 流程验证 BMP 头为完整 5×7、SilverKnit 为 7 行×5 针、Kniterate 的色纱与针法段均为 7 行×5 针，而源排针单元刻意仅为 2×3；最新全部 33 个 `validate:*` 为 `33 / 33` 通过，`npm run build` 通过并转换 667 个模块。
 - 浏览器直接验证：全新页面的尺寸输入为黑字 60×60，上下显示区均精确为 16×16，两个黑色循环单元均为 8×4；输入 80×75 后文字仍为黑色且 gutter 不与灰色区交叉；“开始排针”后仍为 8×4，“应用 1234”后仅排针单元变为 4×8，完整尺寸和色纱高度不变；点击灰色区不修改数据，编辑黑色区会同步更新循环单元及对应灰色平铺格；任一编辑器滚轮缩放会同步另一编辑器且页面滚动位置不变；修改三角座色纱行会在排针 gutter 的同一行显示相同颜色。
-- 浏览器驱动无法保持中键按下完成拖拽，因此没有把它记作浏览器人工操作；共享平移的真实事件坐标和生命周期由 `validate:shared-chart-viewport` 覆盖。浏览器驱动也无法捕获 Blob 下载后再导入；已观察到导出弹窗选项且控制台无错误，JSON v3 序列化、反序列化及迁移往返由 `validate:pattern-file-v3` 覆盖，完整派生结果的导出与模拟消费者由现有导出/模拟验证覆盖。
+- 浏览器驱动无法保持中键按下完成拖拽，因此没有把它记作浏览器人工操作；共享平移的真实事件坐标和生命周期由 `validate:shared-chart-viewport` 覆盖。浏览器驱动也无法捕获 Blob 下载后再导入；已观察到导出弹窗选项且控制台无错误，JSON v3 序列化、反序列化及迁移往返由 `validate:pattern-file-v3` 覆盖，BMP、SilverKnit 和 Kniterate 对完整派生排针结果的读取由真实调用导出器并解析输出内容的 `validate:derived-export-consumers` 覆盖；模拟路径继续由现有模拟回归验证覆盖。
 
 ### 主任务后续步骤
 
@@ -1108,7 +1108,7 @@ Run: `npm run dev -- --host 127.0.0.1`
 7. 修改三角座 gutter 的色纱行后，排针 gutter 同一行立即显示相同颜色。
 8. 已打开导出弹窗并观察到各导出选项，操作期间控制台无错误。
 
-当前浏览器驱动不能保持中键按下完成拖拽，因此中键共享平移由 `validate:shared-chart-viewport` 的真实事件坐标与生命周期回归验证覆盖，未声称完成浏览器手动中键拖拽。驱动也无法捕获 Blob 下载后重新选择文件导入，因此未声称完成浏览器下载/导入往返；JSON v3 的序列化、反序列化与迁移往返由 `validate:pattern-file-v3` 覆盖，完整派生结果的导出和模拟消费者由现有导出/模拟验证覆盖。
+当前浏览器驱动不能保持中键按下完成拖拽，因此中键共享平移由 `validate:shared-chart-viewport` 的真实事件坐标与生命周期回归验证覆盖，未声称完成浏览器手动中键拖拽。驱动也无法捕获 Blob 下载后重新选择文件导入，因此未声称完成浏览器下载/导入往返；JSON v3 的序列化、反序列化与迁移往返由 `validate:pattern-file-v3` 覆盖，BMP、SilverKnit 和 Kniterate 读取完整派生排针结果的行为由真实调用导出器并解析输出的 `validate:derived-export-consumers` 覆盖；模拟路径继续由现有模拟回归验证覆盖。
 
 如需截图，保存到仓库外临时目录，不提交浏览器截图或 Vite 产物。
 

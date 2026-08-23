@@ -387,8 +387,8 @@ requireSourcePattern(
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideEvents.js",
-  /const\s+BLOCKED_EVENTS\s*=\s*\[\s*["']mousedown["']\s*,\s*["']touchstart["']\s*,\s*["']pointerdown["']\s*,\s*["']pointerup["']\s*,\s*["']click["']\s*,\s*["']input["']\s*,\s*["']change["']\s*,\s*["']wheel["']\s*,\s*["']contextmenu["']\s*,?\s*\]\s*;/,
-  "must block Split mouse and touch drag starts in addition to annotated controls"
+  /const\s+BLOCKED_EVENTS\s*=\s*\[\s*["']pointerdown["']\s*,\s*["']pointerup["']\s*,\s*["']click["']\s*,\s*["']input["']\s*,\s*["']change["']\s*,\s*["']wheel["']\s*,\s*["']contextmenu["']\s*,?\s*\]\s*;/,
+  "must define the exact blocked event list"
 );
 requireSourcePattern(
   "src/codeGuide/codeGuideEvents.js",
@@ -424,8 +424,8 @@ requireSourceTokens("src/index.js", [
 ]);
 requireSourcePattern(
   "src/index.js",
-  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*,\s*window\s*\)/,
-  "must subscribe the app renderer for the BFCache-safe page lifecycle"
+  /if\s*\(\s*isCodeGuideMode\(\)\s*\)\s*\{[\s\S]*?subscribeCodeGuideState\(\s*appRenderer\.syncState\s*\)[\s\S]*?addEventListener\(\s*["']pagehide["']\s*,[\s\S]*?\{\s*once\s*:\s*true\s*,?\s*\}\s*\)/,
+  "must subscribe the guide renderer and release it when the page closes"
 );
 requireSourcePattern(
   "src/index.js",
@@ -470,8 +470,6 @@ if (fs.existsSync(path.join(root, "styles.css"))) {
 
 if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relativePath)))) {
   let server;
-  let runtimeDom;
-  const previousGlobalDescriptors = {};
   try {
     const { createServer } = await import("vite");
     server = await createServer({
@@ -480,48 +478,6 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       appType: "custom",
       logLevel: "silent",
     });
-    const { JSDOM } = await import("jsdom");
-    runtimeDom = new JSDOM("<!doctype html><body></body>", {
-      pretendToBeVisual: true,
-      url: "http://localhost/?codeGuide=1",
-    });
-    for (const name of [
-      "window",
-      "document",
-      "Element",
-      "HTMLElement",
-      "navigator",
-      "requestAnimationFrame",
-      "cancelAnimationFrame",
-      "litIssuedWarnings",
-    ]) {
-      previousGlobalDescriptors[name] = Object.getOwnPropertyDescriptor(
-        globalThis,
-        name
-      );
-    }
-    for (const [name, value] of Object.entries({
-      window: runtimeDom.window,
-      document: runtimeDom.window.document,
-      Element: runtimeDom.window.Element,
-      HTMLElement: runtimeDom.window.HTMLElement,
-      navigator: runtimeDom.window.navigator,
-      requestAnimationFrame: runtimeDom.window.requestAnimationFrame.bind(
-        runtimeDom.window
-      ),
-      cancelAnimationFrame: runtimeDom.window.cancelAnimationFrame.bind(
-        runtimeDom.window
-      ),
-      litIssuedWarnings: new Set([
-        "Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.",
-      ]),
-    })) {
-      Object.defineProperty(globalThis, name, {
-        configurable: true,
-        value,
-        writable: true,
-      });
-    }
     const mode = await server.ssrLoadModule("/src/codeGuide/mode.js");
     const state = await server.ssrLoadModule("/src/codeGuide/codeGuideState.js");
     const map = await server.ssrLoadModule("/src/codeGuide/codeGuideMap.js");
@@ -530,9 +486,6 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
     );
     const events = await server.ssrLoadModule(
       "/src/codeGuide/codeGuideEvents.js"
-    );
-    const { createAppRenderer } = await server.ssrLoadModule(
-      "/src/components/renderApp.js"
     );
 
     if (typeof mode.isCodeGuideMode !== "function") {
@@ -643,8 +596,6 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
         events.initCodeGuideEvents(documentTarget);
 
         const expectedRegistrations = [
-          ["mousedown", { capture: true, passive: false }],
-          ["touchstart", { capture: true, passive: false }],
           ["pointerdown", { capture: true, passive: false }],
           ["pointerup", { capture: true, passive: false }],
           ["click", { capture: true, passive: false }],
@@ -700,72 +651,7 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
 
         const click = callbackFor("click");
         const keydown = callbackFor("keydown");
-        const mouseDown = callbackFor("mousedown");
-        const touchStart = callbackFor("touchstart");
-        if (
-          typeof click === "function" &&
-          typeof keydown === "function" &&
-          typeof mouseDown === "function" &&
-          typeof touchStart === "function"
-        ) {
-          const { JSDOM } = await import("jsdom");
-          for (const eventName of ["mousedown", "touchstart"]) {
-            const guideDom = new JSDOM("<!doctype html><body></body>");
-            const normalDom = new JSDOM("<!doctype html><body></body>");
-            const elementBeforeDomTest = globalThis.Element;
-            try {
-              globalThis.Element = guideDom.window.Element;
-              const guideGutter = guideDom.window.document.createElement("div");
-              guideGutter.dataset.codeGuideKey = "layout.split";
-              guideDom.window.document.body.append(guideGutter);
-              let guideDragStarts = 0;
-              let guideLayoutSize = 50;
-              guideGutter.addEventListener(eventName, () => {
-                guideDragStarts += 1;
-                guideLayoutSize = 60;
-              });
-              events.initCodeGuideEvents(guideDom.window.document);
-              const guideStart = new guideDom.window.Event(eventName, {
-                bubbles: true,
-                cancelable: true,
-              });
-              guideGutter.dispatchEvent(guideStart);
-              if (
-                !guideStart.defaultPrevented ||
-                guideDragStarts !== 0 ||
-                guideLayoutSize !== 50
-              ) {
-                failures.push(
-                  `guide ${eventName} must not reach the Split gutter drag handler`
-                );
-              }
-
-              const normalGutter = normalDom.window.document.createElement("div");
-              normalDom.window.document.body.append(normalGutter);
-              let normalDragStarts = 0;
-              let normalLayoutSize = 50;
-              normalGutter.addEventListener(eventName, () => {
-                normalDragStarts += 1;
-                normalLayoutSize = 60;
-              });
-              normalGutter.dispatchEvent(
-                new normalDom.window.Event(eventName, {
-                  bubbles: true,
-                  cancelable: true,
-                })
-              );
-              if (normalDragStarts !== 1 || normalLayoutSize !== 60) {
-                failures.push(
-                  `ordinary ${eventName} must still reach the Split gutter drag handler`
-                );
-              }
-            } finally {
-              globalThis.Element = elementBeforeDomTest;
-              guideDom.window.close();
-              normalDom.window.close();
-            }
-          }
-
+        if (typeof click === "function" && typeof keydown === "function") {
           state.clearActiveCodeGuideKey();
           const annotatedClick = fakeEvent(
             new FakeElement("annotated", "annotated-click")
@@ -848,113 +734,6 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       }
     }
 
-    if (
-      typeof overlay.codeGuideOverlay === "function" &&
-      typeof state.subscribeCodeGuideState === "function" &&
-      typeof createAppRenderer === "function"
-    ) {
-      const { render } = await import("lit-html");
-      const frameQueue = [];
-      const renderGuide = () =>
-        render(overlay.codeGuideOverlay(), runtimeDom.window.document.body);
-      const renderer = createAppRenderer({
-        renderView: renderGuide,
-        requestFrame(callback) {
-          frameQueue.push(callback);
-          return frameQueue.length;
-        },
-      });
-      const flushGuideRender = (description) => {
-        const frame = frameQueue.shift();
-        if (typeof frame !== "function") {
-          failures.push(`${description} must schedule a DOM render`);
-          return;
-        }
-        frame();
-      };
-      const unsubscribe = state.subscribeCodeGuideState(
-        renderer.syncState,
-        runtimeDom.window
-      );
-      const dispatchPageHide = (persisted) => {
-        const event = new runtimeDom.window.Event("pagehide");
-        Object.defineProperty(event, "persisted", { value: persisted });
-        runtimeDom.window.dispatchEvent(event);
-      };
-
-      state.clearActiveCodeGuideKey();
-      renderer.renderInitial();
-      const annotatedCanvas = runtimeDom.window.document.createElement("canvas");
-      annotatedCanvas.dataset.codeGuideKey = "cam.symbols";
-      annotatedCanvas.tabIndex = 0;
-      runtimeDom.window.document.body.append(annotatedCanvas);
-      events.initCodeGuideEvents(runtimeDom.window.document);
-
-      annotatedCanvas.dispatchEvent(
-        new runtimeDom.window.MouseEvent("click", {
-          bubbles: true,
-          cancelable: true,
-        })
-      );
-      flushGuideRender("annotated click");
-      if (!runtimeDom.window.document.querySelector(".code-guide-drawer")) {
-        failures.push("annotated click must render the code guide drawer");
-      }
-
-      const camYarnButton = [...runtimeDom.window.document.querySelectorAll(
-        ".code-guide-layer-option"
-      )].find((button) => button.textContent.includes("三角座纱线序列层"));
-      if (!camYarnButton) {
-        failures.push("layer selector must expose the CAM yarn sequence layer");
-      } else {
-        camYarnButton.click();
-        flushGuideRender("layer selection");
-        const currentLayer = runtimeDom.window.document.querySelector(
-          ".code-guide-layer-option.current"
-        );
-        if (!currentLayer?.textContent.includes("三角座纱线序列层")) {
-          failures.push("layer selection must rerender the newly active guide");
-        }
-      }
-
-      runtimeDom.window.document.querySelector(".code-guide-close")?.click();
-      flushGuideRender("close button");
-      if (runtimeDom.window.document.querySelector(".code-guide-drawer")) {
-        failures.push("close button must remove the code guide drawer");
-      }
-
-      dispatchPageHide(true);
-      annotatedCanvas.click();
-      flushGuideRender("annotated click after BFCache restoration");
-      const drawer = runtimeDom.window.document.querySelector(
-        ".code-guide-drawer"
-      );
-      drawer?.dispatchEvent(
-        new runtimeDom.window.KeyboardEvent("keydown", {
-          bubbles: true,
-          cancelable: true,
-          key: "Escape",
-        })
-      );
-      flushGuideRender("drawer Escape");
-      if (runtimeDom.window.document.querySelector(".code-guide-drawer")) {
-        failures.push("Escape must remove the code guide drawer");
-      }
-
-      dispatchPageHide(false);
-      state.setActiveCodeGuideKey("cam.grid");
-      if (frameQueue.length !== 0) {
-        failures.push("final pagehide must unsubscribe code guide rendering");
-      }
-      unsubscribe();
-      unsubscribe();
-      dispatchPageHide(false);
-      state.clearActiveCodeGuideKey();
-      if (frameQueue.length !== 0) {
-        failures.push("code guide page cleanup must be safe and idempotent");
-      }
-    }
-
     const sampleEntry = { file: "src/views/taskbar.js", line: 11 };
     if (
       typeof map.absoluteCodeGuidePath === "function" &&
@@ -971,14 +750,9 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
       failures.push("createVSCodeHref() must return the exact sample VS Code href");
     }
   } catch (error) {
-    failures.push(`unable to execute code guide modules: ${error.stack || error.message}`);
+    failures.push(`unable to execute code guide modules: ${error.message}`);
   } finally {
     await server?.close();
-    runtimeDom?.window.close();
-    for (const [name, descriptor] of Object.entries(previousGlobalDescriptors)) {
-      if (descriptor === undefined) delete globalThis[name];
-      else Object.defineProperty(globalThis, name, descriptor);
-    }
   }
 }
 

@@ -4,8 +4,6 @@ import {
 } from "./codeGuideState";
 
 const BLOCKED_EVENTS = [
-  "mousedown",
-  "touchstart",
   "pointerdown",
   "pointerup",
   "click",

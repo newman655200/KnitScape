@@ -25,13 +25,6 @@ const defaultCamUnitBitmap = Bimp.empty(
   DEFAULT_UNIT_HEIGHT,
   DEFAULT_STITCH_SYMBOL_INDEX
 );
-const PATTERN_SOURCE_FIELDS = new Set([
-  "canvasWidth",
-  "canvasHeight",
-  "camUnitBitmap",
-  "needleUnitBitmap",
-]);
-
 let GLOBAL_STATE = withDerivedPatternBitmaps({
   language: getInitialLanguage(),
   editingPalette: false,
@@ -91,25 +84,36 @@ let GLOBAL_STATE = withDerivedPatternBitmaps({
   heldKeys: new Set(), // Keys that are currently held down
 });
 
-function changesAffectPattern(changes) {
-  return changes.some((field) => PATTERN_SOURCE_FIELDS.has(field));
+function derivedBitmapFields(changes) {
+  const dimensionsChanged =
+    changes.includes("canvasWidth") || changes.includes("canvasHeight");
+  const fields = [];
+  if (dimensionsChanged || changes.includes("camUnitBitmap")) {
+    fields.push("camBitmap");
+  }
+  if (dimensionsChanged || changes.includes("needleUnitBitmap")) {
+    fields.push("needleBitmap");
+  }
+  return fields;
 }
 
 function changesWithDerivedBitmaps(changes) {
-  if (!changesAffectPattern(changes)) {
-    return changes;
-  }
+  return [
+    ...changes,
+    ...derivedBitmapFields(changes).filter((field) => !changes.includes(field)),
+  ];
+}
 
-  return [...changes, "camBitmap", "needleBitmap"];
+function updateDerivedBitmaps(state, changes) {
+  const fields = derivedBitmapFields(changes);
+  return fields.length ? withDerivedPatternBitmaps(state, fields) : state;
 }
 
 function loadWorkspace(workspace) {
   const workspaceChanges = Object.keys(workspace);
   const changes = changesWithDerivedBitmaps(workspaceChanges);
   const nextState = { ...GLOBAL_STATE, ...workspace };
-  GLOBAL_STATE = changesAffectPattern(workspaceChanges)
-    ? withDerivedPatternBitmaps(nextState)
-    : nextState;
+  GLOBAL_STATE = updateDerivedBitmaps(nextState, workspaceChanges);
   GLOBAL_STATE.updateSim = true;
   StateMonitor.syncState(GLOBAL_STATE, changes);
 }
@@ -137,18 +141,14 @@ function snapshotUpdate(action) {
     ],
     lastSnapshot: Date.now(),
   };
-  GLOBAL_STATE = changesAffectPattern(Object.keys(action))
-    ? withDerivedPatternBitmaps(nextState)
-    : nextState;
+  GLOBAL_STATE = updateDerivedBitmaps(nextState, Object.keys(action));
 
   return GLOBAL_STATE;
 }
 
 function normalUpdate(action) {
   const nextState = { ...GLOBAL_STATE, ...action };
-  GLOBAL_STATE = changesAffectPattern(Object.keys(action))
-    ? withDerivedPatternBitmaps(nextState)
-    : nextState;
+  GLOBAL_STATE = updateDerivedBitmaps(nextState, Object.keys(action));
   return GLOBAL_STATE;
 }
 

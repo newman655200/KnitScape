@@ -151,6 +151,23 @@ try {
   assert.deepEqual(observedChanges.at(-1), ["yarnPalette"]);
   state.dispatch({ lastSnapshot: 0 });
 
+  const needleBitmapBeforeCamEdit = state.GLOBAL_STATE.needleBitmap;
+  const editedCamUnit = new SsrBimp(2, 2, [3, 2, 1, 0]);
+  state.dispatch({ camUnitBitmap: editedCamUnit });
+  assert.equal(state.GLOBAL_STATE.camUnitBitmap, editedCamUnit);
+  assert.equal(state.GLOBAL_STATE.needleBitmap, needleBitmapBeforeCamEdit);
+  assert.deepEqual(observedChanges.at(-1), ["camUnitBitmap", "camBitmap"]);
+
+  const camBitmapBeforeNeedleEdit = state.GLOBAL_STATE.camBitmap;
+  const editedNeedleUnit = new SsrBimp(1, 2, [2, 3]);
+  state.dispatch({ needleUnitBitmap: editedNeedleUnit });
+  assert.equal(state.GLOBAL_STATE.needleUnitBitmap, editedNeedleUnit);
+  assert.equal(state.GLOBAL_STATE.camBitmap, camBitmapBeforeNeedleEdit);
+  assert.deepEqual(observedChanges.at(-1), [
+    "needleUnitBitmap",
+    "needleBitmap",
+  ]);
+
   const snapshotCamUnit = new SsrBimp(1, 2, [1, 2]);
   const snapshotNeedleUnit = new SsrBimp(1, 2, [3, 0]);
   state.dispatch({

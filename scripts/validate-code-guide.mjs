@@ -181,6 +181,34 @@ if (definitions && generatedLines) {
       failures.push(`unknown generated code guide line: ${key}`);
     }
   }
+
+  const chartFit = definitions["chart.fit"];
+  if (chartFit && typeof chartFit === "object" && !Array.isArray(chartFit)) {
+    const chartFitGuidance = [
+      chartFit.title,
+      chartFit.description,
+      chartFit.changeHint,
+    ].join(" ");
+    const semanticRequirements = [
+      [/16\s*[×xX]\s*16/, "must describe the 16×16 initial view"],
+      [/共享/, "must describe the shared editor viewport"],
+      [
+        /(?:重置|恢复)[^。；]*(?:平移|原点)|chartPan[^。；]*(?:0\s*[,，]\s*0|\{\s*x\s*:\s*0\s*,\s*y\s*:\s*0\s*\})/,
+        "must describe resetting the shared pan to the origin",
+      ],
+    ];
+
+    for (const [pattern, message] of semanticRequirements) {
+      if (!pattern.test(chartFitGuidance)) {
+        failures.push(`chart.fit ${message}`);
+      }
+    }
+    if (/完整图案[^。；]*居中/.test(chartFitGuidance)) {
+      failures.push(
+        "chart.fit must not claim that fitChart centers the complete pattern"
+      );
+    }
+  }
 }
 
 function requireSourceTokens(relativePath, tokens) {

@@ -66,7 +66,7 @@ try {
   assert.deepEqual([height.min, height.max, height.step], ["5", "500", "1"]);
   assert.deepEqual(
     [...controls.querySelectorAll("label span")].map((span) => span.textContent),
-    ["横向针数", "纵向行数"]
+    ["横向针数", "纵向针数"]
   );
 
   width.value = "60.9";

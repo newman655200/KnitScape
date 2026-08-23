@@ -3,7 +3,7 @@ export const translations = {
     "taskbar.title": "针织实验室（单面布）",
     "taskbar.logoAlt": "公司 logo",
     "taskbar.width": "横向针数",
-    "taskbar.height": "纵向行数",
+    "taskbar.height": "纵向针数",
     "taskbar.undo": "撤销",
     "taskbar.new": "新建",
     "taskbar.import": "导入",

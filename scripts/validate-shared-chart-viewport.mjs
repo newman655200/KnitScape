@@ -161,6 +161,51 @@ try {
   assert.equal(needleWindow.captured.size, 0);
   assert.equal(needleWindow.listenerCount("pointermove"), 0);
 
+  const captureFailure = new DOMException(
+    "The pointer is no longer active.",
+    "NotFoundError"
+  );
+  const pointerTarget = new EventTargetDouble({
+    left: 0,
+    top: 0,
+    width: 800,
+    height: 600,
+  });
+  const fallbackWindow = new EventTargetDouble({
+    left: 50,
+    top: 60,
+    width: 320,
+    height: 300,
+  });
+  fallbackWindow.ownerDocument = { defaultView: pointerTarget };
+  fallbackWindow.setPointerCapture = () => {
+    throw captureFailure;
+  };
+  chartPointerPanZoom(fallbackWindow, {
+    requestFrame: (callback) => callback(),
+  });
+  state.dispatch({ chartPan: { x: 10, y: 20 } });
+  const fallbackDown = fallbackWindow.dispatch("pointerdown", {
+    button: 1,
+    pointerId: 8,
+    clientX: 100,
+    clientY: 120,
+  });
+  assert.equal(fallbackDown.prevented(), 1);
+  pointerTarget.dispatch("pointermove", {
+    pointerId: 8,
+    clientX: 135,
+    clientY: 105,
+  });
+  assert.deepEqual(
+    state.GLOBAL_STATE.chartPan,
+    { x: 45, y: 5 },
+    "middle-button panning survives pointer-capture failure"
+  );
+  pointerTarget.dispatch("pointerup", { pointerId: 8 });
+  assert.equal(pointerTarget.listenerCount("pointermove"), 0);
+  assert.equal(pointerTarget.listenerCount("pointerup"), 0);
+
   globalThis.devicePixelRatio = 1;
   globalThis.getComputedStyle = () => ({
     paddingLeft: "12px",

@@ -22,6 +22,7 @@ export function chartPointerPanZoom(
   let wheelFramePending = false;
   let wheelDelta = 0;
   let wheelPoint = { x: 0, y: 0 };
+  const pointerTarget = gridWindow.ownerDocument?.defaultView ?? gridWindow;
 
   const applyWheelZoom = () => {
     wheelFramePending = false;
@@ -97,7 +98,11 @@ export function chartPointerPanZoom(
     const startPan = GLOBAL_STATE.chartPan;
     let ended = false;
 
-    gridWindow.setPointerCapture(pointerId);
+    try {
+      gridWindow.setPointerCapture?.(pointerId);
+    } catch {
+      // Window-level listeners below keep panning usable without pointer capture.
+    }
 
     const move = (moveEvent) => {
       if (moveEvent.pointerId !== pointerId) return;
@@ -112,19 +117,19 @@ export function chartPointerPanZoom(
     const end = (endEvent) => {
       if (endEvent.pointerId !== pointerId || ended) return;
       ended = true;
-      gridWindow.removeEventListener("pointermove", move);
-      gridWindow.removeEventListener("pointerup", end);
-      gridWindow.removeEventListener("pointercancel", end);
+      pointerTarget.removeEventListener("pointermove", move);
+      pointerTarget.removeEventListener("pointerup", end);
+      pointerTarget.removeEventListener("pointercancel", end);
       gridWindow.removeEventListener("lostpointercapture", end);
       activePointerId = null;
-      if (gridWindow.hasPointerCapture(pointerId)) {
-        gridWindow.releasePointerCapture(pointerId);
+      if (gridWindow.hasPointerCapture?.(pointerId)) {
+        gridWindow.releasePointerCapture?.(pointerId);
       }
     };
 
-    gridWindow.addEventListener("pointermove", move);
-    gridWindow.addEventListener("pointerup", end);
-    gridWindow.addEventListener("pointercancel", end);
+    pointerTarget.addEventListener("pointermove", move);
+    pointerTarget.addEventListener("pointerup", end);
+    pointerTarget.addEventListener("pointercancel", end);
     gridWindow.addEventListener("lostpointercapture", end);
   });
 

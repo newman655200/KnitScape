@@ -18,7 +18,7 @@ let GLOBAL_STATE = {
   transforming: false,
 
   activeTool: null,
-  activeSymbol: 0,
+  activeSymbol: DEFAULT_STITCH_SYMBOL_INDEX,
 
   chartBackground: "#ffffff",
   symbolPalette: {},

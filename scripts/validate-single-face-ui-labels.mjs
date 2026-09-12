@@ -306,10 +306,13 @@ if (!fs.existsSync(path.join(root, "src", "assets", "company-logo.jpg"))) {
 }
 
 if (
-  !constants.includes('DEFAULT_STITCH_SYMBOL = "purl"') ||
+  !constants.includes('DEFAULT_STITCH_SYMBOL = "knit"') ||
   !constants.includes("DEFAULT_STITCH_SYMBOL_INDEX")
 ) {
-  failures.push("default central stitch symbol must be purl/up-stitch.");
+  failures.push("default central stitch symbol must be knit/down-stitch.");
+}
+if (!/activeSymbol:\s*DEFAULT_STITCH_SYMBOL_INDEX/.test(stateSourceForDefaults)) {
+  failures.push("the selected default stitch must use DEFAULT_STITCH_SYMBOL_INDEX.");
 }
 for (const pathSignature of [
   "M 0.25 0.75 L 0.5 0.25 L 0.75 0.75",
@@ -332,11 +335,11 @@ for (const [file, source] of [
   }
 }
 if (
-  /chart:\s*Bimp\.empty\(48,\s*60,\s*0\)/.test(stateSourceForDefaults) ||
-  /Bimp\.empty\(30,\s*40,\s*0\)/.test(importersSourceForDefaults) ||
-  /Bimp\.empty\([^)]*,\s*0\s*\)/.test(generateChartSourceForDefaults)
+  /chart:\s*Bimp\.empty\(48,\s*60,\s*1\)/.test(stateSourceForDefaults) ||
+  /Bimp\.empty\(30,\s*40,\s*1\)/.test(importersSourceForDefaults) ||
+  /Bimp\.empty\([^)]*,\s*1\s*\)/.test(generateChartSourceForDefaults)
 ) {
-  failures.push("blank/default central stitch chart must not default to knit/down-stitch index 0.");
+  failures.push("blank/default central stitch chart must not default to purl/up-stitch index 1.");
 }
 
 if (failures.length) {

@@ -69,7 +69,7 @@ export const SYMBOL_BITS = {
 };
 
 export const DEFAULT_SYMBOLS = ["knit", "purl", "slip", "tuck"];
-export const DEFAULT_STITCH_SYMBOL = "purl";
+export const DEFAULT_STITCH_SYMBOL = "knit";
 export const DEFAULT_STITCH_SYMBOL_INDEX = DEFAULT_SYMBOLS.indexOf(
   DEFAULT_STITCH_SYMBOL
 );

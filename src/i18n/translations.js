@@ -103,6 +103,14 @@ export const translations = {
     "library.title": "图案库",
     "library.load": "载入",
 
+    "needleArrangement.title": "排针设置",
+    "needleArrangement.input": "输入框{number}",
+    "needleArrangement.combined": "自动组合",
+    "needleArrangement.apply": "确认排针",
+    "needleArrangement.withdraw": "撤回排针",
+    "needleArrangement.before": "排针前",
+    "needleArrangement.after": "排针后",
+
     "simulation.flip": "翻面",
     "simulation.zoomOut": "缩小",
     "simulation.zoomIn": "放大",
@@ -236,6 +244,14 @@ export const translations = {
 
     "library.title": "圖案庫",
     "library.load": "載入",
+
+    "needleArrangement.title": "排針設定",
+    "needleArrangement.input": "輸入框{number}",
+    "needleArrangement.combined": "自動組合",
+    "needleArrangement.apply": "確認排針",
+    "needleArrangement.withdraw": "撤回排針",
+    "needleArrangement.before": "排針前",
+    "needleArrangement.after": "排針後",
 
     "simulation.flip": "翻面",
     "simulation.zoomOut": "縮小",
@@ -371,6 +387,14 @@ export const translations = {
     "library.title": "Pattern Library",
     "library.load": "Load",
 
+    "needleArrangement.title": "Needle Arrangement",
+    "needleArrangement.input": "Input {number}",
+    "needleArrangement.combined": "Combined arrangement",
+    "needleArrangement.apply": "Apply Arrangement",
+    "needleArrangement.withdraw": "Withdraw Arrangement",
+    "needleArrangement.before": "Before Arrangement",
+    "needleArrangement.after": "After Arrangement",
+
     "simulation.flip": "Flip",
     "simulation.zoomOut": "Zoom Out",
     "simulation.zoomIn": "Zoom In",
@@ -504,6 +528,14 @@ export const translations = {
 
     "library.title": "Thư viện mẫu",
     "library.load": "Tải",
+
+    "needleArrangement.title": "Sắp xếp kim",
+    "needleArrangement.input": "Ô nhập {number}",
+    "needleArrangement.combined": "Chuỗi kết hợp",
+    "needleArrangement.apply": "Áp dụng sắp xếp",
+    "needleArrangement.withdraw": "Hủy sắp xếp",
+    "needleArrangement.before": "Trước sắp xếp",
+    "needleArrangement.after": "Sau sắp xếp",
 
     "simulation.flip": "Lật mặt",
     "simulation.zoomOut": "Thu nhỏ",

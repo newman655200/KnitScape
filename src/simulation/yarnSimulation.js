@@ -89,6 +89,7 @@ export function simulate(
     machineGauge = DEFAULT_MACHINE_GAUGE,
     texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
     texturePreviewInteractionActive = false,
+    target = {},
   } = {}
 ) {
   let stopped = false;
@@ -110,7 +111,9 @@ export function simulate(
   performance.mark("start");
 
   const stitchPattern = new Pattern(pattern.pad(X_PADDING, Y_PADDING, 0));
-  const bbox = document.getElementById("sim-container").getBoundingClientRect();
+  const containerId = target.containerId || "sim-container";
+  const canvasIDs = target.canvasIDs || ["back", "mid", "front"];
+  const bbox = document.getElementById(containerId).getBoundingClientRect();
   const width = bbox.width * scale;
   const height = bbox.height * scale;
   const canvasWidth = dpi * width;
@@ -126,11 +129,7 @@ export function simulate(
     });
   }
 
-  const [backCanvas, midCanvas, frontCanvas] = getCanvases([
-    "back",
-    "mid",
-    "front",
-  ]);
+  const [backCanvas, midCanvas, frontCanvas] = getCanvases(canvasIDs);
   const processModel = new ProcessModel(stitchPattern);
   const yarnGraph = new YarnModel(processModel.cn);
   const geometry = buildYarnPathGeometry({

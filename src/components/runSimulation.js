@@ -9,7 +9,8 @@ import {
 } from "../actions/texturePerformance";
 import { buttonIcon } from "../views/uiButton";
 import { t } from "../i18n";
-let stopSim;
+import { applyNeedleArrangementOverlay } from "../simulation/needleArrangementOverlay.js";
+let stopSims = [];
 
 function runPreviewInteraction(action) {
   beginTexturePreviewInteraction();
@@ -25,18 +26,43 @@ export function simulationView() {
 
   return html`<div id="sim-pane">
     <div id="sim-container" data-code-guide-key="simulation.canvas">
-      <div
-        id="sim-transform-group"
-        style="transform: translate(${previewPan.x}px, ${previewPan
-          .y}px) scale(${previewRatio})"
-        class=${GLOBAL_STATE.flipped ? "mirrored" : ""}>
-        <canvas
-          id="back"
-          class=${GLOBAL_STATE.flipped ? "top" : "bottom"}></canvas>
-        <canvas id="mid" class="mid"></canvas>
-        <canvas
-          id="front"
-          class=${GLOBAL_STATE.flipped ? "bottom" : "top"}></canvas>
+      <div class="simulation-preview-grid">
+        <section class="simulation-preview-panel">
+          <h2>${t("needleArrangement.before", language)}</h2>
+          <div id="sim-before-container" class="simulation-preview-canvas">
+            <div
+              id="sim-transform-group"
+              class="sim-transform-group ${GLOBAL_STATE.flipped ? "mirrored" : ""}"
+              style="transform: translate(${previewPan.x}px, ${previewPan
+                .y}px) scale(${previewRatio})">
+              <canvas
+                id="back"
+                class=${GLOBAL_STATE.flipped ? "top" : "bottom"}></canvas>
+              <canvas id="mid" class="mid"></canvas>
+              <canvas
+                id="front"
+                class=${GLOBAL_STATE.flipped ? "bottom" : "top"}></canvas>
+            </div>
+          </div>
+        </section>
+        <section class="simulation-preview-panel">
+          <h2>${t("needleArrangement.after", language)}</h2>
+          <div id="sim-after-container" class="simulation-preview-canvas">
+            <div
+              id="sim-after-transform-group"
+              class="sim-transform-group ${GLOBAL_STATE.flipped ? "mirrored" : ""}"
+              style="transform: translate(${previewPan.x}px, ${previewPan
+                .y}px) scale(${previewRatio})">
+              <canvas
+                id="back-arranged"
+                class=${GLOBAL_STATE.flipped ? "top" : "bottom"}></canvas>
+              <canvas id="mid-arranged" class="mid"></canvas>
+              <canvas
+                id="front-arranged"
+                class=${GLOBAL_STATE.flipped ? "bottom" : "top"}></canvas>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
     <div id="sim-controls" class="panzoom-controls">
@@ -99,7 +125,8 @@ const debounce = (callback, wait) => {
 };
 
 export function stopSimulation() {
-  if (stopSim) stopSim();
+  stopSims.forEach((stopSim) => stopSim());
+  stopSims = [];
 }
 
 export function runSimulation() {
@@ -109,24 +136,56 @@ export function runSimulation() {
     function run() {
       queueSim = false;
 
-      if (stopSim) stopSim();
+      stopSimulation();
 
-      const simulationResult = simulate(
-        GLOBAL_STATE.chart,
+      const baseSimulation = GLOBAL_STATE.chart;
+      const arrangedSimulation = applyNeedleArrangementOverlay(
+        baseSimulation,
+        GLOBAL_STATE.needleArrangement
+      );
+      const simulationOptions = {
+        machineGauge: GLOBAL_STATE.machineGauge,
+        texturePerformanceMode: GLOBAL_STATE.texturePerformanceMode,
+        texturePreviewInteractionActive:
+          GLOBAL_STATE.texturePreviewInteractionActive,
+      };
+      const simulationArguments = [
         GLOBAL_STATE.yarnSequence,
         GLOBAL_STATE.yarnPalette,
         GLOBAL_STATE.simScale,
         GLOBAL_STATE.yarnPlies,
+      ];
+
+      const baseSimulationResult = simulate(
+        baseSimulation,
+        ...simulationArguments,
         {
-          machineGauge: GLOBAL_STATE.machineGauge,
-          texturePerformanceMode: GLOBAL_STATE.texturePerformanceMode,
-          texturePreviewInteractionActive:
-            GLOBAL_STATE.texturePreviewInteractionActive,
+          ...simulationOptions,
+          target: {
+            containerId: "sim-before-container",
+            canvasIDs: ["back", "mid", "front"],
+          },
+        }
+      );
+      const arrangedSimulationResult = simulate(
+        arrangedSimulation,
+        ...simulationArguments,
+        {
+          ...simulationOptions,
+          target: {
+            containerId: "sim-after-container",
+            canvasIDs: ["back-arranged", "mid-arranged", "front-arranged"],
+          },
         }
       );
 
-      ({ stopSim } = simulationResult);
-      dispatch({ yarnLengthMetrics: simulationResult.yarnLengthMetrics });
+      stopSims = [
+        baseSimulationResult.stopSim,
+        arrangedSimulationResult.stopSim,
+      ];
+      dispatch({
+        yarnLengthMetrics: baseSimulationResult.yarnLengthMetrics,
+      });
     }
 
     const debouncedRun = debounce(run, 150);
@@ -144,6 +203,7 @@ export function runSimulation() {
           "texturePreviewInteractionActive",
           "machineGauge",
           "chart",
+          "needleArrangement",
         ].some((key) => changes.includes(key));
 
         if (found) {

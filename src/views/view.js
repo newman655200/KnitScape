@@ -12,6 +12,7 @@ import { leftBar } from "./leftBar";
 import { repeatCanvas } from "./repeatCanvas";
 import { repeatTools } from "./repeatTools";
 import { chartEditorToolbar } from "./chartEditorToolbar";
+import { needleArrangementBar } from "./needleArrangementBar";
 
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
@@ -43,6 +44,7 @@ export function view() {
           <main id="chart-workspace">
             ${chartEditorToolbar()}
             ${when(GLOBAL_STATE.editingRepeat > -1, repeatTools)}
+            ${needleArrangementBar()}
             <div id="desktop">
               <div
                 id="canvas-transform-group"

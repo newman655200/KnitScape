@@ -37,6 +37,8 @@ let GLOBAL_STATE = {
   texturePreviewInteractionActive: false,
   machineGauge: DEFAULT_MACHINE_GAUGE,
   yarnLengthMetrics: null,
+  needleArrangementInputs: ["", "", "", ""],
+  needleArrangement: "",
 
   activeYarn: 0,
   yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns

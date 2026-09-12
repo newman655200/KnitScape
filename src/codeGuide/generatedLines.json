@@ -54,10 +54,10 @@
   "chart.grid": 59,
   "chart.repeat": 32,
   "layout.split": 111,
-  "simulation.canvas": 28,
-  "simulation.flip": 70,
-  "simulation.zoom-out": 76,
-  "simulation.zoom-range": 85,
-  "simulation.zoom-in": 96,
-  "simulation.fit": 105
+  "simulation.canvas": 32,
+  "simulation.flip": 74,
+  "simulation.zoom-out": 80,
+  "simulation.zoom-range": 89,
+  "simulation.zoom-in": 100,
+  "simulation.fit": 109
 }

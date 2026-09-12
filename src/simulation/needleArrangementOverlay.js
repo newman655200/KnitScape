@@ -1,4 +1,5 @@
 import { Bimp } from "../lib/Bimp.js";
+import { buildChartFromRepeats } from "../lib/buildChartFromRepeats.js";
 
 export function normalizeNeedleArrangementInput(value) {
   const validDigits = String(value ?? "").replace(/[^1-4]/g, "");
@@ -17,18 +18,58 @@ export function combineNeedleArrangementInputs(inputs) {
     .join("");
 }
 
-export function applyNeedleArrangementOverlay(baseSimulation, arrangement) {
-  if (!baseSimulation || !/^[1-4]+$/.test(arrangement || "")) {
-    return baseSimulation;
+export function hasFourColumnNeedleSource(repeats) {
+  return repeats?.[0]?.bitmap?.width === 4;
+}
+
+export function arrangeNeedleRepeatBitmap(sourceBitmap, arrangement) {
+  if (
+    sourceBitmap?.width !== 4 ||
+    !/^[1-4]+$/.test(arrangement || "")
+  ) {
+    return null;
   }
 
+  const outputWidth = arrangement.length;
   const pixels = Array.from(
-    { length: baseSimulation.width * baseSimulation.height },
+    { length: outputWidth * sourceBitmap.height },
     (_, index) => {
-      const needleIndex = index % baseSimulation.width;
-      return Number(arrangement[needleIndex % arrangement.length]) - 1;
+      const outputX = index % outputWidth;
+      const sourceX = Number(arrangement[outputX]) - 1;
+      const y = Math.floor(index / outputWidth);
+      return sourceBitmap.pixel(sourceX, y);
     }
   );
 
-  return new Bimp(baseSimulation.width, baseSimulation.height, pixels);
+  return new Bimp(outputWidth, sourceBitmap.height, pixels);
+}
+
+export function applyNeedleArrangementOverlay(
+  baseSimulation,
+  repeats,
+  arrangement,
+  emptyColor
+) {
+  if (
+    !baseSimulation ||
+    !hasFourColumnNeedleSource(repeats) ||
+    !/^[1-4]+$/.test(arrangement || "")
+  ) {
+    return baseSimulation;
+  }
+
+  const arrangedRepeatBitmap = arrangeNeedleRepeatBitmap(
+    repeats[0].bitmap,
+    arrangement
+  );
+  const arrangedRepeats = repeats.map((repeat, index) =>
+    index === 0 ? { ...repeat, bitmap: arrangedRepeatBitmap } : repeat
+  );
+
+  return buildChartFromRepeats({
+    repeats: arrangedRepeats,
+    width: baseSimulation.width,
+    height: baseSimulation.height,
+    emptyColor,
+  });
 }

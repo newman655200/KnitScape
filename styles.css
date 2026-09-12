@@ -1543,6 +1543,13 @@ button.btn.chart-stitch-button.current {
   cursor: not-allowed;
 }
 
+.needle-arrangement-message {
+  flex: 0 0 auto;
+  color: #ffe2a8;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
 #chart-workspace > .tool-picker {
   position: relative;
   inset: auto;

@@ -23,6 +23,7 @@ try {
   const {
     normalizeNeedleArrangementInput,
     combineNeedleArrangementInputs,
+    arrangeNeedleRepeatBitmap,
     applyNeedleArrangementOverlay,
   } = arrangement;
 
@@ -40,33 +41,93 @@ try {
     assert.equal(combineNeedleArrangementInputs(inputs), expected);
   }
 
-  const basePixels = [
-    3, 2, 1, 0, 3, 2, 1, 0,
-    0, 1, 2, 3, 0, 1, 2, 3,
+  const repeatCases = [
+    [[0, 1, 2, 3], "1234", [0, 1, 2, 3]],
+    [[3, 2, 1, 0], "122334", [3, 2, 2, 1, 1, 0]],
+    [[0, 3, 2, 1], "11223344", [0, 0, 3, 3, 2, 2, 1, 1]],
+    [[1, 0, 3, 2], "122344", [1, 0, 0, 3, 2, 2]],
   ];
-  const baseSimulation = new Bimp(8, 2, basePixels);
-  const arrangedSimulation = applyNeedleArrangementOverlay(
-    baseSimulation,
+  for (const [sourcePixels, needleArrangement, expectedPixels] of repeatCases) {
+    const sourceBitmap = new Bimp(4, 1, sourcePixels);
+    const arrangedBitmap = arrangeNeedleRepeatBitmap(
+      sourceBitmap,
+      needleArrangement
+    );
+
+    assert.equal(arrangedBitmap.width, needleArrangement.length);
+    assert.equal(arrangedBitmap.height, sourceBitmap.height);
+    assert.deepEqual(Array.from(arrangedBitmap.pixels), expectedPixels);
+    assert.deepEqual(Array.from(sourceBitmap.pixels), sourcePixels);
+  }
+
+  const sourcePixels = [
+    0, 1, 2, 3,
+    3, 2, 1, 0,
+    1, 3, 0, 2,
+  ];
+  const sourceBitmap = new Bimp(4, 3, sourcePixels);
+  const arrangedRepeatBitmap = arrangeNeedleRepeatBitmap(
+    sourceBitmap,
     "122334"
   );
-
-  assert.notEqual(arrangedSimulation, baseSimulation);
-  assert.deepEqual(Array.from(baseSimulation.pixels), basePixels);
-  assert.deepEqual(Array.from(arrangedSimulation.pixels), [
-    0, 1, 1, 2, 2, 3, 0, 1,
-    0, 1, 1, 2, 2, 3, 0, 1,
+  assert.equal(arrangedRepeatBitmap.width, 6);
+  assert.equal(arrangedRepeatBitmap.height, 3);
+  assert.deepEqual(Array.from(arrangedRepeatBitmap.pixels), [
+    0, 1, 1, 2, 2, 3,
+    3, 2, 2, 1, 1, 0,
+    1, 3, 3, 0, 0, 2,
   ]);
-  assert.equal(applyNeedleArrangementOverlay(baseSimulation, ""), baseSimulation);
+  assert.deepEqual(Array.from(sourceBitmap.pixels), sourcePixels);
 
-  const reappliedSimulation = applyNeedleArrangementOverlay(
-    baseSimulation,
-    "11223344"
+  function buildFixtureChart(repeat, width, height) {
+    const tiled = Bimp.fromTile(
+      repeat.area[0],
+      repeat.area[1],
+      repeat.bitmap.vFlip()
+    ).vFlip();
+    return Bimp.empty(width, height, 1).overlay(tiled, repeat.pos);
+  }
+
+  const repeat = {
+    bitmap: sourceBitmap,
+    pos: [0, 0],
+    area: [12, 6],
+  };
+  const baseChart = buildFixtureChart(repeat, 12, 6);
+  const identityChart = applyNeedleArrangementOverlay(
+    baseChart,
+    [repeat],
+    "1234",
+    1
   );
-  assert.deepEqual(Array.from(reappliedSimulation.pixels), [
-    0, 0, 1, 1, 2, 2, 3, 3,
-    0, 0, 1, 1, 2, 2, 3, 3,
-  ]);
-  assert.deepEqual(Array.from(baseSimulation.pixels), basePixels);
+  assert.notEqual(identityChart, baseChart);
+  assert.equal(identityChart.width, baseChart.width);
+  assert.equal(identityChart.height, baseChart.height);
+  assert.deepEqual(Array.from(identityChart.pixels), Array.from(baseChart.pixels));
+
+  const arrangedChart = applyNeedleArrangementOverlay(
+    baseChart,
+    [repeat],
+    "122334",
+    1
+  );
+  assert.equal(arrangedChart.width, baseChart.width);
+  assert.equal(arrangedChart.height, baseChart.height);
+  assert.deepEqual(Array.from(baseChart.pixels), Array.from(buildFixtureChart(repeat, 12, 6).pixels));
+
+  assert.equal(
+    applyNeedleArrangementOverlay(baseChart, [repeat], "", 1),
+    baseChart
+  );
+  assert.equal(
+    applyNeedleArrangementOverlay(
+      baseChart,
+      [{ ...repeat, bitmap: new Bimp(3, 1, [0, 1, 2]) }],
+      "1234",
+      1
+    ),
+    baseChart
+  );
 } finally {
   await server.close();
 }
@@ -102,13 +163,15 @@ assert.equal(
 );
 assert.match(barSource, /GLOBAL_STATE\.needleArrangementInputs\.map/);
 assert.match(barSource, /readonly/);
-assert.match(barSource, /disabled=\$\{!combinedArrangement\}/);
+assert.match(barSource, /hasFourColumnNeedleSource\(GLOBAL_STATE\.repeats\)/);
+assert.match(barSource, /disabled=\$\{!canApplyArrangement\}/);
+assert.match(barSource, /needleArrangement\.requiresFourColumns/);
 assert.match(barSource, /dispatch\(\{\s*needleArrangement:\s*combinedArrangement\s*\}\)/s);
 assert.match(barSource, /dispatch\(\{\s*needleArrangement:\s*""\s*\}\)/s);
 assert.match(simulationSource, /const baseSimulation = GLOBAL_STATE\.chart/);
 assert.match(
   simulationSource,
-  /const arrangedSimulation = applyNeedleArrangementOverlay\(\s*baseSimulation,\s*GLOBAL_STATE\.needleArrangement\s*\)/s
+  /const arrangedSimulation = applyNeedleArrangementOverlay\(\s*baseSimulation,\s*GLOBAL_STATE\.repeats,\s*GLOBAL_STATE\.needleArrangement,/s
 );
 assert.match(simulationSource, /id="sim-before-container"/);
 assert.match(simulationSource, /id="sim-after-container"/);
@@ -142,6 +205,7 @@ for (const key of [
   "needleArrangement.withdraw",
   "needleArrangement.before",
   "needleArrangement.after",
+  "needleArrangement.requiresFourColumns",
 ]) {
   assert.equal(
     (translationsSource.match(new RegExp(`"${key}"`, "g")) || []).length,

@@ -3,6 +3,7 @@ import { dispatch, GLOBAL_STATE } from "../state";
 import { t } from "../i18n";
 import {
   combineNeedleArrangementInputs,
+  hasFourColumnNeedleSource,
   normalizeNeedleArrangementInput,
 } from "../simulation/needleArrangementOverlay.js";
 
@@ -19,6 +20,8 @@ export function needleArrangementBar() {
   const combinedArrangement = combineNeedleArrangementInputs(
     GLOBAL_STATE.needleArrangementInputs
   );
+  const sourceReady = hasFourColumnNeedleSource(GLOBAL_STATE.repeats);
+  const canApplyArrangement = Boolean(combinedArrangement) && sourceReady;
 
   return html`<section id="needle-arrangement-bar">
     <h2>${t("needleArrangement.title", language)}</h2>
@@ -51,9 +54,11 @@ export function needleArrangementBar() {
     <button
       class="btn solid"
       type="button"
-      ?disabled=${!combinedArrangement}
-      @click=${() =>
-        dispatch({ needleArrangement: combinedArrangement })}>
+      ?disabled=${!canApplyArrangement}
+      @click=${() => {
+        if (!canApplyArrangement) return;
+        dispatch({ needleArrangement: combinedArrangement });
+      }}>
       ${t("needleArrangement.apply", language)}
     </button>
     <button
@@ -63,5 +68,10 @@ export function needleArrangementBar() {
       @click=${() => dispatch({ needleArrangement: "" })}>
       ${t("needleArrangement.withdraw", language)}
     </button>
+    ${!sourceReady
+      ? html`<span class="needle-arrangement-message" role="status">
+          ${t("needleArrangement.requiresFourColumns", language)}
+        </span>`
+      : ""}
   </section>`;
 }

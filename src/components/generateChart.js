@@ -1,23 +1,16 @@
 import { GLOBAL_STATE, dispatch } from "../state";
-import { Bimp } from "../lib/Bimp";
 import { DEFAULT_STITCH_SYMBOL_INDEX } from "../constants";
+import { buildChartFromRepeats } from "../lib/buildChartFromRepeats.js";
 export function generateChart() {
   return ({ state }) => {
     let repeats = state.repeats;
     function regen() {
-      let chart = Bimp.empty(
-        GLOBAL_STATE.chart.width,
-        GLOBAL_STATE.chart.height,
-        DEFAULT_STITCH_SYMBOL_INDEX
-      );
-      for (const repeat of repeats) {
-        let tiled = Bimp.fromTile(
-          repeat.area[0],
-          repeat.area[1],
-          repeat.bitmap.vFlip()
-        ).vFlip();
-        chart = chart.overlay(tiled, repeat.pos);
-      }
+      const chart = buildChartFromRepeats({
+        repeats,
+        width: GLOBAL_STATE.chart.width,
+        height: GLOBAL_STATE.chart.height,
+        emptyColor: DEFAULT_STITCH_SYMBOL_INDEX,
+      });
       dispatch({ chart });
     }
     regen();

@@ -52,7 +52,7 @@ let GLOBAL_STATE = {
 
   repeats: [
     {
-      bitmap: Bimp.empty(4, 8, DEFAULT_STITCH_SYMBOL_INDEX),
+      bitmap: Bimp.empty(4, 4, DEFAULT_STITCH_SYMBOL_INDEX),
       pos: [0, 0],
       area: [48, 60],
     },

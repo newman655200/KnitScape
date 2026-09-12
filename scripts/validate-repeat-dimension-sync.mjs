@@ -108,7 +108,7 @@ try {
   );
   assert.equal(
     repeat.bitmap.height,
-    8,
+    4,
     "top Height input should not change the repeat unit height."
   );
   assert.deepEqual(

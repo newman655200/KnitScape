@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { createServer } from "vite";
 
+globalThis.Path2D ??= class Path2D {};
+
 const modulePath = "src/simulation/needleArrangementOverlay.js";
 assert.ok(
   fs.existsSync(modulePath),
@@ -15,9 +17,10 @@ const server = await createServer({
 });
 
 try {
-  const [arrangement, { Bimp }] = await Promise.all([
+  const [arrangement, { Bimp }, { GLOBAL_STATE }] = await Promise.all([
     server.ssrLoadModule(`/${modulePath}`),
     server.ssrLoadModule("/src/lib/Bimp.js"),
+    server.ssrLoadModule("/src/state.js"),
   ]);
 
   const {
@@ -25,7 +28,19 @@ try {
     combineNeedleArrangementInputs,
     arrangeNeedleRepeatBitmap,
     applyNeedleArrangementOverlay,
+    hasFourColumnNeedleSource,
   } = arrangement;
+
+  assert.equal(GLOBAL_STATE.repeats.length, 1);
+  assert.equal(GLOBAL_STATE.repeats[0].bitmap.width, 4);
+  assert.equal(GLOBAL_STATE.repeats[0].bitmap.height, 4);
+  assert.equal(GLOBAL_STATE.editingRepeat, 0);
+  assert.equal(
+    hasFourColumnNeedleSource([
+      { bitmap: Bimp.empty(4, 8, 1), pos: [0, 0], area: [4, 8] },
+    ]),
+    true
+  );
 
   assert.equal(normalizeNeedleArrangementInput("111"), "111");
   assert.equal(normalizeNeedleArrangementInput("11a510"), "111");
@@ -152,10 +167,19 @@ const simulationSource = fs.readFileSync(
   "src/components/runSimulation.js",
   "utf8"
 );
+const importersSource = fs.readFileSync("src/actions/importers.js", "utf8");
 
 assert.match(viewSource, /needleArrangementBar\(\)/);
 assert.match(stateSource, /needleArrangementInputs:\s*\["",\s*"",\s*"",\s*""\]/);
 assert.match(stateSource, /needleArrangement:\s*""/);
+assert.match(
+  stateSource,
+  /bitmap:\s*Bimp\.empty\(4,\s*4,\s*DEFAULT_STITCH_SYMBOL_INDEX\)/
+);
+assert.match(
+  importersSource,
+  /bitmap:\s*Bimp\.empty\(4,\s*4,\s*DEFAULT_STITCH_SYMBOL_INDEX\)/
+);
 assert.equal(
   (barSource.match(/class="needle-arrangement-input"/g) || []).length,
   1,

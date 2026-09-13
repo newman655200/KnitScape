@@ -1,6 +1,3 @@
-import { Bimp } from "../lib/Bimp.js";
-import { buildChartFromRepeats } from "../lib/buildChartFromRepeats.js";
-
 export function normalizeNeedleArrangementInput(value) {
   const validDigits = String(value ?? "").replace(/[^1-4]/g, "");
   if (!validDigits) return "";
@@ -18,58 +15,24 @@ export function combineNeedleArrangementInputs(inputs) {
     .join("");
 }
 
-export function hasFourColumnNeedleSource(repeats) {
-  return repeats?.[0]?.bitmap?.width === 4;
+export function isValidNeedleArrangement(value) {
+  return /^[1-4]+$/.test(String(value ?? ""));
 }
 
-export function arrangeNeedleRepeatBitmap(sourceBitmap, arrangement) {
+export function parseNeedleArrangement(value) {
+  if (!isValidNeedleArrangement(value)) return [];
+  return Array.from(String(value), Number);
+}
+
+export function getNeedleTypeAtPosition(arrangement, position) {
   if (
-    sourceBitmap?.width !== 4 ||
-    !/^[1-4]+$/.test(arrangement || "")
+    !Array.isArray(arrangement) ||
+    arrangement.length === 0 ||
+    !Number.isInteger(position) ||
+    position < 0
   ) {
     return null;
   }
 
-  const outputWidth = arrangement.length;
-  const pixels = Array.from(
-    { length: outputWidth * sourceBitmap.height },
-    (_, index) => {
-      const outputX = index % outputWidth;
-      const sourceX = Number(arrangement[outputX]) - 1;
-      const y = Math.floor(index / outputWidth);
-      return sourceBitmap.pixel(sourceX, y);
-    }
-  );
-
-  return new Bimp(outputWidth, sourceBitmap.height, pixels);
-}
-
-export function applyNeedleArrangementOverlay(
-  baseSimulation,
-  repeats,
-  arrangement,
-  emptyColor
-) {
-  if (
-    !baseSimulation ||
-    !hasFourColumnNeedleSource(repeats) ||
-    !/^[1-4]+$/.test(arrangement || "")
-  ) {
-    return baseSimulation;
-  }
-
-  const arrangedRepeatBitmap = arrangeNeedleRepeatBitmap(
-    repeats[0].bitmap,
-    arrangement
-  );
-  const arrangedRepeats = repeats.map((repeat, index) =>
-    index === 0 ? { ...repeat, bitmap: arrangedRepeatBitmap } : repeat
-  );
-
-  return buildChartFromRepeats({
-    repeats: arrangedRepeats,
-    width: baseSimulation.width,
-    height: baseSimulation.height,
-    emptyColor,
-  });
+  return arrangement[position % arrangement.length];
 }

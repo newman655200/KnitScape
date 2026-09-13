@@ -1,11 +1,7 @@
 import { simulate } from "../simulation/yarnSimulation";
 import { GLOBAL_STATE, dispatch } from "../state";
 import { html } from "lit-html";
-import {
-  MIN_SIM_SCALE,
-  MAX_SIM_SCALE,
-  DEFAULT_STITCH_SYMBOL_INDEX,
-} from "../constants";
+import { MIN_SIM_SCALE, MAX_SIM_SCALE } from "../constants";
 import { centerZoomSimulation } from "../actions/zoomFit";
 import {
   beginTexturePreviewInteraction,
@@ -13,7 +9,6 @@ import {
 } from "../actions/texturePerformance";
 import { buttonIcon } from "../views/uiButton";
 import { t } from "../i18n";
-import { applyNeedleArrangementOverlay } from "../simulation/needleArrangementOverlay.js";
 let stopSims = [];
 
 function runPreviewInteraction(action) {
@@ -143,12 +138,7 @@ export function runSimulation() {
       stopSimulation();
 
       const baseSimulation = GLOBAL_STATE.chart;
-      const arrangedSimulation = applyNeedleArrangementOverlay(
-        baseSimulation,
-        GLOBAL_STATE.repeats,
-        GLOBAL_STATE.needleArrangement,
-        DEFAULT_STITCH_SYMBOL_INDEX
-      );
+      const arrangedSimulation = baseSimulation;
       const simulationOptions = {
         machineGauge: GLOBAL_STATE.machineGauge,
         texturePerformanceMode: GLOBAL_STATE.texturePerformanceMode,

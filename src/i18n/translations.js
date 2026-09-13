@@ -110,7 +110,6 @@ export const translations = {
     "needleArrangement.withdraw": "撤回排针",
     "needleArrangement.before": "排针前",
     "needleArrangement.after": "排针后",
-    "needleArrangement.requiresFourColumns": "排针需要4列基础循环",
 
     "simulation.flip": "翻面",
     "simulation.zoomOut": "缩小",
@@ -253,7 +252,6 @@ export const translations = {
     "needleArrangement.withdraw": "撤回排針",
     "needleArrangement.before": "排針前",
     "needleArrangement.after": "排針後",
-    "needleArrangement.requiresFourColumns": "排針需要4列基礎循環",
 
     "simulation.flip": "翻面",
     "simulation.zoomOut": "縮小",
@@ -396,8 +394,6 @@ export const translations = {
     "needleArrangement.withdraw": "Withdraw Arrangement",
     "needleArrangement.before": "Before Arrangement",
     "needleArrangement.after": "After Arrangement",
-    "needleArrangement.requiresFourColumns":
-      "Needle arrangement requires a 4-column base repeat",
 
     "simulation.flip": "Flip",
     "simulation.zoomOut": "Zoom Out",
@@ -540,8 +536,6 @@ export const translations = {
     "needleArrangement.withdraw": "Hủy sắp xếp",
     "needleArrangement.before": "Trước sắp xếp",
     "needleArrangement.after": "Sau sắp xếp",
-    "needleArrangement.requiresFourColumns":
-      "Sắp xếp kim cần vòng lặp cơ sở 4 cột",
 
     "simulation.flip": "Lật mặt",
     "simulation.zoomOut": "Thu nhỏ",

@@ -7,7 +7,7 @@ globalThis.Path2D ??= class Path2D {};
 const modulePath = "src/simulation/needleArrangementOverlay.js";
 assert.ok(
   fs.existsSync(modulePath),
-  "needle arrangement overlay module must exist."
+  "needle arrangement domain module must exist."
 );
 
 const server = await createServer({
@@ -26,123 +26,64 @@ try {
   const {
     normalizeNeedleArrangementInput,
     combineNeedleArrangementInputs,
-    arrangeNeedleRepeatBitmap,
-    applyNeedleArrangementOverlay,
-    hasFourColumnNeedleSource,
+    parseNeedleArrangement,
+    getNeedleTypeAtPosition,
+    isValidNeedleArrangement,
   } = arrangement;
 
   assert.equal(GLOBAL_STATE.repeats.length, 1);
   assert.equal(GLOBAL_STATE.repeats[0].bitmap.width, 4);
   assert.equal(GLOBAL_STATE.repeats[0].bitmap.height, 4);
   assert.equal(GLOBAL_STATE.editingRepeat, 0);
-  assert.equal(
-    hasFourColumnNeedleSource([
-      { bitmap: Bimp.empty(4, 8, 1), pos: [0, 0], area: [4, 8] },
-    ]),
-    true
-  );
 
   assert.equal(normalizeNeedleArrangementInput("111"), "111");
   assert.equal(normalizeNeedleArrangementInput("11a510"), "111");
   assert.equal(normalizeNeedleArrangementInput("122"), "1");
 
-  const cases = [
+  const inputCases = [
     [["1", "2", "3", "4"], "1234"],
     [["11", "22", "33", "44"], "11223344"],
     [["1", "22", "33", "4"], "122334"],
     [["1", "22", "3", "44"], "122344"],
   ];
-  for (const [inputs, expected] of cases) {
+  for (const [inputs, expected] of inputCases) {
     assert.equal(combineNeedleArrangementInputs(inputs), expected);
   }
 
-  const repeatCases = [
-    [[0, 1, 2, 3], "1234", [0, 1, 2, 3]],
-    [[3, 2, 1, 0], "122334", [3, 2, 2, 1, 1, 0]],
-    [[0, 3, 2, 1], "11223344", [0, 0, 3, 3, 2, 2, 1, 1]],
-    [[1, 0, 3, 2], "122344", [1, 0, 0, 3, 2, 2]],
-  ];
-  for (const [sourcePixels, needleArrangement, expectedPixels] of repeatCases) {
-    const sourceBitmap = new Bimp(4, 1, sourcePixels);
-    const arrangedBitmap = arrangeNeedleRepeatBitmap(
-      sourceBitmap,
-      needleArrangement
-    );
-
-    assert.equal(arrangedBitmap.width, needleArrangement.length);
-    assert.equal(arrangedBitmap.height, sourceBitmap.height);
-    assert.deepEqual(Array.from(arrangedBitmap.pixels), expectedPixels);
-    assert.deepEqual(Array.from(sourceBitmap.pixels), sourcePixels);
-  }
-
-  const sourcePixels = [
-    0, 1, 2, 3,
-    3, 2, 1, 0,
-    1, 3, 0, 2,
-  ];
-  const sourceBitmap = new Bimp(4, 3, sourcePixels);
-  const arrangedRepeatBitmap = arrangeNeedleRepeatBitmap(
-    sourceBitmap,
-    "122334"
-  );
-  assert.equal(arrangedRepeatBitmap.width, 6);
-  assert.equal(arrangedRepeatBitmap.height, 3);
-  assert.deepEqual(Array.from(arrangedRepeatBitmap.pixels), [
-    0, 1, 1, 2, 2, 3,
-    3, 2, 2, 1, 1, 0,
-    1, 3, 3, 0, 0, 2,
+  assert.deepEqual(parseNeedleArrangement("1234"), [1, 2, 3, 4]);
+  assert.deepEqual(parseNeedleArrangement("122334"), [1, 2, 2, 3, 3, 4]);
+  assert.deepEqual(parseNeedleArrangement("11223344"), [
+    1, 1, 2, 2, 3, 3, 4, 4,
   ]);
-  assert.deepEqual(Array.from(sourceBitmap.pixels), sourcePixels);
+  assert.deepEqual(parseNeedleArrangement(""), []);
+  assert.deepEqual(parseNeedleArrangement("1204"), []);
 
-  function buildFixtureChart(repeat, width, height) {
-    const tiled = Bimp.fromTile(
-      repeat.area[0],
-      repeat.area[1],
-      repeat.bitmap.vFlip()
-    ).vFlip();
-    return Bimp.empty(width, height, 1).overlay(tiled, repeat.pos);
+  const parsedArrangement = parseNeedleArrangement("122334");
+  assert.deepEqual(
+    Array.from({ length: 12 }, (_, position) =>
+      getNeedleTypeAtPosition(parsedArrangement, position)
+    ),
+    [1, 2, 2, 3, 3, 4, 1, 2, 2, 3, 3, 4]
+  );
+  assert.equal(getNeedleTypeAtPosition([], 0), null);
+  assert.equal(getNeedleTypeAtPosition(parsedArrangement, -1), null);
+
+  for (const [width, height, value] of [
+    [4, 4, "122334"],
+    [8, 4, "122334"],
+    [8, 8, "11223344"],
+    [12, 6, "12123434"],
+  ]) {
+    const patternRepeat = Bimp.empty(width, height, 0);
+    assert.equal(patternRepeat.width, width);
+    assert.equal(patternRepeat.height, height);
+    assert.equal(isValidNeedleArrangement(value), true);
+    assert.deepEqual(parseNeedleArrangement(value), Array.from(value, Number));
   }
 
-  const repeat = {
-    bitmap: sourceBitmap,
-    pos: [0, 0],
-    area: [12, 6],
-  };
-  const baseChart = buildFixtureChart(repeat, 12, 6);
-  const identityChart = applyNeedleArrangementOverlay(
-    baseChart,
-    [repeat],
-    "1234",
-    1
-  );
-  assert.notEqual(identityChart, baseChart);
-  assert.equal(identityChart.width, baseChart.width);
-  assert.equal(identityChart.height, baseChart.height);
-  assert.deepEqual(Array.from(identityChart.pixels), Array.from(baseChart.pixels));
-
-  const arrangedChart = applyNeedleArrangementOverlay(
-    baseChart,
-    [repeat],
-    "122334",
-    1
-  );
-  assert.equal(arrangedChart.width, baseChart.width);
-  assert.equal(arrangedChart.height, baseChart.height);
-  assert.deepEqual(Array.from(baseChart.pixels), Array.from(buildFixtureChart(repeat, 12, 6).pixels));
-
-  assert.equal(
-    applyNeedleArrangementOverlay(baseChart, [repeat], "", 1),
-    baseChart
-  );
-  assert.equal(
-    applyNeedleArrangementOverlay(
-      baseChart,
-      [{ ...repeat, bitmap: new Bimp(3, 1, [0, 1, 2]) }],
-      "1234",
-      1
-    ),
-    baseChart
-  );
+  for (const invalidValue of ["", "0", "5", "12a4", "1 2"]) {
+    assert.equal(isValidNeedleArrangement(invalidValue), false);
+  }
 } finally {
   await server.close();
 }
@@ -157,10 +98,8 @@ for (const sourcePath of requiredSources) {
   assert.ok(fs.existsSync(sourcePath), `${sourcePath} must exist.`);
 }
 
-const barSource = fs.readFileSync(
-  "src/views/needleArrangementBar.js",
-  "utf8"
-);
+const barSource = fs.readFileSync("src/views/needleArrangementBar.js", "utf8");
+const domainSource = fs.readFileSync(modulePath, "utf8");
 const viewSource = fs.readFileSync("src/views/view.js", "utf8");
 const stateSource = fs.readFileSync("src/state.js", "utf8");
 const simulationSource = fs.readFileSync(
@@ -170,7 +109,10 @@ const simulationSource = fs.readFileSync(
 const importersSource = fs.readFileSync("src/actions/importers.js", "utf8");
 
 assert.match(viewSource, /needleArrangementBar\(\)/);
-assert.match(stateSource, /needleArrangementInputs:\s*\["",\s*"",\s*"",\s*""\]/);
+assert.match(
+  stateSource,
+  /needleArrangementInputs:\s*\["",\s*"",\s*"",\s*""\]/
+);
 assert.match(stateSource, /needleArrangement:\s*""/);
 assert.match(
   stateSource,
@@ -187,16 +129,26 @@ assert.equal(
 );
 assert.match(barSource, /GLOBAL_STATE\.needleArrangementInputs\.map/);
 assert.match(barSource, /readonly/);
-assert.match(barSource, /hasFourColumnNeedleSource\(GLOBAL_STATE\.repeats\)/);
+assert.match(barSource, /isValidNeedleArrangement\(combinedArrangement\)/);
 assert.match(barSource, /disabled=\$\{!canApplyArrangement\}/);
-assert.match(barSource, /needleArrangement\.requiresFourColumns/);
-assert.match(barSource, /dispatch\(\{\s*needleArrangement:\s*combinedArrangement\s*\}\)/s);
-assert.match(barSource, /dispatch\(\{\s*needleArrangement:\s*""\s*\}\)/s);
-assert.match(simulationSource, /const baseSimulation = GLOBAL_STATE\.chart/);
 assert.match(
-  simulationSource,
-  /const arrangedSimulation = applyNeedleArrangementOverlay\(\s*baseSimulation,\s*GLOBAL_STATE\.repeats,\s*GLOBAL_STATE\.needleArrangement,/s
+  barSource,
+  /dispatch\(\{\s*needleArrangement:\s*combinedArrangement\s*\}\)/s
 );
+assert.match(
+  barSource,
+  /dispatch\(\{\s*needleArrangement:\s*""\s*\}\)/s
+);
+assert.doesNotMatch(barSource, /GLOBAL_STATE\.repeats/);
+assert.doesNotMatch(barSource, /hasFourColumnNeedleSource/);
+assert.doesNotMatch(barSource, /requiresFourColumns/);
+assert.doesNotMatch(domainSource, /hasFourColumnNeedleSource/);
+assert.doesNotMatch(domainSource, /arrangeNeedleRepeatBitmap/);
+assert.doesNotMatch(domainSource, /applyNeedleArrangementOverlay/);
+assert.doesNotMatch(domainSource, /buildChartFromRepeats/);
+assert.match(simulationSource, /const baseSimulation = GLOBAL_STATE\.chart/);
+assert.match(simulationSource, /const arrangedSimulation = baseSimulation/);
+assert.doesNotMatch(simulationSource, /applyNeedleArrangementOverlay/);
 assert.match(simulationSource, /id="sim-before-container"/);
 assert.match(simulationSource, /id="sim-after-container"/);
 assert.equal(
@@ -212,6 +164,7 @@ assert.match(
 
 const stylesSource = fs.readFileSync("styles.css", "utf8");
 assert.match(stylesSource, /#needle-arrangement-bar\s*\{/);
+assert.doesNotMatch(stylesSource, /\.needle-arrangement-message\s*\{/);
 assert.match(
   stylesSource,
   /\.simulation-preview-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s
@@ -229,7 +182,6 @@ for (const key of [
   "needleArrangement.withdraw",
   "needleArrangement.before",
   "needleArrangement.after",
-  "needleArrangement.requiresFourColumns",
 ]) {
   assert.equal(
     (translationsSource.match(new RegExp(`"${key}"`, "g")) || []).length,
@@ -237,6 +189,7 @@ for (const key of [
     `${key} must be translated for every existing language.`
   );
 }
+assert.doesNotMatch(translationsSource, /needleArrangement\.requiresFourColumns/);
 
 const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
 assert.equal(
@@ -244,4 +197,6 @@ assert.equal(
   "node scripts/validate-needle-arrangement.mjs"
 );
 
-console.log("PASS: needle arrangement inputs and overlay behavior are protected.");
+console.log(
+  "PASS: needle arrangement domain is independent from pattern repeat dimensions."
+);

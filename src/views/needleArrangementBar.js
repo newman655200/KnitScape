@@ -3,9 +3,10 @@ import { dispatch, GLOBAL_STATE } from "../state";
 import { t } from "../i18n";
 import {
   combineNeedleArrangementInputs,
-  isValidNeedleArrangement,
   normalizeNeedleArrangementInput,
+  parseNeedleArrangementInputs,
 } from "../simulation/needleArrangementOverlay.js";
+import { isNeedleArrangementValid } from "../simulation/needleExecution.js";
 
 function updateArrangementInput(index, value) {
   const normalizedValue = normalizeNeedleArrangementInput(value);
@@ -17,10 +18,29 @@ function updateArrangementInput(index, value) {
 
 export function needleArrangementBar() {
   const language = GLOBAL_STATE.language;
+  const camMatrixHeight = GLOBAL_STATE.repeats[0]?.bitmap.height || 0;
+  const parsedArrangement = parseNeedleArrangementInputs(
+    GLOBAL_STATE.needleArrangementInputs
+  );
   const combinedArrangement = combineNeedleArrangementInputs(
     GLOBAL_STATE.needleArrangementInputs
   );
-  const canApplyArrangement = isValidNeedleArrangement(combinedArrangement);
+  const canApplyArrangement = isNeedleArrangementValid(
+    parsedArrangement,
+    camMatrixHeight
+  );
+  const hasDraftInput = GLOBAL_STATE.needleArrangementInputs.some((value) =>
+    String(value).trim()
+  );
+  const confirmedArrangementInvalid =
+    GLOBAL_STATE.needleArrangement.length > 0 &&
+    !isNeedleArrangementValid(
+      GLOBAL_STATE.needleArrangement,
+      camMatrixHeight
+    );
+  const showTypeRangeMessage =
+    camMatrixHeight > 0 &&
+    ((hasDraftInput && !canApplyArrangement) || confirmedArrangementInvalid);
 
   return html`<section id="needle-arrangement-bar">
     <h2>${t("needleArrangement.title", language)}</h2>
@@ -29,8 +49,8 @@ export function needleArrangementBar() {
         (value, index) => html`<input
           class="needle-arrangement-input"
           type="text"
-          inputmode="numeric"
-          pattern="[1-4]*"
+          inputmode="text"
+          pattern="[0-9, ]*"
           autocomplete="off"
           aria-label=${t("needleArrangement.input", language, {
             number: index + 1,
@@ -50,21 +70,28 @@ export function needleArrangementBar() {
       aria-label=${t("needleArrangement.combined", language)}
       .value=${combinedArrangement}
       readonly />
+    ${showTypeRangeMessage
+      ? html`<p class="needle-arrangement-message" role="alert">
+          ${t("needleArrangement.typeRange", language, {
+            max: camMatrixHeight,
+          })}
+        </p>`
+      : ""}
     <button
       class="btn solid"
       type="button"
       ?disabled=${!canApplyArrangement}
       @click=${() => {
         if (!canApplyArrangement) return;
-        dispatch({ needleArrangement: combinedArrangement });
+        dispatch({ needleArrangement: parsedArrangement });
       }}>
       ${t("needleArrangement.apply", language)}
     </button>
     <button
       class="btn solid"
       type="button"
-      ?disabled=${!GLOBAL_STATE.needleArrangement}
-      @click=${() => dispatch({ needleArrangement: "" })}>
+      ?disabled=${GLOBAL_STATE.needleArrangement.length === 0}
+      @click=${() => dispatch({ needleArrangement: [] })}>
       ${t("needleArrangement.withdraw", language)}
     </button>
   </section>`;

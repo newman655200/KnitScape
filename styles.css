@@ -1526,8 +1526,16 @@ button.btn.chart-stitch-button.current {
 }
 
 .needle-arrangement-combined {
-  width: 5.8rem;
+  width: 9rem;
   background: #e9ebeb;
+}
+
+.needle-arrangement-message {
+  flex: 0 0 auto;
+  margin: 0 0.2rem;
+  color: #ffd36a;
+  font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 #needle-arrangement-bar .btn {

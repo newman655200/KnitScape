@@ -1,38 +1,47 @@
 export function normalizeNeedleArrangementInput(value) {
-  const validDigits = String(value ?? "").replace(/[^1-4]/g, "");
-  if (!validDigits) return "";
-
-  const needleType = validDigits[0];
-  return Array.from(validDigits)
-    .filter((digit) => digit === needleType)
-    .join("");
-}
-
-export function combineNeedleArrangementInputs(inputs) {
-  return Array.from(inputs || [])
-    .slice(0, 4)
-    .map(normalizeNeedleArrangementInput)
-    .join("");
-}
-
-export function isValidNeedleArrangement(value) {
-  return /^[1-4]+$/.test(String(value ?? ""));
+  return String(value ?? "").replace(/[^\d,\s]/g, "");
 }
 
 export function parseNeedleArrangement(value) {
-  if (!isValidNeedleArrangement(value)) return [];
-  return Array.from(String(value), Number);
-}
+  const normalizedValue = normalizeNeedleArrangementInput(value).trim();
+  if (!normalizedValue) return [];
 
-export function getNeedleTypeAtPosition(arrangement, position) {
-  if (
-    !Array.isArray(arrangement) ||
-    arrangement.length === 0 ||
-    !Number.isInteger(position) ||
-    position < 0
-  ) {
-    return null;
+  if (!/[,\s]/.test(normalizedValue)) {
+    return Array.from(normalizedValue, Number);
   }
 
-  return arrangement[position % arrangement.length];
+  if (!/^\d+(?:[,\s]+\d+)*[,\s]*$/.test(normalizedValue)) return [];
+
+  return normalizedValue
+    .split(/[,\s]+/)
+    .filter(Boolean)
+    .map(Number);
+}
+
+export function parseNeedleArrangementInputs(inputs) {
+  const arrangement = [];
+
+  for (const input of Array.from(inputs || []).slice(0, 4)) {
+    const normalizedInput = normalizeNeedleArrangementInput(input);
+    if (!normalizedInput.trim()) continue;
+
+    const parsedInput = parseNeedleArrangement(normalizedInput);
+    if (parsedInput.length === 0) return [];
+    arrangement.push(...parsedInput);
+  }
+
+  return arrangement;
+}
+
+export function formatNeedleArrangement(arrangement) {
+  if (!Array.isArray(arrangement) || arrangement.length === 0) return "";
+  return arrangement.every(
+    (needleType) => Number.isInteger(needleType) && needleType <= 9
+  )
+    ? arrangement.join("")
+    : arrangement.join(",");
+}
+
+export function combineNeedleArrangementInputs(inputs) {
+  return formatNeedleArrangement(parseNeedleArrangementInputs(inputs));
 }

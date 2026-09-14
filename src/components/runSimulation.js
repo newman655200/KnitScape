@@ -9,6 +9,10 @@ import {
 } from "../actions/texturePerformance";
 import { buttonIcon } from "../views/uiButton";
 import { t } from "../i18n";
+import {
+  buildArrangedChart,
+  isNeedleArrangementValid,
+} from "../simulation/needleExecution.js";
 let stopSims = [];
 
 function runPreviewInteraction(action) {
@@ -138,7 +142,20 @@ export function runSimulation() {
       stopSimulation();
 
       const baseSimulation = GLOBAL_STATE.chart;
-      const arrangedSimulation = baseSimulation;
+      const camMatrix = GLOBAL_STATE.repeats[0]?.bitmap;
+      const arrangedSimulation =
+        camMatrix &&
+        isNeedleArrangementValid(
+          GLOBAL_STATE.needleArrangement,
+          camMatrix.height
+        )
+          ? buildArrangedChart({
+              camMatrix,
+              needleArrangement: GLOBAL_STATE.needleArrangement,
+              outputWidth: GLOBAL_STATE.chart.width,
+              outputHeight: GLOBAL_STATE.chart.height,
+            })
+          : baseSimulation;
       const simulationOptions = {
         machineGauge: GLOBAL_STATE.machineGauge,
         texturePerformanceMode: GLOBAL_STATE.texturePerformanceMode,

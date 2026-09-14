@@ -24,6 +24,7 @@
     "validate:yarn-sequence-editor": "node --experimental-default-type=module scripts/validate-yarn-sequence-editor.mjs",
     "validate:central-stitch-toolbar": "node scripts/validate-central-stitch-toolbar.mjs",
     "validate:needle-arrangement": "node scripts/validate-needle-arrangement.mjs",
+    "validate:needle-execution": "node scripts/validate-needle-execution.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",

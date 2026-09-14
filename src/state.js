@@ -38,7 +38,7 @@ let GLOBAL_STATE = {
   machineGauge: DEFAULT_MACHINE_GAUGE,
   yarnLengthMetrics: null,
   needleArrangementInputs: ["", "", "", ""],
-  needleArrangement: "",
+  needleArrangement: [],
 
   activeYarn: 0,
   yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns

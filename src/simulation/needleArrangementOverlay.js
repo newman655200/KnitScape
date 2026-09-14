@@ -45,3 +45,26 @@ export function formatNeedleArrangement(arrangement) {
 export function combineNeedleArrangementInputs(inputs) {
   return formatNeedleArrangement(parseNeedleArrangementInputs(inputs));
 }
+
+export function isValidNeedleArrangement(arrangement) {
+  return (
+    Array.isArray(arrangement) &&
+    arrangement.length > 0 &&
+    arrangement.every(
+      (needleType) => Number.isInteger(needleType) && needleType >= 1
+    )
+  );
+}
+
+export function getNeedleTypeAtPosition(arrangement, position) {
+  if (
+    !Array.isArray(arrangement) ||
+    arrangement.length === 0 ||
+    !Number.isInteger(position) ||
+    position < 0
+  ) {
+    return null;
+  }
+
+  return arrangement[position % arrangement.length];
+}

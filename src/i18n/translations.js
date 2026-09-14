@@ -110,7 +110,6 @@ export const translations = {
     "needleArrangement.withdraw": "撤回排针",
     "needleArrangement.before": "排针前",
     "needleArrangement.after": "排针后",
-    "needleArrangement.typeRange": "针型编号需在 1~{max}",
 
     "simulation.flip": "翻面",
     "simulation.zoomOut": "缩小",
@@ -253,7 +252,6 @@ export const translations = {
     "needleArrangement.withdraw": "撤回排針",
     "needleArrangement.before": "排針前",
     "needleArrangement.after": "排針後",
-    "needleArrangement.typeRange": "針型編號需在 1~{max}",
 
     "simulation.flip": "翻面",
     "simulation.zoomOut": "縮小",
@@ -396,7 +394,6 @@ export const translations = {
     "needleArrangement.withdraw": "Withdraw Arrangement",
     "needleArrangement.before": "Before Arrangement",
     "needleArrangement.after": "After Arrangement",
-    "needleArrangement.typeRange": "Needle type must be between 1 and {max}",
 
     "simulation.flip": "Flip",
     "simulation.zoomOut": "Zoom Out",
@@ -539,7 +536,6 @@ export const translations = {
     "needleArrangement.withdraw": "Hủy sắp xếp",
     "needleArrangement.before": "Trước sắp xếp",
     "needleArrangement.after": "Sau sắp xếp",
-    "needleArrangement.typeRange": "Loại kim phải từ 1 đến {max}",
 
     "simulation.flip": "Lật mặt",
     "simulation.zoomOut": "Thu nhỏ",

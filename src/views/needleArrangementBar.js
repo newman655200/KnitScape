@@ -3,10 +3,10 @@ import { dispatch, GLOBAL_STATE } from "../state";
 import { t } from "../i18n";
 import {
   combineNeedleArrangementInputs,
+  isValidNeedleArrangement,
   normalizeNeedleArrangementInput,
   parseNeedleArrangementInputs,
 } from "../simulation/needleArrangementOverlay.js";
-import { isNeedleArrangementValid } from "../simulation/needleExecution.js";
 
 function updateArrangementInput(index, value) {
   const normalizedValue = normalizeNeedleArrangementInput(value);
@@ -18,29 +18,13 @@ function updateArrangementInput(index, value) {
 
 export function needleArrangementBar() {
   const language = GLOBAL_STATE.language;
-  const camMatrixHeight = GLOBAL_STATE.repeats[0]?.bitmap.height || 0;
   const parsedArrangement = parseNeedleArrangementInputs(
     GLOBAL_STATE.needleArrangementInputs
   );
   const combinedArrangement = combineNeedleArrangementInputs(
     GLOBAL_STATE.needleArrangementInputs
   );
-  const canApplyArrangement = isNeedleArrangementValid(
-    parsedArrangement,
-    camMatrixHeight
-  );
-  const hasDraftInput = GLOBAL_STATE.needleArrangementInputs.some((value) =>
-    String(value).trim()
-  );
-  const confirmedArrangementInvalid =
-    GLOBAL_STATE.needleArrangement.length > 0 &&
-    !isNeedleArrangementValid(
-      GLOBAL_STATE.needleArrangement,
-      camMatrixHeight
-    );
-  const showTypeRangeMessage =
-    camMatrixHeight > 0 &&
-    ((hasDraftInput && !canApplyArrangement) || confirmedArrangementInvalid);
+  const canApplyArrangement = isValidNeedleArrangement(parsedArrangement);
 
   return html`<section id="needle-arrangement-bar">
     <h2>${t("needleArrangement.title", language)}</h2>
@@ -70,13 +54,6 @@ export function needleArrangementBar() {
       aria-label=${t("needleArrangement.combined", language)}
       .value=${combinedArrangement}
       readonly />
-    ${showTypeRangeMessage
-      ? html`<p class="needle-arrangement-message" role="alert">
-          ${t("needleArrangement.typeRange", language, {
-            max: camMatrixHeight,
-          })}
-        </p>`
-      : ""}
     <button
       class="btn solid"
       type="button"

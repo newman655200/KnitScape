@@ -26,6 +26,7 @@
     "validate:needle-arrangement": "node scripts/validate-needle-arrangement.mjs",
     "validate:single-jersey-machine": "node --experimental-default-type=module scripts/validate-single-jersey-machine.mjs",
     "validate:single-jersey-simulation-input": "node --experimental-default-type=module scripts/validate-single-jersey-simulation-input.mjs",
+    "validate:single-jersey-cam-editor": "node --experimental-default-type=module scripts/validate-single-jersey-cam-editor.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",

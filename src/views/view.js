@@ -13,6 +13,7 @@ import { repeatCanvas } from "./repeatCanvas";
 import { repeatTools } from "./repeatTools";
 import { chartEditorToolbar } from "./chartEditorToolbar";
 import { needleArrangementBar } from "./needleArrangementBar";
+import { singleJerseyCamProgramEditor } from "./singleJerseyCamProgramEditor";
 
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
@@ -45,6 +46,7 @@ export function view() {
             ${chartEditorToolbar()}
             ${when(GLOBAL_STATE.editingRepeat > -1, repeatTools)}
             ${needleArrangementBar()}
+            ${singleJerseyCamProgramEditor()}
             <div id="desktop">
               <div
                 id="canvas-transform-group"

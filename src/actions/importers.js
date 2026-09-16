@@ -27,6 +27,7 @@ export function loadJSON(patternJSON) {
   const chart = Bimp.empty(width, height, DEFAULT_STITCH_SYMBOL_INDEX);
 
   dispatch({
+    workspaceMode: "pattern",
     yarnPalette: Array.isArray(yarnPalette) && yarnPalette.length
       ? yarnPalette
       : [DEFAULT_YARN_COLOR],

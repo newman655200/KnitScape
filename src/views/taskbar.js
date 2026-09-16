@@ -62,5 +62,24 @@ export function taskbar() {
         ${buttonIcon("fullscreen", t("taskbar.fullscreen", language))}
       </button>
     </div>
+    <div
+      class="fabric-mode-controls"
+      role="group"
+      aria-label=${t("workspace.navigation", language)}>
+      <button
+        type="button"
+        class="btn ${GLOBAL_STATE.workspaceMode === "pattern" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workspaceMode === "pattern"}
+        @click=${() => dispatch({ workspaceMode: "pattern" })}>
+        ${t("workspace.pattern", language)}
+      </button>
+      <button
+        type="button"
+        class="btn ${GLOBAL_STATE.workspaceMode === "machine" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workspaceMode === "machine"}
+        @click=${() => dispatch({ workspaceMode: "machine" })}>
+        ${t("workspace.machine", language)}
+      </button>
+    </div>
   </div>`;
 }

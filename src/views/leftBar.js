@@ -26,8 +26,11 @@ function addRepeat() {
 export function leftBar() {
   const language = GLOBAL_STATE.language;
 
+  const addRepeatClass =
+    GLOBAL_STATE.workspaceMode === "pattern" ? "" : "workspace-hidden";
+
   return html`<div id="left-bar" class="scroller">
-    <button class="btn solid add-repeat" data-code-guide-key="left.add-repeat" @click=${() => addRepeat()}>
+    <button class="btn solid add-repeat ${addRepeatClass}" data-code-guide-key="left.add-repeat" @click=${() => addRepeat()}>
       ${buttonIcon("add", t("left.addRepeat", language))}
     </button>
     ${yarnPlyPanel()} ${yarnPicker()}

@@ -19,6 +19,7 @@ let GLOBAL_STATE = {
 
   activeTool: null,
   activeSymbol: DEFAULT_STITCH_SYMBOL_INDEX,
+  workspaceMode: "pattern",
 
   chartBackground: "#ffffff",
   symbolPalette: {},

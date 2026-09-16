@@ -104,7 +104,7 @@ if (!/activeTool:\s*null/.test(state)) {
 if (!/editingRepeat:\s*-1,\s*activeTool:\s*null/s.test(repeatTools)) {
   failures.push("exiting repeat editing must clear the dark brush selection.");
 }
-if (!styles.includes("#chart-workspace > .tool-picker .btn.solid")) {
+if (!styles.includes("#pattern-workspace > .tool-picker .btn.solid")) {
   failures.push("repeat toolbar buttons must define an explicit white default state.");
 }
 if (!styles.includes("background: var(--taskbar-background)")) {

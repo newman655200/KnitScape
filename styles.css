@@ -128,6 +128,18 @@ TASKBAR
   background-color: var(--accent);
 }
 
+.workspace-hidden {
+  display: none !important;
+}
+
+.workspace-panel.workspace-hidden {
+  display: flex !important;
+  position: absolute !important;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /**********************************
 
 SIM PANE
@@ -1370,6 +1382,26 @@ button.btn:hover {
   background: var(--app-background);
 }
 
+#pattern-workspace,
+#machine-workspace {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+#pattern-workspace {
+  display: flex;
+  flex-direction: column;
+}
+
+#machine-workspace {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  background: var(--app-background);
+}
+
 #chart-editor-toolbar {
   position: relative;
   z-index: 12;
@@ -1694,7 +1726,7 @@ button.btn.chart-stitch-button.current {
   outline-offset: 1px;
 }
 
-#chart-workspace > .tool-picker {
+#pattern-workspace > .tool-picker {
   position: relative;
   inset: auto;
   z-index: 11;
@@ -1711,30 +1743,30 @@ button.btn.chart-stitch-button.current {
   font-size: 0.88rem;
 }
 
-#chart-workspace > .tool-picker .btn.current {
+#pattern-workspace > .tool-picker .btn.current {
   color: #fff;
   background: var(--taskbar-background);
   border-color: #777e83;
 }
 
-#chart-workspace > .tool-picker .btn.solid {
+#pattern-workspace > .tool-picker .btn.solid {
   color: var(--ink);
   background: #ffffff;
   border: 1px solid #d7dadb;
   box-shadow: 0 2px 7px rgba(20, 24, 27, 0.2);
 }
 
-#chart-workspace > .tool-picker .btn.solid.current {
+#pattern-workspace > .tool-picker .btn.solid.current {
   color: #ffffff;
   background: var(--taskbar-background);
   border-color: #777e83;
 }
 
-#chart-workspace > .tool-picker .btn.solid.current .button-image {
+#pattern-workspace > .tool-picker .btn.solid.current .button-image {
   filter: none;
 }
 
-#chart-workspace > .tool-picker .repeat-dimension-input input {
+#pattern-workspace > .tool-picker .repeat-dimension-input input {
   color: var(--ink);
   background: var(--input-background);
   border: 1px solid var(--panel-border);
@@ -1746,7 +1778,7 @@ button.btn.chart-stitch-button.current {
   box-shadow: inset 0 0 0 1px rgba(36, 40, 43, 0.08);
 }
 
-#chart-workspace > .panzoom-controls {
+#pattern-workspace > .panzoom-controls {
   color: var(--text);
   background: rgba(86, 93, 98, 0.96);
   border: 1px solid var(--panel-border);

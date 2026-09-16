@@ -28,6 +28,7 @@
     "validate:single-jersey-simulation-input": "node --experimental-default-type=module scripts/validate-single-jersey-simulation-input.mjs",
     "validate:single-jersey-cam-editor": "node --experimental-default-type=module scripts/validate-single-jersey-cam-editor.mjs",
     "validate:single-jersey-execution-integration": "node --experimental-default-type=module scripts/validate-single-jersey-execution-integration.mjs",
+    "validate:workspace-mode": "node --experimental-default-type=module scripts/validate-workspace-mode.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",

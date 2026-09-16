@@ -12,6 +12,9 @@ export const translations = {
     "taskbar.settings": "设置",
     "taskbar.fullscreen": "全屏",
     "taskbar.language": "语言",
+    "workspace.navigation": "工作区入口",
+    "workspace.pattern": "花型编辑",
+    "workspace.machine": "三角座 / 排针",
 
     "left.addRepeat": "添加花型",
     "left.yarnPlyPanel": "双纱参数",
@@ -170,6 +173,9 @@ export const translations = {
     "taskbar.settings": "設定",
     "taskbar.fullscreen": "全螢幕",
     "taskbar.language": "語言",
+    "workspace.navigation": "工作區入口",
+    "workspace.pattern": "花型編輯",
+    "workspace.machine": "三角座 / 排針",
 
     "left.addRepeat": "新增花型",
     "left.yarnPlyPanel": "雙紗參數",
@@ -328,6 +334,9 @@ export const translations = {
     "taskbar.settings": "Settings",
     "taskbar.fullscreen": "Fullscreen",
     "taskbar.language": "Language",
+    "workspace.navigation": "Workspace navigation",
+    "workspace.pattern": "Pattern Editor",
+    "workspace.machine": "Cam / Needle",
 
     "left.addRepeat": "Add Motif",
     "left.yarnPlyPanel": "Two-Yarn Settings",
@@ -486,6 +495,9 @@ export const translations = {
     "taskbar.settings": "Cài đặt",
     "taskbar.fullscreen": "Toàn màn hình",
     "taskbar.language": "Ngôn ngữ",
+    "workspace.navigation": "Điều hướng vùng làm việc",
+    "workspace.pattern": "Chỉnh sửa mẫu",
+    "workspace.machine": "Cam / Sắp xếp kim",
 
     "left.addRepeat": "Thêm mẫu",
     "left.yarnPlyPanel": "Thông số hai sợi",

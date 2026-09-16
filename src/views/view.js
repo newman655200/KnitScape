@@ -32,6 +32,10 @@ function selectedChartCell() {
 
 export function view() {
   syncDocumentLanguage(GLOBAL_STATE.language);
+  const patternWorkspaceClass =
+    GLOBAL_STATE.workspaceMode === "pattern" ? "" : "workspace-hidden";
+  const machineWorkspaceClass =
+    GLOBAL_STATE.workspaceMode === "machine" ? "" : "workspace-hidden";
 
   return html`
     ${when(GLOBAL_STATE.showDownload, downloadModal)}
@@ -43,27 +47,35 @@ export function view() {
         <div id="chart-layout">
           ${leftBar()}
           <main id="chart-workspace">
-            ${chartEditorToolbar()}
-            ${when(GLOBAL_STATE.editingRepeat > -1, repeatTools)}
-            ${needleArrangementBar()}
-            ${singleJerseyCamProgramEditor()}
-            <div id="desktop">
-              <div
-                id="canvas-transform-group"
-                style="transform: translate(${Math.floor(
-                  GLOBAL_STATE.chartPan.x
-                )}px, ${Math.floor(GLOBAL_STATE.chartPan.y)}px);">
-                <div id="yarn-sequence">
-                  <canvas id="yarn-sequence-canvas" data-code-guide-key="chart.yarn-sequence"></canvas>
+            <div
+              id="pattern-workspace"
+              class="workspace-panel ${patternWorkspaceClass}"
+              aria-hidden=${GLOBAL_STATE.workspaceMode !== "pattern"}>
+              ${chartEditorToolbar()}
+              ${when(GLOBAL_STATE.editingRepeat > -1, repeatTools)}
+              <div id="desktop">
+                <div
+                  id="canvas-transform-group"
+                  style="transform: translate(${Math.floor(
+                    GLOBAL_STATE.chartPan.x
+                  )}px, ${Math.floor(GLOBAL_STATE.chartPan.y)}px);">
+                  <div id="yarn-sequence">
+                    <canvas id="yarn-sequence-canvas" data-code-guide-key="chart.yarn-sequence"></canvas>
+                  </div>
+                  <canvas id="yarn-color-canvas" data-code-guide-key="chart.yarn-color"></canvas>
+                  <canvas id="symbol-canvas" data-code-guide-key="chart.symbols"></canvas>
+                  <canvas id="grid" class="grid-canvas" data-code-guide-key="chart.grid"></canvas>
+                  ${selectedChartCell()} ${repeatCanvas()}
                 </div>
-                <canvas id="yarn-color-canvas" data-code-guide-key="chart.yarn-color"></canvas>
-                <canvas id="symbol-canvas" data-code-guide-key="chart.symbols"></canvas>
-                <canvas id="grid" class="grid-canvas" data-code-guide-key="chart.grid"></canvas>
-                ${selectedChartCell()}
-                ${repeatCanvas()}
               </div>
+              ${chartTools()}
             </div>
-            ${chartTools()}
+            <div
+              id="machine-workspace"
+              class="workspace-panel ${machineWorkspaceClass}"
+              aria-hidden=${GLOBAL_STATE.workspaceMode !== "machine"}>
+              ${needleArrangementBar()} ${singleJerseyCamProgramEditor()}
+            </div>
           </main>
         </div>
       </div>

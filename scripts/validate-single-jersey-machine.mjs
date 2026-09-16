@@ -179,10 +179,24 @@ const simulationSource = fs.readFileSync(
   "src/components/runSimulation.js",
   "utf8"
 );
+const executionIntegrationSource = fs.readFileSync(
+  "src/components/singleJerseyExecutionInput.js",
+  "utf8"
+);
 assert.equal(
   simulationSource.includes("singleJerseyMachine"),
   false,
-  "machine operations must not be connected to the simulation yet."
+  "runSimulation must not bypass the execution integration boundary."
+);
+assert.match(
+  executionIntegrationSource,
+  /import\s+\{\s*resolveSingleJerseyOperations\s*\}\s+from\s+"\.\.\/domain\/singleJerseyMachine\.js"/,
+  "the approved execution helper must consume the Machine Domain."
+);
+assert.match(
+  simulationSource,
+  /createSingleJerseyExecutionInput/,
+  "runSimulation must consume Machine Domain output through the approved helper."
 );
 
 console.log(

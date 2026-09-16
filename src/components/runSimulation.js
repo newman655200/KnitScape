@@ -9,7 +9,47 @@ import {
 } from "../actions/texturePerformance";
 import { buttonIcon } from "../views/uiButton";
 import { t } from "../i18n";
+import {
+  createSingleJerseyExecutionInput,
+} from "./singleJerseyExecutionInput.js";
 let stopSims = [];
+let machineExecutionError = null;
+
+const BEFORE_SIMULATION_TARGET = {
+  containerId: "sim-before-container",
+  canvasIDs: ["back", "mid", "front"],
+};
+const AFTER_SIMULATION_TARGET = {
+  containerId: "sim-after-container",
+  canvasIDs: ["back-arranged", "mid-arranged", "front-arranged"],
+};
+
+function isMachineConfigurationError(error) {
+  return (
+    (error instanceof TypeError || error instanceof RangeError) &&
+    /^(?:camProgram\.tracks|needleArrangement|Needle Type )/.test(
+      error.message
+    )
+  );
+}
+
+function setMachineExecutionError(message) {
+  machineExecutionError = message;
+
+  const errorElement = document.getElementById("machine-execution-error");
+  if (!errorElement) return;
+
+  errorElement.hidden = message === null;
+  errorElement.textContent = message ?? "";
+}
+
+function clearSimulationCanvases(canvasIDs) {
+  canvasIDs.forEach((canvasID) => {
+    const canvas = document.getElementById(canvasID);
+    const context = canvas?.getContext("2d");
+    context?.clearRect(0, 0, canvas.width, canvas.height);
+  });
+}
 
 function runPreviewInteraction(action) {
   beginTexturePreviewInteraction();
@@ -61,6 +101,13 @@ export function simulationView() {
                 class=${GLOBAL_STATE.flipped ? "bottom" : "top"}></canvas>
             </div>
           </div>
+          <p
+            id="machine-execution-error"
+            class="machine-execution-error"
+            role="alert"
+            ?hidden=${machineExecutionError === null}>
+            ${machineExecutionError ?? ""}
+          </p>
         </section>
       </div>
     </div>
@@ -156,31 +203,43 @@ export function runSimulation() {
         ...simulationArguments,
         {
           ...simulationOptions,
-          target: {
-            containerId: "sim-before-container",
-            canvasIDs: ["back", "mid", "front"],
-          },
-        }
-      );
-      const afterSimulationResult = simulate(
-        baseSimulation,
-        ...simulationArguments,
-        {
-          ...simulationOptions,
-          target: {
-            containerId: "sim-after-container",
-            canvasIDs: ["back-arranged", "mid-arranged", "front-arranged"],
-          },
+          target: BEFORE_SIMULATION_TARGET,
         }
       );
 
-      stopSims = [
-        baseSimulationResult.stopSim,
-        afterSimulationResult.stopSim,
-      ];
+      stopSims = [baseSimulationResult.stopSim];
       dispatch({
         yarnLengthMetrics: baseSimulationResult.yarnLengthMetrics,
       });
+
+      clearSimulationCanvases(AFTER_SIMULATION_TARGET.canvasIDs);
+      let machineSimulationInput;
+      try {
+        machineSimulationInput = createSingleJerseyExecutionInput(
+          GLOBAL_STATE.singleJerseyCamProgram,
+          GLOBAL_STATE.needleArrangement,
+          baseSimulation.width,
+          baseSimulation.height
+        );
+      } catch (error) {
+        if (!isMachineConfigurationError(error)) throw error;
+
+        setMachineExecutionError(error.message);
+        return;
+      }
+
+      setMachineExecutionError(null);
+      if (machineSimulationInput === null) return;
+
+      const afterSimulationResult = simulate(
+        machineSimulationInput,
+        ...simulationArguments,
+        {
+          ...simulationOptions,
+          target: AFTER_SIMULATION_TARGET,
+        }
+      );
+      stopSims.push(afterSimulationResult.stopSim);
     }
 
     const debouncedRun = debounce(run, 150);
@@ -198,6 +257,8 @@ export function runSimulation() {
           "texturePreviewInteractionActive",
           "machineGauge",
           "chart",
+          "needleArrangement",
+          "singleJerseyCamProgram",
         ].some((key) => changes.includes(key));
 
         if (found) {

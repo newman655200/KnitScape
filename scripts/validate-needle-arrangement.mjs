@@ -132,6 +132,10 @@ const simulationSource = fs.readFileSync(
   "src/components/runSimulation.js",
   "utf8"
 );
+const executionIntegrationSource = fs.readFileSync(
+  "src/components/singleJerseyExecutionInput.js",
+  "utf8"
+);
 const importersSource = fs.readFileSync("src/actions/importers.js", "utf8");
 
 assert.match(viewSource, /needleArrangementBar\(\)/);
@@ -177,8 +181,31 @@ assert.doesNotMatch(domainSource, /needleTypeCount|matrixHeight|camMatrix/);
 assert.match(simulationSource, /const baseSimulation = GLOBAL_STATE\.chart/);
 assert.equal(
   (simulationSource.match(/simulate\(\s*baseSimulation,/g) || []).length,
-  2,
-  "both previews must simulate the same base Pattern."
+  1,
+  "the before preview must continue to simulate the base Pattern."
+);
+assert.equal(
+  (simulationSource.match(/simulate\(\s*machineSimulationInput,/g) || [])
+    .length,
+  1,
+  "only the after preview may simulate machine-derived input."
+);
+assert.match(
+  simulationSource,
+  /createSingleJerseyExecutionInput\(\s*GLOBAL_STATE\.singleJerseyCamProgram,\s*GLOBAL_STATE\.needleArrangement,\s*baseSimulation\.width,\s*baseSimulation\.height\s*\)/s
+);
+assert.match(
+  executionIntegrationSource,
+  /resolveSingleJerseyOperations/
+);
+assert.match(
+  executionIntegrationSource,
+  /createSingleJerseySimulationInput/
+);
+assert.doesNotMatch(
+  simulationSource,
+  /resolveSingleJerseyOperations|createSingleJerseySimulationInput/,
+  "runSimulation must use the approved execution helper instead of bypassing domain boundaries."
 );
 for (const rejectedTerm of [
   "needleExecution",
@@ -194,7 +221,11 @@ for (const rejectedTerm of [
     `runSimulation must not contain ${rejectedTerm}.`
   );
 }
-assert.doesNotMatch(simulationSource, /GLOBAL_STATE\.needleArrangement/);
+assert.equal(
+  (simulationSource.match(/GLOBAL_STATE\.needleArrangement/g) || []).length,
+  1,
+  "only the post-arrangement execution path may read needleArrangement."
+);
 assert.match(simulationSource, /id="sim-before-container"/);
 assert.match(simulationSource, /id="sim-after-container"/);
 assert.equal(
@@ -249,5 +280,5 @@ assert.equal(
 );
 
 console.log(
-  "PASS: needle arrangement remains independent and both previews use the base Pattern."
+  "PASS: needle arrangement affects only the approved post-arrangement machine preview path."
 );

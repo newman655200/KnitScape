@@ -408,10 +408,15 @@ try {
     "src/components/runSimulation.js",
     "utf8"
   );
-  assert.equal(
-    runSimulationSource.includes("singleJerseyCamProgram"),
-    false,
-    "Cam Program editing must not be connected to simulation in this stage."
+  assert.match(
+    runSimulationSource,
+    /createSingleJerseyExecutionInput\(\s*GLOBAL_STATE\.singleJerseyCamProgram,\s*GLOBAL_STATE\.needleArrangement,\s*baseSimulation\.width,\s*baseSimulation\.height\s*\)/s,
+    "Cam Program may reach only the approved post-arrangement execution path."
+  );
+  assert.doesNotMatch(
+    runSimulationSource,
+    /createSingleJerseyCamProgram|resizeSingleJerseyCamProgram|setSingleJerseyCamOperation|cycleSingleJerseyCamOperation|deleteSingleJerseyCamProgram/,
+    "simulation must not own or mutate Cam Program editing actions."
   );
 
   console.log(

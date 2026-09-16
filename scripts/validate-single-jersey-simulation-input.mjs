@@ -95,6 +95,10 @@ const runSimulationSource = fs.readFileSync(
   "src/components/runSimulation.js",
   "utf8"
 );
+const executionIntegrationSource = fs.readFileSync(
+  "src/components/singleJerseyExecutionInput.js",
+  "utf8"
+);
 
 assert.match(adapterSource, /import\s+\{\s*Bimp\s*\}\s+from\s+"\.\.\/lib\/Bimp\.js"/);
 assert.equal((adapterSource.match(/^\s*import\s/gm) || []).length, 1);
@@ -125,7 +129,17 @@ assert.match(stateSource, /singleJerseyCamProgram:\s*null/);
 assert.equal(
   runSimulationSource.includes("singleJerseySimulationInput"),
   false,
-  "Stage 2A must not connect the adapter to the preview."
+  "runSimulation must not bypass the execution integration boundary."
+);
+assert.match(
+  executionIntegrationSource,
+  /import\s+\{\s*createSingleJerseySimulationInput\s*\}\s+from\s+"\.\.\/adapters\/singleJerseySimulationInput\.js"/,
+  "the approved execution helper must consume the simulation adapter."
+);
+assert.match(
+  runSimulationSource,
+  /createSingleJerseyExecutionInput/,
+  "the post-arrangement preview must consume adapter output through the approved helper."
 );
 assert.equal(
   fs.existsSync("src/simulation/needleExecution.js"),

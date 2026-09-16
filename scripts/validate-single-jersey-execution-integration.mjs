@@ -557,6 +557,24 @@ assert.ok(
 );
 assert.match(runSimulationSource, /id="machine-execution-error"/);
 assert.match(runSimulationSource, /role="alert"/);
+const machineExecutionErrorTemplate = runSimulationSource.match(
+  /<div\s+id="machine-execution-error"[\s\S]*?<\/div>/
+)?.[0];
+assert.ok(
+  machineExecutionErrorTemplate,
+  "the machine execution error must be rendered as a dedicated DOM-owned container."
+);
+assert.match(machineExecutionErrorTemplate, /aria-live="polite"/);
+assert.doesNotMatch(
+  machineExecutionErrorTemplate,
+  /\$\{/,
+  "Lit must not own child content inside the imperative machine error container."
+);
+assert.match(
+  runSimulationSource,
+  /function setMachineExecutionError\(message\)[\s\S]*?document\.getElementById\("machine-execution-error"\)[\s\S]*?errorElement\.hidden\s*=\s*message\s*===\s*null;[\s\S]*?errorElement\.textContent\s*=\s*message\s*\?\?\s*"";/,
+  "setMachineExecutionError must remain the sole content owner for the machine error container."
+);
 assert.match(runSimulationSource, /catch\s*\(error\)/);
 assert.match(runSimulationSource, /throw error;/);
 assert.match(runSimulationSource, /"needleArrangement"/);

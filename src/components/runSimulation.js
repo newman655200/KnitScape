@@ -101,13 +101,12 @@ export function simulationView() {
                 class=${GLOBAL_STATE.flipped ? "bottom" : "top"}></canvas>
             </div>
           </div>
-          <p
+          <div
             id="machine-execution-error"
             class="machine-execution-error"
             role="alert"
-            ?hidden=${machineExecutionError === null}>
-            ${machineExecutionError ?? ""}
-          </p>
+            aria-live="polite"
+            hidden></div>
         </section>
       </div>
     </div>

@@ -39,6 +39,7 @@ let GLOBAL_STATE = {
   yarnLengthMetrics: null,
   needleArrangementInputs: ["", "", "", ""],
   needleArrangement: [],
+  singleJerseyCamProgram: null,
 
   activeYarn: 0,
   yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns

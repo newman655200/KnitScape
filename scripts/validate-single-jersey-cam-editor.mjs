@@ -4,6 +4,7 @@ import { createServer } from "vite";
 
 const actionPath = "src/actions/singleJerseyCamProgram.js";
 const viewPath = "src/views/singleJerseyCamProgramEditor.js";
+const toolbarPath = "src/views/chartEditorToolbar.js";
 
 const EXPECTED_CREATED_TRACKS = [
   ["K", "K", "K", "K"],
@@ -120,6 +121,17 @@ try {
     state().singleJerseyCamProgram.tracks,
     EXPECTED_EDITED_TRACKS,
     "Type rows must map to tracks without transposition."
+  );
+  assert.deepEqual(
+    [...new Set(state().singleJerseyCamProgram.tracks.flat())],
+    ["K", "T", "M"],
+    "Cam cells must retain the K/T/M string domain behind icon rendering."
+  );
+  assert.ok(
+    state().singleJerseyCamProgram.tracks
+      .flat()
+      .every((operation) => typeof operation === "string"),
+    "Cam icon rendering must not replace operations with numeric Pattern symbols."
   );
 
   cycleSingleJerseyCamOperation(0, 1);
@@ -292,6 +304,7 @@ try {
 
   const actionSource = fs.readFileSync(actionPath, "utf8");
   const viewSource = fs.readFileSync(viewPath, "utf8");
+  const toolbarSource = fs.readFileSync(toolbarPath, "utf8");
   const editorSource = `${actionSource}\n${viewSource}`;
   for (const forbidden of [
     "repeats",
@@ -338,6 +351,60 @@ try {
     viewSource,
     /cycleSingleJerseyCamOperation\(trackIndex,\s*feedIndex\)/s,
     "cell clicks must preserve the tracks[typeIndex][feedIndex] order."
+  );
+
+  for (const [operation, iconVariable, assetName] of [
+    ["K", "knitIconUrl", "knit"],
+    ["T", "tuckIconUrl", "tuck"],
+    ["M", "slipIconUrl", "slip"],
+  ]) {
+    const importPattern = new RegExp(
+      `import ${iconVariable} from "\\.\\.\\/assets\\/symbols\\/${assetName}\\.svg";`
+    );
+    assert.match(
+      toolbarSource,
+      importPattern,
+      `the top stitch toolbar must continue to own the existing ${assetName} icon.`
+    );
+    assert.match(
+      viewSource,
+      importPattern,
+      `Cam ${operation} must reuse the toolbar's existing ${assetName} SVG.`
+    );
+  }
+
+  const operationIconMap = viewSource.match(
+    /const OPERATION_ICON_URLS\s*=\s*\{([\s\S]*?)\};/
+  );
+  assert.ok(operationIconMap, "the Cam view must define a display-only icon map.");
+  assert.match(operationIconMap[1], /K:\s*knitIconUrl/);
+  assert.match(operationIconMap[1], /T:\s*tuckIconUrl/);
+  assert.match(operationIconMap[1], /M:\s*slipIconUrl/);
+  assert.doesNotMatch(
+    operationIconMap[1],
+    /\bP\s*:|purl/i,
+    "P and its purl icon must not be selectable Cam operations."
+  );
+  assert.doesNotMatch(viewSource, /purlIconUrl|symbols\/purl\.svg/);
+  assert.match(
+    viewSource,
+    /const OPERATION_ORDER = \["K", "T", "M"\];/,
+    "the Cam legend must expose only the K/T/M display order."
+  );
+  assert.match(
+    viewSource,
+    /function operationLegend[\s\S]*?OPERATION_ORDER\.map[\s\S]*?src=\$\{OPERATION_ICON_URLS\[operation\]\}/,
+    "the Cam legend must show the same mapped SVGs as the cells."
+  );
+  assert.match(
+    viewSource,
+    /class="symbol-preview-image"[\s\S]*?src=\$\{OPERATION_ICON_URLS\[operation\]\}/,
+    "each Cam cell must render the mapped toolbar symbol image."
+  );
+  assert.doesNotMatch(
+    viewSource,
+    /\$\{operation\}\s*<\/button>/,
+    "Cam cells must show the mapped icon instead of the raw K/T/M letter."
   );
   assert.match(
     viewSource,

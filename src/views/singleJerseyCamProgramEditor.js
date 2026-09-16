@@ -6,9 +6,18 @@ import {
   deleteSingleJerseyCamProgram,
   resizeSingleJerseyCamProgram,
 } from "../actions/singleJerseyCamProgram.js";
+import knitIconUrl from "../assets/symbols/knit.svg";
+import slipIconUrl from "../assets/symbols/slip.svg";
+import tuckIconUrl from "../assets/symbols/tuck.svg";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE } from "../state.js";
 
+const OPERATION_ORDER = ["K", "T", "M"];
+const OPERATION_ICON_URLS = {
+  K: knitIconUrl,
+  T: tuckIconUrl,
+  M: slipIconUrl,
+};
 const OPERATION_LABEL_KEYS = {
   K: "camProgram.knit",
   T: "camProgram.tuck",
@@ -35,9 +44,18 @@ function operationLegend(language) {
     "camProgram.operations",
     language
   )}>
-    <span class="cam-operation-k">${t("camProgram.knit", language)}</span>
-    <span class="cam-operation-t">${t("camProgram.tuck", language)}</span>
-    <span class="cam-operation-m">${t("camProgram.miss", language)}</span>
+    ${OPERATION_ORDER.map(
+      (operation) => html`<span
+        class="cam-operation-${operation.toLowerCase()}">
+        <img
+          class="symbol-preview-image"
+          src=${OPERATION_ICON_URLS[operation]}
+          alt=""
+          aria-hidden="true"
+          draggable="false" />
+        ${t(OPERATION_LABEL_KEYS[operation], language)}
+      </span>`
+    )}
   </div>`;
 }
 
@@ -76,7 +94,11 @@ function camProgramGrid(camProgram, language) {
                   })}
                   @click=${() =>
                     cycleSingleJerseyCamOperation(trackIndex, feedIndex)}>
-                  ${operation}
+                  <img
+                    class="symbol-preview-image"
+                    src=${OPERATION_ICON_URLS[operation]}
+                    alt=${t(OPERATION_LABEL_KEYS[operation], language)}
+                    draggable="false" />
                 </button>
               </td>`
             )}

@@ -5,6 +5,7 @@ import { createServer } from "vite";
 const actionPath = "src/actions/singleJerseyCamProgram.js";
 const viewPath = "src/views/singleJerseyCamProgramEditor.js";
 const toolbarPath = "src/views/chartEditorToolbar.js";
+const stylesPath = "styles.css";
 
 const EXPECTED_CREATED_TRACKS = [
   ["K", "K", "K", "K"],
@@ -305,6 +306,7 @@ try {
   const actionSource = fs.readFileSync(actionPath, "utf8");
   const viewSource = fs.readFileSync(viewPath, "utf8");
   const toolbarSource = fs.readFileSync(toolbarPath, "utf8");
+  const stylesSource = fs.readFileSync(stylesPath, "utf8");
   const editorSource = `${actionSource}\n${viewSource}`;
   for (const forbidden of [
     "repeats",
@@ -388,8 +390,8 @@ try {
   assert.doesNotMatch(viewSource, /purlIconUrl|symbols\/purl\.svg/);
   assert.match(
     viewSource,
-    /const OPERATION_ORDER = \["K", "T", "M"\];/,
-    "the Cam legend must expose only the K/T/M display order."
+    /const OPERATION_ORDER = \["K", "M", "T"\];/,
+    "the Cam legend must preserve the Pattern toolbar's remaining K/M/T visual order."
   );
   assert.match(
     viewSource,
@@ -446,6 +448,9 @@ try {
   }
 
   const translationsSource = fs.readFileSync("src/i18n/translations.js", "utf8");
+  assert.match(translationsSource, /"camProgram\.knit": "成圈（下） K"/);
+  assert.match(translationsSource, /"camProgram\.miss": "浮针 M"/);
+  assert.match(translationsSource, /"camProgram\.tuck": "半针 T"/);
   for (const key of [
     "camProgram.create",
     "camProgram.tracks",
@@ -485,6 +490,34 @@ try {
     /createSingleJerseyCamProgram|resizeSingleJerseyCamProgram|setSingleJerseyCamOperation|cycleSingleJerseyCamOperation|deleteSingleJerseyCamProgram/,
     "simulation must not own or mutate Cam Program editing actions."
   );
+
+  const machineWorkspaceMatches = [
+    ...stylesSource.matchAll(/#machine-workspace\s*\{([^}]*)\}/g),
+  ];
+  const machineWorkspaceStyles = machineWorkspaceMatches.at(-1)?.[1];
+  const camEditorStyles = stylesSource.match(
+    /#single-jersey-cam-editor\s*\{([^}]*)\}/
+  )?.[1];
+  const camGridScrollerStyles = stylesSource.match(
+    /\.cam-program-grid-scroller\s*\{([^}]*)\}/
+  )?.[1];
+  assert.ok(machineWorkspaceStyles, "Machine workspace styles must exist.");
+  assert.ok(camEditorStyles, "Cam editor styles must exist.");
+  assert.ok(camGridScrollerStyles, "Cam grid scroller styles must exist.");
+  assert.match(machineWorkspaceStyles, /display:\s*flex/);
+  assert.match(machineWorkspaceStyles, /flex-direction:\s*column/);
+  assert.match(machineWorkspaceStyles, /overflow:\s*hidden/);
+  assert.match(camEditorStyles, /flex:\s*1 1 auto/);
+  assert.match(camEditorStyles, /min-height:\s*0/);
+  assert.match(camEditorStyles, /overflow:\s*hidden/);
+  assert.doesNotMatch(
+    camEditorStyles,
+    /max-height/,
+    "Cam editor must not keep the legacy fixed-height cap."
+  );
+  assert.match(camGridScrollerStyles, /flex:\s*1 1 auto/);
+  assert.match(camGridScrollerStyles, /min-height:\s*0/);
+  assert.match(camGridScrollerStyles, /overflow:\s*auto/);
 
   console.log(
     "PASS: Single Jersey Cam Program editor owns explicit, dynamic K/T/M machine data."

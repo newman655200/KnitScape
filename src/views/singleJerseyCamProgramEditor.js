@@ -12,7 +12,7 @@ import tuckIconUrl from "../assets/symbols/tuck.svg";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE } from "../state.js";
 
-const OPERATION_ORDER = ["K", "T", "M"];
+const OPERATION_ORDER = ["K", "M", "T"];
 const OPERATION_ICON_URLS = {
   K: knitIconUrl,
   T: tuckIconUrl,

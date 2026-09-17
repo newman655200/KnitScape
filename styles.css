@@ -1398,7 +1398,7 @@ button.btn:hover {
 #machine-workspace {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
   background: var(--app-background);
 }
 
@@ -1579,10 +1579,11 @@ button.btn.chart-stitch-button.current {
 #single-jersey-cam-editor {
   position: relative;
   z-index: 10;
-  flex: 0 0 auto;
-  max-height: 18rem;
+  min-height: 0;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   color: var(--text);
   background: #4d5459;
   border-bottom: 1px solid var(--panel-border);
@@ -1673,6 +1674,7 @@ button.btn.chart-stitch-button.current {
 
 .cam-program-grid-scroller {
   min-height: 0;
+  flex: 1 1 auto;
   overflow: auto;
   padding: 0 0.6rem 0.6rem;
 }

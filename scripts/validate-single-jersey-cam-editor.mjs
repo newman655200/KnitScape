@@ -68,6 +68,9 @@ try {
   const { singleJerseyCamProgramEditor } = await server.ssrLoadModule(
     `/${viewPath}`
   );
+  const { translations } = await server.ssrLoadModule(
+    "/src/i18n/translations.js"
+  );
   const stateModule = await server.ssrLoadModule("/src/state.js");
   const state = () => stateModule.GLOBAL_STATE;
 
@@ -135,14 +138,22 @@ try {
     "Cam icon rendering must not replace operations with numeric Pattern symbols."
   );
 
+  const actualOperationCycle = [
+    state().singleJerseyCamProgram.tracks[0][1],
+  ];
   cycleSingleJerseyCamOperation(0, 1);
-  assert.equal(state().singleJerseyCamProgram.tracks[0][1], "T");
+  actualOperationCycle.push(state().singleJerseyCamProgram.tracks[0][1]);
   assert.equal(state().singleJerseyCamProgram.tracks[0][0], "K");
   assert.equal(state().singleJerseyCamProgram.tracks[0][2], "K");
   cycleSingleJerseyCamOperation(0, 1);
-  assert.equal(state().singleJerseyCamProgram.tracks[0][1], "M");
+  actualOperationCycle.push(state().singleJerseyCamProgram.tracks[0][1]);
   cycleSingleJerseyCamOperation(0, 1);
-  assert.equal(state().singleJerseyCamProgram.tracks[0][1], "K");
+  actualOperationCycle.push(state().singleJerseyCamProgram.tracks[0][1]);
+  assert.deepEqual(
+    actualOperationCycle,
+    ["K", "T", "M", "K"],
+    "cell clicks must keep the K to T to M to K operation cycle."
+  );
 
   createSingleJerseyCamProgram(2, 3);
   setSingleJerseyCamOperation(0, 1, "T");
@@ -448,9 +459,42 @@ try {
   }
 
   const translationsSource = fs.readFileSync("src/i18n/translations.js", "utf8");
-  assert.match(translationsSource, /"camProgram\.knit": "成圈（下） K"/);
-  assert.match(translationsSource, /"camProgram\.miss": "浮针 M"/);
-  assert.match(translationsSource, /"camProgram\.tuck": "半针 T"/);
+  assert.equal(
+    translations["zh-CN"]["camProgram.empty"],
+    "尚未创建 Cam Program。创建后得到可调整尺寸的 4×4 全成圈（下）草稿；4×4 不是固定机器标准。"
+  );
+  assert.equal(translations["zh-CN"]["camProgram.knit"], "成圈（下）");
+  assert.equal(translations["zh-CN"]["camProgram.miss"], "平针");
+  assert.equal(translations["zh-CN"]["camProgram.tuck"], "半针");
+  assert.equal(
+    translations["zh-CN"]["camProgram.cycleHint"],
+    "点击格子循环 成圈（下） → 半针 → 平针"
+  );
+  assert.equal(
+    translations["zh-TW"]["camProgram.empty"],
+    "尚未建立 Cam Program。建立後得到可調整尺寸的 4×4 全成圈（下）草稿；4×4 不是固定機器標準。"
+  );
+  assert.equal(translations["zh-TW"]["camProgram.knit"], "成圈（下）");
+  assert.equal(translations["zh-TW"]["camProgram.miss"], "平針");
+  assert.equal(translations["zh-TW"]["camProgram.tuck"], "半針");
+  assert.equal(
+    translations["zh-TW"]["camProgram.cycleHint"],
+    "點擊格子循環 成圈（下） → 半針 → 平針"
+  );
+  assert.equal(translations.en["camProgram.knit"], "Knit K");
+  assert.equal(translations.en["camProgram.miss"], "Miss M");
+  assert.equal(translations.en["camProgram.tuck"], "Tuck T");
+  assert.equal(
+    translations.en["camProgram.cycleHint"],
+    "Click a cell to cycle K → T → M"
+  );
+  assert.equal(translations.vi["camProgram.knit"], "Knit K");
+  assert.equal(translations.vi["camProgram.miss"], "Miss M");
+  assert.equal(translations.vi["camProgram.tuck"], "Tuck T");
+  assert.equal(
+    translations.vi["camProgram.cycleHint"],
+    "Nhấp ô để chuyển K → T → M"
+  );
   for (const key of [
     "camProgram.create",
     "camProgram.tracks",

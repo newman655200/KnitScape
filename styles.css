@@ -1649,9 +1649,14 @@ button.btn.chart-stitch-button.current {
   text-align: center;
 }
 
-.cam-program-legend span {
+.cam-program-legend > span {
+  box-sizing: border-box;
+  flex: 0 0 6.25rem;
+  width: 6.25rem;
+  height: 2rem;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.3rem;
   padding: 0.28rem 0.42rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1662,8 +1667,11 @@ button.btn.chart-stitch-button.current {
 }
 
 .cam-program-legend .symbol-preview-image {
+  display: block;
+  flex: 0 0 1.25rem;
   width: 1.25rem;
   height: 1.25rem;
+  padding: 0;
   object-fit: contain;
   background: transparent;
 }

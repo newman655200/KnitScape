@@ -545,9 +545,17 @@ try {
   const camGridScrollerStyles = stylesSource.match(
     /\.cam-program-grid-scroller\s*\{([^}]*)\}/
   )?.[1];
+  const camLegendItemStyles = stylesSource.match(
+    /\.cam-program-legend\s*>\s*span\s*\{([^}]*)\}/
+  )?.[1];
+  const camLegendIconStyles = stylesSource.match(
+    /\.cam-program-legend\s+\.symbol-preview-image\s*\{([^}]*)\}/
+  )?.[1];
   assert.ok(machineWorkspaceStyles, "Machine workspace styles must exist.");
   assert.ok(camEditorStyles, "Cam editor styles must exist.");
   assert.ok(camGridScrollerStyles, "Cam grid scroller styles must exist.");
+  assert.ok(camLegendItemStyles, "Cam legend item styles must exist.");
+  assert.ok(camLegendIconStyles, "Cam legend icon styles must exist.");
   assert.match(machineWorkspaceStyles, /display:\s*flex/);
   assert.match(machineWorkspaceStyles, /flex-direction:\s*column/);
   assert.match(machineWorkspaceStyles, /overflow:\s*hidden/);
@@ -562,6 +570,26 @@ try {
   assert.match(camGridScrollerStyles, /flex:\s*1 1 auto/);
   assert.match(camGridScrollerStyles, /min-height:\s*0/);
   assert.match(camGridScrollerStyles, /overflow:\s*auto/);
+  assert.match(camLegendItemStyles, /box-sizing:\s*border-box/);
+  assert.match(camLegendItemStyles, /flex:\s*0 0 6\.25rem/);
+  assert.match(camLegendItemStyles, /width:\s*6\.25rem/);
+  assert.match(camLegendItemStyles, /height:\s*2rem/);
+  assert.match(camLegendItemStyles, /justify-content:\s*flex-start/);
+  assert.match(camLegendItemStyles, /align-items:\s*center/);
+  assert.match(camLegendItemStyles, /gap:\s*0\.3rem/);
+  assert.match(camLegendItemStyles, /padding:\s*0\.28rem 0\.42rem/);
+  assert.match(camLegendItemStyles, /border:\s*1px solid/);
+  assert.match(camLegendIconStyles, /display:\s*block/);
+  assert.match(camLegendIconStyles, /flex:\s*0 0 1\.25rem/);
+  assert.match(camLegendIconStyles, /width:\s*1\.25rem/);
+  assert.match(camLegendIconStyles, /height:\s*1\.25rem/);
+  assert.match(camLegendIconStyles, /padding:\s*0/);
+  assert.match(camLegendIconStyles, /object-fit:\s*contain/);
+  assert.doesNotMatch(
+    camLegendIconStyles,
+    /transform|scale/,
+    "Cam legend icons must share one unscaled display rule."
+  );
 
   console.log(
     "PASS: Single Jersey Cam Program editor owns explicit, dynamic K/T/M machine data."

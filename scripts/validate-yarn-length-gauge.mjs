@@ -3,10 +3,14 @@ import fs from "node:fs";
 import { createServer } from "vite";
 import {
   DEFAULT_MACHINE_GAUGE,
+  buildFeedYarnLengthDiagnostics,
   cmPer100Loops,
+  courseToFeedIndex,
   gaugeToNeedlePitchMm,
   modelLengthToMm,
+  normalizeModelLengthPer100Needles,
   normalizeMachineGauge,
+  targetModelLengthPer100Needles,
 } from "../src/simulation/yarnLengthMetrics.js";
 
 const server = await createServer({
@@ -14,14 +18,29 @@ const server = await createServer({
   logLevel: "silent",
   server: { middlewareMode: true },
 });
-let geometryModule;
+let loadedModules;
 try {
-  geometryModule = await server.ssrLoadModule(
-    "/src/simulation/yarnPathGeometry.js"
-  );
+  loadedModules = await Promise.all([
+    server.ssrLoadModule("/src/simulation/yarnPathGeometry.js"),
+    server.ssrLoadModule("/src/lib/Bimp.js"),
+    server.ssrLoadModule("/src/simulation/Pattern.js"),
+    server.ssrLoadModule("/src/simulation/ProcessModel.js"),
+    server.ssrLoadModule("/src/simulation/YarnModel.js"),
+    server.ssrLoadModule("/src/lib/buildChartFromRepeats.js"),
+    server.ssrLoadModule("/src/components/singleJerseyExecutionInput.js"),
+  ]);
 } finally {
   await server.close();
 }
+const [
+  geometryModule,
+  { Bimp },
+  { Pattern },
+  { ProcessModel },
+  { YarnModel },
+  { buildChartFromRepeats },
+  { createSingleJerseyExecutionInput },
+] = loadedModules;
 const { buildYarnPathGeometry, DEFAULT_YARN_MODEL_GEOMETRY } = geometryModule;
 
 const read = (file) => fs.readFileSync(file, "utf8");
@@ -39,6 +58,25 @@ assert.ok(Math.abs(gaugeToNeedlePitchMm(32) - 0.79375) < 1e-6);
 assert.ok(Math.abs(gaugeToNeedlePitchMm(64) - 0.396875) < 1e-6);
 assert.ok(Math.abs(modelLengthToMm(10, 32) - 7.9375) < 1e-9);
 assert.ok(Math.abs(modelLengthToMm(10, 64) - 3.96875) < 1e-9);
+assert.ok(
+  Math.abs(targetModelLengthPer100Needles(23, 32) - 289.7637795275591) <
+    1e-9
+);
+assert.ok(
+  Math.abs(targetModelLengthPer100Needles(8, 32) - 100.78740157480316) <
+    1e-9
+);
+assert.ok(
+  Math.abs(
+    targetModelLengthPer100Needles(23, 64) -
+      targetModelLengthPer100Needles(23, 32) * 2
+  ) < 1e-9
+);
+assert.equal(courseToFeedIndex(0, 2), 0);
+assert.equal(courseToFeedIndex(1, 2), 1);
+assert.equal(courseToFeedIndex(2, 2), 0);
+assert.equal(normalizeModelLengthPer100Needles(12, 4), 300);
+assert.equal(normalizeModelLengthPer100Needles(24, 8), 300);
 const geometryNeedleSpacing = 8;
 const mmPerXUnit = gaugeToNeedlePitchMm(32) / geometryNeedleSpacing;
 assert.ok(
@@ -90,12 +128,33 @@ function buildGeometry(canvasWidth, canvasHeight, machineGauge = 32) {
   return { geometry, yarnGraph };
 }
 
+function buildProductionGeometry(pattern) {
+  const stitchPattern = new Pattern(pattern.pad(1, 0, 0));
+  const yarnGraph = new YarnModel(new ProcessModel(stitchPattern).cn);
+  return buildYarnPathGeometry({
+    pattern,
+    stitchPattern,
+    yarnGraph,
+    canvasWidth: 640,
+    canvasHeight: 480,
+    primaryLengthScaleY: 1,
+    primaryYarnDiameter: 0.24,
+    machineGauge: 32,
+  });
+}
+
 const smallCanvasFixture = buildGeometry(320, 240);
 const largeCanvasFixture = buildGeometry(640, 480);
 const otherGaugeFixture = buildGeometry(320, 240, 64);
 const smallCanvasGeometry = smallCanvasFixture.geometry;
 const largeCanvasGeometry = largeCanvasFixture.geometry;
 const otherGaugeGeometry = otherGaugeFixture.geometry;
+const modelPathSnapshot = structuredClone([
+  ...smallCanvasGeometry.modelPathByLink.entries(),
+]);
+const resolvedPathSnapshot = structuredClone([
+  ...smallCanvasGeometry.resolvedPathByLink.entries(),
+]);
 assert.deepEqual(DEFAULT_YARN_MODEL_GEOMETRY, {
   needlePitch: 1,
   loopHeight: 3 / 5,
@@ -126,6 +185,64 @@ assert.equal(smallCanvasGeometry.modelGeometry.needlePitch, 1);
 assert.equal(smallCanvasGeometry.modelGeometry.loopHeight, 3 / 5);
 assert.equal(smallCanvasGeometry.modelGeometry.calibrated, false);
 assert.ok(
+  smallCanvasGeometry.measuredModelLengthPer100NeedlesByCourse.get(0) > 0
+);
+assert.deepEqual(
+  smallCanvasGeometry.measuredModelLengthPer100NeedlesByCourse,
+  largeCanvasGeometry.measuredModelLengthPer100NeedlesByCourse
+);
+assert.deepEqual(
+  smallCanvasGeometry.measuredModelLengthPer100NeedlesByCourse,
+  otherGaugeGeometry.measuredModelLengthPer100NeedlesByCourse
+);
+
+const fourNeedleGeometry = buildProductionGeometry(Bimp.empty(4, 1, 0));
+const eightNeedleGeometry = buildProductionGeometry(Bimp.empty(8, 1, 0));
+assert.equal(fourNeedleGeometry.measuredNeedleCountByCourse.get(0), 4);
+assert.equal(eightNeedleGeometry.measuredNeedleCountByCourse.get(0), 8);
+
+const arrangement = [1, 2, 3];
+const arrangedPattern = createSingleJerseyExecutionInput(
+  { tracks: [["K"], ["K"], ["K"]] },
+  arrangement,
+  8,
+  1
+);
+const arrangedGeometry = buildProductionGeometry(arrangedPattern);
+assert.equal(arrangedPattern.width, 8);
+assert.equal(arrangement.length, 3);
+assert.equal(arrangedGeometry.measuredNeedleCountByCourse.get(0), 8);
+
+const fourWideRepeatChart = buildChartFromRepeats({
+  repeats: [
+    { bitmap: Bimp.empty(4, 1, 0), pos: [0, 0], area: [8, 1] },
+  ],
+  width: 8,
+  height: 1,
+  emptyColor: 0,
+});
+const eightWideRepeatChart = buildChartFromRepeats({
+  repeats: [
+    { bitmap: Bimp.empty(8, 1, 0), pos: [0, 0], area: [8, 1] },
+  ],
+  width: 8,
+  height: 1,
+  emptyColor: 0,
+});
+const fourWideRepeatGeometry = buildProductionGeometry(fourWideRepeatChart);
+const eightWideRepeatGeometry = buildProductionGeometry(eightWideRepeatChart);
+assert.equal(fourWideRepeatGeometry.measuredNeedleCountByCourse.get(0), 8);
+assert.equal(eightWideRepeatGeometry.measuredNeedleCountByCourse.get(0), 8);
+assert.equal(
+  fourWideRepeatGeometry.measuredModelLengthPer100NeedlesByCourse.get(0),
+  eightWideRepeatGeometry.measuredModelLengthPer100NeedlesByCourse.get(0)
+);
+
+const boundaryMissGeometry = buildProductionGeometry(
+  new Bimp(4, 1, [0, 2, 0, 2])
+);
+assert.equal(boundaryMissGeometry.measuredNeedleCountByCourse.get(0), 3);
+assert.ok(
   Math.abs(
     modelLengthToMm(
       smallCanvasGeometry.modelPathArcLength.totalModelLength,
@@ -137,6 +254,81 @@ assert.ok(
       ) /
         2
   ) < 1e-9
+);
+
+const feeds = [
+  {
+    yarns: [
+      {
+        yarnId: "shared-yarn",
+        yarnLengthCmPer100Needles: 23,
+        tensionCN: null,
+        placement: "parallel",
+      },
+    ],
+  },
+  {
+    yarns: [
+      {
+        yarnId: "shared-yarn",
+        yarnLengthCmPer100Needles: 8,
+        tensionCN: null,
+        placement: "parallel",
+      },
+      {
+        yarnId: "companion-yarn",
+        yarnLengthCmPer100Needles: 23,
+        tensionCN: null,
+        placement: "parallel",
+      },
+    ],
+  },
+];
+const feedsSnapshot = structuredClone(feeds);
+const measuredModelLengthPer100Needles = 80;
+const feedOneDiagnostics = buildFeedYarnLengthDiagnostics({
+  feed: feeds[courseToFeedIndex(0, feeds.length)],
+  measuredModelLengthPer100Needles,
+  gauge: 32,
+});
+const feedTwoDiagnostics = buildFeedYarnLengthDiagnostics({
+  feed: feeds[courseToFeedIndex(1, feeds.length)],
+  measuredModelLengthPer100Needles,
+  gauge: 32,
+});
+assert.equal(feedOneDiagnostics.length, 1);
+assert.equal(feedTwoDiagnostics.length, 2);
+assert.equal(
+  feedOneDiagnostics[0].targetModelLengthPer100Needles,
+  targetModelLengthPer100Needles(23, 32)
+);
+assert.equal(
+  feedOneDiagnostics[0].targetModelLengthPer100Needles,
+  feedTwoDiagnostics[1].targetModelLengthPer100Needles
+);
+assert.equal(
+  feedTwoDiagnostics[0].targetModelLengthPer100Needles,
+  targetModelLengthPer100Needles(8, 32)
+);
+for (const diagnostic of [...feedOneDiagnostics, ...feedTwoDiagnostics]) {
+  assert.equal(
+    diagnostic.measuredModelLengthPer100Needles,
+    measuredModelLengthPer100Needles
+  );
+  assert.equal(
+    diagnostic.lengthRatio,
+    diagnostic.targetModelLengthPer100Needles /
+      diagnostic.measuredModelLengthPer100Needles
+  );
+}
+assert.deepEqual(feeds, feedsSnapshot);
+assert.deepEqual(
+  [...smallCanvasGeometry.modelPathByLink.entries()],
+  modelPathSnapshot
+);
+assert.deepEqual(
+  [...smallCanvasGeometry.resolvedPathByLink.entries()],
+  resolvedPathSnapshot
 );
 assert.ok(
   Math.abs(

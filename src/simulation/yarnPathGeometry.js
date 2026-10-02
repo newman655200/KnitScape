@@ -8,6 +8,7 @@ import {
 import {
   cmPer100Loops,
   gaugeToNeedlePitchMm,
+  normalizeModelLengthPer100Needles,
   normalizeMachineGauge,
 } from "./yarnLengthMetrics";
 
@@ -238,8 +239,12 @@ export function buildYarnPathGeometry({
     return { modelPathByLink, resolvedPathByLink };
   }
 
+  function needlePosition(point) {
+    return Math.floor(point.i / 2);
+  }
+
   function pointInEffectiveNeedles(point) {
-    const stitchColumn = Math.floor(point.i / 2);
+    const stitchColumn = needlePosition(point);
     return (
       stitchColumn >= X_PADDING &&
       stitchColumn < X_PADDING + pattern.width
@@ -283,6 +288,53 @@ export function buildYarnPathGeometry({
     return pathDataArcLength(pathData);
   }
 
+  function buildModelLengthMeasurementsByCourse() {
+    const measurements = new Map();
+    yarnPathLinks.forEach((link) => {
+      const pathData = modelPathByLink.get(link.index);
+      if (!pathData || !linkInEffectiveNeedles(link)) return;
+      const sourceNeedle = needlePosition(yarnPath[link.index]);
+      const targetNeedle = needlePosition(yarnPath[link.index + 1]);
+      const measurement = measurements.get(link.row) ?? {
+        modelLength: 0,
+        firstNeedle: Infinity,
+        lastNeedle: -Infinity,
+      };
+      measurement.modelLength += pathDataLength(pathData);
+      measurement.firstNeedle = Math.min(
+        measurement.firstNeedle,
+        sourceNeedle,
+        targetNeedle
+      );
+      measurement.lastNeedle = Math.max(
+        measurement.lastNeedle,
+        sourceNeedle,
+        targetNeedle
+      );
+      measurements.set(link.row, measurement);
+    });
+
+    const measuredNeedleCountByCourse = new Map();
+    const measuredModelLengthPer100NeedlesByCourse = new Map();
+    measurements.forEach((measurement, course) => {
+      const measuredNeedleCount =
+        measurement.lastNeedle - measurement.firstNeedle + 1;
+      measuredNeedleCountByCourse.set(course, measuredNeedleCount);
+      measuredModelLengthPer100NeedlesByCourse.set(
+        course,
+        normalizeModelLengthPer100Needles(
+          measurement.modelLength,
+          measuredNeedleCount
+        )
+      );
+    });
+
+    return {
+      measuredNeedleCountByCourse,
+      measuredModelLengthPer100NeedlesByCourse,
+    };
+  }
+
   const nodes = layoutNodes(yarnGraph);
   layoutDisplayNodes(yarnGraph);
   const yarnPath = yarnGraph.makeNice();
@@ -302,6 +354,7 @@ export function buildYarnPathGeometry({
   const { modelPathByLink, resolvedPathByLink } = buildResolvedPathMaps();
   const yarnPathArcLength = buildYarnPathArcLength();
   const modelArcLength = buildYarnPathArcLength(modelPathByLink);
+  const modelLengthMeasurements = buildModelLengthMeasurementsByCourse();
 
   return {
     stitchWidth,
@@ -314,6 +367,7 @@ export function buildYarnPathGeometry({
       totalModelLength: modelArcLength.totalLength,
       cumulativeModelArcLength: modelArcLength.cumulativeArcLength,
     },
+    ...modelLengthMeasurements,
     yarnPathLinks,
     resolvedPathByLink,
     yarnPathArcLength,

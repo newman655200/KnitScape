@@ -8,6 +8,7 @@ import {
 import {
   cmPer100Loops,
   gaugeToNeedlePitchMm,
+  geometryArcLengthToPhysical,
   normalizeMachineGauge,
 } from "./yarnLengthMetrics";
 
@@ -258,12 +259,18 @@ export function buildYarnPathGeometry({
 
   updateNormals();
   const resolvedPathByLink = buildResolvedPathMap();
+  const yarnPathArcLength = buildYarnPathArcLength();
 
   return {
     stitchWidth,
     yarnPathLinks,
     resolvedPathByLink,
-    yarnPathArcLength: buildYarnPathArcLength(),
+    yarnPathArcLength,
+    yarnPathPhysicalArcLength: geometryArcLengthToPhysical({
+      ...yarnPathArcLength,
+      needleSpacingGeometry: stitchWidth,
+      gauge: machineGauge,
+    }),
     yarnLengthMetrics: buildYarnLengthMetrics(),
   };
 }

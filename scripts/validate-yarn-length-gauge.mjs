@@ -4,6 +4,7 @@ import {
   DEFAULT_MACHINE_GAUGE,
   cmPer100Loops,
   gaugeToNeedlePitchMm,
+  geometryArcLengthToPhysical,
   normalizeMachineGauge,
 } from "../src/simulation/yarnLengthMetrics.js";
 
@@ -20,6 +21,29 @@ assert.equal(normalizeMachineGauge(64), 64);
 assert.equal(normalizeMachineGauge("bad"), 32);
 assert.ok(Math.abs(gaugeToNeedlePitchMm(32) - 0.79375) < 1e-6);
 assert.ok(Math.abs(gaugeToNeedlePitchMm(64) - 0.396875) < 1e-6);
+
+const geometryArcLength = {
+  totalLength: 800,
+  cumulativeArcLength: [0, 400, 800],
+};
+const geometrySnapshot = structuredClone(geometryArcLength);
+const gauge32Length = geometryArcLengthToPhysical({
+  ...geometryArcLength,
+  needleSpacingGeometry: 8,
+  gauge: 32,
+});
+const gauge64Length = geometryArcLengthToPhysical({
+  ...geometryArcLength,
+  needleSpacingGeometry: 8,
+  gauge: 64,
+});
+assert.equal(gauge32Length.totalLengthGeometry, 800);
+assert.deepEqual(gauge32Length.cumulativeArcLengthGeometry, [0, 400, 800]);
+assert.deepEqual(gauge32Length.cumulativeArcLengthMm, [0, 39.6875, 79.375]);
+assert.ok(Math.abs(gauge32Length.totalLengthMm - 100 * (25.4 / 32)) < 1e-9);
+assert.ok(Math.abs(gauge32Length.totalLengthCm - gauge32Length.totalLengthMm / 10) < 1e-9);
+assert.ok(Math.abs(gauge64Length.totalLengthMm - gauge32Length.totalLengthMm / 2) < 1e-9);
+assert.deepEqual(geometryArcLength, geometrySnapshot);
 assert.ok(
   Math.abs(
     cmPer100Loops({
@@ -52,6 +76,14 @@ assert.match(
   simulationSource,
   /stitchHeight\s*=\s*baseStitchHeight\s*\*\s*primaryLengthScaleY/
 );
+assert.match(simulationSource, /halfStitch\s*=\s*stitchWidth\s*\/\s*2/);
+assert.match(simulationSource, /Math\.floor\(point\.i\s*\/\s*2\)/);
+assert.match(
+  simulationSource,
+  /needleSpacingGeometry:\s*stitchWidth/,
+  "physical arc length must derive its scale from the rendered needle spacing."
+);
+assert.doesNotMatch(simulationSource, /yarnLengthCmPer100Needles/);
 
 const runSimulationSource = read("src/components/runSimulation.js");
 assert.match(runSimulationSource, /yarnLengthMetrics/);

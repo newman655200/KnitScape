@@ -93,9 +93,10 @@ for (const token of [
 }
 assert.match(
   simulationSource,
-  /yarnPathArcLength:\s*buildYarnPathArcLength\(\)/,
+  /const yarnPathArcLength\s*=\s*buildYarnPathArcLength\(\)/,
   "final Yarn Path geometry must expose its arc-length measurement."
 );
+assert.match(simulationSource, /yarnPathArcLength,/);
 assert.doesNotMatch(simulationSource, /yarnLengthCmPer100Needles/);
 assert.match(simulationSource, /yarnPlies\?\.\[0\]\?\.lengthScaleY/);
 assert.doesNotMatch(simulationSource, /yarnLinkForce|forceSimulation|function relax/);

@@ -62,11 +62,18 @@ export function simulationView() {
   const previewScale = GLOBAL_STATE.simPreviewScale || GLOBAL_STATE.simScale;
   const previewPan = GLOBAL_STATE.simPreviewPan || GLOBAL_STATE.simPan;
   const previewRatio = previewScale / GLOBAL_STATE.simScale;
+  const showDesignComparison = GLOBAL_STATE.showDesignComparison;
 
   return html`<div id="sim-pane">
     <div id="sim-container" data-code-guide-key="simulation.canvas">
-      <div class="simulation-preview-grid">
-        <section class="simulation-preview-panel">
+      <div class="simulation-preview-grid ${showDesignComparison
+        ? "comparison-active"
+        : ""}">
+        <section
+          class="simulation-preview-panel ${showDesignComparison
+            ? ""
+            : "comparison-hidden"}"
+          aria-hidden=${!showDesignComparison}>
           <h2>${t("needleArrangement.before", language)}</h2>
           <div id="sim-before-container" class="simulation-preview-canvas">
             <div
@@ -111,6 +118,14 @@ export function simulationView() {
       </div>
     </div>
     <div id="sim-controls" class="panzoom-controls">
+      <label class="form-control toggle simulation-comparison-toggle">
+        <input
+          type="checkbox"
+          ?checked=${showDesignComparison}
+          @change=${(e) =>
+            dispatch({ showDesignComparison: e.target.checked })} />
+        ${t("simulation.compareDesign", language)}
+      </label>
       <button
         data-code-guide-key="simulation.flip"
         @click=${() => dispatch({ flipped: !GLOBAL_STATE.flipped })}
@@ -255,6 +270,7 @@ export function runSimulation() {
           "texturePerformanceMode",
           "texturePreviewInteractionActive",
           "machineGauge",
+          "showDesignComparison",
           "chart",
           "needleArrangement",
           "singleJerseyCamProgram",

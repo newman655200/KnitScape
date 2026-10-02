@@ -111,8 +111,8 @@ export const translations = {
     "needleArrangement.combined": "自动组合",
     "needleArrangement.apply": "确认排针",
     "needleArrangement.withdraw": "撤回排针",
-    "needleArrangement.before": "排针前",
-    "needleArrangement.after": "排针后",
+    "needleArrangement.before": "设计原稿",
+    "needleArrangement.after": "最终织物",
 
     "camProgram.title": "Cam Program（三角座）",
     "camProgram.empty": "尚未创建 Cam Program。创建后得到可调整尺寸的 4×4 全成圈（下）草稿；4×4 不是固定机器标准。",
@@ -134,6 +134,7 @@ export const translations = {
     "simulation.zoomOut": "缩小",
     "simulation.zoomIn": "放大",
     "simulation.fit": "适配",
+    "simulation.compareDesign": "对比设计原稿",
 
     "debug.title": "调试",
     "debug.close": "关闭",
@@ -272,8 +273,8 @@ export const translations = {
     "needleArrangement.combined": "自動組合",
     "needleArrangement.apply": "確認排針",
     "needleArrangement.withdraw": "撤回排針",
-    "needleArrangement.before": "排針前",
-    "needleArrangement.after": "排針後",
+    "needleArrangement.before": "設計原稿",
+    "needleArrangement.after": "最終織物",
 
     "camProgram.title": "Cam Program（三角座）",
     "camProgram.empty": "尚未建立 Cam Program。建立後得到可調整尺寸的 4×4 全成圈（下）草稿；4×4 不是固定機器標準。",
@@ -295,6 +296,7 @@ export const translations = {
     "simulation.zoomOut": "縮小",
     "simulation.zoomIn": "放大",
     "simulation.fit": "適配",
+    "simulation.compareDesign": "對比設計原稿",
 
     "debug.title": "調試",
     "debug.close": "關閉",
@@ -433,8 +435,8 @@ export const translations = {
     "needleArrangement.combined": "Combined arrangement",
     "needleArrangement.apply": "Apply Arrangement",
     "needleArrangement.withdraw": "Withdraw Arrangement",
-    "needleArrangement.before": "Before Arrangement",
-    "needleArrangement.after": "After Arrangement",
+    "needleArrangement.before": "Original Design",
+    "needleArrangement.after": "Final Fabric",
 
     "camProgram.title": "Cam Program",
     "camProgram.empty": "No Cam Program exists. Create an editable 4×4 all-K draft; 4×4 is not a fixed machine standard.",
@@ -456,6 +458,7 @@ export const translations = {
     "simulation.zoomOut": "Zoom Out",
     "simulation.zoomIn": "Zoom In",
     "simulation.fit": "Fit",
+    "simulation.compareDesign": "Compare Original Design",
 
     "debug.title": "Debug",
     "debug.close": "Close",
@@ -594,8 +597,8 @@ export const translations = {
     "needleArrangement.combined": "Chuỗi kết hợp",
     "needleArrangement.apply": "Áp dụng sắp xếp",
     "needleArrangement.withdraw": "Hủy sắp xếp",
-    "needleArrangement.before": "Trước sắp xếp",
-    "needleArrangement.after": "Sau sắp xếp",
+    "needleArrangement.before": "Thiết kế gốc",
+    "needleArrangement.after": "Vải hoàn thiện",
 
     "camProgram.title": "Cam Program",
     "camProgram.empty": "Chưa có Cam Program. Tạo bản nháp 4×4 toàn K có thể đổi kích thước; 4×4 không phải tiêu chuẩn máy cố định.",
@@ -617,6 +620,7 @@ export const translations = {
     "simulation.zoomOut": "Thu nhỏ",
     "simulation.zoomIn": "Phóng to",
     "simulation.fit": "Vừa khung",
+    "simulation.compareDesign": "So sánh thiết kế gốc",
 
     "debug.title": "Gỡ lỗi",
     "debug.close": "Đóng",

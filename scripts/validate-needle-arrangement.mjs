@@ -44,6 +44,7 @@ try {
   assert.equal(GLOBAL_STATE.repeats[0].bitmap.height, 4);
   assert.equal(GLOBAL_STATE.editingRepeat, 0);
   assert.deepEqual(GLOBAL_STATE.needleArrangement, []);
+  assert.equal(GLOBAL_STATE.showDesignComparison, false);
 
   assert.equal(normalizeNeedleArrangementInput("111"), "111");
   assert.equal(normalizeNeedleArrangementInput("1a5-10"), "1510");
@@ -228,6 +229,12 @@ assert.equal(
 );
 assert.match(simulationSource, /id="sim-before-container"/);
 assert.match(simulationSource, /id="sim-after-container"/);
+assert.match(simulationSource, /GLOBAL_STATE\.showDesignComparison/);
+assert.match(
+  simulationSource,
+  /dispatch\(\{\s*showDesignComparison:\s*e\.target\.checked\s*\}\)/s
+);
+assert.match(simulationSource, /simulation\.compareDesign/);
 assert.equal(
   (simulationSource.match(/GLOBAL_STATE\.flipped \? "mirrored" : ""/g) || [])
     .length,
@@ -244,7 +251,15 @@ assert.match(stylesSource, /#needle-arrangement-bar\s*\{/);
 assert.doesNotMatch(stylesSource, /\.needle-arrangement-message\s*\{/);
 assert.match(
   stylesSource,
-  /\.simulation-preview-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s
+  /\.simulation-preview-grid\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/s
+);
+assert.match(
+  stylesSource,
+  /\.simulation-preview-grid\.comparison-active\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s
+);
+assert.match(
+  stylesSource,
+  /\.simulation-preview-panel\.comparison-hidden\s*\{[^}]*position:\s*absolute;[^}]*visibility:\s*hidden;[^}]*pointer-events:\s*none;/s
 );
 
 const translationsSource = fs.readFileSync(
@@ -259,6 +274,7 @@ for (const key of [
   "needleArrangement.withdraw",
   "needleArrangement.before",
   "needleArrangement.after",
+  "simulation.compareDesign",
 ]) {
   assert.equal(
     (translationsSource.match(new RegExp(`"${key}"`, "g")) || []).length,
@@ -266,6 +282,9 @@ for (const key of [
     `${key} must be translated for every existing language.`
   );
 }
+assert.match(translationsSource, /"needleArrangement\.before":\s*"设计原稿"/);
+assert.match(translationsSource, /"needleArrangement\.after":\s*"最终织物"/);
+assert.match(translationsSource, /"simulation\.compareDesign":\s*"对比设计原稿"/);
 assert.doesNotMatch(translationsSource, /needleArrangement\.typeRange/);
 assert.doesNotMatch(translationsSource, /needleArrangement\.requiresFourColumns/);
 

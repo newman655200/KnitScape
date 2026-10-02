@@ -44,6 +44,11 @@ for (const symbol of [
 ]) {
   assert.match(plyPanel, new RegExp(symbol));
 }
+assert.doesNotMatch(
+  plyPanel,
+  /\$\{yarnScanTextureControls\(index, ply\)\}/,
+  "the legacy scanned-yarn texture controls must not render in the main sidebar."
+);
 
 const picker = read("src/views/yarnPicker.js");
 for (const symbol of ["yarnPicker", "deleteColor", "editColor"]) {

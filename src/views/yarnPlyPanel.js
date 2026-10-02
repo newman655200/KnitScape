@@ -452,7 +452,6 @@ export function yarnPlyPanel() {
           : html`<div class="yarn-ply-length-inherited">
               ${t("yarnPly.followsFirst", language)}
             </div>`}
-        ${yarnScanTextureControls(index, ply)}
       </div>`;
     })}
   </section>`;

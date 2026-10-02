@@ -34,6 +34,7 @@ let GLOBAL_STATE = {
   simPan: { x: 0, y: 0 },
   simPreviewScale: null,
   simPreviewPan: null,
+  showDesignComparison: false,
   texturePerformanceMode: TEXTURE_PERFORMANCE_MODES.AUTO,
   texturePreviewInteractionActive: false,
   machineGauge: DEFAULT_MACHINE_GAUGE,

@@ -20,45 +20,12 @@ export function gaugeToNeedlePitchMm(gauge) {
   return 25.4 / normalizeMachineGauge(gauge);
 }
 
-export function geometryArcLengthToPhysical({
-  totalLength,
-  cumulativeArcLength,
-  needleSpacingGeometry,
-  gauge,
-}) {
-  const totalLengthGeometry = Number(totalLength);
-  const cumulativeArcLengthGeometry = Array.from(
-    cumulativeArcLength ?? [],
-    Number
-  );
-  const needleSpacing = Number(needleSpacingGeometry);
-
-  if (!Number.isFinite(needleSpacing) || needleSpacing <= 0) {
-    throw new RangeError("needleSpacingGeometry must be a positive number.");
+export function modelLengthToMm(modelLength, gauge) {
+  const length = Number(modelLength);
+  if (!Number.isFinite(length) || length < 0) {
+    throw new TypeError("modelLength must be a non-negative number.");
   }
-  if (
-    !Number.isFinite(totalLengthGeometry) ||
-    totalLengthGeometry < 0 ||
-    cumulativeArcLengthGeometry.some(
-      (length) => !Number.isFinite(length) || length < 0
-    )
-  ) {
-    throw new TypeError("Arc lengths must be non-negative numbers.");
-  }
-
-  const mmPerGeometryUnit =
-    gaugeToNeedlePitchMm(gauge) / needleSpacing;
-  const totalLengthMm = totalLengthGeometry * mmPerGeometryUnit;
-
-  return {
-    totalLengthGeometry,
-    totalLengthMm,
-    totalLengthCm: totalLengthMm / 10,
-    cumulativeArcLengthGeometry,
-    cumulativeArcLengthMm: cumulativeArcLengthGeometry.map(
-      (length) => length * mmPerGeometryUnit
-    ),
-  };
+  return length * gaugeToNeedlePitchMm(gauge);
 }
 
 export function cmPer100Loops({

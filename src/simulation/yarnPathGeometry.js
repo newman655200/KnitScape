@@ -8,7 +8,6 @@ import {
 import {
   cmPer100Loops,
   gaugeToNeedlePitchMm,
-  geometryArcLengthToPhysical,
   normalizeMachineGauge,
 } from "./yarnLengthMetrics";
 
@@ -17,6 +16,14 @@ export const Y_PADDING = 0;
 
 const STITCH_RATIO = 5 / 3;
 const SPREAD = 0.88;
+const IDENTITY_POINT = (point) => point;
+
+// Display-matching model template; it has not been calibrated to measured fabric.
+export const DEFAULT_YARN_MODEL_GEOMETRY = Object.freeze({
+  needlePitch: 1,
+  loopHeight: 3 / 5,
+  calibrated: false,
+});
 
 export function buildYarnPathGeometry({
   pattern,
@@ -28,40 +35,58 @@ export function buildYarnPathGeometry({
   primaryYarnDiameter,
   machineGauge,
 }) {
-  let stitchWidth, yarnWidth, stitchHeight, halfStitch, offsetX;
+  const loopHeight =
+    DEFAULT_YARN_MODEL_GEOMETRY.loopHeight * primaryLengthScaleY;
+  let stitchWidth, offsetX, offsetY;
 
   function layoutNodes(graph) {
-    stitchWidth = Math.min(
-      (canvasWidth * 0.9) / stitchPattern.width,
-      ((canvasHeight * 0.9) / stitchPattern.height) * STITCH_RATIO
-    );
-
-    halfStitch = stitchWidth / 2;
-    const baseStitchHeight = stitchWidth / STITCH_RATIO;
-    stitchHeight = baseStitchHeight * primaryLengthScaleY;
-
-    yarnWidth = stitchWidth * primaryYarnDiameter;
-
-    offsetX = yarnWidth + (canvasWidth - stitchPattern.width * stitchWidth) / 2;
-    const offsetY =
-      -yarnWidth + (canvasHeight - stitchPattern.height * stitchHeight) / 2;
-
     graph.contactNodes.forEach((node, index) => {
       const i = index % graph.width;
       const j = (index - i) / graph.width;
       node.i = i;
       node.j = j;
-      node.x = offsetX + i * halfStitch;
-      node.y = offsetY + (graph.height - j) * stitchHeight;
+      node.modelX = (i / 2) * DEFAULT_YARN_MODEL_GEOMETRY.needlePitch;
+      node.modelY = (graph.height - j) * loopHeight;
     });
 
     return graph.contactNodes;
   }
 
+  function modelToCanvasPoint(point) {
+    return {
+      x: offsetX + point.x * stitchWidth,
+      y: offsetY + point.y * stitchWidth,
+    };
+  }
+
+  function layoutDisplayNodes(graph) {
+    stitchWidth = Math.min(
+      (canvasWidth * 0.9) / stitchPattern.width,
+      ((canvasHeight * 0.9) / stitchPattern.height) * STITCH_RATIO
+    );
+
+    const baseStitchHeight = stitchWidth / STITCH_RATIO;
+    const stitchHeight = baseStitchHeight * primaryLengthScaleY;
+    const yarnWidth = stitchWidth * primaryYarnDiameter;
+
+    offsetX = yarnWidth + (canvasWidth - stitchPattern.width * stitchWidth) / 2;
+    offsetY =
+      -yarnWidth + (canvasHeight - stitchPattern.height * stitchHeight) / 2;
+
+    graph.contactNodes.forEach((node) => {
+      const displayPoint = modelToCanvasPoint({
+        x: node.modelX,
+        y: node.modelY,
+      });
+      node.x = displayPoint.x;
+      node.y = displayPoint.y;
+    });
+  }
+
   function unitNormal(prev, next, flip) {
     if (prev.index === next.index) return [0, 0];
-    const x = prev.x - next.x;
-    const y = prev.y - next.y;
+    const x = prev.modelX - next.modelX;
+    const y = prev.modelY - next.modelY;
     const mag = SPREAD * Math.sqrt(x ** 2 + y ** 2);
 
     return flip ? [-y / mag, x / mag] : [y / mag, -x / mag];
@@ -104,9 +129,10 @@ export function buildYarnPathGeometry({
     .digits(6);
 
   function getBasePointPosition(point) {
+    const node = nodes[point.cnIndex];
     return {
-      x: nodes[point.cnIndex].x + (yarnWidth / 2) * point.normal[0],
-      y: nodes[point.cnIndex].y + (yarnWidth / 2) * point.normal[1],
+      x: node.modelX + (primaryYarnDiameter / 2) * point.normal[0],
+      y: node.modelY + (primaryYarnDiameter / 2) * point.normal[1],
     };
   }
 
@@ -127,24 +153,30 @@ export function buildYarnPathGeometry({
       point.pathIndex === bounds?.first || point.pathIndex === bounds?.last;
     const isNeck = point.cnType?.endsWith("L");
     if (!isNeck || isBoundary) return base;
-    const centerI = Math.floor(point.i / 2) * 2 + 0.5;
-    const centerX = offsetX + centerI * halfStitch;
+    const centerX =
+      (Math.floor(point.i / 2) + 0.25) *
+      DEFAULT_YARN_MODEL_GEOMETRY.needlePitch;
     return moveNeckPoint(
       base,
       centerX,
       coefficientByRow.get(point.row) ?? 1,
-      stitchHeight
+      loopHeight
     );
   }
 
-  function yarnCurve(yarnLink, coefficientByRow) {
+  function yarnCurve(
+    yarnLink,
+    coefficientByRow,
+    transformPoint = IDENTITY_POINT
+  ) {
     const index = yarnLink.index;
 
     if (index == 0 || index > yarnPathLinks.length - 3) {
-      const source = getSharedPointPosition(yarnPath[index], coefficientByRow);
-      const target = getSharedPointPosition(
-        yarnPath[index + 1],
-        coefficientByRow
+      const source = transformPoint(
+        getSharedPointPosition(yarnPath[index], coefficientByRow)
+      );
+      const target = transformPoint(
+        getSharedPointPosition(yarnPath[index + 1], coefficientByRow)
       );
       if (!source || !target) return "";
       return `M ${source.x} ${source.y} L ${target.x} ${target.y}`;
@@ -152,7 +184,7 @@ export function buildYarnPathGeometry({
 
     return openYarnCurve(
       getYarnLinkCurvePoints(yarnLink).map((point) =>
-        getSharedPointPosition(point, coefficientByRow)
+        transformPoint(getSharedPointPosition(point, coefficientByRow))
       )
     );
   }
@@ -174,7 +206,7 @@ export function buildYarnPathGeometry({
     return coefficients;
   }
 
-  function buildResolvedPathMap() {
+  function buildResolvedPathMaps() {
     const linksByRow = new Map();
     yarnPathLinks.forEach((link) => {
       const links = linksByRow.get(link.row) || [];
@@ -182,20 +214,28 @@ export function buildYarnPathGeometry({
       linksByRow.set(link.row, links);
     });
     const coefficients = buildRowCoefficients(linksByRow);
-    const resolved = new Map();
-    yarnPathLinks.forEach((link) =>
-      resolved.set(link.index, yarnCurve(link, coefficients))
+    const coefficientByLink = new Map(
+      yarnPathLinks.map((link) => [link.index, coefficients])
     );
     linksByRow.forEach((links, row) => {
-      const paths = links.map((link) => resolved.get(link.index));
-      if (assertContinuousRowPaths(paths, stitchWidth * 1e-6)) return;
+      const paths = links.map((link) => yarnCurve(link, coefficients));
+      if (assertContinuousRowPaths(paths, 1e-6)) return;
       const rowCoefficients = new Map(coefficients);
       rowCoefficients.set(row, 1);
-      links.forEach((link) =>
-        resolved.set(link.index, yarnCurve(link, rowCoefficients))
+      links.forEach((link) => coefficientByLink.set(link.index, rowCoefficients));
+    });
+
+    const modelPathByLink = new Map();
+    const resolvedPathByLink = new Map();
+    yarnPathLinks.forEach((link) => {
+      const linkCoefficients = coefficientByLink.get(link.index);
+      modelPathByLink.set(link.index, yarnCurve(link, linkCoefficients));
+      resolvedPathByLink.set(
+        link.index,
+        yarnCurve(link, linkCoefficients, modelToCanvasPoint)
       );
     });
-    return resolved;
+    return { modelPathByLink, resolvedPathByLink };
   }
 
   function pointInEffectiveNeedles(point) {
@@ -235,15 +275,16 @@ export function buildYarnPathGeometry({
     };
   }
 
-  function buildYarnPathArcLength() {
+  function buildYarnPathArcLength(pathByLink = resolvedPathByLink) {
     const pathData = yarnPathLinks
-      .map((link) => resolvedPathByLink.get(link.index))
+      .map((link) => pathByLink.get(link.index))
       .filter(Boolean)
       .join(" ");
     return pathDataArcLength(pathData);
   }
 
   const nodes = layoutNodes(yarnGraph);
+  layoutDisplayNodes(yarnGraph);
   const yarnPath = yarnGraph.makeNice();
   const rowBoundaryIndices = new Map();
   yarnPath.forEach((point, pathIndex) => {
@@ -258,19 +299,24 @@ export function buildYarnPathGeometry({
   const yarnPathLinks = yarnGraph.yarnPathToLinks();
 
   updateNormals();
-  const resolvedPathByLink = buildResolvedPathMap();
+  const { modelPathByLink, resolvedPathByLink } = buildResolvedPathMaps();
   const yarnPathArcLength = buildYarnPathArcLength();
+  const modelArcLength = buildYarnPathArcLength(modelPathByLink);
 
   return {
     stitchWidth,
+    modelGeometry: {
+      ...DEFAULT_YARN_MODEL_GEOMETRY,
+      loopHeight,
+    },
+    modelPathByLink,
+    modelPathArcLength: {
+      totalModelLength: modelArcLength.totalLength,
+      cumulativeModelArcLength: modelArcLength.cumulativeArcLength,
+    },
     yarnPathLinks,
     resolvedPathByLink,
     yarnPathArcLength,
-    yarnPathPhysicalArcLength: geometryArcLengthToPhysical({
-      ...yarnPathArcLength,
-      needleSpacingGeometry: stitchWidth,
-      gauge: machineGauge,
-    }),
     yarnLengthMetrics: buildYarnLengthMetrics(),
   };
 }

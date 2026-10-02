@@ -4,7 +4,9 @@ import {
   assertContinuousRowPaths,
   moveNeckPoint,
   moveNeckPointX,
+  pathDataArcLength,
   pathDataLength,
+  polylineArcLength,
   solveSharedCoefficient,
 } from "../src/simulation/rowLengthLoopModel.js";
 
@@ -36,6 +38,32 @@ for (const [targetLength, direction] of [[90, "tight"], [110, "loose"]]) {
 }
 
 assert.equal(pathDataLength("M 0 0 L 3 4"), 5);
+assert.deepEqual(pathDataArcLength("M 0 0 L 3 4"), {
+  totalLength: 5,
+  cumulativeArcLength: [0, 5],
+});
+
+const polyline = [
+  { x: 0, y: 0 },
+  { x: 3, y: 4 },
+  { x: 6, y: 4 },
+];
+const polylineSnapshot = structuredClone(polyline);
+const firstMeasurement = polylineArcLength(polyline);
+const secondMeasurement = polylineArcLength(polyline);
+assert.deepEqual(firstMeasurement.cumulativeArcLength, [0, 5, 8]);
+assert.ok(
+  firstMeasurement.cumulativeArcLength.every(
+    (length, index, lengths) => index === 0 || length >= lengths[index - 1]
+  )
+);
+assert.equal(firstMeasurement.cumulativeArcLength[0], 0);
+assert.ok(
+  Math.abs(firstMeasurement.cumulativeArcLength.at(-1) - firstMeasurement.totalLength) <
+    1e-9
+);
+assert.deepEqual(secondMeasurement, firstMeasurement);
+assert.deepEqual(polyline, polylineSnapshot);
 assert.equal(
   assertContinuousRowPaths(["M 0 0 L 1 1", "M 1 1 L 2 0"]),
   true
@@ -58,10 +86,17 @@ for (const token of [
   "buildRowCoefficients",
   "getSharedPointPosition",
   "buildResolvedPathMap",
+  "buildYarnPathArcLength",
   "assertContinuousRowPaths",
 ]) {
   assert.match(simulationSource, new RegExp(token), `runtime must include ${token}`);
 }
+assert.match(
+  simulationSource,
+  /yarnPathArcLength:\s*buildYarnPathArcLength\(\)/,
+  "final Yarn Path geometry must expose its arc-length measurement."
+);
+assert.doesNotMatch(simulationSource, /yarnLengthCmPer100Needles/);
 assert.match(simulationSource, /yarnPlies\?\.\[0\]\?\.lengthScaleY/);
 assert.doesNotMatch(simulationSource, /yarnLinkForce|forceSimulation|function relax/);
 const runSimulationSource = fs.readFileSync("src/components/runSimulation.js", "utf8");

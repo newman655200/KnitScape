@@ -32,15 +32,28 @@ export function samplePathData(pathData, samplesPerCurve = 24) {
 }
 
 export function polylineLength(points, unitScale = 1) {
+  return polylineArcLength(points, unitScale).totalLength;
+}
+
+export function polylineArcLength(points, unitScale = 1) {
   const scale = Number(unitScale) > 0 ? Number(unitScale) : 1;
-  return points.slice(1).reduce(
-    (total, point, index) => total + Math.hypot(point.x - points[index].x, point.y - points[index].y) / scale,
-    0
-  );
+  let totalLength = 0;
+  const cumulativeArcLength = points.map((point, index) => {
+    if (index > 0) {
+      const previous = points[index - 1];
+      totalLength += Math.hypot(point.x - previous.x, point.y - previous.y) / scale;
+    }
+    return totalLength;
+  });
+  return { totalLength, cumulativeArcLength };
+}
+
+export function pathDataArcLength(pathData, unitScale = 1) {
+  return polylineArcLength(samplePathData(pathData), unitScale);
 }
 
 export function pathDataLength(pathData, unitScale = 1) {
-  return polylineLength(samplePathData(pathData), unitScale);
+  return pathDataArcLength(pathData, unitScale).totalLength;
 }
 
 export function pathEndpoints(pathData) {

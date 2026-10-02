@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import {
   assertContinuousRowPaths,
   moveNeckPoint,
+  pathDataArcLength,
   pathDataLength,
 } from "./rowLengthLoopModel";
 import {
@@ -233,6 +234,14 @@ export function buildYarnPathGeometry({
     };
   }
 
+  function buildYarnPathArcLength() {
+    const pathData = yarnPathLinks
+      .map((link) => resolvedPathByLink.get(link.index))
+      .filter(Boolean)
+      .join(" ");
+    return pathDataArcLength(pathData);
+  }
+
   const nodes = layoutNodes(yarnGraph);
   const yarnPath = yarnGraph.makeNice();
   const rowBoundaryIndices = new Map();
@@ -254,6 +263,7 @@ export function buildYarnPathGeometry({
     stitchWidth,
     yarnPathLinks,
     resolvedPathByLink,
+    yarnPathArcLength: buildYarnPathArcLength(),
     yarnLengthMetrics: buildYarnLengthMetrics(),
   };
 }

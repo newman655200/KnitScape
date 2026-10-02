@@ -60,6 +60,7 @@ try {
     cycleSingleJerseyCamOperation,
     deleteSingleJerseyCamProgram,
     resizeSingleJerseyCamProgram,
+    setSingleJerseyFeedYarns,
     setSingleJerseyCamOperation,
   } = await server.ssrLoadModule(`/${actionPath}`);
   const { resolveSingleJerseyOperations } = await server.ssrLoadModule(
@@ -93,6 +94,96 @@ try {
     state().singleJerseyCamProgram.tracks,
     EXPECTED_CREATED_TRACKS,
     "explicit creation must produce the fixed 4 tracks x 4 feeds all-K draft."
+  );
+
+  const yarnPaletteReference = state().yarnPalette;
+  const yarnSequenceReference = state().yarnSequence;
+  const yarnPliesReference = state().yarnPlies;
+  setSingleJerseyFeedYarns(0, [
+    {
+      yarnId: "shared-yarn",
+      yarnLengthCmPer100Needles: 24,
+      tensionCN: null,
+    },
+  ]);
+  const feedTwoYarns = [
+    {
+      yarnId: "shared-yarn",
+      yarnLengthCmPer100Needles: 31,
+      tensionCN: null,
+    },
+    {
+      yarnId: "companion-yarn",
+      yarnLengthCmPer100Needles: 18,
+      tensionCN: 12,
+      placement: "parallel",
+    },
+  ];
+  setSingleJerseyFeedYarns(1, feedTwoYarns);
+  feedTwoYarns[0].yarnLengthCmPer100Needles = 99;
+
+  assert.deepEqual(state().singleJerseyCamProgram.feeds[0].yarns, [
+    {
+      yarnId: "shared-yarn",
+      yarnLengthCmPer100Needles: 24,
+      tensionCN: null,
+      placement: "parallel",
+    },
+  ]);
+  assert.deepEqual(state().singleJerseyCamProgram.feeds[1].yarns, [
+    {
+      yarnId: "shared-yarn",
+      yarnLengthCmPer100Needles: 31,
+      tensionCN: null,
+      placement: "parallel",
+    },
+    {
+      yarnId: "companion-yarn",
+      yarnLengthCmPer100Needles: 18,
+      tensionCN: 12,
+      placement: "parallel",
+    },
+  ]);
+  assert.equal(state().yarnPalette, yarnPaletteReference);
+  assert.equal(state().yarnSequence, yarnSequenceReference);
+  assert.equal(state().yarnPlies, yarnPliesReference);
+
+  const operationsWithoutFeedYarns = resolveSingleJerseyOperations(
+    { tracks: state().singleJerseyCamProgram.tracks },
+    [1, 2, 3, 4],
+    8,
+    4
+  );
+  assert.deepEqual(
+    resolveSingleJerseyOperations(
+      state().singleJerseyCamProgram,
+      [1, 2, 3, 4],
+      8,
+      4
+    ),
+    operationsWithoutFeedYarns,
+    "Feed Yarn metadata must not change machine operations."
+  );
+
+  stateModule.dispatch({
+    singleJerseyCamProgram: { tracks: EXPECTED_CREATED_TRACKS },
+  });
+  resizeSingleJerseyCamProgram(4, 4);
+  assert.equal(state().singleJerseyCamProgram.feeds.length, 4);
+  assert.ok(
+    state().singleJerseyCamProgram.feeds.every(
+      (feed) =>
+        snapshot(feed.yarns) ===
+        snapshot([
+          {
+            yarnId: 0,
+            yarnLengthCmPer100Needles: 0,
+            tensionCN: null,
+            placement: "parallel",
+          },
+        ])
+    ),
+    "legacy Cam state without feeds/yarns must receive the minimal default."
   );
 
   const beforeEditProgram = state().singleJerseyCamProgram;
@@ -344,7 +435,7 @@ try {
   const dispatchLines = actionSource
     .split(/\r?\n/)
     .filter((line) => line.includes("dispatch("));
-  assert.equal(dispatchLines.length, 4);
+  assert.equal(dispatchLines.length, 5);
   assert.ok(
     dispatchLines.every((line) => line.includes("singleJerseyCamProgram")),
     "every Cam action dispatch must update only singleJerseyCamProgram."

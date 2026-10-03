@@ -42,19 +42,36 @@ const canvases = new Map(
   ])
 );
 
+const viewport = { width: 320, height: 240 };
 const documentFixture = {
   getElementById(id) {
     if (id === "sim-container") {
-      return { getBoundingClientRect: () => ({ width: 320, height: 240 }) };
+      return { getBoundingClientRect: () => ({ ...viewport }) };
     }
     return canvases.get(id);
   },
 };
 
+let solverCalls = 0;
+globalThis.__countYarnLengthSolverCall = () => { solverCalls += 1; };
 const server = await createServer({
   appType: "custom",
   logLevel: "silent",
   server: { middlewareMode: true },
+  plugins: [{
+    name: "count-real-yarn-length-solver",
+    enforce: "pre",
+    transform(source, id) {
+      if (!id.replaceAll("\\", "/").endsWith("/src/simulation/yarnLengthSolver.js")) return;
+      return source.replace(
+        "export function solveFeedYarnLengths(",
+        "function measuredSolveFeedYarnLengths("
+      ) + `\nexport function solveFeedYarnLengths(options) {
+        globalThis.__countYarnLengthSolverCall();
+        return measuredSolveFeedYarnLengths(options);
+      }\n`;
+    },
+  }],
 });
 globalThis.document = documentFixture;
 
@@ -123,20 +140,26 @@ try {
       placement: "parallel",
     })),
   }];
-  function preview(feeds, inputPattern = pattern) {
+  function preview(feeds, inputPattern = pattern, {
+    scale = 1,
+    palette = ["#cc3366"],
+    yarnPlies = constants.DEFAULT_YARN_PLIES,
+    ...options
+  } = {}) {
     const snapshot = structuredClone(feeds);
     const pixels = Array.from(inputPattern.pixels);
     const start = pathData.length;
     const output = simulate(
       inputPattern,
       Bimp.empty(1, inputPattern.height, 0),
-      ["#cc3366"],
-      1,
-      constants.DEFAULT_YARN_PLIES,
+      palette,
+      scale,
+      yarnPlies,
       {
         machineGauge: 32,
         texturePerformanceMode: constants.TEXTURE_PERFORMANCE_MODES.SOLID,
         ...(feeds === undefined ? {} : { feeds }),
+        ...options,
       }
     );
     output.stopSim();
@@ -167,6 +190,13 @@ try {
   const canvasSnapshot = [...base.geometry.resolvedPathByLink];
   const lengths = [21, 23, 27];
   const finalPreviews = lengths.map((length) => preview(feed(length)));
+  const solvedCalls = solverCalls;
+  assert.ok(solvedCalls >= 3, "initial valid lengths must invoke the real Solver.");
+  const rebuilt = preview(structuredClone(feed(27)), new Bimp(12, 1, [...pattern.pixels]));
+  assert.deepEqual(rebuilt.yarnLengthSolverResults, finalPreviews[2].yarnLengthSolverResults);
+  assert.equal(solverCalls, solvedCalls, "identical structural inputs must reuse the Solver result.");
+  preview(feed(27), pattern, { scale: 2 });
+  assert.equal(solverCalls, solvedCalls, "display scale must not rerun the Solver.");
   const solved = finalPreviews.map((output) => {
     assert.equal(output.yarnLengthSolverResults.length, 1);
     const [result] = output.yarnLengthSolverResults;
@@ -177,6 +207,8 @@ try {
     assert.deepEqual(candidate.geometry.yarnPathLinks, base.geometry.yarnPathLinks);
     const canvasPaths = new Map(base.geometry.resolvedPathByLink);
     result.solvedPathByLink.forEach((modelPath, linkIndex) => {
+      assert.equal(modelPath, candidate.geometry.modelPathByLink.get(linkIndex),
+        "optimized Solver paths must exactly match the original full geometry builder.");
       canvasPaths.set(linkIndex, base.geometry.modelPathToCanvas(modelPath));
     });
     const expectedPaths = ["back", "front", "mid"].flatMap((layer) =>
@@ -190,6 +222,89 @@ try {
     assert.deepEqual(preview().paths, design.paths, "design original must stay unchanged.");
     return result;
   });
+  // Exact scalar baselines recorded before the performance optimization.
+  assert.deepEqual(solved.map((result) => [
+    result.solvedLoopHeight,
+    result.solvedModelLengthPer100Needles,
+    result.error,
+  ]), [
+    [0.3924758911132813, 264.5684209892266, 0.0014918553682718994],
+    [0.5083404541015626, 289.7550531845586, 0.008726343000432735],
+    [0.7589935302734374, 340.1480133748192, 0.009466940141464875],
+  ]);
+  for (let index = 0; index < lengths.length; index++) {
+    const originalResult = preview(feed(lengths[index]));
+    const callCount = solverCalls;
+    preview();
+    const repeated = preview(structuredClone(feed(lengths[index])));
+    assert.equal(solverCalls, callCount, "design original must not evict final preview cache.");
+    assert.deepEqual(originalResult.yarnLengthSolverResults, finalPreviews[index].yarnLengthSolverResults);
+    assert.deepEqual(repeated.yarnLengthSolverResults, finalPreviews[index].yarnLengthSolverResults);
+    assert.deepEqual(repeated.paths, finalPreviews[index].paths);
+  }
+
+  const stableResult = preview(feed(27));
+  const stableSnapshot = structuredClone(stableResult.yarnLengthSolverResults);
+  const stableCalls = solverCalls;
+  stableResult.yarnLengthSolverResults[0].solvedPathByLink.clear();
+  stableResult.yarnLengthSolverResults[0].reachableRange.minLoopHeight = 100;
+  stableResult.yarnLengthSolverResults[0].solvedLoopHeight = 100;
+  stableResult.yarnLengthSolverResults.push({ corrupted: true });
+  assert.deepEqual(preview(feed(27)).yarnLengthSolverResults, stableSnapshot,
+    "mutating returned diagnostic objects/Maps must not pollute cached results.");
+  assert.equal(solverCalls, stableCalls);
+
+  for (const displayOptions of [
+    { scale: 0.6 },
+    { texturePerformanceMode: constants.TEXTURE_PERFORMANCE_MODES.AUTO, texturePreviewInteractionActive: true },
+    { palette: ["#224466"] },
+    { yarnPlies: constants.DEFAULT_YARN_PLIES.map((ply) => ({
+      ...ply, color: "#224466", texture: { enabled: false, textureSize: 512 },
+    })) },
+  ]) {
+    assert.deepEqual(preview(feed(27), pattern, displayOptions).yarnLengthSolverResults, stableSnapshot);
+    assert.equal(solverCalls, stableCalls, "display/material changes must not rerun the Solver.");
+  }
+  Object.assign(viewport, { width: 640, height: 480 });
+  const resized = preview(feed(27));
+  assert.deepEqual(resized.yarnLengthSolverResults, stableSnapshot);
+  assert.notDeepEqual(resized.paths, finalPreviews[2].paths, "Canvas resize must still redraw display geometry.");
+  assert.equal(solverCalls, stableCalls, "Canvas resize must not rerun the Solver.");
+  Object.assign(viewport, { width: 320, height: 240 });
+
+  function expectRecompute(nextFeeds, nextPattern = pattern, options = {}) {
+    const callCount = solverCalls;
+    const result = preview(nextFeeds, nextPattern, options);
+    assert.ok(solverCalls > callCount, "a real Solver input change must invalidate the result cache.");
+    return result;
+  }
+  expectRecompute(feed(27), pattern, { machineGauge: 30 });
+  expectRecompute(feed(27));
+  const gaugeCalls = solverCalls;
+  assert.deepEqual(preview(feed("27"), pattern, { machineGauge: "32" }).yarnLengthSolverResults, stableSnapshot);
+  assert.equal(solverCalls, gaugeCalls, "equivalent normalized Gauge/length values must reuse results.");
+  expectRecompute(feed(27), Bimp.empty(14, 1, 0));
+  expectRecompute(feed(27), Bimp.empty(12, 2, 0));
+  expectRecompute(feed(27));
+  const tuckPattern = new Bimp(12, 1, [...pattern.pixels].map((pixel, index) => index === 3 ? 3 : pixel));
+  expectRecompute(feed(27), tuckPattern);
+  expectRecompute(feed(27));
+  expectRecompute(feed(23));
+  expectRecompute([...feed(23), ...feed(21)]);
+  expectRecompute(feed(23, 21));
+  const reordered = expectRecompute(feed(21, 23));
+  assert.equal(reordered.yarnLengthSolverResults[0].targetModelLengthPer100Needles,
+    finalPreviews[0].yarnLengthSolverResults[0].targetModelLengthPer100Needles);
+  const indexed = expectRecompute(feed(null, 23));
+  assert.equal(indexed.yarnLengthSolverResults[0].yarnIndex, 1);
+  expectRecompute(feed(27));
+  expectRecompute(feed(27), pattern, {
+    yarnPlies: constants.DEFAULT_YARN_PLIES.map((ply, index) => index === 0 ? { ...ply, diameter: 0.3 } : ply),
+  });
+  expectRecompute(feed(27), pattern, {
+    yarnPlies: constants.DEFAULT_YARN_PLIES.map((ply, index) => index === 0 ? { ...ply, lengthScaleY: 1.05 } : ply),
+  });
+  expectRecompute(feed(27));
   for (let index = 1; index < solved.length; index++) {
     assert.ok(solved[index].solvedLoopHeight > solved[index - 1].solvedLoopHeight);
     assert.ok(
@@ -198,14 +313,19 @@ try {
     );
     assert.notDeepEqual(finalPreviews[index].paths, finalPreviews[index - 1].paths);
   }
+  const validCalls = solverCalls;
   for (const invalid of [undefined, null, 0, -1, "invalid", Infinity]) {
     const fallback = preview(feed(invalid));
     assert.deepEqual(fallback.paths, design.paths);
     assert.deepEqual(fallback.yarnLengthSolverResults, []);
   }
+  assert.equal(solverCalls, validCalls, "missing/invalid yarn length must not call the Solver.");
   const unreachable = preview(feed(100));
   assert.equal(unreachable.yarnLengthSolverResults[0].status, "UNREACHABLE_TARGET");
   assert.deepEqual(unreachable.paths, design.paths);
+  const unreachableCalls = solverCalls;
+  assert.deepEqual(preview(feed(100)).yarnLengthSolverResults, unreachable.yarnLengthSolverResults);
+  assert.equal(solverCalls, unreachableCalls, "UNREACHABLE_TARGET diagnostics must be reusable with original paths.");
   const multipleYarns = preview(feed(23, 21));
   assert.deepEqual(multipleYarns.paths, finalPreviews[1].paths);
   assert.deepEqual(multipleYarns.yarnLengthSolverResults.map((item) => item.yarnIndex), [0, 1]);
@@ -222,6 +342,10 @@ try {
   const mixedFeeds = preview([...feed(21), ...feed(27)], multiCoursePattern);
   assert.equal(mixedFeeds.yarnLengthSolverResults.length, 2);
   assert.ok(mixedFeeds.yarnLengthSolverResults.every((item) => item.converged));
+  const multiCourseCalls = solverCalls;
+  assert.deepEqual(preview([...feed(21), ...feed(27)], Bimp.empty(12, 8, 0)).yarnLengthSolverResults,
+    mixedFeeds.yarnLengthSolverResults);
+  assert.equal(solverCalls, multiCourseCalls, "all Feed course results must be reused for equivalent topology.");
   const drawOrder = ["back", "front", "mid"].flatMap((layer) =>
     multiCourse.yarnPathLinks.filter((link) => link.layer === layer)
   );
@@ -244,6 +368,27 @@ try {
         `Model dx=${(end.x - start.x) / multiCourse.stitchWidth}, dy=${(end.y - start.y) / multiCourse.stitchWidth}.`
     );
   }
+
+  const distinctTopology = new Bimp(12, 2,
+    Array.from({ length: 24 }, (_, index) => index === 15 ? 3 : 0));
+  const distinctCalls = solverCalls;
+  const distinctFeeds = preview([...feed(23), ...feed(23)], distinctTopology);
+  assert.equal(solverCalls, distinctCalls + 2, "different Feed course topologies must be solved independently.");
+  assert.equal(distinctFeeds.yarnLengthSolverResults.length, 2);
+  for (const result of distinctFeeds.yarnLengthSolverResults) {
+    assert.equal(result.converged, true);
+    const candidate = geometryAt(result.solvedLoopHeight, distinctTopology).geometry;
+    const expected = new Map(candidate.yarnPathLinks
+      .filter((link) => link.row % 2 === result.feedIndex)
+      .map((link) => [link.index, candidate.modelPathByLink.get(link.index)]));
+    assert.deepEqual(result.solvedPathByLink, expected,
+      "each Feed result must contain its own course paths from the unchanged full geometry builder.");
+    assert.ok(Math.abs(result.solvedModelLengthPer100Needles -
+      candidate.measuredModelLengthPer100NeedlesByCourse.get(result.feedIndex)) < 1e-9);
+  }
+  assert.notEqual(distinctFeeds.yarnLengthSolverResults[0].solvedLoopHeight,
+    distinctFeeds.yarnLengthSolverResults[1].solvedLoopHeight,
+    "equal target lengths with different course topology must not share a solved height.");
   assert.deepEqual([...base.geometry.modelPathByLink], modelSnapshot);
   assert.deepEqual([...base.geometry.resolvedPathByLink], canvasSnapshot);
   console.log(JSON.stringify(solved.map((item, index) => ({
@@ -254,6 +399,7 @@ try {
   }))));
 } finally {
   await server.close();
+  delete globalThis.__countYarnLengthSolverCall;
 }
 
 console.log("PASS: yarn simulation preserves the original fixture and renders solved main Yarn paths.");

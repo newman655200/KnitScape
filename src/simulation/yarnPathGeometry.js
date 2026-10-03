@@ -38,6 +38,7 @@ export function buildYarnPathGeometry({
   machineGauge,
   modelLoopHeight = null,
   includeSummaryMetrics = true,
+  includeDisplayPaths = true,
 }) {
   const defaultLoopHeight =
     DEFAULT_YARN_MODEL_GEOMETRY.loopHeight * primaryLengthScaleY;
@@ -263,23 +264,30 @@ export function buildYarnPathGeometry({
     const coefficientByLink = new Map(
       yarnPathLinks.map((link) => [link.index, coefficients])
     );
+    const modelPathByLink = new Map();
     linksByRow.forEach((links, row) => {
       const paths = links.map((link) => yarnCurve(link, coefficients));
-      if (assertContinuousRowPaths(paths, 1e-6)) return;
+      if (assertContinuousRowPaths(paths, 1e-6)) {
+        links.forEach((link, index) => modelPathByLink.set(link.index, paths[index]));
+        return;
+      }
       const rowCoefficients = new Map(coefficients);
       rowCoefficients.set(row, 1);
-      links.forEach((link) => coefficientByLink.set(link.index, rowCoefficients));
+      links.forEach((link) => {
+        coefficientByLink.set(link.index, rowCoefficients);
+        modelPathByLink.set(link.index, yarnCurve(link, rowCoefficients));
+      });
     });
 
-    const modelPathByLink = new Map();
     const resolvedPathByLink = new Map();
     yarnPathLinks.forEach((link) => {
       const linkCoefficients = coefficientByLink.get(link.index);
-      modelPathByLink.set(link.index, yarnCurve(link, linkCoefficients));
-      resolvedPathByLink.set(
-        link.index,
-        yarnCurve(link, linkCoefficients, modelToCanvasPoint)
-      );
+      if (includeDisplayPaths) {
+        resolvedPathByLink.set(
+          link.index,
+          yarnCurve(link, linkCoefficients, modelToCanvasPoint)
+        );
+      }
     });
     return { modelPathByLink, resolvedPathByLink };
   }

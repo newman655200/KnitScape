@@ -355,6 +355,12 @@ try {
   assert.equal(simulationCalls[2].stopCount, 1);
   assert.equal(simulationCalls[3].stopCount, 1);
 
+  for (const displayChange of ["simPan", "simPreviewPan", "simPreviewScale", "flipped"]) {
+    runner.syncState(runtimeState, [displayChange]);
+    assert.equal(simulationCalls.length, 6,
+      `${displayChange} must only change display transform/layer order, without rerunning Simulation or Solver.`);
+  }
+
   // Case H: a user-reachable mismatch is contained after the base preview.
   const mismatchArrangement = deepFreeze([1, 2, 2, 3, 4, 4]);
   const threeTrackSnapshot = JSON.stringify(threeTrackProgram);

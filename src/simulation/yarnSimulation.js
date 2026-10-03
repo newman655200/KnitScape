@@ -5,7 +5,11 @@ import { prepareYarnTextureImages } from "./yarnTextureBrush";
 import { normalizeYarnTexture } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "../actions/yarnSequenceRows";
 import { TEXTURE_PERFORMANCE_MODES } from "../constants";
-import { courseToFeedIndex, DEFAULT_MACHINE_GAUGE } from "./yarnLengthMetrics";
+import {
+  courseToFeedIndex,
+  DEFAULT_MACHINE_GAUGE,
+  normalizeMachineGauge,
+} from "./yarnLengthMetrics";
 import {
   buildYarnPathGeometry,
   X_PADDING,
@@ -16,6 +20,7 @@ import { solveFeedYarnLengths } from "./yarnLengthSolver.js";
 
 const YARN_RATIO = 0.24;
 const dpi = devicePixelRatio;
+let solverResultCache = null;
 
 function normalizeYarnPlies(yarnPlies, palette) {
   const fallbackColor = palette?.[0] || "rgba(190,190,190,1)";
@@ -147,20 +152,45 @@ export function simulate(
       yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
       modelLoopHeight,
       includeSummaryMetrics: modelLoopHeight === null,
+      includeDisplayPaths: modelLoopHeight === null,
     });
   const geometry = buildGeometry();
-  const yarnLengthSolverResults = [];
-  const solvedModelPaths = new Map();
-  const solverGeometryByHeight = new Map();
-  (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
-    const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
-    const yarnIndices = yarns.flatMap((yarn, index) => {
+  const solverLengths = (Array.isArray(feeds) ? feeds : []).map((feed) =>
+    (Array.isArray(feed?.yarns) ? feed.yarns : []).map((yarn) => {
       const length = yarn?.yarnLengthCmPer100Needles;
       return (typeof length === "number" || typeof length === "string") &&
         Number.isFinite(Number(length)) && Number(length) > 0
-        ? [index]
-        : [];
-    });
+        ? Number(length)
+        : null;
+    })
+  );
+  // One bounded entry; display size, zoom, color and textures do not affect solving.
+  const solverInputKey = solverLengths.some((lengths) =>
+    lengths.some((length) => length !== null)
+  )
+    ? JSON.stringify({
+        width: pattern.width,
+        height: pattern.height,
+        pixels: Array.from(pattern.pixels),
+        gauge: normalizeMachineGauge(machineGauge),
+        primaryLengthScaleY,
+        primaryYarnDiameter: activeYarnPlies[0].diameter,
+        solverLengths,
+      })
+    : null;
+  const cacheHit =
+    solverInputKey !== null && solverResultCache?.key === solverInputKey;
+  const yarnLengthSolverResults = cacheHit
+    ? structuredClone(solverResultCache.results)
+    : [];
+  const solvedModelPaths = new Map();
+  const solverGeometryByHeight = new Map();
+  (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
+    if (cacheHit) return;
+    const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
+    const yarnIndices = solverLengths[feedIndex].flatMap((length, index) =>
+      length !== null ? [index] : []
+    );
     const belongsToFeed = (course) =>
       courseToFeedIndex(course, feeds.length) === feedIndex;
     if (
@@ -196,11 +226,6 @@ export function simulate(
         result.feedIndex = feedIndex;
         result.yarnIndex = yarnIndices[result.yarnIndex];
         yarnLengthSolverResults.push(result);
-        // V1 renders only the first Feed Yarn; keep other independent results.
-        if (result.yarnIndex !== 0 || !result.converged) return;
-        result.solvedPathByLink.forEach((pathData, linkIndex) => {
-          solvedModelPaths.set(linkIndex, pathData);
-        });
       });
     } catch (error) {
       // Unsupported/non-monotonic courses keep the original preview geometry.
@@ -208,6 +233,19 @@ export function simulate(
     }
   });
   solverGeometryByHeight.clear();
+  if (solverInputKey !== null && !cacheHit) {
+    solverResultCache = {
+      key: solverInputKey,
+      results: structuredClone(yarnLengthSolverResults),
+    };
+  }
+  yarnLengthSolverResults.forEach((result) => {
+    // V1 renders only the first Feed Yarn; keep other independent results.
+    if (result.yarnIndex !== 0 || !result.converged) return;
+    result.solvedPathByLink.forEach((pathData, linkIndex) => {
+      solvedModelPaths.set(linkIndex, pathData);
+    });
+  });
   const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
 
   function draw() {

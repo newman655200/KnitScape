@@ -6,7 +6,9 @@ import {
   moveNeckPointX,
   pathDataArcLength,
   pathDataLength,
+  pathEndpoints,
   polylineArcLength,
+  samplePathData,
   solveSharedCoefficient,
 } from "../src/simulation/rowLengthLoopModel.js";
 
@@ -38,6 +40,79 @@ for (const [targetLength, direction] of [[90, "tight"], [110, "loose"]]) {
 }
 
 assert.equal(pathDataLength("M 0 0 L 3 4"), 5);
+const endpointPaths = [
+  "M 0 0",
+  "M 0 0 L 3 4",
+  "M-1.25,2.5C0,1,3,4,5,6",
+  "M 1e-3 -2E+2 C -3 4 5 -6 7 8 C 9 10 11 12 13 14",
+  "M -0 -0 C -0 -0 -0 -0 -0 -0",
+  "M 1 2 C 3 4 5 6 7 8 L -0 9 M 10 11 C 12 13 14 15 16 17",
+  "",
+  "M 0 0 C 1 2 3",
+  "M 0 0 L 1e400 2",
+  "M 0 0 C 1e400 2 3 4 5 6",
+  "M 0 0 Q 1 2 3 4",
+  "m 0 0 c 1 2 3 4 5 6",
+  "M 0 0 C -1e308 1e308 1e308 -1e308 -0 0",
+  "M 0 0 L 2 C 1 2 3 4 5 6",
+  "C 1 2 3 4 5 6",
+  "L 2 3",
+];
+for (let index = 0; index < 96; index++) {
+  const coordinate = (offset) => Math.sin(index * 7 + offset) * (index + 1);
+  endpointPaths.push(
+    `M${coordinate(0)},${coordinate(1)}` +
+      `C${Array.from({ length: 6 }, (_, offset) => coordinate(offset + 2)).join(",")}` +
+      `C${Array.from({ length: 6 }, (_, offset) => coordinate(offset + 8)).join(",")}`
+  );
+}
+for (const pathData of endpointPaths) {
+  const points = samplePathData(pathData);
+  assert.deepEqual(
+    pathEndpoints(pathData),
+    points.length ? { start: points[0], end: points.at(-1) } : null,
+    `endpoints must preserve existing sampling semantics: ${pathData}`
+  );
+}
+
+// Count sampling in an in-memory copy so the production API needs no instrumentation.
+const endpointSource = fs.readFileSync("src/simulation/rowLengthLoopModel.js", "utf8");
+const endpointModule = await import(
+  `data:text/javascript;base64,${Buffer.from(
+    "let sampleCalls = 0; let endpointCalls = 0;" +
+      " export function sampleCallCount() { return sampleCalls; }" +
+      " export function endpointCallCount() { return endpointCalls; }\n" +
+      endpointSource.replace(
+        "export function samplePathData(pathData, samplesPerCurve = 24) {",
+        "export function samplePathData(pathData, samplesPerCurve = 24) { sampleCalls++;"
+      ).replace(
+        "export function pathEndpoints(pathData) {",
+        "export function pathEndpoints(pathData) { endpointCalls++;"
+      )
+  ).toString("base64")}`
+);
+assert.equal(endpointModule.assertContinuousRowPaths([
+  "M0,0C0,1,1,1,1,0",
+  "M1,0C1,-1,2,-1,2,0",
+  "M2,0C2,1,3,1,3,0",
+]), true);
+assert.equal(
+  endpointModule.sampleCallCount(),
+  0,
+  "continuity endpoint checks must not sample valid M/L/C curves"
+);
+assert.equal(
+  endpointModule.endpointCallCount(),
+  3,
+  "continuity checks must read each path's endpoints only once"
+);
+assert.equal(assertContinuousRowPaths([]), true);
+assert.equal(assertContinuousRowPaths([null]), true);
+assert.equal(assertContinuousRowPaths(["", "M0,0L1,1", null]), false);
+assert.equal(assertContinuousRowPaths(["M0,0L1,1", "M2,2L3,3", null]), false);
+assert.equal(assertContinuousRowPaths(["M0,0L1,1", "M1.01,1L2,2"], 0.02), true);
+assert.throws(() => assertContinuousRowPaths(["M0,0L1,1", null]), TypeError);
+assert.throws(() => assertContinuousRowPaths(["", null]), TypeError);
 assert.deepEqual(pathDataArcLength("M 0 0 L 3 4"), {
   totalLength: 5,
   cumulativeArcLength: [0, 5],

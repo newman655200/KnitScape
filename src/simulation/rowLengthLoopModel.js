@@ -57,15 +57,42 @@ export function pathDataLength(pathData, unitScale = 1) {
 }
 
 export function pathEndpoints(pathData) {
+  // Generated paths use absolute M/L/C commands; continuity needs only their endpoints.
+  if (/^[MLC\d\s.,eE+-]+$/.test(pathData)) {
+    const tokens = pathData.match(/[MLC]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi) || [];
+    let start = null;
+    let current = null;
+    let end = null;
+    let valid = tokens[0] === "M";
+    for (let index = 0; valid && index < tokens.length; ) {
+      const command = tokens[index++];
+      const count = command === "C" ? 6 : command === "M" || command === "L" ? 2 : 0;
+      const coordinates = tokens.slice(index, index + count).map(Number);
+      if (!count || coordinates.length !== count || !coordinates.every(Number.isFinite)) {
+        valid = false;
+        break;
+      }
+      index += count;
+      const point = { x: coordinates.at(-2), y: coordinates.at(-1) };
+      // t=1 retains the sampler's exact endpoint arithmetic, including signed zero.
+      end = command === "C"
+        ? cubicPoint(current, { x: coordinates[0], y: coordinates[1] }, { x: coordinates[2], y: coordinates[3] }, point, 1)
+        : point;
+      start ??= point;
+      current = point;
+    }
+    if (valid && start) return { start, end };
+  }
   const points = samplePathData(pathData);
   return points.length ? { start: points[0], end: points.at(-1) } : null;
 }
 
 export function assertContinuousRowPaths(paths, tolerance = 1e-6) {
+  let previous = paths.length > 1 ? pathEndpoints(paths[0]) : null;
   for (let index = 1; index < paths.length; index++) {
-    const previous = pathEndpoints(paths[index - 1]);
     const current = pathEndpoints(paths[index]);
     if (!previous || !current || Math.hypot(previous.end.x - current.start.x, previous.end.y - current.start.y) > tolerance) return false;
+    previous = current;
   }
   return true;
 }

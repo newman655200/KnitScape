@@ -1,11 +1,81 @@
 const EPSILON = 1e-9;
 
-function cubicPoint(start, c1, c2, end, t) {
+function cubicPoint(start, c1, c2, end, t, powers) {
   const mt = 1 - t;
+  const mt3 = powers ? powers.mt3 : mt ** 3;
+  const mt2 = powers ? powers.mt2 : mt ** 2;
+  const t2 = powers ? powers.t2 : t ** 2;
+  const t3 = powers ? powers.t3 : t ** 3;
   return {
-    x: mt ** 3 * start.x + 3 * mt ** 2 * t * c1.x + 3 * mt * t ** 2 * c2.x + t ** 3 * end.x,
-    y: mt ** 3 * start.y + 3 * mt ** 2 * t * c1.y + 3 * mt * t ** 2 * c2.y + t ** 3 * end.y,
+    x: mt3 * start.x + 3 * mt2 * t * c1.x + 3 * mt * t2 * c2.x + t3 * end.x,
+    y: mt3 * start.y + 3 * mt2 * t * c1.y + 3 * mt * t2 * c2.y + t3 * end.y,
   };
+}
+
+export function createPathLengthContext(digits = 6) {
+  const digitCount = Math.floor(digits);
+  if (!(digitCount >= 0)) throw new Error(`invalid digits: ${digits}`);
+  const factor = 10 ** digitCount;
+  const samplePowers = Array.from({ length: 24 }, (_, index) => {
+    const t = (index + 1) / 24;
+    const mt = 1 - t;
+    return { mt3: mt ** 3, mt2: mt ** 2, t2: t ** 2, t3: t ** 3 };
+  });
+  let roundCoordinates = true;
+  let current = null;
+  let previous = null;
+  const coordinate = (value) => {
+    const number = +value;
+    const rounded = roundCoordinates && digitCount <= 15
+      ? Math.round(number * factor) / factor
+      : number;
+    // SVG stringification turns signed zero into "0" before the sampler reads it.
+    return rounded === 0 ? 0 : rounded;
+  };
+  const point = (x, y) => ({ x: coordinate(x), y: coordinate(y) });
+  function addPoint(value) {
+    if (!Number.isFinite(value.x) || !Number.isFinite(value.y)) {
+      context.valid = false;
+      return;
+    }
+    context.start ??= value;
+    context.end = value;
+    if (previous) {
+      context.totalLength += Math.hypot(value.x - previous.x, value.y - previous.y);
+    }
+    previous = value;
+  }
+  const context = {
+    reset(round = true) {
+      roundCoordinates = round;
+      current = previous = null;
+      context.totalLength = 0;
+      context.start = context.end = null;
+      context.valid = true;
+      return context;
+    },
+    moveTo(x, y) {
+      current = point(x, y);
+      addPoint(current);
+    },
+    lineTo(x, y) {
+      current = point(x, y);
+      addPoint(current);
+    },
+    bezierCurveTo(x1, y1, x2, y2, x, y) {
+      const c1 = point(x1, y1);
+      const c2 = point(x2, y2);
+      const end = point(x, y);
+      if (current) {
+        const start = current;
+        for (let sample = 1; sample <= 24; sample++) {
+          addPoint(cubicPoint(start, c1, c2, end, sample / 24, samplePowers[sample - 1]));
+        }
+      }
+      current = end;
+    },
+  };
+  return context.reset();
 }
 
 export function samplePathData(pathData, samplesPerCurve = 24) {

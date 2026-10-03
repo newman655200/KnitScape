@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import {
   assertContinuousRowPaths,
+  createPathLengthContext,
   moveNeckPoint,
   pathDataArcLength,
   pathDataLength,
@@ -18,6 +19,7 @@ export const Y_PADDING = 0;
 
 const STITCH_RATIO = 5 / 3;
 const SPREAD = 0.88;
+const MODEL_PATH_DIGITS = 6;
 const IDENTITY_POINT = (point) => point;
 
 // Display-matching model template; it has not been calibrated to measured fabric.
@@ -139,7 +141,7 @@ export function buildYarnPathGeometry({
     return flip ? [-y / mag, x / mag] : [y / mag, -x / mag];
   }
 
-  function updateNormals() {
+  function updateNormals({ nodes, yarnPath } = baseModelState) {
     yarnPath[0].normal = unitNormal(
       nodes[yarnPath[0].cnIndex],
       nodes[yarnPath[1].cnIndex],
@@ -173,28 +175,28 @@ export function buildYarnPathGeometry({
     .x((d) => d.x)
     .y((d) => d.y)
     .curve(d3.curveCatmullRomOpen)
-    .digits(6);
+    .digits(MODEL_PATH_DIGITS);
 
-  function getBasePointPosition(point) {
-    const node = nodes[point.cnIndex];
+  function getBasePointPosition(point, modelNodes = nodes) {
+    const node = modelNodes[point.cnIndex];
     return {
       x: node.modelX + (primaryYarnDiameter / 2) * point.normal[0],
       y: node.modelY + (primaryYarnDiameter / 2) * point.normal[1],
     };
   }
 
-  function getYarnLinkCurvePoints(yarnLink) {
+  function getYarnLinkCurvePoints(yarnLink, modelYarnPath = yarnPath) {
     const index = yarnLink.index;
     return [
-      yarnPath[index - 1],
-      yarnPath[index],
-      yarnPath[index + 1],
-      yarnPath[index + 2],
+      modelYarnPath[index - 1],
+      modelYarnPath[index],
+      modelYarnPath[index + 1],
+      modelYarnPath[index + 2],
     ];
   }
 
-  function getSharedPointPosition(point, coefficientByRow) {
-    const base = getBasePointPosition(point);
+  function getSharedPointPosition(point, coefficientByRow, modelState = baseModelState) {
+    const base = getBasePointPosition(point, modelState.nodes);
     const bounds = rowBoundaryIndices.get(point.row);
     const isBoundary =
       point.pathIndex === bounds?.first || point.pathIndex === bounds?.last;
@@ -207,31 +209,32 @@ export function buildYarnPathGeometry({
       base,
       centerX,
       coefficientByRow.get(point.row) ?? 1,
-      loopHeight
+      modelState.loopHeight
     );
   }
 
   function yarnCurve(
     yarnLink,
     coefficientByRow,
-    transformPoint = IDENTITY_POINT
+    transformPoint = IDENTITY_POINT,
+    modelState = baseModelState
   ) {
     const index = yarnLink.index;
 
     if (index == 0 || index > yarnPathLinks.length - 3) {
       const source = transformPoint(
-        getSharedPointPosition(yarnPath[index], coefficientByRow)
+        getSharedPointPosition(modelState.yarnPath[index], coefficientByRow, modelState)
       );
       const target = transformPoint(
-        getSharedPointPosition(yarnPath[index + 1], coefficientByRow)
+        getSharedPointPosition(modelState.yarnPath[index + 1], coefficientByRow, modelState)
       );
       if (!source || !target) return "";
       return `M ${source.x} ${source.y} L ${target.x} ${target.y}`;
     }
 
     return openYarnCurve(
-      getYarnLinkCurvePoints(yarnLink).map((point) =>
-        transformPoint(getSharedPointPosition(point, coefficientByRow))
+      getYarnLinkCurvePoints(yarnLink, modelState.yarnPath).map((point) =>
+        transformPoint(getSharedPointPosition(point, coefficientByRow, modelState))
       )
     );
   }
@@ -253,20 +256,13 @@ export function buildYarnPathGeometry({
     return coefficients;
   }
 
-  function buildResolvedPathMaps() {
-    const linksByRow = new Map();
-    yarnPathLinks.forEach((link) => {
-      const links = linksByRow.get(link.row) || [];
-      links.push(link);
-      linksByRow.set(link.row, links);
-    });
-    const coefficients = buildRowCoefficients(linksByRow);
+  function buildResolvedPathMaps(modelState = baseModelState, displayPaths = includeDisplayPaths) {
     const coefficientByLink = new Map(
       yarnPathLinks.map((link) => [link.index, coefficients])
     );
     const modelPathByLink = new Map();
     linksByRow.forEach((links, row) => {
-      const paths = links.map((link) => yarnCurve(link, coefficients));
+      const paths = links.map((link) => yarnCurve(link, coefficients, IDENTITY_POINT, modelState));
       if (assertContinuousRowPaths(paths, 1e-6)) {
         links.forEach((link, index) => modelPathByLink.set(link.index, paths[index]));
         return;
@@ -275,17 +271,17 @@ export function buildYarnPathGeometry({
       rowCoefficients.set(row, 1);
       links.forEach((link) => {
         coefficientByLink.set(link.index, rowCoefficients);
-        modelPathByLink.set(link.index, yarnCurve(link, rowCoefficients));
+        modelPathByLink.set(link.index, yarnCurve(link, rowCoefficients, IDENTITY_POINT, modelState));
       });
     });
 
     const resolvedPathByLink = new Map();
     yarnPathLinks.forEach((link) => {
       const linkCoefficients = coefficientByLink.get(link.index);
-      if (includeDisplayPaths) {
+      if (displayPaths) {
         resolvedPathByLink.set(
           link.index,
-          yarnCurve(link, linkCoefficients, modelToCanvasPoint)
+          yarnCurve(link, linkCoefficients, modelToCanvasPoint, modelState)
         );
       }
     });
@@ -388,6 +384,92 @@ export function buildYarnPathGeometry({
     };
   }
 
+  function createModelLengthEvaluator() {
+    // Solver working coordinates are isolated from the base/Renderer geometry.
+    const modelState = {
+      nodes: nodes.map((node) => ({ ...node })),
+      yarnPath: yarnPath.map((point) => ({ ...point })),
+      loopHeight,
+    };
+    const context = createPathLengthContext(MODEL_PATH_DIGITS);
+    const lengthCurve = d3.line().x((point) => point.x).y((point) => point.y)
+      .curve(d3.curveCatmullRomOpen).context(context);
+    const prepare = (height) => {
+      if (!Number.isFinite(height) || height <= 0) {
+        throw new RangeError("modelLoopHeight must be a positive number.");
+      }
+      modelState.loopHeight = height;
+      modelState.nodes.forEach((node) => {
+        node.modelY = (yarnGraph.height - node.j) * height;
+      });
+      updateNormals(modelState);
+    };
+    const positionsFor = (rowCoefficients) => modelState.yarnPath.map((point) =>
+      getSharedPointPosition(point, rowCoefficients, modelState)
+    );
+    function measureRow(links, positions, rowCoefficients) {
+      let modelLength = 0;
+      let previous = null;
+      let continuous = true;
+      links.forEach((link, rowIndex) => {
+        const index = link.index;
+        const isLine = index === 0 || index > yarnPathLinks.length - 3;
+        context.reset(!isLine);
+        if (isLine) {
+          context.moveTo(positions[index].x, positions[index].y);
+          context.lineTo(positions[index + 1].x, positions[index + 1].y);
+        } else {
+          lengthCurve([positions[index - 1], positions[index], positions[index + 1], positions[index + 2]]);
+        }
+        let endpoints = { start: context.start, end: context.end };
+        let length = context.totalLength;
+        if (!context.valid) {
+          const pathData = yarnCurve(link, rowCoefficients, IDENTITY_POINT, modelState);
+          endpoints = pathData ? pathEndpoints(pathData) : null;
+          length = pathData ? pathDataLength(pathData) : 0;
+        }
+        if (rowIndex > 0 && (!previous || !endpoints ||
+          Math.hypot(previous.end.x - endpoints.start.x, previous.end.y - endpoints.start.y) > 1e-6)) {
+          continuous = false;
+        }
+        previous = endpoints;
+        if (linkInEffectiveNeedles(link)) modelLength += length;
+      });
+      return { modelLength, continuous };
+    }
+    return (height) => {
+      prepare(height);
+      const positions = positionsFor(coefficients);
+      const measuredModelLengthPer100NeedlesByCourse = new Map();
+      linksByRow.forEach((links, row) => {
+        let measurement = measureRow(links, positions, coefficients);
+        if (!measurement.continuous) {
+          const rowCoefficients = new Map(coefficients);
+          rowCoefficients.set(row, 1);
+          measurement = measureRow(links, positionsFor(rowCoefficients), rowCoefficients);
+        }
+        const needleCount = modelLengthMeasurements.measuredNeedleCountByCourse.get(row);
+        if (needleCount !== undefined) {
+          measuredModelLengthPer100NeedlesByCourse.set(row,
+            normalizeModelLengthPer100Needles(measurement.modelLength, needleCount));
+        }
+      });
+      let modelPaths = null;
+      return {
+        yarnPathLinks,
+        measuredModelLengthPer100NeedlesByCourse,
+        // Only resultFromCandidate reads paths, after the final height is chosen.
+        get modelPathByLink() {
+          if (modelPaths === null) {
+            prepare(height);
+            modelPaths = buildResolvedPathMaps(modelState, false).modelPathByLink;
+          }
+          return modelPaths;
+        },
+      };
+    };
+  }
+
   const nodes = layoutNodes(yarnGraph);
   layoutDisplayNodes(yarnGraph);
   const yarnPath = yarnGraph.makeNice();
@@ -402,6 +484,14 @@ export function buildYarnPathGeometry({
     rowBoundaryIndices.set(point.row, bounds);
   });
   const yarnPathLinks = yarnGraph.yarnPathToLinks();
+  const baseModelState = { nodes, yarnPath, loopHeight };
+  const linksByRow = new Map();
+  yarnPathLinks.forEach((link) => {
+    const links = linksByRow.get(link.row) || [];
+    links.push(link);
+    linksByRow.set(link.row, links);
+  });
+  const coefficients = buildRowCoefficients(linksByRow);
 
   updateNormals();
   const { modelPathByLink, resolvedPathByLink } = buildResolvedPathMaps();
@@ -418,6 +508,7 @@ export function buildYarnPathGeometry({
       loopHeight,
     },
     modelPathByLink,
+    createModelLengthEvaluator,
     modelPathToCanvas,
     resolveModelPathsForDisplay,
     modelPathArcLength: modelArcLength && {

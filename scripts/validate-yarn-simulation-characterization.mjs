@@ -53,7 +53,9 @@ const documentFixture = {
 };
 
 let solverCalls = 0;
+let geometryCalls = 0;
 globalThis.__countYarnLengthSolverCall = () => { solverCalls += 1; };
+globalThis.__countYarnLengthGeometryCall = () => { geometryCalls += 1; };
 const server = await createServer({
   appType: "custom",
   logLevel: "silent",
@@ -62,6 +64,13 @@ const server = await createServer({
     name: "count-real-yarn-length-solver",
     enforce: "pre",
     transform(source, id) {
+      if (id.replaceAll("\\", "/").endsWith("/src/simulation/yarnPathGeometry.js")) {
+        return source.replace("export function buildYarnPathGeometry(", "function measuredBuildYarnPathGeometry(") +
+          `\nexport function buildYarnPathGeometry(options) {
+            globalThis.__countYarnLengthGeometryCall();
+            return measuredBuildYarnPathGeometry(options);
+          }\n`;
+      }
       if (!id.replaceAll("\\", "/").endsWith("/src/simulation/yarnLengthSolver.js")) return;
       return source.replace(
         "export function solveFeedYarnLengths(",
@@ -149,6 +158,7 @@ try {
     const snapshot = structuredClone(feeds);
     const pixels = Array.from(inputPattern.pixels);
     const start = pathData.length;
+    const geometryCallsBefore = geometryCalls;
     const output = simulate(
       inputPattern,
       Bimp.empty(1, inputPattern.height, 0),
@@ -163,6 +173,8 @@ try {
       }
     );
     output.stopSim();
+    assert.equal(geometryCalls, geometryCallsBefore + 1,
+      "Solver candidates must not rebuild full Geometry; only the original preview builds it.");
     assert.deepEqual(feeds, snapshot, "preview must not mutate Feed Yarn data.");
     assert.deepEqual(Array.from(inputPattern.pixels), pixels);
     assert.deepEqual(Array.from(pattern.pixels), patternSnapshot);
@@ -400,6 +412,7 @@ try {
 } finally {
   await server.close();
   delete globalThis.__countYarnLengthSolverCall;
+  delete globalThis.__countYarnLengthGeometryCall;
 }
 
 console.log("PASS: yarn simulation preserves the original fixture and renders solved main Yarn paths.");

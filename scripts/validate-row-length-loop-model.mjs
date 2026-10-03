@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { curveCatmullRomOpen, line, path, pathRound } from "d3";
+import * as loopModel from "../src/simulation/rowLengthLoopModel.js";
 import {
   assertContinuousRowPaths,
   moveNeckPoint,
@@ -40,6 +42,84 @@ for (const [targetLength, direction] of [[90, "tight"], [110, "loose"]]) {
 }
 
 assert.equal(pathDataLength("M 0 0 L 3 4"), 5);
+assert.equal(
+  typeof loopModel.createPathLengthContext,
+  "function",
+  "length-only candidates need a streaming M/L/C context"
+);
+const lengthContext = loopModel.createPathLengthContext();
+function assertLengthContextMatchesPath(commands, roundCoordinates = true) {
+  lengthContext.reset(roundCoordinates);
+  const svg = roundCoordinates ? pathRound(6) : path();
+  for (const [command, ...coordinates] of commands) {
+    svg[command](...coordinates);
+    lengthContext[command](...coordinates);
+  }
+  const pathData = String(svg);
+  assert.equal(lengthContext.valid, true, `finite context must be valid: ${pathData}`);
+  assert.equal(
+    lengthContext.totalLength,
+    pathDataLength(pathData),
+    `streaming length must exactly preserve SVG sampling: ${pathData}`
+  );
+  assert.deepEqual(
+    { start: lengthContext.start, end: lengthContext.end },
+    pathEndpoints(pathData),
+    `streaming endpoints must preserve SVG rounding and t=1 arithmetic: ${pathData}`
+  );
+}
+const contextCommands = [
+  [["moveTo", -0, -0], ["lineTo", 3, 4]],
+  [["moveTo", -0.0000005, 0.0000005], ["lineTo", 0.00000049, -0.00000049]],
+  [["moveTo", 0.123456789, 128.123456789], ["lineTo", 3.987654321, 131.987654321]],
+  [["moveTo", -0, -0], ["bezierCurveTo", -0, -0, -0, -0, -0, -0]],
+  [["moveTo", 0, 0], ["bezierCurveTo", 0, 1, 1, 1, 1, 0]],
+  [["moveTo", -0.0000005, 0.0000005], ["bezierCurveTo", 0.00000049, -0.00000049, 1.23456789, 2.34567891, 3.45678912, -0]],
+  [["moveTo", 0, 120000000.123456789], ["bezierCurveTo", -1, 120000001.123456789, 2, 120000003.123456789, 3, 120000000.123456789]],
+  [["moveTo", 1, 2], ["bezierCurveTo", 3, 4, 5, 6, 7, 8], ["bezierCurveTo", 9, 10, 11, 12, 13, 14]],
+  [["moveTo", 1, 2], ["bezierCurveTo", 3, 4, 5, 6, 7, 8], ["lineTo", -0, 9], ["moveTo", 10, 11], ["bezierCurveTo", 12, 13, 14, 15, 16, 17]],
+];
+for (let index = 0; index < 96; index++) {
+  const coordinate = (offset) => Math.sin(index * 7 + offset) * (index + 1);
+  contextCommands.push([
+    ["moveTo", coordinate(0), coordinate(1)],
+    ["bezierCurveTo", ...Array.from({ length: 6 }, (_, offset) => coordinate(offset + 2))],
+    ["bezierCurveTo", ...Array.from({ length: 6 }, (_, offset) => coordinate(offset + 8))],
+  ]);
+}
+for (const commands of contextCommands) {
+  assertLengthContextMatchesPath(commands);
+  assertLengthContextMatchesPath(commands, false);
+}
+const openCurve = line().x((point) => point.x).y((point) => point.y)
+  .curve(curveCatmullRomOpen).digits(6);
+const contextCurve = line().x((point) => point.x).y((point) => point.y)
+  .curve(curveCatmullRomOpen).context(lengthContext);
+for (let index = 0; index < 48; index++) {
+  const points = Array.from({ length: 4 }, (_, offset) => ({
+    x: Math.sin(index + offset) * (index + 1),
+    y: 120 + Math.cos(index + offset) * (index + 1),
+  }));
+  lengthContext.reset();
+  contextCurve(points);
+  const pathData = openCurve(points);
+  assert.equal(lengthContext.totalLength, pathDataLength(pathData));
+  assert.deepEqual(
+    { start: lengthContext.start, end: lengthContext.end },
+    pathEndpoints(pathData)
+  );
+}
+lengthContext.reset();
+assert.equal(lengthContext.totalLength, 0);
+assert.equal(lengthContext.start, null);
+assert.equal(lengthContext.end, null);
+assert.equal(lengthContext.valid, true);
+lengthContext.moveTo(0, 0);
+lengthContext.bezierCurveTo(Infinity, 1, 2, 3, 4, 5);
+assert.equal(lengthContext.valid, false, "non-finite samples must request the SVG fallback");
+lengthContext.reset(false);
+lengthContext.moveTo(NaN, 0);
+assert.equal(lengthContext.valid, false, "non-finite M/L coordinates must request the SVG fallback");
 const endpointPaths = [
   "M 0 0",
   "M 0 0 L 3 4",
@@ -75,19 +155,23 @@ for (const pathData of endpointPaths) {
   );
 }
 
-// Count sampling in an in-memory copy so the production API needs no instrumentation.
+// Count work in an in-memory copy so the production API needs no instrumentation.
 const endpointSource = fs.readFileSync("src/simulation/rowLengthLoopModel.js", "utf8");
 const endpointModule = await import(
   `data:text/javascript;base64,${Buffer.from(
-    "let sampleCalls = 0; let endpointCalls = 0;" +
+    "let sampleCalls = 0; let endpointCalls = 0; let powerCalls = 0;" +
       " export function sampleCallCount() { return sampleCalls; }" +
       " export function endpointCallCount() { return endpointCalls; }\n" +
+      " export function powerCallCount() { return powerCalls; }\n" +
       endpointSource.replace(
         "export function samplePathData(pathData, samplesPerCurve = 24) {",
         "export function samplePathData(pathData, samplesPerCurve = 24) { sampleCalls++;"
       ).replace(
         "export function pathEndpoints(pathData) {",
         "export function pathEndpoints(pathData) { endpointCalls++;"
+      ).replace(
+        /\b(mt|t) \*\* ([23])/g,
+        "(powerCalls++, $1 ** $2)"
       )
   ).toString("base64")}`
 );
@@ -105,6 +189,23 @@ assert.equal(
   endpointModule.endpointCallCount(),
   3,
   "continuity checks must read each path's endpoints only once"
+);
+const cachedPowersContext = endpointModule.createPathLengthContext();
+const powersAfterConstruction = endpointModule.powerCallCount();
+for (let index = 0; index < 3; index++) {
+  cachedPowersContext.reset();
+  cachedPowersContext.moveTo(0, 0);
+  cachedPowersContext.bezierCurveTo(0, 1, 1, 1, 1, 0);
+}
+assert.equal(
+  endpointModule.powerCallCount(),
+  powersAfterConstruction,
+  "streaming measurements must reuse the 24 precomputed cubic powers"
+);
+endpointModule.samplePathData("M0,0C0,1,1,1,1,0");
+assert.ok(
+  endpointModule.powerCallCount() > powersAfterConstruction,
+  "the existing SVG sampler must still calculate its own cubic powers"
 );
 assert.equal(assertContinuousRowPaths([]), true);
 assert.equal(assertContinuousRowPaths([null]), true);

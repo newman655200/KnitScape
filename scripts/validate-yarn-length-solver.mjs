@@ -13,10 +13,21 @@ assert.equal(
   "node --experimental-default-type=module scripts/validate-yarn-length-solver.mjs"
 );
 
+let modelPathBuilds = 0;
+globalThis.__countModelPathBuild = () => { modelPathBuilds += 1; };
 const server = await createServer({
   appType: "custom",
   logLevel: "silent",
   server: { middlewareMode: true },
+  plugins: [{
+    name: "count-model-path-materialization",
+    enforce: "pre",
+    transform(source, id) {
+      if (!id.replaceAll("\\", "/").endsWith("/src/simulation/yarnPathGeometry.js")) return;
+      return source.replace("const coefficientByLink = new Map(",
+        "globalThis.__countModelPathBuild();\n    const coefficientByLink = new Map(");
+    },
+  }],
 });
 let modules;
 try {
@@ -38,7 +49,7 @@ const [
   { buildYarnPathGeometry },
 ] = modules;
 
-function buildGeometry(pattern, modelLoopHeight) {
+function buildGeometry(pattern, modelLoopHeight, options = {}) {
   const stitchPattern = new Pattern(pattern.pad(1, 0, 0));
   const yarnGraph = new YarnModel(new ProcessModel(stitchPattern).cn);
   const geometry = buildYarnPathGeometry({
@@ -51,6 +62,7 @@ function buildGeometry(pattern, modelLoopHeight) {
     primaryYarnDiameter: 0.24,
     machineGauge: 32,
     modelLoopHeight,
+    ...options,
   });
   return { geometry, yarnGraph };
 }
@@ -93,6 +105,56 @@ const basePathSnapshot = structuredClone([...baseGeometry.modelPathByLink]);
 const baseResolvedSnapshot = structuredClone([...baseGeometry.resolvedPathByLink]);
 const baseNeedleX = baseGraph.contactNodes.map((node) => node.modelX);
 const baseTopology = topologySnapshot(baseGeometry.yarnPathLinks);
+const baseNodesSnapshot = structuredClone(baseGraph.contactNodes);
+const evaluateModelLength = baseGeometry.createModelLengthEvaluator();
+const candidateHeights = [0.05, 0.29375, 0.5375, 0.78125, 1.025, 1.26875, 1.5125, 1.75625, 2];
+const buildsBeforeCandidates = modelPathBuilds;
+const lightCandidates = candidateHeights.map(evaluateModelLength);
+assert.equal(modelPathBuilds, buildsBeforeCandidates,
+  "length-only candidate evaluations must not materialize full Model paths.");
+for (let index = 0; index < candidateHeights.length; index++) {
+  const full = buildGeometry(oneFeedPattern, candidateHeights[index]).geometry;
+  const candidate = lightCandidates[index];
+  assert.deepEqual(candidate.measuredModelLengthPer100NeedlesByCourse,
+    full.measuredModelLengthPer100NeedlesByCourse,
+    "lightweight candidates must preserve exact sampled/rounded Model lengths.");
+  const buildsBeforeFinal = modelPathBuilds;
+  assert.deepEqual(candidate.modelPathByLink, full.modelPathByLink,
+    "lazy solved paths must capture their candidate height, independent of evaluation order.");
+  assert.equal(candidate.modelPathByLink, candidate.modelPathByLink,
+    "a final candidate must materialize its Model paths only once.");
+  assert.deepEqual(candidate.yarnPathLinks, baseGeometry.yarnPathLinks);
+  assert.equal(modelPathBuilds, buildsBeforeFinal + 1,
+    "only the chosen final candidate materializes paths, exactly once.");
+}
+assert.deepEqual(baseGraph.contactNodes, baseNodesSnapshot,
+  "candidate evaluation must not mutate base nodes or X needle positions.");
+assert.deepEqual([...baseGeometry.modelPathByLink], basePathSnapshot);
+assert.deepEqual([...baseGeometry.resolvedPathByLink], baseResolvedSnapshot);
+for (const inputPattern of [
+  new Bimp(4, 2, [0, 0, 0, 0, 1, 1, 1, 1]),
+  new Bimp(8, 3, Array.from({ length: 24 }, (_, index) => index === 11 ? 3 : 0)),
+  new Bimp(8, 3, Array.from({ length: 24 }, (_, index) => index === 11 ? 2 : 0)),
+]) {
+  for (const primaryLengthScaleY of [0.9, 1, 1.1]) {
+    const options = { primaryLengthScaleY, primaryYarnDiameter: 0.3 };
+    const { geometry: original, yarnGraph } = buildGeometry(inputPattern, undefined, options);
+    const originalNodes = structuredClone(yarnGraph.contactNodes);
+    const originalPaths = structuredClone([...original.modelPathByLink]);
+    const evaluate = original.createModelLengthEvaluator();
+    for (const height of [0.05, 0.48691711425781253, 2]) {
+      const light = evaluate(height);
+      const full = buildGeometry(inputPattern, height, options).geometry;
+      assert.deepEqual(light.measuredModelLengthPer100NeedlesByCourse,
+        full.measuredModelLengthPer100NeedlesByCourse,
+        "mixed K/P/T/M, multiple courses and row coefficients must preserve exact lengths.");
+      assert.deepEqual(light.modelPathByLink, full.modelPathByLink);
+      assert.deepEqual(light.yarnPathLinks, original.yarnPathLinks);
+    }
+    assert.deepEqual(yarnGraph.contactNodes, originalNodes);
+    assert.deepEqual([...original.modelPathByLink], originalPaths);
+  }
+}
 const buildOneFeedGeometry = trackedGeometryFactory(
   oneFeedPattern,
   baseNeedleX,
@@ -292,3 +354,4 @@ console.log(
   )
 );
 console.log("PASS: Yarn Length Solver V1 is deterministic and isolated.");
+delete globalThis.__countModelPathBuild;

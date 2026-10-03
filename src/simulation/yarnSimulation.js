@@ -146,15 +146,10 @@ export function simulate(
     primaryYarnDiameter: activeYarnPlies[0].diameter,
     machineGauge,
   };
-  const buildGeometry = (modelLoopHeight = null) =>
-    buildYarnPathGeometry({
-      ...geometryOptions,
-      yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
-      modelLoopHeight,
-      includeSummaryMetrics: modelLoopHeight === null,
-      includeDisplayPaths: modelLoopHeight === null,
-    });
-  const geometry = buildGeometry();
+  const geometry = buildYarnPathGeometry({
+    ...geometryOptions,
+    yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
+  });
   const solverLengths = (Array.isArray(feeds) ? feeds : []).map((feed) =>
     (Array.isArray(feed?.yarns) ? feed.yarns : []).map((yarn) => {
       const length = yarn?.yarnLengthCmPer100Needles;
@@ -185,6 +180,7 @@ export function simulate(
     : [];
   const solvedModelPaths = new Map();
   const solverGeometryByHeight = new Map();
+  let evaluateModelLength = null;
   (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
     if (cacheHit) return;
     const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
@@ -199,21 +195,21 @@ export function simulate(
     ) {
       return;
     }
+    const feedLinks = geometry.yarnPathLinks.filter((link) => belongsToFeed(link.row));
     try {
       const results = solveFeedYarnLengths({
         feeds: [{ yarns: yarnIndices.map((index) => yarns[index]) }],
         gauge: machineGauge,
         buildGeometry: (loopHeight) => {
           if (!solverGeometryByHeight.has(loopHeight)) {
-            solverGeometryByHeight.set(loopHeight, buildGeometry(loopHeight));
+            evaluateModelLength ??= geometry.createModelLengthEvaluator();
+            solverGeometryByHeight.set(loopHeight, evaluateModelLength(loopHeight));
           }
           const candidate = solverGeometryByHeight.get(loopHeight);
           // A view of this Feed's courses; keep original rows and link indices.
           return {
-            ...candidate,
-            yarnPathLinks: candidate.yarnPathLinks.filter((link) =>
-              belongsToFeed(link.row)
-            ),
+            yarnPathLinks: feedLinks,
+            get modelPathByLink() { return candidate.modelPathByLink; },
             measuredModelLengthPer100NeedlesByCourse: new Map(
               [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
                 ([course]) => belongsToFeed(course)

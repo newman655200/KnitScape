@@ -371,7 +371,12 @@ assert.match(simulationSource, /function modelToCanvasPoint/);
 assert.match(simulationSource, /x:\s*offsetX\s*\+\s*point\.x\s*\*\s*stitchWidth/);
 assert.match(simulationSource, /y:\s*offsetY\s*\+\s*point\.y\s*\*\s*stitchWidth/);
 assert.doesNotMatch(simulationSource, /yarnPathPhysicalArcLength/);
-assert.doesNotMatch(simulationSource, /yarnLengthCmPer100Needles/);
+for (const file of [
+  "src/simulation/yarnPathGeometry.js",
+  "src/simulation/drawYarnSimulation.js",
+]) {
+  assert.doesNotMatch(read(file), /yarnLengthCmPer100Needles/);
+}
 
 const runSimulationSource = read("src/components/runSimulation.js");
 assert.match(runSimulationSource, /yarnLengthMetrics/);

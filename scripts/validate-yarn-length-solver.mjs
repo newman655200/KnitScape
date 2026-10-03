@@ -273,7 +273,6 @@ assert.ok(
 );
 
 const runtimeSources = [
-  "src/simulation/yarnSimulation.js",
   "src/simulation/drawYarnSimulation.js",
   "src/components/runSimulation.js",
 ].map((file) => fs.readFileSync(file, "utf8"));

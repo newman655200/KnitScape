@@ -5,13 +5,14 @@ import { prepareYarnTextureImages } from "./yarnTextureBrush";
 import { normalizeYarnTexture } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "../actions/yarnSequenceRows";
 import { TEXTURE_PERFORMANCE_MODES } from "../constants";
-import { DEFAULT_MACHINE_GAUGE } from "./yarnLengthMetrics";
+import { courseToFeedIndex, DEFAULT_MACHINE_GAUGE } from "./yarnLengthMetrics";
 import {
   buildYarnPathGeometry,
   X_PADDING,
   Y_PADDING,
 } from "./yarnPathGeometry.js";
 import { drawYarnSimulation } from "./drawYarnSimulation.js";
+import { solveFeedYarnLengths } from "./yarnLengthSolver.js";
 
 const YARN_RATIO = 0.24;
 const dpi = devicePixelRatio;
@@ -90,6 +91,7 @@ export function simulate(
     texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
     texturePreviewInteractionActive = false,
     target = {},
+    feeds = null,
   } = {}
 ) {
   let stopped = false;
@@ -130,18 +132,83 @@ export function simulate(
   }
 
   const [backCanvas, midCanvas, frontCanvas] = getCanvases(canvasIDs);
-  const processModel = new ProcessModel(stitchPattern);
-  const yarnGraph = new YarnModel(processModel.cn);
-  const geometry = buildYarnPathGeometry({
+  const geometryOptions = {
     pattern,
     stitchPattern,
-    yarnGraph,
     canvasWidth,
     canvasHeight,
     primaryLengthScaleY,
     primaryYarnDiameter: activeYarnPlies[0].diameter,
     machineGauge,
+  };
+  const buildGeometry = (modelLoopHeight = null) =>
+    buildYarnPathGeometry({
+      ...geometryOptions,
+      yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
+      modelLoopHeight,
+      includeSummaryMetrics: modelLoopHeight === null,
+    });
+  const geometry = buildGeometry();
+  const yarnLengthSolverResults = [];
+  const solvedModelPaths = new Map();
+  const solverGeometryByHeight = new Map();
+  (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
+    const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
+    const yarnIndices = yarns.flatMap((yarn, index) => {
+      const length = yarn?.yarnLengthCmPer100Needles;
+      return (typeof length === "number" || typeof length === "string") &&
+        Number.isFinite(Number(length)) && Number(length) > 0
+        ? [index]
+        : [];
+    });
+    const belongsToFeed = (course) =>
+      courseToFeedIndex(course, feeds.length) === feedIndex;
+    if (
+      !yarnIndices.length ||
+      ![...geometry.measuredNeedleCountByCourse.keys()].some(belongsToFeed)
+    ) {
+      return;
+    }
+    try {
+      const results = solveFeedYarnLengths({
+        feeds: [{ yarns: yarnIndices.map((index) => yarns[index]) }],
+        gauge: machineGauge,
+        buildGeometry: (loopHeight) => {
+          if (!solverGeometryByHeight.has(loopHeight)) {
+            solverGeometryByHeight.set(loopHeight, buildGeometry(loopHeight));
+          }
+          const candidate = solverGeometryByHeight.get(loopHeight);
+          // A view of this Feed's courses; keep original rows and link indices.
+          return {
+            ...candidate,
+            yarnPathLinks: candidate.yarnPathLinks.filter((link) =>
+              belongsToFeed(link.row)
+            ),
+            measuredModelLengthPer100NeedlesByCourse: new Map(
+              [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
+                ([course]) => belongsToFeed(course)
+              )
+            ),
+          };
+        },
+      });
+      results.forEach((result) => {
+        result.feedIndex = feedIndex;
+        result.yarnIndex = yarnIndices[result.yarnIndex];
+        yarnLengthSolverResults.push(result);
+        // V1 renders only the first Feed Yarn; keep other independent results.
+        if (result.yarnIndex !== 0 || !result.converged) return;
+        result.solvedPathByLink.forEach((pathData, linkIndex) => {
+          solvedModelPaths.set(linkIndex, pathData);
+        });
+      });
+    } catch (error) {
+      // Unsupported/non-monotonic courses keep the original preview geometry.
+      if (!(error instanceof RangeError)) throw error;
+    }
   });
+  solverGeometryByHeight.clear();
+  const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
 
   function draw() {
     drawYarnSimulation({
@@ -149,7 +216,7 @@ export function simulate(
       canvasWidth,
       canvasHeight,
       yarnPathLinks: geometry.yarnPathLinks,
-      resolvedPathByLink: geometry.resolvedPathByLink,
+      resolvedPathByLink,
       stitchWidth: geometry.stitchWidth,
       activeYarnPlies,
       normalizedYarnSequence,
@@ -171,5 +238,9 @@ export function simulate(
     });
   }
 
-  return { stopSim, yarnLengthMetrics: geometry.yarnLengthMetrics };
+  return {
+    stopSim,
+    yarnLengthMetrics: geometry.yarnLengthMetrics,
+    yarnLengthSolverResults,
+  };
 }

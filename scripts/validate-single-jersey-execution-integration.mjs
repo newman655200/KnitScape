@@ -165,10 +165,13 @@ const machineExecutionErrorElement = {
 };
 
 const chart = { width: 12, height: 8 };
+const previewFeeds = [21, 23, 27, 23].map((length) => ({
+  yarns: [{ yarnId: 0, yarnLengthCmPer100Needles: length }],
+}));
 const runtimeState = {
   chart,
   needleArrangement: [1, 2, 2, 3, 4, 4],
-  singleJerseyCamProgram: fourByFourProgram,
+  singleJerseyCamProgram: { ...fourByFourProgram, feeds: previewFeeds },
   yarnSequence: {},
   yarnPalette: [],
   simScale: 1,
@@ -323,6 +326,8 @@ try {
 
   assert.equal(simulationCalls.length, 2);
   assert.equal(simulationCalls[0].pattern, chart);
+  assert.equal(simulationCalls[0].options.feeds, undefined);
+  assert.equal(simulationCalls[1].options.feeds, previewFeeds);
   assert.deepEqual(simulationCalls[0].options.target, {
     containerId: "sim-before-container",
     canvasIDs: ["back", "mid", "front"],

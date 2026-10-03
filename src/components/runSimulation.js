@@ -251,6 +251,7 @@ export function runSimulation() {
         {
           ...simulationOptions,
           target: AFTER_SIMULATION_TARGET,
+          feeds: GLOBAL_STATE.singleJerseyCamProgram.feeds,
         }
       );
       stopSims.push(afterSimulationResult.stopSim);

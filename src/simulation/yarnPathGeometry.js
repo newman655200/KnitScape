@@ -4,6 +4,7 @@ import {
   moveNeckPoint,
   pathDataArcLength,
   pathDataLength,
+  pathEndpoints,
 } from "./rowLengthLoopModel";
 import {
   cmPer100Loops,
@@ -36,6 +37,7 @@ export function buildYarnPathGeometry({
   primaryYarnDiameter,
   machineGauge,
   modelLoopHeight = null,
+  includeSummaryMetrics = true,
 }) {
   const defaultLoopHeight =
     DEFAULT_YARN_MODEL_GEOMETRY.loopHeight * primaryLengthScaleY;
@@ -64,6 +66,43 @@ export function buildYarnPathGeometry({
       x: offsetX + point.x * stitchWidth,
       y: offsetY + point.y * stitchWidth,
     };
+  }
+
+  // Model paths contain absolute M/L/C coordinate pairs, including controls.
+  function modelPathToCanvas(pathData, modelOffsetY = 0) {
+    let coordinateIndex = 0;
+    return pathData.replace(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi, (coordinate) => {
+      const offset =
+        coordinateIndex++ % 2 === 0
+          ? offsetX
+          : offsetY + modelOffsetY * stitchWidth;
+      return String(offset + Number(coordinate) * stitchWidth);
+    });
+  }
+
+  function resolveModelPathsForDisplay(solvedPathByLink) {
+    if (!solvedPathByLink.size) return resolvedPathByLink;
+    const paths = new Map();
+    let course = null;
+    let modelOffsetY = 0;
+    let previousEnd = null;
+    for (const link of yarnPathLinks) {
+      const pathData =
+        solvedPathByLink.get(link.index) ?? modelPathByLink.get(link.index);
+      const endpoints = pathEndpoints(pathData);
+      if (!endpoints) return resolvedPathByLink;
+      if (link.row !== course) {
+        // Translate each course as a whole: preserve solved length and X positions.
+        if (previousEnd && Math.abs(previousEnd.x - endpoints.start.x) > 1e-6) {
+          return resolvedPathByLink;
+        }
+        modelOffsetY = previousEnd ? previousEnd.y - endpoints.start.y : 0;
+        course = link.row;
+      }
+      paths.set(link.index, modelPathToCanvas(pathData, modelOffsetY));
+      previousEnd = { x: endpoints.end.x, y: endpoints.end.y + modelOffsetY };
+    }
+    return paths;
   }
 
   function layoutDisplayNodes(graph) {
@@ -358,8 +397,10 @@ export function buildYarnPathGeometry({
 
   updateNormals();
   const { modelPathByLink, resolvedPathByLink } = buildResolvedPathMaps();
-  const yarnPathArcLength = buildYarnPathArcLength();
-  const modelArcLength = buildYarnPathArcLength(modelPathByLink);
+  const yarnPathArcLength = includeSummaryMetrics ? buildYarnPathArcLength() : null;
+  const modelArcLength = includeSummaryMetrics
+    ? buildYarnPathArcLength(modelPathByLink)
+    : null;
   const modelLengthMeasurements = buildModelLengthMeasurementsByCourse();
 
   return {
@@ -369,7 +410,9 @@ export function buildYarnPathGeometry({
       loopHeight,
     },
     modelPathByLink,
-    modelPathArcLength: {
+    modelPathToCanvas,
+    resolveModelPathsForDisplay,
+    modelPathArcLength: modelArcLength && {
       totalModelLength: modelArcLength.totalLength,
       cumulativeModelArcLength: modelArcLength.cumulativeArcLength,
     },
@@ -377,6 +420,6 @@ export function buildYarnPathGeometry({
     yarnPathLinks,
     resolvedPathByLink,
     yarnPathArcLength,
-    yarnLengthMetrics: buildYarnLengthMetrics(),
+    yarnLengthMetrics: includeSummaryMetrics ? buildYarnLengthMetrics() : null,
   };
 }

@@ -93,11 +93,14 @@ for (const token of [
 }
 assert.match(
   simulationSource,
-  /const yarnPathArcLength\s*=\s*buildYarnPathArcLength\(\)/,
+  /const yarnPathArcLength\s*=\s*includeSummaryMetrics\s*\?\s*buildYarnPathArcLength\(\)/,
   "final Yarn Path geometry must expose its arc-length measurement."
 );
 assert.match(simulationSource, /yarnPathArcLength,/);
-assert.doesNotMatch(simulationSource, /yarnLengthCmPer100Needles/);
+assert.doesNotMatch(
+  fs.readFileSync("src/simulation/yarnPathGeometry.js", "utf8"),
+  /yarnLengthCmPer100Needles/
+);
 assert.match(simulationSource, /yarnPlies\?\.\[0\]\?\.lengthScaleY/);
 assert.doesNotMatch(simulationSource, /yarnLinkForce|forceSimulation|function relax/);
 const runSimulationSource = fs.readFileSync("src/components/runSimulation.js", "utf8");

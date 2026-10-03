@@ -20,6 +20,7 @@
     "validate:no-yarn-length-simulation": "node scripts/validate-no-yarn-length-simulation.mjs",
     "validate:row-length-loop-model": "node --experimental-default-type=module scripts/validate-row-length-loop-model.mjs",
     "validate:yarn-length-gauge": "node --experimental-default-type=module scripts/validate-yarn-length-gauge.mjs",
+    "validate:yarn-length-solver": "node --experimental-default-type=module scripts/validate-yarn-length-solver.mjs",
     "validate:yarn-length-parameters": "node scripts/validate-yarn-length-parameters.mjs",
     "validate:yarn-sequence-editor": "node --experimental-default-type=module scripts/validate-yarn-sequence-editor.mjs",
     "validate:central-stitch-toolbar": "node scripts/validate-central-stitch-toolbar.mjs",

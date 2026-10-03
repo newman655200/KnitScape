@@ -35,9 +35,15 @@ export function buildYarnPathGeometry({
   primaryLengthScaleY,
   primaryYarnDiameter,
   machineGauge,
+  modelLoopHeight = null,
 }) {
-  const loopHeight =
+  const defaultLoopHeight =
     DEFAULT_YARN_MODEL_GEOMETRY.loopHeight * primaryLengthScaleY;
+  const loopHeight =
+    modelLoopHeight === null ? defaultLoopHeight : Number(modelLoopHeight);
+  if (!Number.isFinite(loopHeight) || loopHeight <= 0) {
+    throw new RangeError("modelLoopHeight must be a positive number.");
+  }
   let stitchWidth, offsetX, offsetY;
 
   function layoutNodes(graph) {

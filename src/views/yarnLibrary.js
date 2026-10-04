@@ -3,8 +3,49 @@ import { repeat } from "lit-html/directives/repeat.js";
 import { GLOBAL_STATE, dispatch } from "../state.js";
 import { YARN_CATEGORIES, queryYarnLibrary } from "../domain/yarnLibrary.js";
 import { addYarnAsset, updateYarnAsset, deleteYarnAsset,
-  selectYarnForAssignment } from "../actions/yarnLibrary.js";
+  selectYarnForAssignment, getYarnPbr, importYarnPbr, clearYarnPbr } from "../actions/yarnLibrary.js";
 import { t } from "../i18n/index.js";
+
+let editingYarnId = null;
+
+function toggleYarnEditor(event, id) {
+  if (event.currentTarget.open) editingYarnId = id;
+  else if (editingYarnId === id) editingYarnId = null;
+  else return;
+  dispatch({});
+}
+
+async function importPbr(event, id) {
+  const input = event.currentTarget;
+  if (!input.files?.length) return;
+  try {
+    await importYarnPbr(id, Array.from(input.files));
+  } catch (error) {
+    const key = error.code === "PBR_AMBIGUOUS_FILES" ? "pbrAmbiguous"
+      : error.code === "PBR_UNRECOGNIZED_FILES" ? "pbrUnrecognized" : "pbrImportFailed";
+    dispatch({ yarnLibraryError: key });
+  } finally { input.value = ""; }
+}
+
+function yarnPbrControls(id, language) {
+  const pbr = getYarnPbr(id);
+  const maps = pbr ? Object.entries(pbr).filter(([, map]) => map?.fileName) : [];
+  return html`<div class="yarn-pbr-controls">
+    ${pbr?.previewDataUrl ? html`<img class="yarn-pbr-preview" src=${pbr.previewDataUrl}
+      alt="BaseColor" width="48" height="48" />` : null}
+    <button class="btn" type="button" @click=${event =>
+      event.currentTarget.parentElement.querySelector('input[type="file"]').click()}>
+      ${t(pbr ? "yarnLibrary.pbrReplace" : "yarnLibrary.pbrImport", language)}
+    </button>
+    <input type="file" hidden multiple accept="image/png,image/jpeg,image/webp"
+      aria-label=${t("yarnLibrary.pbrImport", language)} @change=${event => importPbr(event, id)} />
+    ${pbr ? html`<button class="btn" type="button" @click=${() => clearYarnPbr(id)}>
+      ${t("yarnLibrary.pbrClear", language)}</button>` : null}
+    <small class="yarn-pbr-help">${t("yarnLibrary.pbrHelp", language)}</small>
+    ${maps.length ? html`<ul class="yarn-pbr-maps">${maps.map(([key, map]) =>
+      html`<li>${key}: <span title=${map.fileName}>${map.fileName}</span></li>`)}</ul>` : null}
+  </div>`;
+}
 
 function changeQuery(field, value) {
   dispatch({ yarnLibraryQuery: { ...GLOBAL_STATE.yarnLibraryQuery, [field]: value }, yarnLibraryError: null });
@@ -91,13 +132,19 @@ export function yarnLibraryWorkspace() {
           <th>${t("yarnLibrary.updated", language)}</th><th></th></tr></thead>
         <tbody>${repeat(yarns, yarn => yarn.id, asset => html`<tr
           class=${asset.id === pendingYarnId ? "yarn-pending" : ""}>
-          <td><button class="yarn-asset-name" type="button" title=${asset.name}
+          <td><div class="yarn-asset-title"><button class="yarn-asset-name" type="button" title=${asset.name}
             aria-pressed=${asset.id === pendingYarnId}
-            @click=${() => selectYarnForAssignment(asset.id)}>${asset.name}</button></td>
+            @click=${() => selectYarnForAssignment(asset.id)}>${asset.name}</button>
+            <small class="yarn-pbr-status">${t(asset.pbr ? "yarnLibrary.pbrSet" : "yarnLibrary.pbrUnset", language)}</small>
+          </div></td>
           <td>${asset.category}</td>
           <td><time datetime=${asset.updatedAt}>${new Date(asset.updatedAt).toLocaleString(language)}</time></td>
           <td class="yarn-asset-actions">
-            <details><summary>${t("yarnLibrary.edit", language)}</summary>${yarnForm(language, asset)}</details>
+            <details ?open=${editingYarnId === asset.id} @toggle=${event => toggleYarnEditor(event, asset.id)}>
+              <summary>${t("yarnLibrary.edit", language)}</summary>${yarnForm(language, asset)}
+              ${editingYarnId === asset.id && GLOBAL_STATE.workspaceMode === "yarns"
+                ? yarnPbrControls(asset.id, language) : null}
+            </details>
             <button class="btn" type="button" @click=${() => {
               dispatch({ yarnLibraryError: deleteYarnAsset(asset.id) ? null : "inUse" });
             }}>${t("yarnLibrary.delete", language)}</button>

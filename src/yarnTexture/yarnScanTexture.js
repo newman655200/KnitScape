@@ -159,6 +159,64 @@ export function loadImageFromDataUrl(dataUrl) {
   });
 }
 
+export function identifyPbrMap(fileName) {
+  if (!/\.(png|jpe?g|webp)$/i.test(fileName)) return null;
+  const name = fileName.replace(/\.[^.]+$/, "")
+    .replace(/([a-z\d])([A-Z])/g, "$1 $2").toLowerCase();
+  const aliases = {
+    baseColor: "base[ _-]*color|albedo|diffuse",
+    normal: "normal",
+    roughness: "roughness",
+    height: "height|displacement",
+    ambientOcclusion: "ao|ambient[ _-]*occlusion",
+  };
+  return Object.keys(aliases).find(key =>
+    new RegExp(`(^|[^a-z])(${aliases[key]})([^a-z]|$)`).test(name)) ?? null;
+}
+
+// Yarn Assets persist embedded images, never browser-local URLs or filesystem paths.
+export function normalizeYarnPbr(pbr) {
+  if (pbr == null) return null;
+  const maps = normalizePbrTextureMaps(pbr);
+  const isImageDataUrl = value => /^data:image\/(png|jpeg|webp);base64,[a-z\d+/=\s]+$/i.test(value);
+  for (const map of Object.values(maps)) {
+    if (map && (!isImageDataUrl(map.dataUrl) || !isImageDataUrl(map.processedDataUrl))) {
+      throw new TypeError("Yarn PBR maps require embedded PNG, JPEG or WebP images.");
+    }
+  }
+  if (!Object.values(maps).some(Boolean)) return null;
+  const previewDataUrl = pbr.previewDataUrl || "";
+  if (previewDataUrl && !isImageDataUrl(previewDataUrl)) throw new TypeError("Invalid PBR preview.");
+  return { ...maps, previewDataUrl };
+}
+
+export async function importPbrFiles(files) {
+  const selected = new Map();
+  for (const file of files) {
+    const key = identifyPbrMap(file.name);
+    if (!key) continue;
+    if (selected.has(key)) throw Object.assign(new Error(`Multiple PBR files for ${key}.`),
+      { code: "PBR_AMBIGUOUS_FILES" });
+    selected.set(key, file);
+  }
+  if (!selected.size) throw Object.assign(new Error("No recognized PBR images."),
+    { code: "PBR_UNRECOGNIZED_FILES" });
+  const pbr = {};
+  // Decode only the selected group, once on import; lists and getters never decode maps.
+  for (const [key, file] of selected) {
+    const dataUrl = await readFileAsDataUrl(file);
+    const image = await loadImageFromDataUrl(dataUrl);
+    pbr[key] = { fileName: file.name, dataUrl, processedDataUrl: dataUrl };
+    if (key === "baseColor") {
+      const scale = Math.min(1, 48 / Math.max(image.naturalWidth, image.naturalHeight));
+      const canvas = makeCanvas(image.naturalWidth * scale, image.naturalHeight * scale);
+      canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+      pbr.previewDataUrl = canvas.toDataURL("image/png");
+    }
+  }
+  return normalizeYarnPbr(pbr);
+}
+
 function makeCanvas(width, height) {
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.floor(width));

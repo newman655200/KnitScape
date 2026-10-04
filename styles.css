@@ -217,6 +217,14 @@ TASKBAR
 .yarn-asset-actions summary { padding: 0.3rem 0; cursor: pointer; }
 .yarn-asset-actions .yarn-asset-form { margin-top: 0.4rem; }
 .yarn-asset-actions .yarn-asset-form input { min-width: 5rem; width: 9rem; }
+.yarn-asset-title { display: flex; align-items: center; gap: 0.5rem; }
+.yarn-asset-title .yarn-asset-name { min-width: 0; flex: 1; }
+.yarn-pbr-status { white-space: nowrap; }
+.yarn-pbr-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.5rem; }
+.yarn-pbr-preview { width: 48px; height: 48px; object-fit: contain; }
+.yarn-pbr-help { flex-basis: 100%; }
+.yarn-pbr-maps { width: 100%; padding: 0; margin: 0; list-style: none; font-size: 0.8rem; }
+.yarn-pbr-maps li { overflow-wrap: anywhere; }
 .yarn-assignment-notice { padding: 0.45rem 0.6rem; background: var(--accent-tint); color: var(--ink); }
 .yarn-assignment-notice > span { flex: 1 1 12rem; min-width: 0; overflow-wrap: anywhere; }
 .yarn-assignment-notice .btn { color: var(--ink); }

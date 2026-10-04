@@ -1,3 +1,5 @@
+import { normalizeYarnPbr } from "../yarnTexture/yarnScanTexture.js";
+
 export const YARN_CATEGORIES = Object.freeze(["T", "CD", "N", "OP", "OTHER"]);
 
 export function createYarnAsset(id, name, category = "OTHER", timestamp = new Date().toISOString()) {
@@ -15,6 +17,8 @@ export function normalizeYarnLibrary(assets = [], feeds = []) {
     const normalized = createYarnAsset(asset?.id, asset?.name, asset?.category);
     normalized.createdAt = asset.createdAt ?? normalized.createdAt;
     normalized.updatedAt = asset.updatedAt ?? normalized.createdAt;
+    const pbr = normalizeYarnPbr(asset.pbr);
+    if (pbr) normalized.pbr = pbr;
     if (![normalized.createdAt, normalized.updatedAt].every(value =>
       typeof value === "string" && Number.isFinite(Date.parse(value)))) {
       throw new TypeError("Yarn timestamps must be valid date strings.");

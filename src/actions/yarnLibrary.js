@@ -1,6 +1,9 @@
 import { dispatch, GLOBAL_STATE } from "../state.js";
 import { createYarnAsset, isYarnReferenced } from "../domain/yarnLibrary.js";
 import { normalizeSingleJerseyCamProgram, setSingleJerseyFeedYarns } from "./singleJerseyCamProgram.js";
+import { importPbrFiles } from "../yarnTexture/yarnScanTexture.js";
+
+const pbrImports = new Map();
 
 function assetById(id) {
   const asset = GLOBAL_STATE.yarnLibrary.find(yarn => String(yarn.id) === String(id));
@@ -21,7 +24,7 @@ export function addYarnAsset(name, category) {
 
 export function updateYarnAsset(id, name, category) {
   const current = assetById(id);
-  const asset = { ...createYarnAsset(current.id, name, category), createdAt: current.createdAt };
+  const asset = { ...current, ...createYarnAsset(current.id, name, category), createdAt: current.createdAt };
   dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === current.id ? asset : yarn) });
 }
 
@@ -30,9 +33,38 @@ export function deleteYarnAsset(id) {
   const feeds = GLOBAL_STATE.singleJerseyCamProgram === null ? []
     : normalizeSingleJerseyCamProgram(GLOBAL_STATE.singleJerseyCamProgram).feeds;
   if (isYarnReferenced(asset.id, feeds)) return false;
+  pbrImports.delete(asset.id);
   dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.filter(yarn => yarn.id !== asset.id),
     ...(String(GLOBAL_STATE.pendingYarnId) === String(asset.id) ? { pendingYarnId: null } : {}) });
   return true;
+}
+
+export function getYarnPbr(id) {
+  return GLOBAL_STATE.yarnLibrary.find(yarn => String(yarn.id) === String(id))?.pbr ?? null;
+}
+
+export async function importYarnPbr(id, files) {
+  const asset = assetById(id);
+  const request = {};
+  pbrImports.set(asset.id, request);
+  try {
+    const pbr = await importPbrFiles(files);
+    if (pbrImports.get(asset.id) !== request ||
+      !GLOBAL_STATE.yarnLibrary.some(yarn => yarn.id === asset.id)) return false;
+    dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
+      ? { ...yarn, pbr, updatedAt: new Date().toISOString() } : yarn), yarnLibraryError: null });
+    return true;
+  } finally {
+    if (pbrImports.get(asset.id) === request) pbrImports.delete(asset.id);
+  }
+}
+
+export function clearYarnPbr(id) {
+  const asset = assetById(id);
+  pbrImports.delete(asset.id);
+  const { pbr, ...metadata } = asset;
+  dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
+    ? { ...metadata, updatedAt: new Date().toISOString() } : yarn), yarnLibraryError: null });
 }
 
 export function selectYarnForAssignment(id) {

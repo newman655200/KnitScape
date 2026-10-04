@@ -4,7 +4,10 @@ import {
   createSingleJerseyCamProgram,
   cycleSingleJerseyCamOperation,
   deleteSingleJerseyCamProgram,
+  getSingleJerseyFeedIndices,
   resizeSingleJerseyCamProgram,
+  setSingleJerseyFeedYarnLength,
+  setSingleJerseyFeedYarnLengths,
 } from "../actions/singleJerseyCamProgram.js";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import slipIconUrl from "../assets/symbols/slip.svg";
@@ -39,6 +42,94 @@ function resizeCamProgram(event, trackCount, feedCount) {
   }
 }
 
+function displayYarnLength(value) {
+  const length = Number(value);
+  return Number.isFinite(length) && length > 0 ? length.toFixed(1) : "";
+}
+
+function commitYarnLength(event) {
+  const input = event.currentTarget;
+  setSingleJerseyFeedYarnLength(
+    Number(input.dataset.feedIndex),
+    Number(input.dataset.yarnIndex),
+    input.value
+  );
+}
+
+function finishYarnLengthOnEnter(event) {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  event.currentTarget.blur();
+}
+
+function applyBatchYarnLength(event, feedCount) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const editor = form.closest("#single-jersey-cam-editor");
+  const selectedFeedIndices = Array.from(
+    editor.querySelectorAll('input[name="selected-feed"]:checked'),
+    (input) => Number(input.value)
+  );
+  const feedIndices = getSingleJerseyFeedIndices(
+    form.elements.scope.value,
+    feedCount,
+    selectedFeedIndices
+  );
+  setSingleJerseyFeedYarnLengths(feedIndices, form.elements.yarnLength.value);
+}
+
+function feedYarnLengthEditor(feed, feedIndex, language) {
+  const yarns = Array.isArray(feed?.yarns) && feed.yarns.length
+    ? feed.yarns
+    : [{ yarnLengthCmPer100Needles: 0 }];
+  return html`<div class="cam-feed-yarn-lengths">
+    ${yarns.map((yarn, yarnIndex) => html`<label>
+      <span>${yarns.length === 1
+        ? t("camProgram.yarnLength", language)
+        : t("camProgram.yarn", language, { number: yarnIndex + 1 })}</span>
+      <input
+        type="number"
+        min="0"
+        step="0.1"
+        inputmode="decimal"
+        data-feed-index=${feedIndex}
+        data-yarn-index=${yarnIndex}
+        .value=${displayYarnLength(yarn.yarnLengthCmPer100Needles)}
+        @change=${commitYarnLength}
+        @keydown=${finishYarnLengthOnEnter} />
+    </label>`)}
+    <span class="cam-yarn-length-unit">
+      ${t("camProgram.yarnLengthUnit", language)}
+    </span>
+  </div>`;
+}
+
+function batchYarnLengthEditor(feedCount, language) {
+  return html`<form
+    class="cam-yarn-length-batch"
+    @submit=${(event) => applyBatchYarnLength(event, feedCount)}>
+    <span>${t("camProgram.batchYarnLength", language)}</span>
+    <input
+      name="yarnLength"
+      type="number"
+      min="0"
+      step="0.1"
+      inputmode="decimal"
+      placeholder="23.0"
+      aria-label=${t("camProgram.batchYarnLength", language)} />
+    <span>${t("camProgram.yarnLengthUnit", language)}</span>
+    <select name="scope">
+      <option value="all">${t("camProgram.batchAll", language)}</option>
+      <option value="odd">${t("camProgram.batchOdd", language)}</option>
+      <option value="even">${t("camProgram.batchEven", language)}</option>
+      <option value="selected">${t("camProgram.batchSelected", language)}</option>
+    </select>
+    <button type="submit" class="btn solid">
+      ${t("camProgram.batchApply", language)}
+    </button>
+  </form>`;
+}
+
 function operationLegend(language) {
   return html`<div class="cam-program-legend" aria-label=${t(
     "camProgram.operations",
@@ -69,8 +160,18 @@ function camProgramGrid(camProgram, language) {
           <th scope="col">${t("camProgram.tracks", language)}</th>
           ${Array.from(
             { length: feedCount },
-            (_, feed) => html`<th scope="col">
-              ${t("camProgram.feed", language, { number: feed + 1 })}
+            (_, feed) => html`<th scope="col" class="cam-feed-header">
+              <label class="cam-feed-select">
+                <input
+                  type="checkbox"
+                  name="selected-feed"
+                  value=${feed}
+                  aria-label=${t("camProgram.selectFeed", language, {
+                    number: feed + 1,
+                  })} />
+                <span>${t("camProgram.feed", language, { number: feed + 1 })}</span>
+              </label>
+              ${feedYarnLengthEditor(camProgram.feeds?.[feed], feed, language)}
             </th>`
           )}
         </tr>
@@ -163,6 +264,7 @@ export function singleJerseyCamProgramEditor() {
               resizeCamProgram(event, trackCount, event.target.value)} />
         </label>
       </div>
+      ${batchYarnLengthEditor(feedCount, language)}
       ${operationLegend(language)}
       <span class="cam-program-cycle-hint">
         ${t("camProgram.cycleHint", language)}

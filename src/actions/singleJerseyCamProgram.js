@@ -23,6 +23,24 @@ function validateOperation(operation) {
   }
 }
 
+function editableYarnLength(value) {
+  const length = value === "" || value == null ? 0 : Number(value);
+  return Number.isFinite(length) && length > 0 ? length : 0;
+}
+
+function validateFeedYarnIndex(camProgram, feedIndex, yarnIndex) {
+  if (
+    !Number.isInteger(feedIndex) ||
+    !Number.isInteger(yarnIndex) ||
+    feedIndex < 0 ||
+    yarnIndex < 0 ||
+    feedIndex >= camProgram.feeds.length ||
+    yarnIndex >= camProgram.feeds[feedIndex].yarns.length
+  ) {
+    throw new RangeError("feedIndex and yarnIndex must identify an existing Yarn.");
+  }
+}
+
 function normalizeFeedYarn(yarn) {
   const yarnLength = Number(yarn?.yarnLengthCmPer100Needles);
   const tension = yarn?.tensionCN == null ? null : Number(yarn.tensionCN);
@@ -144,6 +162,61 @@ export function setSingleJerseyFeedYarns(feedIndex, yarns) {
       ? { yarns: yarns.map(normalizeFeedYarn) }
       : { yarns: feed.yarns.map((yarn) => ({ ...yarn })) }
   );
+  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+}
+
+export function getSingleJerseyFeedIndices(
+  scope,
+  feedCount,
+  selectedFeedIndices = []
+) {
+  validateDimension(feedCount, "feeds");
+  if (!["all", "odd", "even", "selected"].includes(scope)) {
+    throw new TypeError("scope must be all, odd, even, or selected.");
+  }
+  const selected = new Set(selectedFeedIndices);
+  return Array.from({ length: feedCount }, (_, index) => index).filter((index) =>
+    scope === "all" ||
+    (scope === "odd" && index % 2 === 0) ||
+    (scope === "even" && index % 2 === 1) ||
+    (scope === "selected" && selected.has(index))
+  );
+}
+
+export function setSingleJerseyFeedYarnLength(feedIndex, yarnIndex, value) {
+  const camProgram = currentCamProgram();
+  validateFeedYarnIndex(camProgram, feedIndex, yarnIndex);
+  const yarnLengthCmPer100Needles = editableYarnLength(value);
+  const feeds = camProgram.feeds.map((feed, currentFeedIndex) => ({
+    yarns: feed.yarns.map((yarn, currentYarnIndex) => ({
+      ...yarn,
+      yarnLengthCmPer100Needles:
+        currentFeedIndex === feedIndex && currentYarnIndex === yarnIndex
+          ? yarnLengthCmPer100Needles
+          : yarn.yarnLengthCmPer100Needles,
+    })),
+  }));
+  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+}
+
+export function setSingleJerseyFeedYarnLengths(feedIndices, value) {
+  const camProgram = currentCamProgram();
+  const selectedFeeds = new Set(
+    feedIndices.filter(
+      (index) =>
+        Number.isInteger(index) && index >= 0 && index < camProgram.feeds.length
+    )
+  );
+  if (!selectedFeeds.size) return;
+  const yarnLengthCmPer100Needles = editableYarnLength(value);
+  const feeds = camProgram.feeds.map((feed, feedIndex) => ({
+    yarns: feed.yarns.map((yarn) => ({
+      ...yarn,
+      yarnLengthCmPer100Needles: selectedFeeds.has(feedIndex)
+        ? yarnLengthCmPer100Needles
+        : yarn.yarnLengthCmPer100Needles,
+    })),
+  }));
   dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
 }
 

@@ -1649,6 +1649,35 @@ button.btn.chart-stitch-button.current {
   text-align: center;
 }
 
+.cam-yarn-length-batch {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #f5f5f2;
+  font-size: 0.72rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.cam-yarn-length-batch input,
+.cam-yarn-length-batch select {
+  box-sizing: border-box;
+  height: 1.9rem;
+  color: var(--ink);
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 7px;
+}
+
+.cam-yarn-length-batch input {
+  width: 4.25rem;
+  text-align: center;
+}
+
+.cam-yarn-length-batch select {
+  max-width: 8rem;
+}
+
 .cam-program-legend > span {
   box-sizing: border-box;
   flex: 0 0 6.25rem;
@@ -1704,6 +1733,57 @@ button.btn.chart-stitch-button.current {
   color: #f5f5f2;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.cam-program-grid .cam-feed-header {
+  min-width: 6.5rem;
+  vertical-align: top;
+}
+
+.cam-feed-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.2rem;
+}
+
+.cam-feed-select input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.cam-feed-yarn-lengths {
+  display: grid;
+  gap: 0.14rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.cam-feed-yarn-lengths label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.cam-feed-yarn-lengths input {
+  box-sizing: border-box;
+  width: 3.3rem;
+  height: 1.55rem;
+  padding: 0.12rem 0.2rem;
+  color: var(--ink);
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  font: inherit;
+  text-align: center;
+}
+
+.cam-yarn-length-unit {
+  color: #d9dcdd;
+  font-size: 0.64rem;
+  line-height: 1;
 }
 
 .cam-program-cell {

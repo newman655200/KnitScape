@@ -60,6 +60,9 @@ try {
     cycleSingleJerseyCamOperation,
     deleteSingleJerseyCamProgram,
     resizeSingleJerseyCamProgram,
+    getSingleJerseyFeedIndices,
+    setSingleJerseyFeedYarnLength,
+    setSingleJerseyFeedYarnLengths,
     setSingleJerseyFeedYarns,
     setSingleJerseyCamOperation,
   } = await server.ssrLoadModule(`/${actionPath}`);
@@ -147,6 +150,70 @@ try {
   assert.equal(state().yarnPalette, yarnPaletteReference);
   assert.equal(state().yarnSequence, yarnSequenceReference);
   assert.equal(state().yarnPlies, yarnPliesReference);
+
+  assert.deepEqual(getSingleJerseyFeedIndices("all", 4), [0, 1, 2, 3]);
+  assert.deepEqual(getSingleJerseyFeedIndices("odd", 4), [0, 2]);
+  assert.deepEqual(getSingleJerseyFeedIndices("even", 4), [1, 3]);
+  assert.deepEqual(
+    getSingleJerseyFeedIndices("selected", 4, [3, 1, 1, -1, 8]),
+    [1, 3]
+  );
+
+  setSingleJerseyFeedYarnLength(1, 1, 8);
+  assert.deepEqual(
+    state().singleJerseyCamProgram.feeds[1].yarns.map(
+      (yarn) => yarn.yarnLengthCmPer100Needles
+    ),
+    [31, 8],
+    "editing Yarn 2 must not change Yarn 1 in the same Feed."
+  );
+  setSingleJerseyFeedYarnLengths([0, 2], 21);
+  assert.deepEqual(
+    state().singleJerseyCamProgram.feeds.map((feed) =>
+      feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
+    ),
+    [[21], [31, 8], [21], [0]],
+    "odd Feed batch editing must only update Feed 1 and Feed 3."
+  );
+  setSingleJerseyFeedYarnLengths([1, 3], 27);
+  assert.deepEqual(
+    state().singleJerseyCamProgram.feeds.map((feed) =>
+      feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
+    ),
+    [[21], [27, 27], [21], [27]],
+    "even Feed batch editing must update every Yarn inside the target Feeds."
+  );
+  setSingleJerseyFeedYarnLengths([0, 3], 23);
+  assert.deepEqual(
+    state().singleJerseyCamProgram.feeds.map((feed) =>
+      feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
+    ),
+    [[23], [27, 27], [21], [23]],
+    "selected Feed batch editing must preserve unselected Feeds."
+  );
+  setSingleJerseyFeedYarnLengths(
+    getSingleJerseyFeedIndices("all", 4),
+    25
+  );
+  assert.deepEqual(
+    state().singleJerseyCamProgram.feeds.map((feed) =>
+      feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
+    ),
+    [[25], [25, 25], [25], [25]],
+    "all Feed batch editing must update every Feed in one action."
+  );
+  setSingleJerseyFeedYarnLength(0, 0, "");
+  assert.equal(
+    state().singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles,
+    0,
+    "an empty yarn length must persist the existing zero/fallback value."
+  );
+  setSingleJerseyFeedYarnLength(0, 0, "invalid");
+  assert.equal(
+    state().singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles,
+    0,
+    "an invalid yarn length must safely keep the original-path fallback."
+  );
 
   const operationsWithoutFeedYarns = resolveSingleJerseyOperations(
     { tracks: state().singleJerseyCamProgram.tracks },
@@ -435,7 +502,7 @@ try {
   const dispatchLines = actionSource
     .split(/\r?\n/)
     .filter((line) => line.includes("dispatch("));
-  assert.equal(dispatchLines.length, 5);
+  assert.equal(dispatchLines.length, 7);
   assert.ok(
     dispatchLines.every((line) => line.includes("singleJerseyCamProgram")),
     "every Cam action dispatch must update only singleJerseyCamProgram."
@@ -445,6 +512,25 @@ try {
     viewSource,
     /camProgram\.tracks\.map\(\s*\(track,\s*trackIndex\)\s*=>\s*html`<tr>/s,
     "outer UI iteration must create Type rows from tracks."
+  );
+  assert.match(viewSource, /@change=\$\{commitYarnLength\}/);
+  assert.match(viewSource, /event\.currentTarget\.blur\(\)/);
+  assert.doesNotMatch(
+    viewSource,
+    /@input=\$\{[^}]*setSingleJerseyFeedYarnLength/,
+    "typing a partial number must not run the Solver before blur or Enter."
+  );
+  assert.match(viewSource, /name="selected-feed"/);
+  assert.match(viewSource, /camProgram\.batchAll/);
+  assert.match(viewSource, /camProgram\.batchOdd/);
+  assert.match(viewSource, /camProgram\.batchEven/);
+  assert.match(viewSource, /camProgram\.batchSelected/);
+  assert.match(viewSource, /name="yarnLength"/);
+  assert.match(viewSource, /form\.elements\.yarnLength\.value/);
+  assert.doesNotMatch(
+    viewSource,
+    /form\.elements\.length\.value/,
+    "the batch input name must not collide with form.elements.length."
   );
   assert.match(
     viewSource,
@@ -596,6 +682,15 @@ try {
     "camProgram.tuck",
     "camProgram.miss",
     "camProgram.delete",
+    "camProgram.yarnLength",
+    "camProgram.yarnLengthUnit",
+    "camProgram.yarn",
+    "camProgram.batchYarnLength",
+    "camProgram.batchAll",
+    "camProgram.batchOdd",
+    "camProgram.batchEven",
+    "camProgram.batchSelected",
+    "camProgram.batchApply",
   ]) {
     assert.equal(
       translationsSource.split(`\"${key}\"`).length - 1,

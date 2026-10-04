@@ -11,6 +11,7 @@ import {
   DEFAULT_MACHINE_GAUGE,
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
+import { createYarnAsset } from "./domain/yarnLibrary.js";
 
 let GLOBAL_STATE = {
   language: getInitialLanguage(),
@@ -42,6 +43,10 @@ let GLOBAL_STATE = {
   needleArrangementInputs: ["", "", "", ""],
   needleArrangement: [],
   singleJerseyCamProgram: null,
+  yarnLibrary: [createYarnAsset(0, "Yarn 1")],
+  yarnLibraryQuery: { search: "", category: "ALL", sort: "name" },
+  yarnLibraryError: null,
+  pendingYarnId: null,
 
   activeYarn: 0,
   yarnPalette: [DEFAULT_YARN_COLOR], // Colors of the yarns

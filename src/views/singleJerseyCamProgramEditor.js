@@ -13,7 +13,9 @@ import knitIconUrl from "../assets/symbols/knit.svg";
 import slipIconUrl from "../assets/symbols/slip.svg";
 import tuckIconUrl from "../assets/symbols/tuck.svg";
 import { t } from "../i18n/index.js";
-import { GLOBAL_STATE } from "../state.js";
+import { dispatch, GLOBAL_STATE } from "../state.js";
+import { assignYarnToFeed, removeFeedYarnSlot } from "../actions/yarnLibrary.js";
+import { yarnAssignmentNotice } from "./yarnLibrary.js";
 
 const OPERATION_ORDER = ["K", "M", "T"];
 const OPERATION_ICON_URLS = {
@@ -45,6 +47,10 @@ function resizeCamProgram(event, trackCount, feedCount) {
 function displayYarnLength(value) {
   const length = Number(value);
   return Number.isFinite(length) && length > 0 ? length.toFixed(1) : "";
+}
+
+function openYarnLibrary() {
+  dispatch({ workspaceMode: "yarns" });
 }
 
 function commitYarnLength(event) {
@@ -81,9 +87,23 @@ function applyBatchYarnLength(event, feedCount) {
 function feedYarnLengthEditor(feed, feedIndex, language) {
   const yarns = Array.isArray(feed?.yarns) && feed.yarns.length
     ? feed.yarns
-    : [{ yarnLengthCmPer100Needles: 0 }];
+    : [{ yarnId: 0, yarnLengthCmPer100Needles: 0 }];
   return html`<div class="cam-feed-yarn-lengths">
-    ${yarns.map((yarn, yarnIndex) => html`<label>
+    ${yarns.map((yarn, yarnIndex) => html`<div class="cam-feed-yarn-slot">
+      <div class="cam-feed-yarn-assignment">
+        <button type="button" class="cam-feed-yarn-name"
+          title=${GLOBAL_STATE.yarnLibrary.find(asset => String(asset.id) === String(yarn.yarnId))?.name ?? ""}
+          @click=${() => GLOBAL_STATE.pendingYarnId === null
+            ? openYarnLibrary()
+            : assignYarnToFeed(feedIndex, yarnIndex)}>
+          ${t("camProgram.yarn", language, { number: yarnIndex + 1 })} ·
+          ${GLOBAL_STATE.yarnLibrary.find(asset => String(asset.id) === String(yarn.yarnId))?.name ?? "—"}
+        </button>
+        <button type="button" class="btn cam-feed-yarn-remove" ?disabled=${yarns.length === 1}
+          aria-label=${t("yarnLibrary.removeSlot", language, { number: yarnIndex + 1 })}
+          @click=${() => removeFeedYarnSlot(feedIndex, yarnIndex)}>×</button>
+      </div>
+      <label>
       <span>${yarns.length === 1
         ? t("camProgram.yarnLength", language)
         : t("camProgram.yarn", language, { number: yarnIndex + 1 })}</span>
@@ -97,10 +117,15 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
         .value=${displayYarnLength(yarn.yarnLengthCmPer100Needles)}
         @change=${commitYarnLength}
         @keydown=${finishYarnLengthOnEnter} />
-    </label>`)}
+      </label>
+    </div>`)}
     <span class="cam-yarn-length-unit">
       ${t("camProgram.yarnLengthUnit", language)}
     </span>
+    <button class="btn cam-feed-yarn-add" type="button"
+      @click=${() => GLOBAL_STATE.pendingYarnId === null
+        ? openYarnLibrary()
+        : assignYarnToFeed(feedIndex, yarns.length)}>${t("yarnLibrary.addSlot", language)}</button>
   </div>`;
 }
 
@@ -228,6 +253,7 @@ export function singleJerseyCamProgramEditor() {
           ${t("camProgram.create", language)}
         </button>
       </div>
+      ${yarnAssignmentNotice()}
     </section>`;
   }
 
@@ -276,6 +302,7 @@ export function singleJerseyCamProgramEditor() {
         ${t("camProgram.delete", language)}
       </button>
     </div>
+    ${yarnAssignmentNotice()}
     ${camProgramGrid(camProgram, language)}
   </section>`;
 }

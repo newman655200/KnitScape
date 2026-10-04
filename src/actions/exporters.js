@@ -143,6 +143,11 @@ export function downloadJSON() {
         yarnPalette: GLOBAL_STATE.yarnPalette,
         yarnSequence: GLOBAL_STATE.yarnSequence.toJSON(),
         yarnPlies: GLOBAL_STATE.yarnPlies,
+        yarnLibrary: GLOBAL_STATE.yarnLibrary,
+        singleJerseyCamProgram: GLOBAL_STATE.singleJerseyCamProgram,
+        needleArrangement: GLOBAL_STATE.needleArrangement,
+        needleArrangementInputs: GLOBAL_STATE.needleArrangementInputs,
+        machineGauge: GLOBAL_STATE.machineGauge,
       })
     );
 

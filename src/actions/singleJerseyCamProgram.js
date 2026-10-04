@@ -1,4 +1,5 @@
 import { dispatch, GLOBAL_STATE } from "../state.js";
+import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
 
 const DEFAULT_TRACK_COUNT = 4;
 const DEFAULT_FEED_COUNT = 4;
@@ -99,12 +100,28 @@ function buildCamProgram(trackCount, feedCount, source = null) {
   };
 }
 
+export function normalizeSingleJerseyCamProgram(source) {
+  if (source === null) return null;
+  const tracks = source?.tracks;
+  if (!Array.isArray(tracks) || !tracks.length || !Array.isArray(tracks[0]) || !tracks[0].length) {
+    throw new TypeError("camProgram.tracks must be a non-empty rectangular array.");
+  }
+  tracks.forEach(track => {
+    if (!Array.isArray(track) || track.length !== tracks[0].length) {
+      throw new TypeError("camProgram.tracks must be rectangular.");
+    }
+    track.forEach(validateOperation);
+  });
+  return buildCamProgram(tracks.length, tracks[0].length, source);
+}
+
 export function createSingleJerseyCamProgram(
   trackCount = DEFAULT_TRACK_COUNT,
   feedCount = DEFAULT_FEED_COUNT
 ) {
   const singleJerseyCamProgram = buildCamProgram(trackCount, feedCount);
-  dispatch({ singleJerseyCamProgram });
+  dispatch({ singleJerseyCamProgram,
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, singleJerseyCamProgram.feeds) });
 }
 
 export function resizeSingleJerseyCamProgram(trackCount, feedCount) {
@@ -113,7 +130,8 @@ export function resizeSingleJerseyCamProgram(trackCount, feedCount) {
     feedCount,
     currentCamProgram()
   );
-  dispatch({ singleJerseyCamProgram });
+  dispatch({ singleJerseyCamProgram,
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, singleJerseyCamProgram.feeds) });
 }
 
 export function setSingleJerseyCamOperation(
@@ -162,7 +180,8 @@ export function setSingleJerseyFeedYarns(feedIndex, yarns) {
       ? { yarns: yarns.map(normalizeFeedYarn) }
       : { yarns: feed.yarns.map((yarn) => ({ ...yarn })) }
   );
-  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds },
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, feeds) });
 }
 
 export function getSingleJerseyFeedIndices(

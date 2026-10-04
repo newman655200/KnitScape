@@ -14,6 +14,7 @@ import { repeatTools } from "./repeatTools";
 import { chartEditorToolbar } from "./chartEditorToolbar";
 import { needleArrangementBar } from "./needleArrangementBar";
 import { singleJerseyCamProgramEditor } from "./singleJerseyCamProgramEditor";
+import { yarnLibraryWorkspace } from "./yarnLibrary.js";
 
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
@@ -42,7 +43,7 @@ export function view() {
     ${when(GLOBAL_STATE.showLibrary, libraryModal)}
     ${when(GLOBAL_STATE.showSettings, settingsModal)} ${taskbar()}
 
-    <div id="site">
+    <div id="site" class=${GLOBAL_STATE.workspaceMode === "yarns" ? "yarn-library-active" : ""}>
       <div id="chart-pane">
         <div id="chart-layout">
           ${leftBar()}
@@ -80,6 +81,11 @@ export function view() {
         </div>
       </div>
       ${simulationView()}
+      <main id="yarn-library-workspace"
+        class=${GLOBAL_STATE.workspaceMode === "yarns" ? "" : "workspace-hidden"}
+        aria-hidden=${GLOBAL_STATE.workspaceMode !== "yarns"}>
+        ${yarnLibraryWorkspace()}
+      </main>
     </div>
     ${when(GLOBAL_STATE.debug, debugPane)}
     ${codeGuideOverlay()}

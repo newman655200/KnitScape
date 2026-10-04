@@ -140,6 +140,89 @@ TASKBAR
   pointer-events: none;
 }
 
+.yarn-library-active > #chart-pane,
+.yarn-library-active > #sim-pane {
+  position: absolute !important;
+  top: 0;
+  height: 100%;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.yarn-library-active > #chart-pane { left: 0; }
+.yarn-library-active > #sim-pane { right: 0; }
+.yarn-library-active > .gutter { display: none; }
+
+#yarn-library-workspace {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  color: var(--text);
+  background: var(--app-background);
+  user-select: text;
+}
+
+#yarn-library-workspace h2 { margin: 0; }
+.yarn-library-toolbar, .yarn-asset-form, .yarn-assignment-notice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.yarn-library-toolbar input, .yarn-asset-form input { min-width: 10rem; flex: 1; }
+.yarn-library-toolbar input, .yarn-library-toolbar select,
+.yarn-asset-form input, .yarn-asset-form select {
+  height: 2rem;
+  padding: 0.25rem 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--input-background);
+  font: inherit;
+}
+.yarn-library-list { min-height: 0; flex: 1; overflow: auto; }
+.yarn-library-table { width: 100%; min-width: 42rem; table-layout: fixed; border-collapse: collapse; }
+.yarn-library-table th, .yarn-library-table td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--panel-border);
+  text-align: left;
+  vertical-align: top;
+}
+.yarn-library-table th { position: sticky; top: 0; background: var(--app-background); z-index: 1; }
+.yarn-library-table th:nth-child(2) { width: 4rem; }
+.yarn-library-table th:nth-child(3) { width: 13rem; }
+.yarn-library-table th:nth-child(4) { width: 17rem; }
+.yarn-asset-name {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0.3rem 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.yarn-pending { background: var(--accent-tint); color: var(--ink); }
+.yarn-asset-actions details { display: inline-block; vertical-align: top; margin-right: 0.5rem; }
+.yarn-asset-actions summary { padding: 0.3rem 0; cursor: pointer; }
+.yarn-asset-actions .yarn-asset-form { margin-top: 0.4rem; }
+.yarn-asset-actions .yarn-asset-form input { min-width: 5rem; width: 9rem; }
+.yarn-assignment-notice { padding: 0.45rem 0.6rem; background: var(--accent-tint); color: var(--ink); }
+.yarn-assignment-notice > span { flex: 1 1 12rem; min-width: 0; overflow-wrap: anywhere; }
+.yarn-assignment-notice .btn { color: var(--ink); }
+.yarn-library-hint { margin: 0; font-size: 0.8rem; color: var(--text-inactive); }
+.yarn-library-error { margin: 0; color: #ffd7d7; }
+
 /**********************************
 
 SIM PANE
@@ -1766,6 +1849,24 @@ button.btn.chart-stitch-button.current {
   justify-content: center;
   gap: 0.2rem;
 }
+
+.cam-feed-yarn-slot { display: grid; gap: 0.2rem; }
+.cam-feed-yarn-assignment { display: flex; align-items: center; justify-content: center; gap: 0.2rem; }
+.cam-feed-yarn-name {
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.2rem 0.35rem;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--panel-border);
+  border-radius: 5px;
+  font: inherit;
+  cursor: pointer;
+}
+.cam-feed-yarn-remove, .cam-feed-yarn-add { font: inherit; padding: 0.15rem 0.3rem; }
+.cam-feed-yarn-remove:disabled { opacity: 0.35; cursor: default; }
 
 .cam-feed-yarn-lengths input {
   box-sizing: border-box;

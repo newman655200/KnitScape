@@ -8,6 +8,9 @@ import {
 } from "../constants";
 import { normalizeYarnPly } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "./yarnSequenceRows";
+import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
+import { normalizeSingleJerseyCamProgram } from "./singleJerseyCamProgram.js";
+import { resolveSingleJerseyOperations } from "../domain/singleJerseyMachine.js";
 
 function cloneYarnPlies(plies = DEFAULT_YARN_PLIES) {
   const source = Array.isArray(plies) && plies.length ? plies : DEFAULT_YARN_PLIES;
@@ -21,12 +24,32 @@ function cloneYarnPlies(plies = DEFAULT_YARN_PLIES) {
   });
 }
 
+function yarnProjectFields(project) {
+  // Legacy Pattern-only imports retain the current Machine and Yarn Library.
+  const hasCam = Object.hasOwn(project, "singleJerseyCamProgram");
+  if (!hasCam && !Object.hasOwn(project, "yarnLibrary")) return {};
+  const cam = hasCam ? normalizeSingleJerseyCamProgram(project.singleJerseyCamProgram)
+    : GLOBAL_STATE.singleJerseyCamProgram;
+  const fields = { yarnLibrary: normalizeYarnLibrary(
+    project.yarnLibrary ?? GLOBAL_STATE.yarnLibrary, cam?.feeds), pendingYarnId: null, yarnLibraryError: null };
+  if (hasCam) {
+    fields.singleJerseyCamProgram = cam;
+    for (const key of ["needleArrangement", "needleArrangementInputs", "machineGauge"]) {
+      if (Object.hasOwn(project, key)) fields[key] = structuredClone(project[key]);
+    }
+    const arrangement = fields.needleArrangement ?? GLOBAL_STATE.needleArrangement;
+    if (cam && arrangement.length) resolveSingleJerseyOperations(cam, arrangement, 1, 1);
+  }
+  return fields;
+}
+
 export function loadJSON(patternJSON) {
   let { yarnSequence, yarnPalette, yarnPlies, repeats, width, height } =
     patternJSON;
   const chart = Bimp.empty(width, height, DEFAULT_STITCH_SYMBOL_INDEX);
 
   dispatch({
+    ...yarnProjectFields(patternJSON),
     workspaceMode: "pattern",
     yarnPalette: Array.isArray(yarnPalette) && yarnPalette.length
       ? yarnPalette

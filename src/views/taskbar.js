@@ -80,6 +80,12 @@ export function taskbar() {
         @click=${() => dispatch({ workspaceMode: "machine" })}>
         ${t("workspace.machine", language)}
       </button>
+      <button type="button"
+        class="btn ${GLOBAL_STATE.workspaceMode === "yarns" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workspaceMode === "yarns"}
+        @click=${() => dispatch({ workspaceMode: "yarns" })}>
+        ${t("workspace.yarns", language)}
+      </button>
     </div>
   </div>`;
 }

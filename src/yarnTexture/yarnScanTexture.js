@@ -18,6 +18,8 @@ export const DEFAULT_YARN_SCAN_TEXTURE = Object.freeze({
   }),
 });
 
+export const YARN_PBR_MAP_KEYS = Object.freeze(Object.keys(DEFAULT_YARN_SCAN_TEXTURE.pbr));
+
 const YARN_TEXTURE_SIZE_PRESETS = [256, 512, 1024];
 const DEFAULT_YARN_LENGTH_SCALE_Y = 1;
 const MIN_YARN_LENGTH_SCALE_Y = 0.9;
@@ -174,16 +176,34 @@ export function identifyPbrMap(fileName) {
     new RegExp(`(^|[^a-z])(${aliases[key]})([^a-z]|$)`).test(name)) ?? null;
 }
 
-// Yarn Assets persist embedded images, never browser-local URLs or filesystem paths.
+// Yarn Asset maps use references at runtime; embedded images are accepted only
+// so legacy JSON can be migrated at the project import boundary.
+function normalizeAssetReference(map) {
+  if (typeof map.assetRef !== "string" || !map.assetRef ||
+    !["image/png", "image/jpeg", "image/webp"].includes(map.mimeType) ||
+    !Number.isSafeInteger(map.byteLength) || map.byteLength <= 0 ||
+    map.dataUrl || map.processedDataUrl) {
+    throw new TypeError("Invalid Yarn PBR asset reference.");
+  }
+  return { assetRef: map.assetRef, mimeType: map.mimeType, byteLength: map.byteLength };
+}
+
 export function normalizeYarnPbr(pbr) {
   if (pbr == null) return null;
-  const maps = normalizePbrTextureMaps(pbr);
   const isImageDataUrl = value => /^data:image\/(png|jpeg|webp);base64,[a-z\d+/=\s]+$/i.test(value);
-  for (const map of Object.values(maps)) {
-    if (map && (!isImageDataUrl(map.dataUrl) || !isImageDataUrl(map.processedDataUrl))) {
-      throw new TypeError("Yarn PBR maps require embedded PNG, JPEG or WebP images.");
+  const maps = Object.fromEntries(YARN_PBR_MAP_KEYS.map(key => {
+    const source = pbr[key];
+    if (source == null) return [key, null];
+    if (source.assetRef !== undefined) {
+      return [key, { ...normalizeAssetReference(source), fileName: String(source.fileName || ""),
+        ...(source.original ? { original: normalizeAssetReference(source.original) } : {}) }];
     }
-  }
+    const map = normalizePbrTextureMap(source);
+    if (!map || !isImageDataUrl(map.dataUrl) || !isImageDataUrl(map.processedDataUrl)) {
+      throw new TypeError("Yarn PBR maps require image references or embedded legacy images.");
+    }
+    return [key, map];
+  }));
   if (!Object.values(maps).some(Boolean)) return null;
   const previewDataUrl = pbr.previewDataUrl || "";
   if (previewDataUrl && !isImageDataUrl(previewDataUrl)) throw new TypeError("Invalid PBR preview.");

@@ -27,12 +27,14 @@ export class YarnAssetRegistry {
       ).then(blob => {
         if (!(blob instanceof Blob)) throw new TypeError("Asset loader must return a Blob.");
         return blob;
-      }).catch(error => {
-        entry.blobPromise = null;
-        throw error;
       });
     }
-    return entry.blobPromise;
+    const pending = entry.blobPromise;
+    try { return await pending; }
+    catch (error) {
+      if (entry.blobPromise === pending) entry.blobPromise = null;
+      throw error;
+    }
   }
 
   async getObjectUrl(ref) {

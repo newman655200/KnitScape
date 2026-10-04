@@ -31,6 +31,7 @@
     "validate:single-jersey-execution-integration": "node --experimental-default-type=module scripts/validate-single-jersey-execution-integration.mjs",
     "validate:workspace-mode": "node --experimental-default-type=module scripts/validate-workspace-mode.mjs",
     "validate:yarn-library": "node scripts/validate-yarn-library.mjs",
+    "validate:pbr-persistence": "node scripts/validate-pbr-persistence.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",
@@ -43,6 +44,7 @@
   "dependencies": {
     "@eastdesire/jscolor": "^2.5.1",
     "@fortawesome/fontawesome-free": "^7.2.0",
+    "@zip.js/zip.js": "2.23.0",
     "d3": "^7.8.5",
     "lit-html": "^2.7.5",
     "split.js": "^1.6.5",

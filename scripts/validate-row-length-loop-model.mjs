@@ -48,6 +48,16 @@ assert.equal(
   "length-only candidates need a streaming M/L/C context"
 );
 const lengthContext = loopModel.createPathLengthContext();
+lengthContext.moveTo(0, 0);
+lengthContext.bezierCurveTo(0, 1, 1, 1, 1, 0);
+assert.ok(Math.abs(lengthContext.totalLength - 2) < 1e-9,
+  "the cubic arch has exact arc length 2; 24-chord sampling is insufficient.");
+
+function referencePathLength(pathData) {
+  // Independent dense reference only in the validator; M starts a new subpath.
+  return pathData.split(/(?=M)/).reduce((sum, part) => sum +
+    loopModel.polylineLength(samplePathData(part, 32768)), 0);
+}
 function assertLengthContextMatchesPath(commands, roundCoordinates = true) {
   lengthContext.reset(roundCoordinates);
   const svg = roundCoordinates ? pathRound(6) : path();
@@ -57,11 +67,8 @@ function assertLengthContextMatchesPath(commands, roundCoordinates = true) {
   }
   const pathData = String(svg);
   assert.equal(lengthContext.valid, true, `finite context must be valid: ${pathData}`);
-  assert.equal(
-    lengthContext.totalLength,
-    pathDataLength(pathData),
-    `streaming length must exactly preserve SVG sampling: ${pathData}`
-  );
+  assert.ok(Math.abs(lengthContext.totalLength - referencePathLength(pathData)) < 1e-5,
+    `direct cubic integration must agree with the independent dense reference: ${pathData}`);
   assert.deepEqual(
     { start: lengthContext.start, end: lengthContext.end },
     pathEndpoints(pathData),
@@ -103,7 +110,7 @@ for (let index = 0; index < 48; index++) {
   lengthContext.reset();
   contextCurve(points);
   const pathData = openCurve(points);
-  assert.equal(lengthContext.totalLength, pathDataLength(pathData));
+  assert.ok(Math.abs(lengthContext.totalLength - referencePathLength(pathData)) < 1e-5);
   assert.deepEqual(
     { start: lengthContext.start, end: lengthContext.end },
     pathEndpoints(pathData)
@@ -200,7 +207,7 @@ for (let index = 0; index < 3; index++) {
 assert.equal(
   endpointModule.powerCallCount(),
   powersAfterConstruction,
-  "streaming measurements must reuse the 24 precomputed cubic powers"
+  "streaming integration must not use the display sampler's cubic powers"
 );
 endpointModule.samplePathData("M0,0C0,1,1,1,1,0");
 assert.ok(

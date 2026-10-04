@@ -67,7 +67,7 @@ const server = await createServer({
       if (id.replaceAll("\\", "/").endsWith("/src/simulation/yarnPathGeometry.js")) {
         return source.replace("export function buildYarnPathGeometry(", "function measuredBuildYarnPathGeometry(") +
           `\nexport function buildYarnPathGeometry(options) {
-            globalThis.__countYarnLengthGeometryCall();
+            if (!options.measurementWindow) globalThis.__countYarnLengthGeometryCall();
             return measuredBuildYarnPathGeometry(options);
           }\n`;
       }
@@ -234,15 +234,15 @@ try {
     assert.deepEqual(preview().paths, design.paths, "design original must stay unchanged.");
     return result;
   });
-  // Exact scalar baselines recorded before the performance optimization.
+  // Corrected periodic, high-precision scalar baselines.
   assert.deepEqual(solved.map((result) => [
     result.solvedLoopHeight,
     result.solvedModelLengthPer100Needles,
     result.error,
   ]), [
-    [0.3924758911132813, 264.5684209892266, 0.0014918553682718994],
-    [0.5083404541015626, 289.7550531845586, 0.008726343000432735],
-    [0.7589935302734374, 340.1480133748192, 0.009466940141464875],
+    [0.3667083740234376, 264.55848407606294, 0.008445057795370303],
+    [0.47929992675781247, 289.7620645905616, 0.0017149369974731599],
+    [0.7258468627929688, 340.1574557820884, 0.000024532872259896976],
   ]);
   for (let index = 0; index < lengths.length; index++) {
     const originalResult = preview(feed(lengths[index]));
@@ -326,7 +326,7 @@ try {
     assert.notDeepEqual(finalPreviews[index].paths, finalPreviews[index - 1].paths);
   }
   const validCalls = solverCalls;
-  for (const invalid of [undefined, null, 0, -1, "invalid", Infinity]) {
+  for (const invalid of [undefined, null, "", 0, -1, NaN, "invalid", Infinity]) {
     const fallback = preview(feed(invalid));
     assert.deepEqual(fallback.paths, design.paths);
     assert.deepEqual(fallback.yarnLengthSolverResults, []);

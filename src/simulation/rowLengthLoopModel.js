@@ -12,18 +12,43 @@ function cubicPoint(start, c1, c2, end, t, powers) {
   };
 }
 
+const GAUSS_NODES = [0.1834346424956498, 0.5255324099163290,
+  0.7966664774136267, 0.9602898564975363];
+const GAUSS_WEIGHTS = [0.3626837833783620, 0.3137066458778873,
+  0.2223810344533745, 0.1012285362903763];
+
+// Integrate |B'(t)| directly. The error budget is per cubic, in model units.
+export function cubicArcLength(start, c1, c2, end, tolerance = 1e-9) {
+  const dx0 = c1.x - start.x, dx1 = c2.x - c1.x, dx2 = end.x - c2.x;
+  const dy0 = c1.y - start.y, dy1 = c2.y - c1.y, dy2 = end.y - c2.y;
+  const ax = 3 * (dx2 - 2 * dx1 + dx0), bx = 6 * (dx1 - dx0), cx = 3 * dx0;
+  const ay = 3 * (dy2 - 2 * dy1 + dy0), by = 6 * (dy1 - dy0), cy = 3 * dy0;
+  const speed = (t) => Math.hypot((ax * t + bx) * t + cx, (ay * t + by) * t + cy);
+  function integrate(a, b) {
+    const mid = (a + b) / 2, half = (b - a) / 2;
+    let sum = 0;
+    for (let i = 0; i < GAUSS_NODES.length; i++) {
+      const offset = half * GAUSS_NODES[i];
+      sum += GAUSS_WEIGHTS[i] * (speed(mid - offset) + speed(mid + offset));
+    }
+    return half * sum;
+  }
+  function refine(a, b, whole, budget, depth) {
+    const mid = (a + b) / 2;
+    const left = integrate(a, mid), right = integrate(mid, b);
+    if (Math.abs(left + right - whole) <= budget || depth === 20) return left + right;
+    return refine(a, mid, left, budget / 2, depth + 1) +
+      refine(mid, b, right, budget / 2, depth + 1);
+  }
+  return refine(0, 1, integrate(0, 1), tolerance, 0);
+}
+
 export function createPathLengthContext(digits = 6) {
   const digitCount = Math.floor(digits);
   if (!(digitCount >= 0)) throw new Error(`invalid digits: ${digits}`);
   const factor = 10 ** digitCount;
-  const samplePowers = Array.from({ length: 24 }, (_, index) => {
-    const t = (index + 1) / 24;
-    const mt = 1 - t;
-    return { mt3: mt ** 3, mt2: mt ** 2, t2: t ** 2, t3: t ** 3 };
-  });
   let roundCoordinates = true;
   let current = null;
-  let previous = null;
   const coordinate = (value) => {
     const number = +value;
     const rounded = roundCoordinates && digitCount <= 15
@@ -40,15 +65,11 @@ export function createPathLengthContext(digits = 6) {
     }
     context.start ??= value;
     context.end = value;
-    if (previous) {
-      context.totalLength += Math.hypot(value.x - previous.x, value.y - previous.y);
-    }
-    previous = value;
   }
   const context = {
     reset(round = true) {
       roundCoordinates = round;
-      current = previous = null;
+      current = null;
       context.totalLength = 0;
       context.start = context.end = null;
       context.valid = true;
@@ -59,19 +80,21 @@ export function createPathLengthContext(digits = 6) {
       addPoint(current);
     },
     lineTo(x, y) {
-      current = point(x, y);
-      addPoint(current);
+      const end = point(x, y);
+      if (current) context.totalLength += Math.hypot(end.x - current.x, end.y - current.y);
+      current = end;
+      addPoint(end);
     },
     bezierCurveTo(x1, y1, x2, y2, x, y) {
       const c1 = point(x1, y1);
       const c2 = point(x2, y2);
       const end = point(x, y);
-      if (current) {
-        const start = current;
-        for (let sample = 1; sample <= 24; sample++) {
-          addPoint(cubicPoint(start, c1, c2, end, sample / 24, samplePowers[sample - 1]));
-        }
+      if (![current, c1, c2, end].every((p) => p && Number.isFinite(p.x) && Number.isFinite(p.y))) {
+        context.valid = false;
+        return;
       }
+      context.totalLength += cubicArcLength(current, c1, c2, end);
+      addPoint(end);
       current = end;
     },
   };

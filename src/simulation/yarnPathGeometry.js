@@ -1,4 +1,8 @@
 import * as d3 from "d3";
+import { Bimp } from "../lib/Bimp.js";
+import { Pattern } from "./Pattern.js";
+import { ProcessModel } from "./ProcessModel.js";
+import { YarnModel } from "./YarnModel.js";
 import {
   assertContinuousRowPaths,
   createPathLengthContext,
@@ -29,6 +33,31 @@ export const DEFAULT_YARN_MODEL_GEOMETRY = Object.freeze({
   calibrated: false,
 });
 
+function periodicMeasurementPattern(pattern, stitchPattern) {
+  // Find an exact horizontal repeat across every course, never a visual width.
+  let period = pattern.width;
+  for (let candidate = 1; candidate <= pattern.width; candidate++) {
+    if (pattern.width % candidate !== 0) continue;
+    let matches = true;
+    for (let row = 0; matches && row < pattern.height; row++) {
+      for (let needle = candidate; needle < pattern.width; needle++) {
+        if (stitchPattern.op(needle + X_PADDING, row) !==
+          stitchPattern.op(needle % candidate + X_PADDING, row)) {
+          matches = false;
+          break;
+        }
+      }
+    }
+    if (matches) { period = candidate; break; }
+  }
+  const operations = ["K", "P", "M", "T"];
+  const bitmap = new Bimp(3 * period, pattern.height,
+    Array.from({ length: 3 * period * pattern.height }, (_, index) =>
+      operations.indexOf(stitchPattern.op(index % (3 * period) % period + X_PADDING,
+        Math.floor(index / (3 * period))))));
+  return { bitmap, period };
+}
+
 export function buildYarnPathGeometry({
   pattern,
   stitchPattern,
@@ -41,6 +70,7 @@ export function buildYarnPathGeometry({
   modelLoopHeight = null,
   includeSummaryMetrics = true,
   includeDisplayPaths = true,
+  measurementWindow = null,
 }) {
   const defaultLoopHeight =
     DEFAULT_YARN_MODEL_GEOMETRY.loopHeight * primaryLengthScaleY;
@@ -337,53 +367,6 @@ export function buildYarnPathGeometry({
     return pathDataArcLength(pathData);
   }
 
-  function buildModelLengthMeasurementsByCourse() {
-    const measurements = new Map();
-    yarnPathLinks.forEach((link) => {
-      const pathData = modelPathByLink.get(link.index);
-      if (!pathData || !linkInEffectiveNeedles(link)) return;
-      const sourceNeedle = needlePosition(yarnPath[link.index]);
-      const targetNeedle = needlePosition(yarnPath[link.index + 1]);
-      const measurement = measurements.get(link.row) ?? {
-        modelLength: 0,
-        firstNeedle: Infinity,
-        lastNeedle: -Infinity,
-      };
-      measurement.modelLength += pathDataLength(pathData);
-      measurement.firstNeedle = Math.min(
-        measurement.firstNeedle,
-        sourceNeedle,
-        targetNeedle
-      );
-      measurement.lastNeedle = Math.max(
-        measurement.lastNeedle,
-        sourceNeedle,
-        targetNeedle
-      );
-      measurements.set(link.row, measurement);
-    });
-
-    const measuredNeedleCountByCourse = new Map();
-    const measuredModelLengthPer100NeedlesByCourse = new Map();
-    measurements.forEach((measurement, course) => {
-      const measuredNeedleCount =
-        measurement.lastNeedle - measurement.firstNeedle + 1;
-      measuredNeedleCountByCourse.set(course, measuredNeedleCount);
-      measuredModelLengthPer100NeedlesByCourse.set(
-        course,
-        normalizeModelLengthPer100Needles(
-          measurement.modelLength,
-          measuredNeedleCount
-        )
-      );
-    });
-
-    return {
-      measuredNeedleCountByCourse,
-      measuredModelLengthPer100NeedlesByCourse,
-    };
-  }
-
   function createModelLengthEvaluator() {
     // Solver working coordinates are isolated from the base/Renderer geometry.
     const modelState = {
@@ -392,6 +375,7 @@ export function buildYarnPathGeometry({
       loopHeight,
     };
     const context = createPathLengthContext(MODEL_PATH_DIGITS);
+    const evaluatePeriodic = periodicGeometry?.createModelLengthEvaluator();
     const lengthCurve = d3.line().x((point) => point.x).y((point) => point.y)
       .curve(d3.curveCatmullRomOpen).context(context);
     const prepare = (height) => {
@@ -407,8 +391,10 @@ export function buildYarnPathGeometry({
     const positionsFor = (rowCoefficients) => modelState.yarnPath.map((point) =>
       getSharedPointPosition(point, rowCoefficients, modelState)
     );
-    function measureRow(links, positions, rowCoefficients) {
+    function measureRow(links, positions, collectLengths = false) {
       let modelLength = 0;
+      let measuredLinks = 0;
+      const segmentLengths = collectLengths ? [] : null;
       let previous = null;
       let continuous = true;
       links.forEach((link, rowIndex) => {
@@ -421,43 +407,79 @@ export function buildYarnPathGeometry({
         } else {
           lengthCurve([positions[index - 1], positions[index], positions[index + 1], positions[index + 2]]);
         }
-        let endpoints = { start: context.start, end: context.end };
-        let length = context.totalLength;
+        const endpoints = { start: context.start, end: context.end };
+        const length = context.totalLength;
         if (!context.valid) {
-          const pathData = yarnCurve(link, rowCoefficients, IDENTITY_POINT, modelState);
-          endpoints = pathData ? pathEndpoints(pathData) : null;
-          length = pathData ? pathDataLength(pathData) : 0;
+          throw new RangeError("Model Path contains non-finite curve coordinates.");
         }
+        segmentLengths?.push(length);
         if (rowIndex > 0 && (!previous || !endpoints ||
           Math.hypot(previous.end.x - endpoints.start.x, previous.end.y - endpoints.start.y) > 1e-6)) {
           continuous = false;
         }
         previous = endpoints;
-        if (linkInEffectiveNeedles(link)) modelLength += length;
+        // Own the whole outgoing link, including a float that crosses the wrap.
+        // For a complete period, incoming/outgoing floats are cyclic equivalents.
+        const needle = needlePosition(modelState.yarnPath[index]);
+        if (measurementWindow && needle >= measurementWindow.firstNeedle &&
+          needle < measurementWindow.firstNeedle + measurementWindow.needleCount) {
+          modelLength += length;
+          measuredLinks++;
+        }
       });
-      return { modelLength, continuous };
+      return { modelLength, measuredLinks, continuous, segmentLengths };
     }
     return (height) => {
-      prepare(height);
-      const positions = positionsFor(coefficients);
+      const measuredNeedleCountByCourse = new Map();
       const measuredModelLengthPer100NeedlesByCourse = new Map();
-      linksByRow.forEach((links, row) => {
-        let measurement = measureRow(links, positions, coefficients);
-        if (!measurement.continuous) {
-          const rowCoefficients = new Map(coefficients);
-          rowCoefficients.set(row, 1);
-          measurement = measureRow(links, positionsFor(rowCoefficients), rowCoefficients);
-        }
-        const needleCount = modelLengthMeasurements.measuredNeedleCountByCourse.get(row);
-        if (needleCount !== undefined) {
+      if (evaluatePeriodic) {
+        const periodic = evaluatePeriodic(height);
+        periodic.measuredModelLengthPer100NeedlesByCourse.forEach((length, row) => {
+          measuredNeedleCountByCourse.set(row, pattern.width);
+          measuredModelLengthPer100NeedlesByCourse.set(row, length);
+        });
+      } else {
+        prepare(height);
+        const positions = positionsFor(coefficients);
+        linksByRow.forEach((links, row) => {
+          let measurement = measureRow(links, positions);
+          if (!measurement.continuous) {
+            const rowCoefficients = new Map(coefficients);
+            rowCoefficients.set(row, 1);
+            measurement = measureRow(links, positionsFor(rowCoefficients));
+          }
+          if (!measurement.measuredLinks) return;
+          const count = measurementWindow.needleCount;
+          measuredNeedleCountByCourse.set(row, count);
           measuredModelLengthPer100NeedlesByCourse.set(row,
-            normalizeModelLengthPer100Needles(measurement.modelLength, needleCount));
-        }
-      });
+            normalizeModelLengthPer100Needles(measurement.modelLength, count));
+        });
+      }
       let modelPaths = null;
+      let modelArcLength = null;
       return {
         yarnPathLinks,
+        measuredNeedleCountByCourse,
         measuredModelLengthPer100NeedlesByCourse,
+        get modelPathArcLength() {
+          if (modelArcLength === null) {
+            prepare(height);
+            const positions = positionsFor(coefficients);
+            const cumulative = [0];
+            linksByRow.forEach((links, row) => {
+              let measurement = measureRow(links, positions, true);
+              if (!measurement.continuous) {
+                const rowCoefficients = new Map(coefficients);
+                rowCoefficients.set(row, 1);
+                measurement = measureRow(links, positionsFor(rowCoefficients), true);
+              }
+              measurement.segmentLengths.forEach((length) => cumulative.push(cumulative.at(-1) + length));
+            });
+            // Direct integration accumulates at each link endpoint, without display samples.
+            modelArcLength = { totalModelLength: cumulative.at(-1), cumulativeModelArcLength: cumulative };
+          }
+          return modelArcLength;
+        },
         // Only resultFromCandidate reads paths, after the final height is chosen.
         get modelPathByLink() {
           if (modelPaths === null) {
@@ -494,12 +516,30 @@ export function buildYarnPathGeometry({
   const coefficients = buildRowCoefficients(linksByRow);
 
   updateNormals();
-  const { modelPathByLink, resolvedPathByLink } = buildResolvedPathMaps();
+  const periodic = measurementWindow ? null : periodicMeasurementPattern(pattern, stitchPattern);
+  const periodicStitches = periodic && new Pattern(periodic.bitmap.pad(X_PADDING, Y_PADDING, 0));
+  // Reuse the same topology/curve generator in a measurement-only wrap context.
+  // Three copies provide both Catmull-Rom neighbours and a complete outgoing float.
+  const periodicGeometry = periodic && buildYarnPathGeometry({
+    pattern: periodic.bitmap,
+    stitchPattern: periodicStitches,
+    yarnGraph: new YarnModel(new ProcessModel(periodicStitches).cn),
+    canvasWidth, canvasHeight, primaryLengthScaleY, primaryYarnDiameter,
+    machineGauge, modelLoopHeight: loopHeight,
+    includeSummaryMetrics: false,
+    includeDisplayPaths: false,
+    measurementWindow: { firstNeedle: X_PADDING + periodic.period, needleCount: periodic.period },
+  });
+  const { modelPathByLink, resolvedPathByLink } = measurementWindow
+    ? { modelPathByLink: new Map(), resolvedPathByLink: new Map() }
+    : buildResolvedPathMaps();
   const yarnPathArcLength = includeSummaryMetrics ? buildYarnPathArcLength() : null;
-  const modelArcLength = includeSummaryMetrics
-    ? buildYarnPathArcLength(modelPathByLink)
-    : null;
-  const modelLengthMeasurements = buildModelLengthMeasurementsByCourse();
+  const initialMeasurement = createModelLengthEvaluator()(loopHeight);
+  const modelLengthMeasurements = {
+    measuredNeedleCountByCourse: initialMeasurement.measuredNeedleCountByCourse,
+    measuredModelLengthPer100NeedlesByCourse: initialMeasurement.measuredModelLengthPer100NeedlesByCourse,
+  };
+  const modelArcLength = includeSummaryMetrics ? initialMeasurement.modelPathArcLength : null;
 
   return {
     stitchWidth,
@@ -511,10 +551,7 @@ export function buildYarnPathGeometry({
     createModelLengthEvaluator,
     modelPathToCanvas,
     resolveModelPathsForDisplay,
-    modelPathArcLength: modelArcLength && {
-      totalModelLength: modelArcLength.totalLength,
-      cumulativeModelArcLength: modelArcLength.cumulativeArcLength,
-    },
+    modelPathArcLength: modelArcLength,
     ...modelLengthMeasurements,
     yarnPathLinks,
     resolvedPathByLink,

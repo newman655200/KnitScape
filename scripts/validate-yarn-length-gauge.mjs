@@ -72,6 +72,19 @@ assert.ok(
       targetModelLengthPer100Needles(23, 32) * 2
   ) < 1e-9
 );
+let maxRoundTripError = 0;
+for (const cm of [19, 21, 23, 25, 27]) {
+  const target = targetModelLengthPer100Needles(cm, 32);
+  assert.ok(Math.abs(target - cm * 10 * 32 / 25.4) < 1e-12);
+  const error = Math.abs(modelLengthToMm(target, 32) / 10 - cm);
+  maxRoundTripError = Math.max(maxRoundTripError, error);
+  assert.ok(error < 1e-12);
+}
+for (const gauge of [28, 32, 36]) {
+  const target = targetModelLengthPer100Needles(23, gauge);
+  assert.ok(Math.abs(modelLengthToMm(target, gauge) - 230) < 1e-12);
+  assert.ok(Math.abs(target / targetModelLengthPer100Needles(23, 32) - gauge / 32) < 1e-12);
+}
 assert.equal(courseToFeedIndex(0, 2), 0);
 assert.equal(courseToFeedIndex(1, 2), 1);
 assert.equal(courseToFeedIndex(2, 2), 0);
@@ -201,6 +214,24 @@ const eightNeedleGeometry = buildProductionGeometry(Bimp.empty(8, 1, 0));
 assert.equal(fourNeedleGeometry.measuredNeedleCountByCourse.get(0), 4);
 assert.equal(eightNeedleGeometry.measuredNeedleCountByCourse.get(0), 8);
 
+const periodicResults = [];
+for (const [name, tile] of [["K", [0]], ["K-M", [0, 2]],
+  ["M-K", [2, 0]], ["K-M-M-M", [0, 2, 2, 2]], ["K-T", [0, 3]]]) {
+  const windows = [4, 8, 16, 32].map((width) => {
+    const pattern = new Bimp(width, 1,
+      Array.from({ length: width }, (_, index) => tile[index % tile.length]));
+    const geometry = buildProductionGeometry(pattern);
+    assert.equal(geometry.measuredNeedleCountByCourse.get(0), width,
+      `${name} must measure all machine-needle advances, including terminal Miss.`);
+    return { width, per100: geometry.measuredModelLengthPer100NeedlesByCourse.get(0) };
+  });
+  for (const window of windows) {
+    assert.ok(Math.abs(window.per100 - windows[0].per100) < 1e-8,
+      `${name}: a complete periodic window must be independent of its width.`);
+  }
+  periodicResults.push({ name, windows });
+}
+
 const arrangement = [1, 2, 3];
 const arrangedPattern = createSingleJerseyExecutionInput(
   { tracks: [["K"], ["K"], ["K"]] },
@@ -241,7 +272,7 @@ assert.equal(
 const boundaryMissGeometry = buildProductionGeometry(
   new Bimp(4, 1, [0, 2, 0, 2])
 );
-assert.equal(boundaryMissGeometry.measuredNeedleCountByCourse.get(0), 3);
+assert.equal(boundaryMissGeometry.measuredNeedleCountByCourse.get(0), 4);
 assert.ok(
   Math.abs(
     modelLengthToMm(
@@ -402,4 +433,6 @@ for (const token of [
   assert.match(translationsSource, new RegExp(`"${token}"`));
 }
 
-console.log("PASS: yarn length gauge readout is configured.");
+console.log(JSON.stringify(periodicResults));
+console.log(`Maximum unit round-trip error: ${maxRoundTripError} cm/100 needles.`);
+console.log("PASS: yarn length units and complete periodic needle windows are valid.");

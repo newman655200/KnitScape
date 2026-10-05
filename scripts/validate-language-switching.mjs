@@ -100,7 +100,7 @@ const sourceExpectations = [
   ["src/views/repeatTools.js", ["repeatTools.brush", "repeatTools.exit"]],
   ["src/views/chartTools.js", ["chartTools.cols", "chartTools.rows"]],
   ["src/views/settingsModal.js", ["settings.title", "settings.grid"]],
-  ["src/views/downloadModal.js", ["download.title", "download.patternJson"]],
+  ["src/views/downloadModal.js", ["download.title", "download.projectPackage", "download.saving"]],
   ["src/views/libraryModal.js", ["library.title", "library.load"]],
   ["src/components/runSimulation.js", ["simulation.flip", "simulation.fit"]],
 ];

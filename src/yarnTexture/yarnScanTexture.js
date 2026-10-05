@@ -1,3 +1,5 @@
+import { yarnAssetRegistry } from "./yarnAssetRegistry.js";
+
 export const DEFAULT_YARN_SCAN_TEXTURE = Object.freeze({
   sourceType: "scan",
   fileName: "",
@@ -210,7 +212,7 @@ export function normalizeYarnPbr(pbr) {
   return { ...maps, previewDataUrl };
 }
 
-export async function importPbrFiles(files) {
+export async function importPbrFiles(files, registry = yarnAssetRegistry) {
   const selected = new Map();
   for (const file of files) {
     const key = identifyPbrMap(file.name);
@@ -221,20 +223,34 @@ export async function importPbrFiles(files) {
   }
   if (!selected.size) throw Object.assign(new Error("No recognized PBR images."),
     { code: "PBR_UNRECOGNIZED_FILES" });
-  const pbr = {};
-  // Decode only the selected group, once on import; lists and getters never decode maps.
+  const validated = [];
+  let previewDataUrl = "";
   for (const [key, file] of selected) {
-    const dataUrl = await readFileAsDataUrl(file);
-    const image = await loadImageFromDataUrl(dataUrl);
-    pbr[key] = { fileName: file.name, dataUrl, processedDataUrl: dataUrl };
-    if (key === "baseColor") {
-      const scale = Math.min(1, 48 / Math.max(image.naturalWidth, image.naturalHeight));
-      const canvas = makeCanvas(image.naturalWidth * scale, image.naturalHeight * scale);
-      canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
-      pbr.previewDataUrl = canvas.toDataURL("image/png");
+    if (!(file instanceof Blob) || !file.size || file.size > 256 * 1024 ** 2) {
+      throw new TypeError("Invalid PBR image file.");
     }
+    const mimeType = file.type || (/\.png$/i.test(file.name) ? "image/png"
+      : /\.webp$/i.test(file.name) ? "image/webp" : "image/jpeg");
+    if (!["image/png", "image/jpeg", "image/webp"].includes(mimeType)) {
+      throw new TypeError("Invalid PBR image type.");
+    }
+    const blob = file.type === mimeType ? file : file.slice(0, file.size, mimeType);
+    const url = URL.createObjectURL(blob);
+    try {
+      const image = await loadImageFromDataUrl(url);
+      if (key === "baseColor") {
+        const scale = Math.min(1, 48 / Math.max(image.naturalWidth, image.naturalHeight));
+        const canvas = makeCanvas(image.naturalWidth * scale, image.naturalHeight * scale);
+        canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+        previewDataUrl = canvas.toDataURL("image/png");
+      }
+    } finally { URL.revokeObjectURL(url); }
+    validated.push({ key, fileName: file.name, blob });
   }
-  return normalizeYarnPbr(pbr);
+  // Only a completely validated group enters the Registry. Full maps never
+  // become Data URLs; the small BaseColor preview is the only embedded image.
+  return normalizeYarnPbr({ previewDataUrl, ...Object.fromEntries(validated.map(({ key, fileName, blob }) =>
+    [key, { fileName, assetRef: registry.register(blob), mimeType: blob.type, byteLength: blob.size }])) });
 }
 
 function makeCanvas(width, height) {

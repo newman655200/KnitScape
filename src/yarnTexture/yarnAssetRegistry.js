@@ -63,6 +63,11 @@ export class YarnAssetRegistry {
     for (const ref of this.#entries.keys()) this.release(ref);
   }
 
+  retain(refs) {
+    const keep = new Set(refs);
+    for (const ref of this.#entries.keys()) if (!keep.has(ref)) this.release(ref);
+  }
+
   // An in-progress export must retain the sources captured before editing or
   // switching projects. Blobs are immutable; this copies metadata, not bytes.
   fork() {
@@ -82,3 +87,8 @@ export class YarnAssetRegistry {
 }
 
 export const yarnAssetRegistry = new YarnAssetRegistry();
+
+export function getYarnPbrAssetRefs(pbr) {
+  return Object.values(pbr ?? {}).flatMap(map => map?.assetRef
+    ? [map.assetRef, ...(map.original ? [map.original.assetRef] : [])] : []);
+}

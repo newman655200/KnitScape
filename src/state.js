@@ -100,6 +100,7 @@ let GLOBAL_STATE = {
   showLibrary: false,
   showSettings: false,
   showDownload: false,
+  projectExporting: false,
   showRepeatLibrary: false,
   debug: false,
 
@@ -114,6 +115,7 @@ function loadWorkspace(workspace) {
 }
 
 function shouldSnapshot(action) {
+  if (Object.hasOwn(action, "snapshots")) return false;
   if (!(GLOBAL_STATE.lastSnapshot < Date.now() - SNAPSHOT_INTERVAL))
     return false;
 

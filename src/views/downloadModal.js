@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import {
   downloadBMP,
   downloadSVG,
-  downloadJSON,
+  downloadProject,
   downloadSilverKnitTxt,
   downloadPNG,
   downloadKniterate,
@@ -21,8 +21,17 @@ export function downloadModal() {
   return html` <div class="modal">
     <h2>${t("download.title", language)}</h2>
     <div class="modal-content">
-      <button class="btn solid" @click=${() => downloadJSON()}>
-        ${buttonIcon("download", t("download.patternJson", language))}
+      <button
+        class="btn solid"
+        ?disabled=${GLOBAL_STATE.projectExporting}
+        @click=${() => downloadProject()}>
+        ${buttonIcon(
+          "download",
+          t(
+            GLOBAL_STATE.projectExporting ? "download.saving" : "download.projectPackage",
+            language
+          )
+        )}
       </button>
       <!-- <button class="btn solid" @click=${() =>
         downloadPNG()}>Chart PNG</button>

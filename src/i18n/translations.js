@@ -127,7 +127,8 @@ export const translations = {
     "settings.symbolLineWidth": "针法线宽",
 
     "download.title": "导出图案",
-    "download.patternJson": "Pattern JSON",
+    "download.projectPackage": "KnitScape 项目 (.knitscape)",
+    "download.saving": "保存中…",
     "download.silverKnit": "TXT (Silver Knit)",
     "download.kniterate": "Kniterate TXT Import",
     "download.punchcard": "打孔卡",
@@ -197,6 +198,8 @@ export const translations = {
     "debug.showDownload": "导出弹窗",
     "debug.showDebug": "调试弹窗",
 
+    "alerts.projectImportFailed": "打开项目失败，原项目已保留。",
+    "alerts.projectExportFailed": "保存项目失败，请重试。",
     "alerts.textureReprocessFailed": "扫描纱线图片重新处理失败，请换一张白底或浅底图片。",
     "alerts.textureImportFailed": "扫描纱线图片导入失败，请换一张白底或浅底图片。",
     "alerts.needOneColor": "至少需要保留一种颜色。",
@@ -330,7 +333,8 @@ export const translations = {
     "settings.symbolLineWidth": "針法線寬",
 
     "download.title": "匯出圖案",
-    "download.patternJson": "Pattern JSON",
+    "download.projectPackage": "KnitScape 專案 (.knitscape)",
+    "download.saving": "儲存中…",
     "download.silverKnit": "TXT (Silver Knit)",
     "download.kniterate": "Kniterate TXT Import",
     "download.punchcard": "打孔卡",
@@ -400,6 +404,8 @@ export const translations = {
     "debug.showDownload": "匯出彈窗",
     "debug.showDebug": "調試彈窗",
 
+    "alerts.projectImportFailed": "開啟專案失敗，原專案已保留。",
+    "alerts.projectExportFailed": "儲存專案失敗，請重試。",
     "alerts.textureReprocessFailed": "掃描紗線圖片重新處理失敗，請換一張白底或淺底圖片。",
     "alerts.textureImportFailed": "掃描紗線圖片匯入失敗，請換一張白底或淺底圖片。",
     "alerts.needOneColor": "至少需要保留一種顏色。",
@@ -533,7 +539,8 @@ export const translations = {
     "settings.symbolLineWidth": "Symbol Line Width",
 
     "download.title": "Export Pattern",
-    "download.patternJson": "Pattern JSON",
+    "download.projectPackage": "KnitScape Project (.knitscape)",
+    "download.saving": "Saving…",
     "download.silverKnit": "TXT (Silver Knit)",
     "download.kniterate": "Kniterate TXT Import",
     "download.punchcard": "Punchcard",
@@ -603,6 +610,8 @@ export const translations = {
     "debug.showDownload": "Show Download",
     "debug.showDebug": "Show Debug",
 
+    "alerts.projectImportFailed": "Failed to open the project. Your current project has been preserved.",
+    "alerts.projectExportFailed": "Failed to save the project. Please try again.",
     "alerts.textureReprocessFailed": "Failed to reprocess the scanned yarn image. Please try a white or light-background image.",
     "alerts.textureImportFailed": "Failed to import the scanned yarn image. Please try a white or light-background image.",
     "alerts.needOneColor": "At least one color must remain.",
@@ -736,7 +745,8 @@ export const translations = {
     "settings.symbolLineWidth": "Độ rộng nét mũi",
 
     "download.title": "Xuất mẫu",
-    "download.patternJson": "Pattern JSON",
+    "download.projectPackage": "Dự án KnitScape (.knitscape)",
+    "download.saving": "Đang lưu…",
     "download.silverKnit": "TXT (Silver Knit)",
     "download.kniterate": "Kniterate TXT Import",
     "download.punchcard": "Thẻ đục lỗ",
@@ -806,6 +816,8 @@ export const translations = {
     "debug.showDownload": "Hiện xuất file",
     "debug.showDebug": "Hiện gỡ lỗi",
 
+    "alerts.projectImportFailed": "Không thể mở dự án. Dự án hiện tại được giữ nguyên.",
+    "alerts.projectExportFailed": "Không thể lưu dự án. Vui lòng thử lại.",
     "alerts.textureReprocessFailed": "Xử lý lại ảnh sợi quét thất bại. Vui lòng thử ảnh nền trắng hoặc nền sáng.",
     "alerts.textureImportFailed": "Nhập ảnh sợi quét thất bại. Vui lòng thử ảnh nền trắng hoặc nền sáng.",
     "alerts.needOneColor": "Cần giữ lại ít nhất một màu.",

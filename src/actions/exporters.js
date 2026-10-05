@@ -1,4 +1,6 @@
-import { GLOBAL_STATE } from "../state";
+import { createProjectPackage } from "./projectPackage.js";
+import { t } from "../i18n/index.js";
+import { GLOBAL_STATE, dispatch } from "../state";
 import { download, makeBMP } from "../utils";
 
 export function downloadSVG() {
@@ -130,26 +132,37 @@ export function downloadKniterate() {
   );
 }
 
-export function downloadJSON() {
-  const dataStr =
-    "data:text/json;charset=utf-8," +
-    encodeURIComponent(
-      JSON.stringify({
-        width: GLOBAL_STATE.chart.width,
-        height: GLOBAL_STATE.chart.height,
-        repeats: GLOBAL_STATE.repeats.map(({ bitmap, pos, area }) => {
-          return { bitmap: bitmap.toJSON(), pos, area };
-        }),
-        yarnPalette: GLOBAL_STATE.yarnPalette,
-        yarnSequence: GLOBAL_STATE.yarnSequence.toJSON(),
-        yarnPlies: GLOBAL_STATE.yarnPlies,
-        yarnLibrary: GLOBAL_STATE.yarnLibrary,
-        singleJerseyCamProgram: GLOBAL_STATE.singleJerseyCamProgram,
-        needleArrangement: GLOBAL_STATE.needleArrangement,
-        needleArrangementInputs: GLOBAL_STATE.needleArrangementInputs,
-        machineGauge: GLOBAL_STATE.machineGauge,
-      })
-    );
+export function getProjectData() {
+  return structuredClone({
+    width: GLOBAL_STATE.chart.width,
+    height: GLOBAL_STATE.chart.height,
+    repeats: GLOBAL_STATE.repeats.map(({ bitmap, pos, area }) =>
+      ({ bitmap: bitmap.toJSON(), pos, area })),
+    yarnPalette: GLOBAL_STATE.yarnPalette,
+    yarnSequence: GLOBAL_STATE.yarnSequence.toJSON(),
+    yarnPlies: GLOBAL_STATE.yarnPlies,
+    yarnLibrary: GLOBAL_STATE.yarnLibrary,
+    singleJerseyCamProgram: GLOBAL_STATE.singleJerseyCamProgram,
+    needleArrangement: GLOBAL_STATE.needleArrangement,
+    needleArrangementInputs: GLOBAL_STATE.needleArrangementInputs,
+    machineGauge: GLOBAL_STATE.machineGauge,
+  });
+}
 
-  download(dataStr, "pattern.json");
+export async function downloadProject() {
+  if (GLOBAL_STATE.projectExporting) return false;
+  dispatch({ projectExporting: true });
+  let url;
+  try {
+    const blob = await createProjectPackage(getProjectData());
+    url = URL.createObjectURL(blob);
+    download(url, "pattern.knitscape");
+    return true;
+  } catch (error) {
+    window.alert(t("alerts.projectExportFailed", GLOBAL_STATE.language) + "\n" + error.message);
+    return false;
+  } finally {
+    if (url) setTimeout(() => URL.revokeObjectURL(url), 1000);
+    dispatch({ projectExporting: false });
+  }
 }

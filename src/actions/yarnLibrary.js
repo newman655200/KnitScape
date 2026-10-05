@@ -1,9 +1,16 @@
+import { yarnAssetRegistry, getYarnPbrAssetRefs } from "../yarnTexture/yarnAssetRegistry.js";
 import { dispatch, GLOBAL_STATE } from "../state.js";
 import { createYarnAsset, isYarnReferenced } from "../domain/yarnLibrary.js";
 import { normalizeSingleJerseyCamProgram, setSingleJerseyFeedYarns } from "./singleJerseyCamProgram.js";
 import { importPbrFiles } from "../yarnTexture/yarnScanTexture.js";
 
 const pbrImports = new Map();
+
+export function cancelYarnPbrImports() { pbrImports.clear(); }
+
+function releasePbr(pbr) {
+  for (const ref of getYarnPbrAssetRefs(pbr)) yarnAssetRegistry.release(ref);
+}
 
 function assetById(id) {
   const asset = GLOBAL_STATE.yarnLibrary.find(yarn => String(yarn.id) === String(id));
@@ -34,6 +41,7 @@ export function deleteYarnAsset(id) {
     : normalizeSingleJerseyCamProgram(GLOBAL_STATE.singleJerseyCamProgram).feeds;
   if (isYarnReferenced(asset.id, feeds)) return false;
   pbrImports.delete(asset.id);
+  releasePbr(asset.pbr);
   dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.filter(yarn => yarn.id !== asset.id),
     ...(String(GLOBAL_STATE.pendingYarnId) === String(asset.id) ? { pendingYarnId: null } : {}) });
   return true;
@@ -50,10 +58,18 @@ export async function importYarnPbr(id, files) {
   try {
     const pbr = await importPbrFiles(files);
     if (pbrImports.get(asset.id) !== request ||
-      !GLOBAL_STATE.yarnLibrary.some(yarn => yarn.id === asset.id)) return false;
+      !GLOBAL_STATE.yarnLibrary.some(yarn => yarn.id === asset.id)) {
+      releasePbr(pbr);
+      return false;
+    }
+    const previous = assetById(id).pbr;
     dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
       ? { ...yarn, pbr, updatedAt: new Date().toISOString() } : yarn), yarnLibraryError: null });
+    releasePbr(previous);
     return true;
+  } catch (error) {
+    if (pbrImports.get(asset.id) !== request) return false;
+    throw error;
   } finally {
     if (pbrImports.get(asset.id) === request) pbrImports.delete(asset.id);
   }
@@ -62,6 +78,7 @@ export async function importYarnPbr(id, files) {
 export function clearYarnPbr(id) {
   const asset = assetById(id);
   pbrImports.delete(asset.id);
+  releasePbr(asset.pbr);
   const { pbr, ...metadata } = asset;
   dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
     ? { ...metadata, updatedAt: new Date().toISOString() } : yarn), yarnLibraryError: null });

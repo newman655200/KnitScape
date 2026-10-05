@@ -1,5 +1,11 @@
 import { buildYarnUvStrip } from "./yarnPathUvStrip.js";
-import { getWebglYarnRenderer } from "./yarnUvWebglRenderer.js";
+import {
+  getWebglYarnRenderer,
+  materialMaps,
+  retainWebglYarnTextures,
+} from "./yarnUvWebglRenderer.js";
+import { courseToFeedIndex } from "./yarnLengthMetrics.js";
+import { pathEndpoints } from "./rowLengthLoopModel.js";
 import {
   drawYarnSequenceMaskPath,
   drawYarnTexturePath,
@@ -17,6 +23,11 @@ export function drawYarnSimulation({
   canvasHeight,
   yarnPathLinks,
   resolvedPathByLink,
+  modelPathByLink,
+  uvOffsets,
+  uvStripCache = new Map(),
+  feedYarnPlies = new Map(),
+  feedCount = 0,
   stitchWidth,
   activeYarnPlies,
   normalizedYarnSequence,
@@ -31,6 +42,9 @@ export function drawYarnSimulation({
   const frontCtx = frontCanvas.getContext("2d");
 
   function rowYarnPly(link, ply) {
+    if (ply === activeYarnPlies[0] && feedCount) {
+      ply = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount)) || ply;
+    }
     if (!hasYarnSequenceMask) return ply;
 
     const paletteIndex = yarnIndexForSequenceRow(
@@ -78,18 +92,31 @@ export function drawYarnSimulation({
     if (!pathData) return null;
 
     const lineWidth = stitchWidth * rowPly.diameter;
+    const key = `${link.index}|${lineWidth}`;
+    if (!uvStripCache.has(key)) {
+      const modelPathData = modelPathByLink.get(link.index);
+      const modelStart = pathEndpoints(modelPathData)?.start;
+      const displayStart = pathEndpoints(pathData)?.start;
+      if (!modelStart || !displayStart) return null;
+      uvStripCache.set(key, buildYarnUvStrip({
+        modelPathData,
+        modelToCanvasPoint: point => ({
+          x: displayStart.x + (point.x - modelStart.x) * stitchWidth,
+          y: displayStart.y + (point.y - modelStart.y) * stitchWidth,
+        }),
+        arcLengthOffset: uvOffsets.get(link.index),
+        yarnWidth: lineWidth,
+        textureRepeatLength: YARN_UV_TEXTURE_REPEAT_LENGTH,
+        sampleSpacing: YARN_UV_SAMPLE_SPACING,
+        maxPoints: YARN_UV_MAX_POINTS_PER_PATH,
+      }));
+    }
     return {
       link,
       ply: rowPly,
       pathData,
       lineWidth,
-      strip: buildYarnUvStrip({
-        pathData,
-        yarnWidth: lineWidth,
-        textureRepeatLength: YARN_UV_TEXTURE_REPEAT_LENGTH,
-        sampleSpacing: YARN_UV_SAMPLE_SPACING,
-        maxPoints: YARN_UV_MAX_POINTS_PER_PATH,
-      }),
+      strip: uvStripCache.get(key),
     };
   }
 
@@ -121,6 +148,7 @@ export function drawYarnSimulation({
       return;
     }
 
+    renderer.retainTextures(layerTextureSources(layerLinks));
     renderer.clear(canvasWidth, canvasHeight);
 
     activeYarnPlies.forEach((ply) => {
@@ -142,6 +170,13 @@ export function drawYarnSimulation({
   yarnPathLinks.forEach((link) => {
     layers[link.layer].push(link);
   });
+  function layerTextureSources(layerLinks) {
+    return layerLinks.flatMap(link => activeYarnPlies.flatMap(ply =>
+      Object.values(materialMaps(rowYarnPly(link, ply)))));
+  }
+  for (const [layer, canvas] of Object.entries({ back: backCanvas, front: frontCanvas, mid: midCanvas })) {
+    retainWebglYarnTextures(canvas, layerTextureSources(layers[layer]));
+  }
 
   if (renderUvTextures) {
     drawSegmentsToLayerUv(

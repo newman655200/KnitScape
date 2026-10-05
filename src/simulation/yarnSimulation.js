@@ -1,7 +1,13 @@
 import { ProcessModel } from "./ProcessModel";
 import { Pattern } from "./Pattern";
 import { YarnModel } from "./YarnModel";
-import { prepareYarnTextureImages } from "./yarnTextureBrush";
+import {
+  prepareYarnTextureImages,
+  collectYarnTextureSources,
+  resolveFeedYarnPlies,
+  retainYarnAssetTextureImages,
+} from "./yarnTextureBrush";
+import { buildYarnUvPathOffsets } from "./yarnPathUvStrip.js";
 import { normalizeYarnTexture } from "../yarnTexture/yarnScanTexture";
 import { normalizeYarnSequence } from "../actions/yarnSequenceRows";
 import { TEXTURE_PERFORMANCE_MODES } from "../constants";
@@ -73,11 +79,7 @@ function hasUvTextureMap(ply) {
   const texture = normalizeYarnTexture(ply.texture);
   if (!texture || texture.enabled === false) return false;
 
-  return Boolean(
-    texture.processedDataUrl ||
-      texture.pbr?.baseColor?.processedDataUrl ||
-      texture.pbr?.baseColor?.dataUrl
-  );
+  return collectYarnTextureSources(texture).length > 0;
 }
 
 function isNeutralYarnSequence(yarnSequence) {
@@ -97,6 +99,7 @@ export function simulate(
     texturePreviewInteractionActive = false,
     target = {},
     feeds = null,
+    yarnLibrary = null,
   } = {}
 ) {
   let stopped = false;
@@ -111,8 +114,6 @@ export function simulate(
     texturePerformanceMode,
     texturePreviewInteractionActive,
   });
-  const renderUvTextures =
-    renderTextures && activeYarnPlies.some((ply) => hasUvTextureMap(ply));
 
   performance.clearMeasures();
   performance.mark("start");
@@ -243,6 +244,24 @@ export function simulate(
     });
   });
   const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
+  const modelPathByLink = new Map(geometry.modelPathByLink);
+  // If display resolution fell back, its UV must use the same original geometry.
+  if (resolvedPathByLink !== geometry.resolvedPathByLink) {
+    solvedModelPaths.forEach((path, index) => modelPathByLink.set(index, path));
+  }
+  const usedFeedIndices = new Set(geometry.yarnPathLinks.map(link =>
+    courseToFeedIndex(link.row, feeds?.length || 1)));
+  const feedYarnPlies = yarnLibrary === null ? new Map()
+    : resolveFeedYarnPlies(feeds, yarnLibrary, activeYarnPlies[0], usedFeedIndices);
+  const textureMaterials = [...new Set([
+    ...activeYarnPlies.slice(1),
+    ...(feedYarnPlies.size ? feedYarnPlies.values() : [activeYarnPlies[0]]),
+  ])];
+  if (yarnLibrary !== null) retainYarnAssetTextureImages([...textureMaterials, ...activeYarnPlies]);
+  const renderUvTextures = renderTextures && textureMaterials.some(hasUvTextureMap);
+  const uvOffsets = renderUvTextures
+    ? buildYarnUvPathOffsets(geometry.yarnPathLinks, modelPathByLink) : null;
+  const uvStripCache = new Map();
 
   function draw() {
     drawYarnSimulation({
@@ -251,6 +270,11 @@ export function simulate(
       canvasHeight,
       yarnPathLinks: geometry.yarnPathLinks,
       resolvedPathByLink,
+      modelPathByLink,
+      uvOffsets,
+      uvStripCache,
+      feedYarnPlies,
+      feedCount: feeds?.length || 0,
       stitchWidth: geometry.stitchWidth,
       activeYarnPlies,
       normalizedYarnSequence,
@@ -267,7 +291,7 @@ export function simulate(
 
   draw();
   if (renderTextures) {
-    prepareYarnTextureImages(activeYarnPlies).then(() => {
+    prepareYarnTextureImages(textureMaterials).then(() => {
       if (!stopped) draw();
     });
   }

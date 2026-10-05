@@ -26,7 +26,8 @@ export const DEFAULT_YARN_COLOR = "rgba(190,190,190,1)";
 export const YARN_TEXTURE_SIZES = [256, 512, 1024];
 
 export const YARN_UV_TEXTURE_REPEAT_LENGTH = 48;
-export const YARN_UV_SAMPLE_SPACING = 3;
+// UV sampling and repeat length are measured in model units (one needle pitch).
+export const YARN_UV_SAMPLE_SPACING = 0.03;
 export const YARN_UV_MAX_POINTS_PER_PATH = 1200;
 
 export const TEXTURE_PERFORMANCE_MODES = {

@@ -33,6 +33,7 @@
     "validate:yarn-library": "node scripts/validate-yarn-library.mjs",
     "validate:pbr-persistence": "node scripts/validate-pbr-persistence.mjs",
     "validate:path-uv-yarn-texture": "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
+    "validate:feed-yarn-pbr-renderer": "node scripts/validate-feed-yarn-pbr-renderer.mjs",
     "validate:event-driven-render": "node --experimental-default-type=module scripts/validate-event-driven-render.mjs",
     "validate:texture-cache-lifecycle": "node scripts/validate-texture-cache-lifecycle.mjs",
     "validate:yarn-simulation-characterization": "node scripts/validate-yarn-simulation-characterization.mjs",

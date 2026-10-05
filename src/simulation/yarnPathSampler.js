@@ -1,3 +1,5 @@
+import { cubicArcLength } from "./rowLengthLoopModel.js";
+
 const TOKEN_RE = /[MLCQZ]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi;
 const EPSILON = 1e-6;
 
@@ -42,13 +44,21 @@ export function quadraticPoint(p0, p1, p2, t) {
   };
 }
 
+function partialCubicLength(p0, p1, p2, t, end) {
+  const q0 = { x: lerp(p0.x, p1.x, t), y: lerp(p0.y, p1.y, t) };
+  const q1 = { x: lerp(p1.x, p2.x, t), y: lerp(p1.y, p2.y, t) };
+  const control = { x: lerp(q0.x, q1.x, t), y: lerp(q0.y, q1.y, t) };
+  return cubicArcLength(p0, q0, control, end);
+}
+
 function pointDistance(a, b) {
   return Math.hypot(b.x - a.x, b.y - a.y);
 }
 
 function pushPoint(points, point) {
   const previous = points.at(-1);
-  if (previous && pointDistance(previous, point) <= EPSILON) return;
+  if (previous && pointDistance(previous, point) <= EPSILON &&
+    Math.abs(previous.u - point.u) <= EPSILON) return;
   points.push(point);
 }
 
@@ -94,6 +104,7 @@ function flattenPathData(pathData, curveSteps = 24) {
   let command = null;
   let current = { x: 0, y: 0 };
   let subpathStart = null;
+  let totalLength = 0;
 
   while (index < tokens.length) {
     if (isCommand(tokens[index])) {
@@ -108,7 +119,8 @@ function flattenPathData(pathData, curveSteps = 24) {
 
     if (upperCommand === "Z") {
       if (subpathStart) {
-        pushPoint(points, { ...subpathStart });
+        totalLength += pointDistance(current, subpathStart);
+        pushPoint(points, { ...subpathStart, u: totalLength });
         current = { ...subpathStart };
       }
       command = null;
@@ -120,7 +132,7 @@ function flattenPathData(pathData, curveSteps = 24) {
       const result = readPoint(tokens, index, current, relative);
       current = result.point;
       subpathStart = { ...current };
-      pushPoint(points, { ...current });
+      pushPoint(points, { ...current, u: totalLength });
       index = result.nextIndex;
       command = relative ? "l" : "L";
       continue;
@@ -129,8 +141,9 @@ function flattenPathData(pathData, curveSteps = 24) {
     if (upperCommand === "L") {
       if (index + 1 >= tokens.length || isCommand(tokens[index])) continue;
       const result = readPoint(tokens, index, current, relative);
+      totalLength += pointDistance(current, result.point);
       current = result.point;
-      pushPoint(points, { ...current });
+      pushPoint(points, { ...current, u: totalLength });
       index = result.nextIndex;
       continue;
     }
@@ -140,12 +153,18 @@ function flattenPathData(pathData, curveSteps = 24) {
       const control = readPoint(tokens, index, current, relative);
       const end = readPoint(tokens, control.nextIndex, current, relative);
       const start = current;
+      const c1 = { x: lerp(start.x, control.point.x, 2 / 3),
+        y: lerp(start.y, control.point.y, 2 / 3) };
+      const c2 = { x: lerp(end.point.x, control.point.x, 2 / 3),
+        y: lerp(end.point.y, control.point.y, 2 / 3) };
+      const length = cubicArcLength(start, c1, c2, end.point);
       for (let step = 1; step <= curveSteps; step += 1) {
-        pushPoint(
-          points,
-          quadraticPoint(start, control.point, end.point, step / curveSteps)
-        );
+        const t = step / curveSteps;
+        const point = quadraticPoint(start, control.point, end.point, t);
+        pushPoint(points, { ...point, u: totalLength + (step === curveSteps
+          ? length : partialCubicLength(start, c1, c2, t, point)) });
       }
+      totalLength += length;
       current = end.point;
       index = end.nextIndex;
       continue;
@@ -157,18 +176,14 @@ function flattenPathData(pathData, curveSteps = 24) {
       const controlB = readPoint(tokens, controlA.nextIndex, current, relative);
       const end = readPoint(tokens, controlB.nextIndex, current, relative);
       const start = current;
+      const length = cubicArcLength(start, controlA.point, controlB.point, end.point);
       for (let step = 1; step <= curveSteps; step += 1) {
-        pushPoint(
-          points,
-          cubicPoint(
-            start,
-            controlA.point,
-            controlB.point,
-            end.point,
-            step / curveSteps
-          )
-        );
+        const t = step / curveSteps;
+        const point = cubicPoint(start, controlA.point, controlB.point, end.point, t);
+        pushPoint(points, { ...point, u: totalLength + (step === curveSteps
+          ? length : partialCubicLength(start, controlA.point, controlB.point, t, point)) });
       }
+      totalLength += length;
       current = end.point;
       index = end.nextIndex;
       continue;
@@ -182,7 +197,7 @@ function flattenPathData(pathData, curveSteps = 24) {
 
 export function samplePathData(
   pathData,
-  { spacing = 3, curveSteps = 24 } = {}
+  { spacing = 3, curveSteps = 24, maxPoints = Infinity } = {}
 ) {
   const points = flattenPathData(pathData, curveSteps);
   if (!points.length) return [];
@@ -190,22 +205,20 @@ export function samplePathData(
 
   const segmentLengths = [];
   const cumulative = [0];
-  let totalLength = 0;
   for (let i = 1; i < points.length; i += 1) {
-    const length = pointDistance(points[i - 1], points[i]);
+    const length = points[i].u - points[i - 1].u;
     segmentLengths.push(length);
-    totalLength += length;
-    cumulative.push(totalLength);
+    cumulative.push(points[i].u);
   }
+  const totalLength = cumulative.at(-1);
 
   if (totalLength <= EPSILON) return [withFrame(points[0], 0)];
 
   const safeSpacing = Math.max(EPSILON, Number(spacing) || 3);
-  const distances = [0];
-  for (let u = safeSpacing; u < totalLength - EPSILON; u += safeSpacing) {
-    distances.push(u);
-  }
-  distances.push(totalLength);
+  const pointLimit = Number.isFinite(maxPoints) ? Math.max(2, Math.floor(maxPoints)) : Infinity;
+  const steps = Math.min(Math.max(1, Math.ceil(totalLength / safeSpacing)), pointLimit - 1);
+  const distances = Array.from({ length: steps + 1 }, (_, index) =>
+    index === steps ? totalLength : index * totalLength / steps);
 
   let segmentIndex = 0;
   return distances.map((u) => {

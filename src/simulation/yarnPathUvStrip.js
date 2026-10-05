@@ -4,16 +4,32 @@ const DEFAULT_TEXTURE_REPEAT_LENGTH = 48;
 const DEFAULT_SAMPLE_SPACING = 3;
 const DEFAULT_MAX_POINTS_PER_PATH = 1200;
 
+export function buildYarnUvPathOffsets(yarnPathLinks, modelPathByLink) {
+  const offsets = new Map();
+  let totalLength = 0;
+  for (const link of yarnPathLinks) {
+    const pathData = modelPathByLink.get(link.index);
+    offsets.set(link.index, totalLength);
+    if (pathData) totalLength += samplePathData(pathData,
+      { spacing: Infinity, curveSteps: 1 }).at(-1)?.u || 0;
+  }
+  return offsets;
+}
+
 export function buildYarnUvStrip({
   pathData,
+  modelPathData = pathData,
+  modelToCanvasPoint = point => point,
+  arcLengthOffset = 0,
   yarnWidth,
   textureRepeatLength = DEFAULT_TEXTURE_REPEAT_LENGTH,
   sampleSpacing = DEFAULT_SAMPLE_SPACING,
   maxPoints = DEFAULT_MAX_POINTS_PER_PATH,
 }) {
-  const sampled = samplePathData(pathData, {
+  const sampled = samplePathData(modelPathData, {
     spacing: sampleSpacing,
-  }).slice(0, maxPoints);
+    maxPoints,
+  });
 
   const positions = [];
   const uvs = [];
@@ -22,11 +38,17 @@ export function buildYarnUvStrip({
   const repeat = Math.max(1, Number(textureRepeatLength) || 1);
 
   sampled.forEach((point) => {
-    const leftX = point.x - point.normalX * halfWidth;
-    const leftY = point.y - point.normalY * halfWidth;
-    const rightX = point.x + point.normalX * halfWidth;
-    const rightY = point.y + point.normalY * halfWidth;
-    const u = point.u / repeat;
+    const center = modelToCanvasPoint(point);
+    const normalEnd = modelToCanvasPoint({ ...point,
+      x: point.x + point.normalX, y: point.y + point.normalY });
+    const normalLength = Math.hypot(normalEnd.x - center.x, normalEnd.y - center.y) || 1;
+    const normalX = (normalEnd.x - center.x) / normalLength;
+    const normalY = (normalEnd.y - center.y) / normalLength;
+    const leftX = center.x - normalX * halfWidth;
+    const leftY = center.y - normalY * halfWidth;
+    const rightX = center.x + normalX * halfWidth;
+    const rightY = center.y + normalY * halfWidth;
+    const u = (arcLengthOffset + point.u) / repeat;
 
     positions.push(leftX, leftY, rightX, rightY);
     uvs.push(u, 0, u, 1);
@@ -42,5 +64,6 @@ export function buildYarnUvStrip({
     uvs: new Float32Array(uvs),
     indices: new Uint16Array(indices),
     pointCount: sampled.length,
+    totalModelLength: sampled.at(-1)?.u || 0,
   };
 }

@@ -2,9 +2,12 @@ import {
   createTintedTextureCanvas,
   loadImageFromDataUrl,
   normalizeYarnTexture,
+  YARN_PBR_MAP_KEYS,
 } from "../yarnTexture/yarnScanTexture";
+import { yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
 
 const imageCache = new Map();
+const retainedImageKeys = new Set();
 const tintedCache = new Map();
 const IMAGE_CACHE_LIMIT = 24;
 const TINTED_CACHE_LIMIT = 24;
@@ -19,25 +22,39 @@ function cachedRecord(cache, key) {
 
 function rememberCacheRecord(cache, key, record, limit) {
   cache.set(key, record);
-  while (cache.size > limit) {
+  const capacity = cache === imageCache ? Math.max(limit, retainedImageKeys.size) : limit;
+  while (cache.size > capacity) {
     cache.delete(cache.keys().next().value);
   }
 }
 
-function queueImage(dataUrl) {
+export function getYarnPbrMapSource(map) {
+  return map?.assetRef ? { assetRef: map.assetRef }
+    : map?.processedDataUrl || map?.dataUrl || "";
+}
+
+export function getYarnTextureSourceKey(source) {
+  return source?.assetRef ? `asset:${source.assetRef}` : String(source || "");
+}
+
+function queueImage(source) {
+  const dataUrl = getYarnTextureSourceKey(source);
   if (!dataUrl) return null;
 
   const cached = cachedRecord(imageCache, dataUrl);
   if (cached) return cached;
 
   const record = { image: null, promise: null };
-  record.promise = loadImageFromDataUrl(dataUrl)
+  record.promise = (source?.assetRef
+    ? yarnAssetRegistry.getObjectUrl(source.assetRef)
+    : Promise.resolve(source))
+    .then(loadImageFromDataUrl)
     .then((image) => {
       record.image = image;
       return image;
     })
     .catch((error) => {
-      imageCache.delete(dataUrl);
+      if (imageCache.get(dataUrl) === record) imageCache.delete(dataUrl);
       throw error;
     });
 
@@ -63,7 +80,7 @@ function queueTintedBrush(texture, color) {
       return canvas;
     })
     .catch((error) => {
-      tintedCache.delete(key);
+      if (tintedCache.get(key) === record) tintedCache.delete(key);
       throw error;
     });
 
@@ -72,20 +89,24 @@ function queueTintedBrush(texture, color) {
 }
 
 function getReadyBrush(texture, color) {
-  if (!texture?.processedDataUrl) return null;
+  const source = texture?.processedDataUrl || getYarnPbrMapSource(texture?.pbr?.baseColor);
+  if (!source) return null;
 
   if (texture.useOriginalColor !== false) {
-    return queueImage(texture.processedDataUrl)?.image || null;
+    return getReadyYarnTextureImage(source);
   }
 
-  return queueTintedBrush(texture, color)?.canvas || null;
+  const key = `${texture.processedDataUrl}|${color}|${texture.textureStrength}`;
+  return cachedRecord(tintedCache, key)?.canvas || null;
 }
 
-export function getReadyYarnTextureImage(dataUrl) {
-  return queueImage(dataUrl)?.image || null;
+export function getReadyYarnTextureImage(source) {
+  if (source?.assetRef && !yarnAssetRegistry.has(source.assetRef)) return null;
+  return cachedRecord(imageCache, getYarnTextureSourceKey(source))?.image || null;
 }
 
-function collectPbrMapDataUrls(texture) {
+export function collectYarnTextureSources(texture) {
+  if (!texture || texture.enabled === false) return [];
   return [
     texture?.pbr?.baseColor,
     texture?.pbr?.normal,
@@ -93,8 +114,43 @@ function collectPbrMapDataUrls(texture) {
     texture?.pbr?.height,
     texture?.pbr?.ambientOcclusion,
   ]
-    .map((map) => map?.processedDataUrl || map?.dataUrl || "")
+    .map(getYarnPbrMapSource)
+    .concat(texture.processedDataUrl || [])
     .filter(Boolean);
+}
+
+// A runtime view only: Feed slots after the first never become draw materials.
+export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedIndices = null) {
+  const materials = new Map();
+  const library = new Map((yarnLibrary || []).map(yarn => [String(yarn.id), yarn]));
+  (feeds || []).forEach((feed, index) => {
+    if (usedFeedIndices && !usedFeedIndices.has(index)) return;
+    const yarnId = feed?.yarns?.[0]?.yarnId;
+    const pbr = yarnId === null || yarnId === undefined || yarnId === ""
+      ? null : library.get(String(yarnId))?.pbr;
+    const hasMaps = pbr && YARN_PBR_MAP_KEYS
+      .some(key => pbr[key]?.assetRef);
+    materials.set(index, hasMaps
+      ? { ...primaryPly, texture: normalizeYarnTexture({ pbr, textureStrength: 1 }) }
+      : primaryPly);
+  });
+  return materials;
+}
+
+export function retainYarnAssetTextureImages(materials) {
+  const retained = new Set(materials.flatMap(ply => collectYarnTextureSources(ply.texture))
+    .map(getYarnTextureSourceKey));
+  retainedImageKeys.clear();
+  for (const key of retained) {
+    retainedImageKeys.add(key);
+    cachedRecord(imageCache, key);
+  }
+  for (const key of imageCache.keys()) {
+    if (key.startsWith("asset:") && !retained.has(key)) imageCache.delete(key);
+  }
+  while (imageCache.size > Math.max(IMAGE_CACHE_LIMIT, retainedImageKeys.size)) {
+    imageCache.delete(imageCache.keys().next().value);
+  }
 }
 
 export function prepareYarnTextureImages(yarnPlies) {
@@ -104,8 +160,9 @@ export function prepareYarnTextureImages(yarnPlies) {
     const texture = normalizeYarnTexture(ply.texture);
     if (!texture || texture.enabled === false) return;
 
-    collectPbrMapDataUrls(texture).forEach((dataUrl) => {
-      const record = queueImage(dataUrl);
+    YARN_PBR_MAP_KEYS.map(key => getYarnPbrMapSource(texture.pbr?.[key]))
+      .filter(Boolean).forEach((source) => {
+      const record = queueImage(source);
       if (record?.promise) jobs.push(record.promise);
     });
 
@@ -173,7 +230,7 @@ export function drawYarnTexturePath(
 
     if (
       !renderTextures ||
-      !texture?.processedDataUrl ||
+      !(texture?.processedDataUrl || getYarnPbrMapSource(texture?.pbr?.baseColor)) ||
       texture.enabled === false
     ) {
       strokePath(context, path, lineWidth, ply.color);

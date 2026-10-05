@@ -73,6 +73,8 @@ export function normalizePbrTextureMap(map = null) {
     fileName: String(map.fileName || ""),
     dataUrl: String(map.dataUrl || ""),
     processedDataUrl: String(map.processedDataUrl || map.dataUrl || ""),
+    ...(typeof map.assetRef === "string" && map.assetRef
+      ? { assetRef: map.assetRef } : {}),
   };
 }
 

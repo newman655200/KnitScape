@@ -1,4 +1,8 @@
-import { getReadyYarnTextureImage } from "./yarnTextureBrush.js";
+import {
+  getReadyYarnTextureImage,
+  getYarnPbrMapSource,
+  getYarnTextureSourceKey,
+} from "./yarnTextureBrush.js";
 
 const VERTEX_SHADER = `
 attribute vec2 a_position;
@@ -119,21 +123,17 @@ function parseColor(color) {
   return [0.75, 0.75, 0.75, 1];
 }
 
-function mapDataUrl(map) {
-  return map?.processedDataUrl || map?.dataUrl || "";
-}
-
-function materialMaps(material) {
+export function materialMaps(material) {
   const texture = material?.texture || {};
-  const pbr = texture.pbr || {};
+  const pbr = texture.enabled === false ? {} : texture.pbr || {};
   return {
     baseColor:
-      mapDataUrl(pbr.baseColor) ||
+      getYarnPbrMapSource(pbr.baseColor) ||
       (texture.enabled === false ? "" : texture.processedDataUrl || ""),
-    normal: mapDataUrl(pbr.normal),
-    roughness: mapDataUrl(pbr.roughness),
-    height: mapDataUrl(pbr.height),
-    ambientOcclusion: mapDataUrl(pbr.ambientOcclusion),
+    normal: getYarnPbrMapSource(pbr.normal),
+    roughness: getYarnPbrMapSource(pbr.roughness),
+    height: getYarnPbrMapSource(pbr.height),
+    ambientOcclusion: getYarnPbrMapSource(pbr.ambientOcclusion),
   };
 }
 
@@ -213,18 +213,42 @@ export class YarnUvWebglRenderer {
     this.textureCache.delete(oldestKey);
   }
 
-  textureFromDataUrl(dataUrl) {
-    if (!dataUrl) return null;
+  retainTextures(sources) {
+    const retained = new Set(sources.map(getYarnTextureSourceKey));
+    this.activeTextureKeys = retained;
+    for (const [key, record] of this.textureCache) {
+      if (retained.has(key)) continue;
+      this.gl.deleteTexture(record.texture);
+      this.textureCache.delete(key);
+    }
+  }
 
-    const cached = this.textureCache.get(dataUrl);
+  textureFromDataUrl(source) {
+    const key = getYarnTextureSourceKey(source);
+    if (!key) return null;
+
+    const cached = this.textureCache.get(key);
     if (cached) {
-      this.textureCache.delete(dataUrl);
-      this.textureCache.set(dataUrl, cached);
+      this.textureCache.delete(key);
+      this.textureCache.set(key, cached);
       return cached.texture;
     }
 
-    const image = getReadyYarnTextureImage(dataUrl);
+    const image = getReadyYarnTextureImage(source);
     if (!image) return null;
+
+    // WebGL1 repeating textures require power-of-two dimensions. Keep the
+    // source key and existing UVs; resample only the GPU upload when needed.
+    const width = image.naturalWidth || image.width;
+    const height = image.naturalHeight || image.height;
+    let uploadImage = image;
+    if (width > 0 && height > 0 &&
+      ((width & (width - 1)) !== 0 || (height & (height - 1)) !== 0)) {
+      uploadImage = document.createElement("canvas");
+      uploadImage.width = 2 ** Math.ceil(Math.log2(width));
+      uploadImage.height = 2 ** Math.ceil(Math.log2(height));
+      uploadImage.getContext("2d").drawImage(image, 0, 0, uploadImage.width, uploadImage.height);
+    }
 
     const gl = this.gl;
     const texture = gl.createTexture();
@@ -240,10 +264,10 @@ export class YarnUvWebglRenderer {
       gl.RGBA,
       gl.RGBA,
       gl.UNSIGNED_BYTE,
-      image
+      uploadImage
     );
-    this.textureCache.set(dataUrl, { texture });
-    while (this.textureCache.size > TEXTURE_CACHE_LIMIT) {
+    this.textureCache.set(key, { texture });
+    while (this.textureCache.size > Math.max(TEXTURE_CACHE_LIMIT, this.activeTextureKeys?.size || 0)) {
       this.evictOldestTexture();
     }
     return texture;
@@ -357,6 +381,10 @@ export class YarnUvWebglRenderer {
     gl.deleteTexture(this.fallbackTexture);
     gl.deleteProgram(this.program);
   }
+}
+
+export function retainWebglYarnTextures(canvas, sources) {
+  rendererCache.get(canvas)?.retainTextures(sources);
 }
 
 export function getWebglYarnRenderer(canvas) {

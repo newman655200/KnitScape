@@ -1,4 +1,6 @@
 import { simulate } from "../simulation/yarnSimulation";
+import { retainYarnAssetTextureImages } from "../simulation/yarnTextureBrush.js";
+import { retainWebglYarnTextures } from "../simulation/yarnUvWebglRenderer.js";
 import { GLOBAL_STATE, dispatch } from "../state";
 import { html } from "lit-html";
 import { MIN_SIM_SCALE, MAX_SIM_SCALE } from "../constants";
@@ -49,6 +51,12 @@ function clearSimulationCanvases(canvasIDs) {
     const context = canvas?.getContext("2d");
     context?.clearRect(0, 0, canvas.width, canvas.height);
   });
+}
+
+function releaseAfterYarnTextures() {
+  retainYarnAssetTextureImages([]);
+  AFTER_SIMULATION_TARGET.canvasIDs.forEach(id =>
+    retainWebglYarnTextures(document.getElementById(id), []));
 }
 
 function runPreviewInteraction(action) {
@@ -239,11 +247,15 @@ export function runSimulation() {
         if (!isMachineConfigurationError(error)) throw error;
 
         setMachineExecutionError(error.message);
+        releaseAfterYarnTextures();
         return;
       }
 
       setMachineExecutionError(null);
-      if (machineSimulationInput === null) return;
+      if (machineSimulationInput === null) {
+        releaseAfterYarnTextures();
+        return;
+      }
 
       const afterSimulationResult = simulate(
         machineSimulationInput,
@@ -252,6 +264,7 @@ export function runSimulation() {
           ...simulationOptions,
           target: AFTER_SIMULATION_TARGET,
           feeds: GLOBAL_STATE.singleJerseyCamProgram.feeds,
+          yarnLibrary: GLOBAL_STATE.yarnLibrary,
         }
       );
       stopSims.push(afterSimulationResult.stopSim);
@@ -268,6 +281,7 @@ export function runSimulation() {
           "yarnPalette",
           "yarnSequence",
           "yarnPlies",
+          "yarnLibrary",
           "texturePerformanceMode",
           "texturePreviewInteractionActive",
           "machineGauge",
@@ -278,6 +292,7 @@ export function runSimulation() {
         ].some((key) => changes.includes(key));
 
         if (found) {
+          stopSimulation();
           debouncedRun();
         }
 

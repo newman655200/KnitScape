@@ -327,7 +327,11 @@ try {
   assert.equal(simulationCalls.length, 2);
   assert.equal(simulationCalls[0].pattern, chart);
   assert.equal(simulationCalls[0].options.feeds, undefined);
+  assert.equal(simulationCalls[0].options.yarnLibrary, undefined,
+    "The design preview keeps the legacy Yarn material path.");
   assert.equal(simulationCalls[1].options.feeds, previewFeeds);
+  assert.equal(simulationCalls[1].options.yarnLibrary, runtimeState.yarnLibrary,
+    "Only the final fabric receives Yarn Library references.");
   assert.deepEqual(simulationCalls[0].options.target, {
     containerId: "sim-before-container",
     canvasIDs: ["back", "mid", "front"],
@@ -558,7 +562,7 @@ assert.match(
 );
 assert.match(
   runSimulationSource,
-  /if\s*\(machineSimulationInput\s*===\s*null\)\s*return;/
+  /if\s*\(machineSimulationInput\s*===\s*null\)\s*(?:return;|\{[^}]*return;)/
 );
 assert.ok(
   runSimulationSource.indexOf(

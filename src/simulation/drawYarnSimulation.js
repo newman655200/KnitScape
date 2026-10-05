@@ -4,7 +4,7 @@ import {
   materialMaps,
   retainWebglYarnTextures,
 } from "./yarnUvWebglRenderer.js";
-import { courseToFeedIndex } from "./yarnLengthMetrics.js";
+import { courseToFeedIndex, DEFAULT_MACHINE_GAUGE } from "./yarnLengthMetrics.js";
 import { pathEndpoints } from "./rowLengthLoopModel.js";
 import {
   drawYarnSequenceMaskPath,
@@ -28,6 +28,7 @@ export function drawYarnSimulation({
   uvStripCache = new Map(),
   feedYarnPlies = new Map(),
   feedCount = 0,
+  machineGauge = DEFAULT_MACHINE_GAUGE,
   stitchWidth,
   activeYarnPlies,
   normalizedYarnSequence,
@@ -92,7 +93,10 @@ export function drawYarnSimulation({
     if (!pathData) return null;
 
     const lineWidth = stitchWidth * rowPly.diameter;
-    const key = `${link.index}|${lineWidth}`;
+    const repeatMm = rowPly.texture?.pbr?.physicalRepeatLengthMm;
+    const physicalRepeatLengthMm = Number.isFinite(repeatMm) && repeatMm > 0 ? repeatMm : undefined;
+    const uvScaleKey = physicalRepeatLengthMm === undefined ? "legacy" : `${machineGauge}|${physicalRepeatLengthMm}`;
+    const key = `${link.index}|${lineWidth}|${uvScaleKey}`;
     if (!uvStripCache.has(key)) {
       const modelPathData = modelPathByLink.get(link.index);
       const modelStart = pathEndpoints(modelPathData)?.start;
@@ -107,6 +111,8 @@ export function drawYarnSimulation({
         arcLengthOffset: uvOffsets.get(link.index),
         yarnWidth: lineWidth,
         textureRepeatLength: YARN_UV_TEXTURE_REPEAT_LENGTH,
+        physicalRepeatLengthMm,
+        machineGauge,
         sampleSpacing: YARN_UV_SAMPLE_SPACING,
         maxPoints: YARN_UV_MAX_POINTS_PER_PATH,
       }));

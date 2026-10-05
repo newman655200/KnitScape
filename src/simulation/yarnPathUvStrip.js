@@ -1,4 +1,5 @@
 import { samplePathData } from "./yarnPathSampler.js";
+import { DEFAULT_MACHINE_GAUGE, gaugeToNeedlePitchMm } from "./yarnLengthMetrics.js";
 
 const DEFAULT_TEXTURE_REPEAT_LENGTH = 48;
 const DEFAULT_SAMPLE_SPACING = 3;
@@ -23,6 +24,8 @@ export function buildYarnUvStrip({
   arcLengthOffset = 0,
   yarnWidth,
   textureRepeatLength = DEFAULT_TEXTURE_REPEAT_LENGTH,
+  physicalRepeatLengthMm,
+  machineGauge = DEFAULT_MACHINE_GAUGE,
   sampleSpacing = DEFAULT_SAMPLE_SPACING,
   maxPoints = DEFAULT_MAX_POINTS_PER_PATH,
 }) {
@@ -36,6 +39,8 @@ export function buildYarnUvStrip({
   const indices = [];
   const halfWidth = Math.max(0, Number(yarnWidth) || 0) / 2;
   const repeat = Math.max(1, Number(textureRepeatLength) || 1);
+  const physicalRepeat = Number.isFinite(physicalRepeatLengthMm) && physicalRepeatLengthMm > 0;
+  const needlePitchMm = physicalRepeat ? gaugeToNeedlePitchMm(machineGauge) : null;
 
   sampled.forEach((point) => {
     const center = modelToCanvasPoint(point);
@@ -48,7 +53,9 @@ export function buildYarnUvStrip({
     const leftY = center.y - normalY * halfWidth;
     const rightX = center.x + normalX * halfWidth;
     const rightY = center.y + normalY * halfWidth;
-    const u = (arcLengthOffset + point.u) / repeat;
+    const u = physicalRepeat
+      ? (arcLengthOffset + point.u) * needlePitchMm / physicalRepeatLengthMm
+      : (arcLengthOffset + point.u) / repeat;
 
     positions.push(leftX, leftY, rightX, rightY);
     uvs.push(u, 0, u, 1);

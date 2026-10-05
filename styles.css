@@ -221,6 +221,8 @@ TASKBAR
 .yarn-asset-title .yarn-asset-name { min-width: 0; flex: 1; }
 .yarn-pbr-status { white-space: nowrap; }
 .yarn-pbr-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.5rem; }
+.yarn-pbr-repeat-length { display: inline-flex; align-items: center; gap: 0.3rem; }
+.yarn-pbr-repeat-length input { width: 5rem; }
 .yarn-pbr-preview { width: 48px; height: 48px; object-fit: contain; }
 .yarn-pbr-help { flex-basis: 100%; }
 .yarn-pbr-maps { width: 100%; padding: 0; margin: 0; list-style: none; font-size: 0.8rem; }

@@ -59,6 +59,7 @@ try {
   const imageSources = [];
   const uploads = [];
   const draws = [];
+  let textureCreations = 0;
   const patterns = [];
   const urlRefs = new Map();
   const originalGetObjectUrl = yarnAssetRegistry.getObjectUrl.bind(yarnAssetRegistry);
@@ -86,16 +87,20 @@ try {
     let boundTexture = null;
     const bindings = new Map();
     const uniforms = new Map();
+    let arrayBuffers = [];
     let gl;
     const implementation = {
       canvas, createShader: () => ({}), createProgram: () => ({}),
-      createBuffer: () => ({}), createTexture: () => ({}),
+      createBuffer: () => ({}), createTexture: () => { textureCreations++; return {}; },
       getShaderParameter: () => true, getProgramParameter: () => true,
       getAttribLocation: () => 0, getUniformLocation: (_, name) => name,
       activeTexture(unit) { activeUnit = unit - gl.TEXTURE0; },
       bindTexture(_, texture) { boundTexture = texture; bindings.set(activeUnit, texture); },
       uniform1i(name, value) { uniforms.set(name, value); },
       uniform4fv(name, value) { uniforms.set(name, Array.from(value)); },
+      bufferData(_, data) {
+        if (data instanceof Float32Array) arrayBuffers.push(data.slice());
+      },
       texImage2D(...args) {
         const image = args.at(-1);
         if (!(image instanceof Image)) return; // Exclude the 1x1 fallback texture.
@@ -108,7 +113,9 @@ try {
           const uniform = "u_has" + slot[0].toUpperCase() + slot.slice(1) + "Map";
           return [slot, uniforms.get(uniform) ? bindings.get(index)?.sourceRef : null];
         }));
-        draws.push({ gl, maps, tint: uniforms.get("u_tint") });
+        draws.push({ gl, maps, tint: uniforms.get("u_tint"),
+          positions: arrayBuffers[0], uvs: arrayBuffers[1] });
+        arrayBuffers = [];
       },
     };
     gl = new Proxy(implementation, { get(target, name) {
@@ -264,6 +271,76 @@ try {
   assertOneUploadPerContext(abacStart);
   const abacRepeat = counts(); await render(abacFeeds, abacLibrary, 1.3);
   assertNoWork(abacRepeat, "A/B/A/C repeats and zoom reuse the shared A and independent B/C materials.");
+
+  // Different Assets may share the very same binary image while owning their own UV scale.
+  const materialA = { ...sharedA, pbr: { baseColor: sharedA.pbr.baseColor, physicalRepeatLengthMm: 8 } };
+  const materialB = { ...sharedB, pbr: { baseColor: sharedA.pbr.baseColor, physicalRepeatLengthMm: 15 } };
+  const scaleLibrary = [materialA, materialB, sharedSecond];
+  const scaleFeeds = [feed(materialA.id), feed(materialB.id)];
+  const independent = brush.resolveFeedYarnPlies(scaleFeeds, scaleLibrary, primaryPly);
+  assert.equal(independent.get(0).texture.pbr.physicalRepeatLengthMm, 8);
+  assert.equal(independent.get(1).texture.pbr.physicalRepeatLengthMm, 15);
+  assert.equal(independent.get(0).texture.pbr.baseColor.assetRef,
+    independent.get(1).texture.pbr.baseColor.assetRef);
+  state.dispatch({ yarnLibrary: scaleLibrary });
+  const baselineLibrary = scaleLibrary.map(yarn => {
+    if (!yarn.pbr) return yarn;
+    const { physicalRepeatLengthMm, ...pbr } = yarn.pbr;
+    return { ...yarn, pbr };
+  });
+  let drawStart = draws.length;
+  await render(scaleFeeds, baselineLibrary);
+  const legacyFrame = draws.slice(drawStart);
+  const scaleStart = counts(), createStart = textureCreations;
+  drawStart = draws.length;
+  await render(scaleFeeds, scaleLibrary);
+  const scaleFrame = draws.slice(drawStart);
+  assert.equal(scaleFrame.length, legacyFrame.length);
+  const factors = new Set();
+  for (let index = 0; index < scaleFrame.length; index++) {
+    const actual = scaleFrame[index], legacy = legacyFrame[index];
+    assert.deepEqual(actual.positions, legacy.positions, "physical scale cannot change Solver or geometry positions.");
+    if (legacy.uvs.at(-2) === legacy.uvs[0]) continue;
+    const factor = actual.uvs.at(-2) / legacy.uvs.at(-2);
+    const repeat = Math.abs(factor - 48 * 25.4 / 32 / 8) < 1e-5 ? 8 : 15;
+    factors.add(repeat);
+    for (let i = 0; i < actual.uvs.length; i += 2) {
+      assert.ok(Math.abs(actual.uvs[i] - legacy.uvs[i] * 48 * 25.4 / 32 / repeat) < 1e-5,
+        "every drawn U uses its own Yarn's physical repeat even with a shared BaseColor.");
+    }
+  }
+  assert.deepEqual(factors, new Set([8, 15]));
+  for (const machineGauge of [28, 36]) {
+    drawStart = draws.length;
+    await render(scaleFeeds, scaleLibrary, 1, primaryPly, { machineGauge });
+    const gaugeFrame = draws.slice(drawStart);
+    assert.equal(gaugeFrame.length, scaleFrame.length);
+    for (let index = 0; index < gaugeFrame.length; index++) {
+      const actual = gaugeFrame[index], reference = scaleFrame[index];
+      assert.deepEqual(actual.positions, reference.positions);
+      for (let i = 0; i < actual.uvs.length; i += 2) {
+        assert.ok(Math.abs(actual.uvs[i] - reference.uvs[i] * 32 / machineGauge) < 1e-5,
+          "simulation must forward Machine Gauge into each rendered physical strip.");
+      }
+    }
+  }
+  actions.setYarnPbrPhysicalRepeatLength(materialA.id, 10);
+  drawStart = draws.length;
+  await render(scaleFeeds, state.GLOBAL_STATE.yarnLibrary);
+  const updatedFrame = draws.slice(drawStart);
+  assert.ok(updatedFrame.some((draw, index) => draw.uvs.at(-2) !== scaleFrame[index].uvs.at(-2)),
+    "a repeat-only action rebuilds UV for the assigned Yarn.");
+  for (let index = 0; index < updatedFrame.length; index++) {
+    assert.deepEqual(updatedFrame[index].positions, scaleFrame[index].positions);
+  }
+  assertNoWork(scaleStart, "repeat-only metadata edits read/decode/upload zero images.");
+  assert.equal(textureCreations, createStart, "repeat-only edits create zero GPU textures.");
+  actions.setYarnPbrPhysicalRepeatLength(materialA.id, "");
+  actions.setYarnPbrPhysicalRepeatLength(materialB.id, "");
+  drawStart = draws.length;
+  await render(scaleFeeds, state.GLOBAL_STATE.yarnLibrary);
+  assert.deepEqual(draws.slice(drawStart).map(draw => draw.uvs), legacyFrame.map(draw => draw.uvs),
+    "clearing repeat mm restores the entire legacy frame exactly.");
 
   const fourFull = Array.from({ length: 4 }, (_, index) => asset("full-" + index));
   const fourFullLibrary = [...fourFull, secondOnly];

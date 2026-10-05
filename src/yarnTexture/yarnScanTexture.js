@@ -78,6 +78,11 @@ export function normalizePbrTextureMap(map = null) {
   };
 }
 
+function physicalRepeatMetadata(pbr) {
+  const value = pbr.physicalRepeatLengthMm;
+  return Number.isFinite(value) && value > 0 ? { physicalRepeatLengthMm: value } : {};
+}
+
 export function normalizePbrTextureMaps(pbr = {}) {
   const source = pbr && typeof pbr === "object" ? pbr : {};
 
@@ -87,6 +92,7 @@ export function normalizePbrTextureMaps(pbr = {}) {
     roughness: normalizePbrTextureMap(source.roughness),
     height: normalizePbrTextureMap(source.height),
     ambientOcclusion: normalizePbrTextureMap(source.ambientOcclusion),
+    ...physicalRepeatMetadata(source),
   };
 }
 
@@ -211,7 +217,7 @@ export function normalizeYarnPbr(pbr) {
   if (!Object.values(maps).some(Boolean)) return null;
   const previewDataUrl = pbr.previewDataUrl || "";
   if (previewDataUrl && !isImageDataUrl(previewDataUrl)) throw new TypeError("Invalid PBR preview.");
-  return { ...maps, previewDataUrl };
+  return { ...maps, previewDataUrl, ...physicalRepeatMetadata(pbr) };
 }
 
 export async function importPbrFiles(files, registry = yarnAssetRegistry) {

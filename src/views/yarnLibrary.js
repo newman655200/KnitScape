@@ -3,7 +3,8 @@ import { repeat } from "lit-html/directives/repeat.js";
 import { GLOBAL_STATE, dispatch } from "../state.js";
 import { YARN_CATEGORIES, queryYarnLibrary } from "../domain/yarnLibrary.js";
 import { addYarnAsset, updateYarnAsset, deleteYarnAsset,
-  selectYarnForAssignment, getYarnPbr, importYarnPbr, clearYarnPbr } from "../actions/yarnLibrary.js";
+  selectYarnForAssignment, getYarnPbr, importYarnPbr, clearYarnPbr,
+  setYarnPbrPhysicalRepeatLength } from "../actions/yarnLibrary.js";
 import { t } from "../i18n/index.js";
 
 let editingYarnId = null;
@@ -41,6 +42,21 @@ function yarnPbrControls(id, language) {
       aria-label=${t("yarnLibrary.pbrImport", language)} @change=${event => importPbr(event, id)} />
     ${pbr ? html`<button class="btn" type="button" @click=${() => clearYarnPbr(id)}>
       ${t("yarnLibrary.pbrClear", language)}</button>` : null}
+    ${pbr ? html`<label class="yarn-pbr-repeat-length">
+      ${t("yarnLibrary.pbrRepeatLength", language)}
+      <input type="number" step="any" .value=${String(pbr.physicalRepeatLengthMm ?? "")}
+        @input=${event => event.currentTarget.setCustomValidity("")}
+        @change=${event => {
+          const input = event.currentTarget;
+          const value = input.value.trim() === "" ? "" : Number(input.value);
+          if (input.validity.badInput || (value !== "" && (!Number.isFinite(value) || value <= 0))) {
+            input.setCustomValidity(t("yarnLibrary.pbrRepeatInvalid", language));
+            input.reportValidity();
+            return;
+          }
+          setYarnPbrPhysicalRepeatLength(id, value);
+        }} /> mm
+    </label>` : null}
     <small class="yarn-pbr-help">${t("yarnLibrary.pbrHelp", language)}</small>
     ${maps.length ? html`<ul class="yarn-pbr-maps">${maps.map(([key, map]) =>
       html`<li>${key}: <span title=${map.fileName}>${map.fileName}</span></li>`)}</ul>` : null}

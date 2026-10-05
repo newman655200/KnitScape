@@ -51,6 +51,16 @@ export function getYarnPbr(id) {
   return GLOBAL_STATE.yarnLibrary.find(yarn => String(yarn.id) === String(id))?.pbr ?? null;
 }
 
+export function setYarnPbrPhysicalRepeatLength(id, value) {
+  const asset = assetById(id);
+  if (!asset.pbr || (value !== "" && (!Number.isFinite(value) || value <= 0))) return false;
+  const { physicalRepeatLengthMm, ...pbr } = asset.pbr;
+  if (value !== "") pbr.physicalRepeatLengthMm = value;
+  dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
+    ? { ...yarn, pbr, updatedAt: new Date().toISOString() } : yarn) });
+  return true;
+}
+
 export async function importYarnPbr(id, files) {
   const asset = assetById(id);
   const request = {};

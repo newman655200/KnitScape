@@ -69,6 +69,34 @@ for (const name of [
 
 const strip = await import("../src/simulation/yarnPathUvStrip.js");
 
+const physicalLine = strip.buildYarnUvStrip({
+  modelPathData: "M 0 0 L 10 0", arcLengthOffset: 7, yarnWidth: 4,
+  machineGauge: 32, physicalRepeatLengthMm: 10,
+});
+assert.ok(Math.abs(physicalLine.uvs.at(-2) - 17 * 25.4 / 32 / 10) < 1e-6,
+  "physical U must convert cumulative model length to mm using Gauge.");
+const legacyOptions = { modelPathData: "M 0 0 C 1 3 2 -3 4 0 L 10 0",
+  arcLengthOffset: 7, yarnWidth: 4, sampleSpacing: 0.03 };
+const legacyUvs = strip.buildYarnUvStrip(legacyOptions).uvs;
+for (const value of [undefined, null, 0, -1, NaN, "", Infinity, "12"]) {
+  for (const machineGauge of [28, 32, 36]) {
+    assert.deepEqual(strip.buildYarnUvStrip({ ...legacyOptions,
+      physicalRepeatLengthMm: value, machineGauge }).uvs, legacyUvs,
+    "missing/invalid metadata must preserve every legacy Float32 U exactly.");
+  }
+}
+const physicalOptions = { ...legacyOptions, physicalRepeatLengthMm: 10, machineGauge: 32 };
+const physicalUvs = strip.buildYarnUvStrip(physicalOptions).uvs;
+for (const scale of [0.5, 1, 2, 4]) for (const flip of [-1, 1]) {
+  assert.deepEqual(strip.buildYarnUvStrip({ ...physicalOptions,
+    modelToCanvasPoint: point => ({ x: 120 + point.x * scale * flip,
+      y: -90 + point.y * scale }), yarnWidth: 4 * scale }).uvs, physicalUvs,
+  "display scale, DPR, pan and flip must leave physical U unchanged.");
+}
+assert.ok(Math.abs(strip.buildYarnUvStrip({ ...physicalOptions,
+  modelPathData: "M 0 0 L 10 0", physicalRepeatLengthMm: 0.1 }).uvs.at(-2)
+  - 17 * 25.4 / 32 / 0.1) < 1e-4, "small positive mm repeats must not be clamped to one model unit.");
+
 const ribbon = strip.buildYarnUvStrip({
   pathData: "M 0 0 L 10 0",
   yarnWidth: 4,
@@ -148,7 +176,7 @@ try {
   const enlarged = makeGeometry(Bimp.empty(12, 2, 0), 1280);
   assert.deepEqual(base.modelPathByLink, enlarged.modelPathByLink);
   const offsets = strip.buildYarnUvPathOffsets(base.yarnPathLinks, base.modelPathByLink);
-  let previousU = 0;
+  let previousU = 0, previousPhysicalU = 0;
   for (const link of base.yarnPathLinks) {
     const makeStrip = geometry => strip.buildYarnUvStrip({
       pathData: geometry.resolvedPathByLink.get(link.index),
@@ -161,6 +189,14 @@ try {
       `link ${link.index} must continue U across loops and front/back layers.`);
     assert.deepEqual(actual.uvs, makeStrip(enlarged).uvs);
     previousU = actual.uvs.at(-2);
+    const physical = strip.buildYarnUvStrip({
+      modelPathData: base.modelPathByLink.get(link.index),
+      arcLengthOffset: offsets.get(link.index), yarnWidth: 4,
+      physicalRepeatLengthMm: 10, machineGauge: 32, sampleSpacing: 0.03,
+    });
+    assert.equal(physical.uvs[0], previousPhysicalU,
+      `physical U must continue across link ${link.index}, loops and layers.`);
+    previousPhysicalU = physical.uvs.at(-2);
   }
   assert.ok(Math.abs(previousU * 48 - base.modelPathArcLength.totalModelLength) < 1e-4,
     "UV length must agree with the geometry's independently integrated model length.");
@@ -196,6 +232,41 @@ try {
     assert.ok(solverUvEnds[index] > solverUvEnds[index - 1],
       "21/23/27 cm Solver geometry must advance accumulated U as yarn length grows.");
     assert.ok(solverHeights[index] > solverHeights[index - 1]);
+  }
+  // Measure an actual 100-needle interior window, including outgoing wrap links.
+  // Three copies supply curve neighbours without counting finite-row edge extras.
+  for (const [machineGauge, cm] of [[28, 23], [32, 23], [36, 23], [32, 21], [32, 27]]) {
+    const pattern = Bimp.empty(300, 1, 0);
+    const stitchPattern = new Pattern(pattern.pad(1, 0, 0));
+    const yarnGraph = new YarnModel(new ProcessModel(stitchPattern).cn);
+    const periodic = buildYarnPathGeometry({ pattern, stitchPattern, yarnGraph,
+      canvasWidth: 640, canvasHeight: 480, primaryLengthScaleY: 1,
+      primaryYarnDiameter: 0.24, machineGauge, includeSummaryMetrics: false,
+      includeDisplayPaths: false, measurementWindow: { firstNeedle: 101, needleCount: 100 } });
+    const [result] = solveFeedYarnLengths({ gauge: machineGauge,
+      feeds: [{ yarns: [{ yarnId: "primary", yarnLengthCmPer100Needles: cm }] }],
+      buildGeometry: periodic.createModelLengthEvaluator() });
+    assert.equal(result.converged, true);
+    const solvedOffsets = strip.buildYarnUvPathOffsets(periodic.yarnPathLinks, result.solvedPathByLink);
+    let repeats = 0, lastU = 0, countedLinks = 0;
+    for (const link of periodic.yarnPathLinks) {
+      const actual = strip.buildYarnUvStrip({
+        modelPathData: result.solvedPathByLink.get(link.index),
+        arcLengthOffset: solvedOffsets.get(link.index), yarnWidth: 4,
+        machineGauge, physicalRepeatLengthMm: 10, sampleSpacing: Infinity,
+      });
+      assert.equal(actual.uvs[0], lastU, "solved physical U stays continuous across every link.");
+      lastU = actual.uvs.at(-2);
+      const needle = Math.floor(yarnGraph.yarnPath[link.index][0] / 2);
+      if (needle >= 101 && needle < 201) {
+        repeats += actual.uvs.at(-2) - actual.uvs[0];
+        countedLinks++;
+      }
+    }
+    assert.ok(countedLinks > 100);
+    assert.ok(Math.abs(repeats - cm) < 0.005,
+      `${machineGauge}G ${cm}cm/100 needles should produce ${cm} repeats, got ${repeats}.`);
+    console.log(`PHYSICAL: ${machineGauge}G, ${cm}cm/100 needles, 10mm => ${repeats.toFixed(6)} repeats`);
   }
 } finally { await server.close(); }
 

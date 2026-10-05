@@ -87,6 +87,7 @@ try {
     makeAsset("full/../纱线", 5), makeAsset("partial", 2), makeAsset("absent", 0)],
     yarnPalette: ["red"], yarnSequence: { width: 1, height: 2, pixels: [0, 0] }, yarnPlies: [],
     singleJerseyCamProgram: null, needleArrangement: [], needleArrangementInputs: ["", "", "", ""], machineGauge: 28 };
+  project.yarnLibrary[0].pbr.physicalRepeatLengthMm = 12;
   const packed = await createProjectPackage(project, assetRegistry);
   assert.ok(packed instanceof Blob);
   const zip = new ZipReader(new BlobReader(packed), { useWebWorkers: false });
@@ -97,6 +98,8 @@ try {
   assert.equal(manifest.format, "knitscape");
   assert.equal(manifest.version, 2);
   assert.equal(entries.filter(entry => !entry.directory).length, 8);
+  assert.equal(manifest.yarnLibrary[0].pbr.physicalRepeatLengthMm, 12,
+    "mm repeat belongs only to project.json metadata; binary entry count stays unchanged.");
   assert.doesNotMatch(manifestText, /dataUrl|processedDataUrl|blob:/);
   for (const slot of slots) {
     const map = manifest.yarnLibrary[0].pbr[slot];
@@ -132,6 +135,8 @@ try {
   const repacked = await createProjectPackage(opened.project, opened.registry);
   const reopened = await readProjectPackage(repacked);
   assert.equal(reopened.project.yarnLibrary[0].pbr.normal.byteLength, mapBytes.size);
+  assert.equal(reopened.project.yarnLibrary[0].pbr.physicalRepeatLengthMm, 12);
+  assert.equal(reopened.project.yarnLibrary[1].pbr.physicalRepeatLengthMm, undefined);
   const legacyOriginal = "data:image/png;base64,AAECAw==";
   const legacyProcessed = "data:image/png;base64,BAUGBw==";
   const migratedRegistry = new YarnAssetRegistry();
@@ -159,6 +164,12 @@ try {
     return writer.close();
   };
   const broken = structuredClone(manifest);
+  const oldManifest = structuredClone(manifest);
+  delete oldManifest.yarnLibrary[0].pbr.physicalRepeatLengthMm;
+  const oldOpened = await readProjectPackage(await makeArchive(oldManifest));
+  assert.equal(oldOpened.project.yarnLibrary[0].pbr.physicalRepeatLengthMm, undefined,
+    "a pre-physical-scale .knitscape stays legacy without a generated mm default.");
+  oldOpened.registry.clear();
   broken.yarnLibrary[0].pbr.normal.assetRef = "../normal";
   await assert.rejects(readProjectPackage(await makeArchive(broken)), /reference/i);
   const missing = manifest.yarnLibrary[0].pbr.normal.assetRef;

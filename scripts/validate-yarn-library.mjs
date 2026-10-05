@@ -154,6 +154,10 @@ try {
   await actions.importYarnPbr(ids[0], fullFiles);
   await actions.importYarnPbr(ids[1], fullFiles.slice(0, 3));
   const pbrA = actions.getYarnPbr(ids[0]), pbrB = actions.getYarnPbr(ids[1]);
+  assert.equal(scan.normalizeYarnPbr({ ...pbrA, physicalRepeatLengthMm: 12 })
+    .physicalRepeatLengthMm, 12, "Asset normalization must preserve physical repeat metadata.");
+  assert.equal(scan.normalizeYarnTexture({ pbr: { ...pbrA, physicalRepeatLengthMm: 12 } })
+    .pbr.physicalRepeatLengthMm, 12, "Renderer material normalization must preserve physical repeat metadata.");
   assert.deepEqual(keys.filter(key => pbrA[key]), keys);
   assert.deepEqual(keys.filter(key => pbrB[key]), keys.slice(0, 3));
   assert.equal(actions.getYarnPbr(ids[2]), null);
@@ -178,8 +182,28 @@ try {
     return asset.id === ids[0] ? { ...metadata, pbr: pbrA }
       : asset.id === ids[1] ? { ...metadata, pbr: pbrB } : metadata;
   }) });
+  const metadataStart = { images: imageLoads, reads: fileReads };
+  const refsBeforeRepeat = keys.map(key => actions.getYarnPbr(ids[0])[key]?.assetRef);
+  assert.equal(actions.setYarnPbrPhysicalRepeatLength(ids[0], 12), true);
+  assert.equal(actions.getYarnPbr(ids[0]).physicalRepeatLengthMm, 12);
+  for (const value of [undefined, null, 0, -1, NaN, Infinity, "12"]) {
+    const previous = state();
+    assert.equal(actions.setYarnPbrPhysicalRepeatLength(ids[0], value), false);
+    assert.equal(state(), previous, "invalid physical repeat must not dispatch or mutate state.");
+    assert.equal(scan.normalizeYarnPbr({ ...pbrA, physicalRepeatLengthMm: value })
+      .physicalRepeatLengthMm, undefined);
+  }
+  assert.equal(actions.setYarnPbrPhysicalRepeatLength(ids[0], ""), true);
+  assert.equal(Object.hasOwn(actions.getYarnPbr(ids[0]), "physicalRepeatLengthMm"), false,
+    "clearing metadata restores legacy without guessing a Gauge-dependent mm value.");
+  assert.deepEqual(keys.map(key => actions.getYarnPbr(ids[0])[key]?.assetRef), refsBeforeRepeat);
+  assert.deepEqual({ images: imageLoads, reads: fileReads }, metadataStart);
+  assert.deepEqual(state().singleJerseyCamProgram, camBeforePbr, "repeat is Asset metadata, never Feed data.");
+  assert.equal(actions.setYarnPbrPhysicalRepeatLength(ids[2], 12), false, "no phantom material without maps.");
+  actions.setYarnPbrPhysicalRepeatLength(ids[0], 12);
+  const scaledPbr = actions.getYarnPbr(ids[0]);
   actions.updateYarnAsset(ids[0], "PBR yarn", "CD");
-  assert.equal(actions.getYarnPbr(ids[0]), pbrA, "metadata editing must preserve material.");
+  assert.equal(actions.getYarnPbr(ids[0]), scaledPbr, "metadata editing must preserve material.");
   const pbrLibrary = structuredClone(state().yarnLibrary);
   savedJSON = getProjectData();
   stateModule.dispatch({ yarnLibrary: [] }); loadJSON(savedJSON);
@@ -234,15 +258,19 @@ try {
     assert.ok(language["workspace.yarns"]);
     assert.ok(language["yarnLibrary.inUse"]);
     assert.ok(language["yarnLibrary.pbrImport"]);
+    assert.ok(language["yarnLibrary.pbrRepeatLength"]);
+    assert.ok(language["yarnLibrary.pbrRepeatInvalid"]);
   }
   const legacyAssetProject = getProjectData();
   legacyAssetProject.yarnLibrary = legacyAssetProject.yarnLibrary.map(asset => asset.id === ids[97]
-    ? { ...asset, pbr: { normal: { fileName: "legacy_Normal.png", dataUrl: pixel, processedDataUrl: pixel } } }
+    ? { ...asset, pbr: { physicalRepeatLengthMm: 12,
+      normal: { fileName: "legacy_Normal.png", dataUrl: pixel, processedDataUrl: pixel } } }
     : asset);
   const loadsBeforeLegacy = imageLoads;
   loadJSON(legacyAssetProject);
   assert.equal(imageLoads, loadsBeforeLegacy, "legacy migration does not decode images.");
   const legacyMap = actions.getYarnPbr(ids[97]).normal;
+  assert.equal(actions.getYarnPbr(ids[97]).physicalRepeatLengthMm, 12, "embedded JSON migration preserves mm metadata.");
   assert.ok(legacyMap.assetRef);
   assert.doesNotMatch(JSON.stringify(state().yarnLibrary), /"dataUrl"|"processedDataUrl"/);
   const legacyUrl = await yarnAssetRegistry.getObjectUrl(legacyMap.assetRef);
@@ -259,6 +287,8 @@ try {
   await assert.rejects(fetch(legacyUrl), "project replacement revokes old URLs.");
   assert.deepEqual(state().yarnLibrary.map(asset => asset.name), libraryBeforePackage.map(asset => asset.name));
   assert.equal(imageLoads, loadsBeforeLegacy, "package opening does not decode images.");
+  assert.equal(actions.getYarnPbr(ids[97]).physicalRepeatLengthMm, 12, "saved/opened .knitscape preserves mm.");
+  assert.equal(actions.getYarnPbr(ids[1]).physicalRepeatLengthMm, undefined, "old material remains legacy after opening.");
   for (const asset of state().yarnLibrary) for (const key of keys) if (asset.pbr?.[key]) {
     assert.deepEqual(Buffer.from(await (await yarnAssetRegistry.getBlob(asset.pbr[key].assetRef)).arrayBuffer()), pixelBytes);
   }

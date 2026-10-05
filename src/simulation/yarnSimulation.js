@@ -275,6 +275,7 @@ export function simulate(
       uvStripCache,
       feedYarnPlies,
       feedCount: feeds?.length || 0,
+      machineGauge,
       stitchWidth: geometry.stitchWidth,
       activeYarnPlies,
       normalizedYarnSequence,

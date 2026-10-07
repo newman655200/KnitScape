@@ -158,7 +158,7 @@ try {
 
   const primaryPly = { name: "main", color: "#123456", diameter: 0.24,
     lengthScaleY: 1, enabled: true, texture: null };
-  const feed = (first, second = "second-only") => ({ yarns: [first, second].map(yarnId =>
+  const feed = (first, second) => ({ yarns: [first, second].filter(yarnId => yarnId !== undefined).map(yarnId =>
     ({ yarnId, yarnLengthCmPer100Needles: 0, tensionCN: null, placement: "parallel" })) });
   const asset = (id, selectedSlots = slots, loader = null) => {
     const pbr = Object.fromEntries(selectedSlots.map(slot => {
@@ -212,9 +212,9 @@ try {
   const resolved = brush.resolveFeedYarnPlies(feeds, library, primaryPly);
   assert.ok(resolved instanceof Map);
   assert.deepEqual([...resolved.keys()], [0, 1, 2, 3]);
-  assert.equal(resolved.get(0).texture.pbr.normal.assetRef, fullA.pbr.normal.assetRef);
-  assert.equal(resolved.get(3), primaryPly, "An Asset without PBR preserves the old primary ply.");
-  assert.deepEqual(scan.normalizeYarnTexture(resolved.get(0).texture).pbr.normal.assetRef,
+  assert.equal(resolved.get(0)[0].texture.pbr.normal.assetRef, fullA.pbr.normal.assetRef);
+  assert.equal(resolved.get(3)[0], primaryPly, "An Asset without PBR preserves the old primary ply.");
+  assert.deepEqual(scan.normalizeYarnTexture(resolved.get(0)[0].texture).pbr.normal.assetRef,
     fullA.pbr.normal.assetRef, "Runtime texture normalization must preserve Registry refs.");
   for (const yarn of library) for (const ref of refs(yarn)) {
     assert.equal(brush.getReadyYarnTextureImage({ assetRef: ref }), null);
@@ -237,7 +237,7 @@ try {
   const expectedRefs = new Set([...refs(fullA), ...refs(partialB), ...refs(partialC)]);
   assert.deepEqual(uploadedRefs(start), expectedRefs, "Existing WebGL renderer receives every selected map.");
   assert.ok(draws.some(draw => draw.maps.normal === fullA.pbr.normal.assetRef));
-  assert.ok(refs(secondOnly).every(ref => !byteReads.includes(ref)), "Second Feed Yarns never read their maps.");
+  assert.ok(refs(secondOnly).every(ref => !byteReads.includes(ref)), "Unassigned Yarn Assets never read their maps.");
   assertOneUploadPerContext(start);
   const zoomStart = counts();
   await render(feeds, library); await render(feeds, library, 1.5);
@@ -278,10 +278,10 @@ try {
   const scaleLibrary = [materialA, materialB, sharedSecond];
   const scaleFeeds = [feed(materialA.id), feed(materialB.id)];
   const independent = brush.resolveFeedYarnPlies(scaleFeeds, scaleLibrary, primaryPly);
-  assert.equal(independent.get(0).texture.pbr.physicalRepeatLengthMm, 8);
-  assert.equal(independent.get(1).texture.pbr.physicalRepeatLengthMm, 15);
-  assert.equal(independent.get(0).texture.pbr.baseColor.assetRef,
-    independent.get(1).texture.pbr.baseColor.assetRef);
+  assert.equal(independent.get(0)[0].texture.pbr.physicalRepeatLengthMm, 8);
+  assert.equal(independent.get(1)[0].texture.pbr.physicalRepeatLengthMm, 15);
+  assert.equal(independent.get(0)[0].texture.pbr.baseColor.assetRef,
+    independent.get(1)[0].texture.pbr.baseColor.assetRef);
   state.dispatch({ yarnLibrary: scaleLibrary });
   const baselineLibrary = scaleLibrary.map(yarn => {
     if (!yarn.pbr) return yarn;
@@ -385,11 +385,11 @@ try {
   const legacyPly = { ...primaryPly, texture: legacyTexture };
   const fallbackFeeds = [feed("missing"), { yarns: [] }, feed("shared-none"), feed("")];
   const fallback = brush.resolveFeedYarnPlies(fallbackFeeds, sharedLibrary, legacyPly);
-  for (const ply of fallback.values()) assert.equal(ply, legacyPly);
+  for (const ply of [...fallback.values()].flat()) assert.equal(ply, legacyPly);
   const selected = brush.resolveFeedYarnPlies(sharedFeeds, sharedLibrary, legacyPly, new Set([1]));
   assert.deepEqual([...selected.keys()], [1], "Unused Feeds do not receive render materials.");
-  assert.equal(selected.get(1).texture.pbr.baseColor.assetRef, sharedB.pbr.baseColor.assetRef);
-  assert.equal(selected.get(1).texture.processedDataUrl || "", "", "Valid Asset PBR takes priority over legacy texture.");
+  assert.equal(selected.get(1)[0].texture.pbr.baseColor.assetRef, sharedB.pbr.baseColor.assetRef);
+  assert.equal(selected.get(1)[0].texture.processedDataUrl || "", "", "Valid Asset PBR takes priority over legacy texture.");
   const legacyStart = counts();
   assert.equal(brush.getReadyYarnTextureImage(pixel), null);
   assertNoWork(legacyStart, "A legacy ready-image getter also never starts loading.");
@@ -545,7 +545,7 @@ try {
   previewTimers.clear();
 
   yarnAssetRegistry.clear();
-  console.log("PASS: first Feed Yarn PBR uses the existing UV renderer; 100 Assets stay lazy, selected 9/shared 6/full 20 and 30 maps decode once, zoom reuses GPU uploads, Solid/Auto/hidden/stopped work stays inactive, and Canvas/legacy/partial/failure/replacement/clear/reopen remain compatible.");
+  console.log("PASS: single-Yarn Feed PBR regression uses the existing UV renderer; 100 Assets stay lazy, selected 9/shared 6/full 20 and 30 maps decode once, zoom reuses GPU uploads, Solid/Auto/hidden/stopped work stays inactive, and Canvas/legacy/partial/failure/replacement/clear/reopen remain compatible.");
 } finally {
   await server.close();
   delete globalThis.__feedYarnPbrPreparationJobs;

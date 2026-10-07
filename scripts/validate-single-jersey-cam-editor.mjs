@@ -63,6 +63,7 @@ try {
     getSingleJerseyFeedIndices,
     setSingleJerseyFeedYarnLength,
     setSingleJerseyFeedYarnLengths,
+    clearSingleJerseyFeedYarnLength,
     setSingleJerseyFeedYarns,
     setSingleJerseyCamOperation,
   } = await server.ssrLoadModule(`/${actionPath}`);
@@ -167,7 +168,11 @@ try {
     [31, 8],
     "editing Yarn 2 must not change Yarn 1 in the same Feed."
   );
-  setSingleJerseyFeedYarnLengths([0, 2], 21);
+  const commitBatch = (targets, value) => setSingleJerseyFeedYarnLengths({
+    structureRevision: state().feedYarnStructureRevision, targets }, value);
+  const targetLocator = (feedIndex, yarnIndex = 0) => ({ feedIndex, yarnIndex,
+    yarnId: state().singleJerseyCamProgram.feeds[feedIndex].yarns[yarnIndex].yarnId });
+  commitBatch([targetLocator(0), targetLocator(2)], 21);
   assert.deepEqual(
     state().singleJerseyCamProgram.feeds.map((feed) =>
       feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
@@ -175,24 +180,24 @@ try {
     [[21], [31, 8], [21], [0]],
     "odd Feed batch editing must only update Feed 1 and Feed 3."
   );
-  setSingleJerseyFeedYarnLengths([1, 3], 27);
+  commitBatch([targetLocator(1), targetLocator(3)], 27);
   assert.deepEqual(
     state().singleJerseyCamProgram.feeds.map((feed) =>
       feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
     ),
-    [[21], [27, 27], [21], [27]],
-    "even Feed batch editing must update every Yarn inside the target Feeds."
+    [[21], [27, 8], [21], [27]],
+    "even Feed candidates must not implicitly select other Yarns."
   );
-  setSingleJerseyFeedYarnLengths([0, 3], 23);
+  commitBatch([targetLocator(0), targetLocator(3)], 23);
   assert.deepEqual(
     state().singleJerseyCamProgram.feeds.map((feed) =>
       feed.yarns.map((yarn) => yarn.yarnLengthCmPer100Needles)
     ),
-    [[23], [27, 27], [21], [23]],
+    [[23], [27, 8], [21], [23]],
     "selected Feed batch editing must preserve unselected Feeds."
   );
-  setSingleJerseyFeedYarnLengths(
-    getSingleJerseyFeedIndices("all", 4),
+  commitBatch(
+    [targetLocator(0), targetLocator(1), targetLocator(1, 1), targetLocator(2), targetLocator(3)],
     25
   );
   assert.deepEqual(
@@ -202,17 +207,27 @@ try {
     [[25], [25, 25], [25], [25]],
     "all Feed batch editing must update every Feed in one action."
   );
-  setSingleJerseyFeedYarnLength(0, 0, "");
+  setSingleJerseyFeedYarnLength(0, 0, 23);
+  const beforeEmptyDraft = state();
+  assert.equal(setSingleJerseyFeedYarnLength(0, 0, "").ok, false);
+  assert.equal(setSingleJerseyFeedYarnLength(0, 0, 0).ok, false);
+  assert.equal(state(), beforeEmptyDraft, "zero/empty drafts must not commit Clear.");
+  clearSingleJerseyFeedYarnLength(0, 0);
   assert.equal(
     state().singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles,
     0,
-    "an empty yarn length must persist the existing zero/fallback value."
+    "only explicit Clear edits to the legacy zero/fallback value."
   );
-  setSingleJerseyFeedYarnLength(0, 0, "invalid");
+  setSingleJerseyFeedYarnLength(0, 0, 23);
+  const validLengthState = state();
+  assert.deepEqual(setSingleJerseyFeedYarnLength(0, 0, "invalid"), {
+    ok: false, reason: "INVALID_YARN_LENGTH", previousValue: 23,
+  });
+  assert.equal(state(), validLengthState, "invalid input must not dispatch.");
   assert.equal(
     state().singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles,
-    0,
-    "an invalid yarn length must safely keep the original-path fallback."
+    23,
+    "an invalid yarn length must retain the valid target."
   );
 
   const operationsWithoutFeedYarns = resolveSingleJerseyOperations(

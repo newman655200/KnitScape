@@ -22,7 +22,8 @@ import {
   Y_PADDING,
 } from "./yarnPathGeometry.js";
 import { drawYarnSimulation } from "./drawYarnSimulation.js";
-import { solveFeedYarnLengths } from "./yarnLengthSolver.js";
+import { solveFeedYarnLengths, ERROR } from "./yarnLengthSolver.js";
+import { derivePreviewValidity } from "./previewValidity.js";
 
 const YARN_RATIO = 0.24;
 const dpi = devicePixelRatio;
@@ -160,6 +161,13 @@ export function simulate(
         : null;
     })
   );
+  const usedFeedIndices = new Set(geometry.yarnPathLinks.map(link =>
+    courseToFeedIndex(link.row, feeds?.length || 1)));
+  const requiredTargets = solverLengths.flatMap((lengths, feedIndex) =>
+    usedFeedIndices.has(feedIndex) ? lengths.flatMap((length, yarnIndex) =>
+      length === null ? [] : [{ feedIndex, yarnIndex, targetLengthCmPer100Needles: length }]
+    ) : []
+  );
   // One bounded entry; display size, zoom, color and textures do not affect solving.
   const solverInputKey = solverLengths.some((lengths) =>
     lengths.some((length) => length !== null)
@@ -179,7 +187,6 @@ export function simulate(
   const yarnLengthSolverResults = cacheHit
     ? structuredClone(solverResultCache.results)
     : [];
-  const solvedModelPaths = new Map();
   const solverGeometryByHeight = new Map();
   let evaluateModelLength = null;
   (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
@@ -190,16 +197,20 @@ export function simulate(
     );
     const belongsToFeed = (course) =>
       courseToFeedIndex(course, feeds.length) === feedIndex;
-    if (
-      !yarnIndices.length ||
-      ![...geometry.measuredNeedleCountByCourse.keys()].some(belongsToFeed)
-    ) {
+    if (!yarnIndices.length || !usedFeedIndices.has(feedIndex)) {
       return;
     }
     const feedLinks = geometry.yarnPathLinks.filter((link) => belongsToFeed(link.row));
+    // Equal targets on the same course topology share computation, not slot state.
+    const uniqueTargets = new Map();
+    yarnIndices.forEach(index => {
+      const length = solverLengths[feedIndex][index];
+      if (!uniqueTargets.has(length)) uniqueTargets.set(length, index);
+    });
+    const uniqueIndices = [...uniqueTargets.values()];
     try {
       const results = solveFeedYarnLengths({
-        feeds: [{ yarns: yarnIndices.map((index) => yarns[index]) }],
+        feeds: [{ yarns: uniqueIndices.map((index) => yarns[index]) }],
         gauge: machineGauge,
         buildGeometry: (loopHeight) => {
           if (!solverGeometryByHeight.has(loopHeight)) {
@@ -219,14 +230,28 @@ export function simulate(
           };
         },
       });
-      results.forEach((result) => {
+      const resultsByLength = new Map(results.map(result =>
+        [solverLengths[feedIndex][uniqueIndices[result.yarnIndex]], result]));
+      yarnIndices.forEach(yarnIndex => {
+        const result = structuredClone(resultsByLength.get(solverLengths[feedIndex][yarnIndex]));
         result.feedIndex = feedIndex;
-        result.yarnIndex = yarnIndices[result.yarnIndex];
+        result.yarnIndex = yarnIndex;
         yarnLengthSolverResults.push(result);
       });
     } catch (error) {
-      // Unsupported/non-monotonic courses keep the original preview geometry.
-      if (!(error instanceof RangeError)) throw error;
+      // Solver failures keep base paths and expose diagnostics for every slot.
+      yarnIndices.forEach(yarnIndex => yarnLengthSolverResults.push({
+        feedIndex, yarnIndex,
+        targetLengthCmPer100Needles: solverLengths[feedIndex][yarnIndex],
+        solvedLengthCmPer100Needles: null,
+        errorCmPer100Needles: null,
+        status: ERROR,
+        failureReason: ERROR,
+        converged: false,
+        reachableRange: null,
+        solvedPathByLink: new Map(),
+        errorMessage: error instanceof Error ? error.message : String(error),
+      }));
     }
   });
   solverGeometryByHeight.clear();
@@ -236,32 +261,45 @@ export function simulate(
       results: structuredClone(yarnLengthSolverResults),
     };
   }
-  yarnLengthSolverResults.forEach((result) => {
-    // V1 renders only the first Feed Yarn; keep other independent results.
-    if (result.yarnIndex !== 0 || !result.converged) return;
-    result.solvedPathByLink.forEach((pathData, linkIndex) => {
-      solvedModelPaths.set(linkIndex, pathData);
-    });
-  });
-  const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
-  const modelPathByLink = new Map(geometry.modelPathByLink);
-  // If display resolution fell back, its UV must use the same original geometry.
-  if (resolvedPathByLink !== geometry.resolvedPathByLink) {
-    solvedModelPaths.forEach((path, index) => modelPathByLink.set(index, path));
-  }
-  const usedFeedIndices = new Set(geometry.yarnPathLinks.map(link =>
-    courseToFeedIndex(link.row, feeds?.length || 1)));
-  const feedYarnPlies = yarnLibrary === null ? new Map()
+  // Re-evaluate application on every preview, including a Solver cache hit.
+  yarnLengthSolverResults.forEach(result => { result.appliedToSimulation = false; });
+  const feedYarnPlies = feeds === null ? new Map()
     : resolveFeedYarnPlies(feeds, yarnLibrary, activeYarnPlies[0], usedFeedIndices);
   const textureMaterials = [...new Set([
     ...activeYarnPlies.slice(1),
-    ...(feedYarnPlies.size ? feedYarnPlies.values() : [activeYarnPlies[0]]),
+    ...(feedYarnPlies.size ? [...feedYarnPlies.values()].flat() : [activeYarnPlies[0]]),
   ])];
   if (yarnLibrary !== null) retainYarnAssetTextureImages([...textureMaterials, ...activeYarnPlies]);
   const renderUvTextures = renderTextures && textureMaterials.some(hasUvTextureMap);
-  const uvOffsets = renderUvTextures
-    ? buildYarnUvPathOffsets(geometry.yarnPathLinks, modelPathByLink) : null;
+  const strandCount = Math.max(1, ...[...feedYarnPlies.values()].map(plies => plies.length));
+  const yarnStrands = Array.from({ length: strandCount }, (_, yarnIndex) => {
+    const solvedModelPaths = new Map();
+    yarnLengthSolverResults.forEach(result => {
+      if (result.yarnIndex !== yarnIndex || !result.converged) return;
+      result.solvedPathByLink.forEach((path, index) => solvedModelPaths.set(index, path));
+    });
+    const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
+    const modelPathByLink = new Map(geometry.modelPathByLink);
+    // A failed Yarn keeps its own base paths; other slots retain their solves.
+    if (resolvedPathByLink !== geometry.resolvedPathByLink) {
+      solvedModelPaths.forEach((path, index) => modelPathByLink.set(index, path));
+      yarnLengthSolverResults.forEach(result => {
+        if (result.yarnIndex === yarnIndex && result.converged && result.solvedPathByLink.size) {
+          result.appliedToSimulation = true;
+        }
+      });
+    }
+    const strandLinks = feedYarnPlies.size ? geometry.yarnPathLinks.filter(link =>
+      yarnIndex < (feedYarnPlies.get(courseToFeedIndex(link.row, feeds.length))?.length || 1)
+    ) : geometry.yarnPathLinks;
+    return { modelPathByLink, resolvedPathByLink,
+      uvOffsets: renderUvTextures || strandCount > 1
+        ? buildYarnUvPathOffsets(strandLinks, modelPathByLink) : null };
+  });
   const uvStripCache = new Map();
+  yarnLengthSolverResults.forEach(result => {
+    if (result.converged && !result.appliedToSimulation) result.failureReason = "PATH_NOT_APPLIED";
+  });
 
   function draw() {
     drawYarnSimulation({
@@ -269,9 +307,7 @@ export function simulate(
       canvasWidth,
       canvasHeight,
       yarnPathLinks: geometry.yarnPathLinks,
-      resolvedPathByLink,
-      modelPathByLink,
-      uvOffsets,
+      yarnStrands,
       uvStripCache,
       feedYarnPlies,
       feedCount: feeds?.length || 0,
@@ -301,5 +337,6 @@ export function simulate(
     stopSim,
     yarnLengthMetrics: geometry.yarnLengthMetrics,
     yarnLengthSolverResults,
+    previewValidity: derivePreviewValidity(requiredTargets, yarnLengthSolverResults),
   };
 }

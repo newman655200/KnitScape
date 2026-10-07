@@ -1,11 +1,15 @@
 import {
   courseToFeedIndex,
+  modelLengthToMm,
   targetModelLengthPer100Needles,
 } from "./yarnLengthMetrics.js";
 
 export const CONVERGED = "CONVERGED";
 export const UNREACHABLE_TARGET = "UNREACHABLE_TARGET";
 export const MAX_ITERATIONS = "MAX_ITERATIONS";
+export const NOT_SET = "NOT_SET";
+export const ERROR = "ERROR";
+export const DEFAULT_SOLVER_TOLERANCE = 0.01;
 
 function measuredLengthForFeed(geometry, feedIndex, feedCount) {
   const lengths = [
@@ -69,6 +73,8 @@ function resultFromCandidate({
   feedIndex,
   yarnIndex,
   target,
+  targetLengthCmPer100Needles,
+  gauge,
   status,
   reachableRange,
   tolerance,
@@ -78,12 +84,17 @@ function resultFromCandidate({
   return {
     feedIndex,
     yarnIndex,
+    targetLengthCmPer100Needles,
+    solvedLengthCmPer100Needles: modelLengthToMm(candidate.measured, gauge) / 10,
+    errorCmPer100Needles: modelLengthToMm(error, gauge) / 10,
+    toleranceCmPer100Needles: modelLengthToMm(tolerance, gauge) / 10,
     targetModelLengthPer100Needles: target,
     solvedModelLengthPer100Needles: candidate.measured,
     solvedLoopHeight: candidate.loopHeight,
     error,
     converged: status === CONVERGED && error <= tolerance,
     status,
+    failureReason: status === CONVERGED ? null : status,
     reachableRange,
     solvedPathByLink: pathMapForFeed(
       candidate.geometry,
@@ -99,7 +110,7 @@ export function solveFeedYarnLengths({
   buildGeometry,
   minLoopHeight = 0.05,
   maxLoopHeight = 2,
-  tolerance = 0.01,
+  tolerance = DEFAULT_SOLVER_TOLERANCE,
   maxIterations = 48,
   monotonicSamples = 8,
 }) {
@@ -156,6 +167,9 @@ export function solveFeedYarnLengths({
       maxLoopHeight: upper.loopHeight,
       minModelLengthPer100Needles: lower.measured,
       maxModelLengthPer100Needles: upper.measured,
+      // Bounds of this geometry model and solver settings, not machine/process limits.
+      minLengthCmPer100Needles: modelLengthToMm(lower.measured, gauge) / 10,
+      maxLengthCmPer100Needles: modelLengthToMm(upper.measured, gauge) / 10,
     };
 
     feed.yarns.forEach((yarn, yarnIndex) => {
@@ -175,6 +189,8 @@ export function solveFeedYarnLengths({
             feedIndex,
             yarnIndex,
             target,
+            targetLengthCmPer100Needles: Number(yarn.yarnLengthCmPer100Needles),
+            gauge,
             status: UNREACHABLE_TARGET,
             reachableRange,
             tolerance,
@@ -216,6 +232,8 @@ export function solveFeedYarnLengths({
           feedIndex,
           yarnIndex,
           target,
+          targetLengthCmPer100Needles: Number(yarn.yarnLengthCmPer100Needles),
+          gauge,
           status,
           reachableRange,
           tolerance,

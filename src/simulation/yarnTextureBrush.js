@@ -119,20 +119,22 @@ export function collectYarnTextureSources(texture) {
     .filter(Boolean);
 }
 
-// A runtime view only: Feed slots after the first never become draw materials.
+// Runtime material views share asset references; each Feed slot owns its scale.
 export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedIndices = null) {
   const materials = new Map();
   const library = new Map((yarnLibrary || []).map(yarn => [String(yarn.id), yarn]));
   (feeds || []).forEach((feed, index) => {
     if (usedFeedIndices && !usedFeedIndices.has(index)) return;
-    const yarnId = feed?.yarns?.[0]?.yarnId;
-    const pbr = yarnId === null || yarnId === undefined || yarnId === ""
-      ? null : library.get(String(yarnId))?.pbr;
-    const hasMaps = pbr && YARN_PBR_MAP_KEYS
-      .some(key => pbr[key]?.assetRef);
-    materials.set(index, hasMaps
-      ? { ...primaryPly, texture: normalizeYarnTexture({ pbr, textureStrength: 1 }) }
-      : primaryPly);
+    const yarns = Array.isArray(feed?.yarns) && feed.yarns.length ? feed.yarns : [null];
+    materials.set(index, yarns.map(yarn => {
+      const yarnId = yarn?.yarnId;
+      const pbr = yarnId === null || yarnId === undefined || yarnId === ""
+        ? null : library.get(String(yarnId))?.pbr;
+      const hasMaps = pbr && YARN_PBR_MAP_KEYS.some(key => pbr[key]?.assetRef);
+      return hasMaps
+        ? { ...primaryPly, texture: normalizeYarnTexture({ pbr, textureStrength: 1 }) }
+        : primaryPly;
+    }));
   });
   return materials;
 }

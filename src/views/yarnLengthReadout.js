@@ -40,6 +40,7 @@ export function yarnLengthReadout() {
       ${t("yarnLength.current", language)}
       ${Number.isFinite(cmPer100) ? cmPer100.toFixed(2) : "--"}
       ${t("yarnLength.cmPer100", language)}
+      <div>${t("yarnSolver.legacyMetric", language)}</div>
     </div>
   </section>`;
 }

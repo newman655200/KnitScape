@@ -119,7 +119,7 @@ export function loadJSON(patternJSON, assetRegistry = null) {
   projectLoadRequest++;
   if (hasProjectAssets(patternJSON)) cancelYarnPbrImports();
   if (staged) yarnAssetRegistry.replaceWith(staged);
-  dispatch(action);
+  dispatch(action, { replaceFeedYarnStructure: Object.hasOwn(action, "singleJerseyCamProgram") });
   fitChart();
   return true;
 }

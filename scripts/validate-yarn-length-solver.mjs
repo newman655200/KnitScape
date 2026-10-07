@@ -461,7 +461,8 @@ const runtimeSources = [
   "src/components/runSimulation.js",
 ].map((file) => fs.readFileSync(file, "utf8"));
 for (const source of runtimeSources) {
-  assert.doesNotMatch(source, /yarnLengthSolver|solveFeedYarnLengths/);
+  // The runner may consume yarnLengthSolverResults, but must not own solving.
+  assert.doesNotMatch(source, /\byarnLengthSolver\b|\bsolveFeedYarnLengths\b/);
 }
 
 console.log(

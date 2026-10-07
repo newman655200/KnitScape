@@ -1,4 +1,5 @@
 import { simulate } from "../simulation/yarnSimulation";
+import { PREVIEW_VALIDITY } from "../simulation/previewValidity.js";
 import { retainYarnAssetTextureImages } from "../simulation/yarnTextureBrush.js";
 import { retainWebglYarnTextures } from "../simulation/yarnUvWebglRenderer.js";
 import { GLOBAL_STATE, dispatch } from "../state";
@@ -10,6 +11,7 @@ import {
   endTexturePreviewInteraction,
 } from "../actions/texturePerformance";
 import { buttonIcon } from "../views/uiButton";
+import { yarnLengthSolverFeedback } from "../views/yarnLengthSolverFeedback.js";
 import { t } from "../i18n";
 import {
   createSingleJerseyExecutionInput,
@@ -101,6 +103,7 @@ export function simulationView() {
         </section>
         <section class="simulation-preview-panel">
           <h2>${t("needleArrangement.after", language)}</h2>
+          ${yarnLengthSolverFeedback()}
           <div id="sim-after-container" class="simulation-preview-canvas">
             <div
               id="sim-after-transform-group"
@@ -232,6 +235,8 @@ export function runSimulation() {
       stopSims = [baseSimulationResult.stopSim];
       dispatch({
         yarnLengthMetrics: baseSimulationResult.yarnLengthMetrics,
+        yarnLengthSolverResults: [],
+        previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW,
       });
 
       clearSimulationCanvases(AFTER_SIMULATION_TARGET.canvasIDs);
@@ -247,6 +252,7 @@ export function runSimulation() {
         if (!isMachineConfigurationError(error)) throw error;
 
         setMachineExecutionError(error.message);
+        dispatch({ previewValidity: PREVIEW_VALIDITY.INVALID });
         releaseAfterYarnTextures();
         return;
       }
@@ -268,6 +274,10 @@ export function runSimulation() {
         }
       );
       stopSims.push(afterSimulationResult.stopSim);
+      dispatch({
+        yarnLengthSolverResults: afterSimulationResult.yarnLengthSolverResults,
+        previewValidity: afterSimulationResult.previewValidity,
+      });
     }
 
     const debouncedRun = debounce(run, 150);
@@ -293,6 +303,8 @@ export function runSimulation() {
 
         if (found) {
           stopSimulation();
+          // Old results cannot validate newly edited facts during the debounce.
+          dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
           debouncedRun();
         }
 

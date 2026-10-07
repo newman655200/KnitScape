@@ -22,6 +22,7 @@ export function buildYarnUvStrip({
   modelPathData = pathData,
   modelToCanvasPoint = point => point,
   arcLengthOffset = 0,
+  normalOffsetModel = 0,
   yarnWidth,
   textureRepeatLength = DEFAULT_TEXTURE_REPEAT_LENGTH,
   physicalRepeatLengthMm,
@@ -41,11 +42,15 @@ export function buildYarnUvStrip({
   const repeat = Math.max(1, Number(textureRepeatLength) || 1);
   const physicalRepeat = Number.isFinite(physicalRepeatLengthMm) && physicalRepeatLengthMm > 0;
   const needlePitchMm = physicalRepeat ? gaugeToNeedlePitchMm(machineGauge) : null;
+  const offset = Number.isFinite(normalOffsetModel) ? normalOffsetModel : 0;
 
   sampled.forEach((point) => {
-    const center = modelToCanvasPoint(point);
-    const normalEnd = modelToCanvasPoint({ ...point,
-      x: point.x + point.normalX, y: point.y + point.normalY });
+    // Placement affects only displayed positions, never the Solver centerline or U.
+    const placed = offset === 0 ? point : { ...point,
+      x: point.x + point.normalX * offset, y: point.y + point.normalY * offset };
+    const center = modelToCanvasPoint(placed);
+    const normalEnd = modelToCanvasPoint({ ...placed,
+      x: placed.x + point.normalX, y: placed.y + point.normalY });
     const normalLength = Math.hypot(normalEnd.x - center.x, normalEnd.y - center.y) || 1;
     const normalX = (normalEnd.x - center.x) / normalLength;
     const normalY = (normalEnd.y - center.y) / normalLength;

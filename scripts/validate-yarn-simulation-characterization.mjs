@@ -339,11 +339,13 @@ try {
   assert.deepEqual(preview(feed(100)).yarnLengthSolverResults, unreachable.yarnLengthSolverResults);
   assert.equal(solverCalls, unreachableCalls, "UNREACHABLE_TARGET diagnostics must be reusable with original paths.");
   const multipleYarns = preview(feed(23, 21));
-  assert.deepEqual(multipleYarns.paths, finalPreviews[1].paths);
+  assert.equal(multipleYarns.paths.length, finalPreviews[1].paths.length * 2,
+    "both Feed Yarn geometries must be drawn while single-Yarn baselines remain unchanged.");
   assert.deepEqual(multipleYarns.yarnLengthSolverResults.map((item) => item.yarnIndex), [0, 1]);
   assert.ok(multipleYarns.yarnLengthSolverResults.every((item) => item.converged));
   const secondaryOnly = preview(feed(null, 23));
-  assert.deepEqual(secondaryOnly.paths, design.paths, "second Yarn must not replace the main Yarn.");
+  assert.equal(secondaryOnly.paths.length, design.paths.length * 2,
+    "the first Yarn keeps its base path while the second Yarn renders its own solved path.");
   assert.equal(secondaryOnly.yarnLengthSolverResults[0].yarnIndex, 1);
   assert.equal(secondaryOnly.yarnLengthSolverResults[0].converged, true);
   const extraFeed = preview([...feed(23), ...feed(21)]);
@@ -415,4 +417,4 @@ try {
   delete globalThis.__countYarnLengthGeometryCall;
 }
 
-console.log("PASS: yarn simulation preserves the original fixture and renders solved main Yarn paths.");
+console.log("PASS: yarn simulation preserves the original fixture and renders independent Feed Yarn paths.");

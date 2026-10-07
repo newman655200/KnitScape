@@ -112,6 +112,7 @@ export function assignYarnToFeed(feedIndex, yarnIndex, id = GLOBAL_STATE.pending
   if (!Number.isInteger(yarnIndex) || yarnIndex < 0 || yarnIndex > yarns.length) {
     throw new RangeError("yarnIndex must identify a slot or the next new slot.");
   }
+  if (yarns[yarnIndex]?.yarnId === asset.id) return;
   const next = yarns.map(yarn => ({ ...yarn }));
   next[yarnIndex] = { ...(next[yarnIndex] ?? {
     yarnLengthCmPer100Needles: 0, tensionCN: null, placement: "parallel",

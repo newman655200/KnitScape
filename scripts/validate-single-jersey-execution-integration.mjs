@@ -255,6 +255,13 @@ const virtualModules = new Map([
     },
   ],
   [
+    "../views/yarnLengthSolverFeedback.js",
+    {
+      id: "\0single-jersey-feedback-stub",
+      code: "export const yarnLengthSolverFeedback = () => '';",
+    },
+  ],
+  [
     "../i18n",
     {
       id: "\0single-jersey-i18n-stub",

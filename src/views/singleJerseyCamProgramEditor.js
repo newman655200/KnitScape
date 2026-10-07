@@ -1,4 +1,6 @@
 import { html } from "lit-html";
+import { live } from "lit-html/directives/live.js";
+import { ref } from "lit-html/directives/ref.js";
 
 import {
   createSingleJerseyCamProgram,
@@ -8,6 +10,7 @@ import {
   resizeSingleJerseyCamProgram,
   setSingleJerseyFeedYarnLength,
   setSingleJerseyFeedYarnLengths,
+  clearSingleJerseyFeedYarnLength,
 } from "../actions/singleJerseyCamProgram.js";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import slipIconUrl from "../assets/symbols/slip.svg";
@@ -16,6 +19,8 @@ import { t } from "../i18n/index.js";
 import { dispatch, GLOBAL_STATE } from "../state.js";
 import { assignYarnToFeed, removeFeedYarnSlot } from "../actions/yarnLibrary.js";
 import { yarnAssignmentNotice } from "./yarnLibrary.js";
+import { validateYarnLengthInput } from "../domain/yarnLengthInput.js";
+import { validateYarnLengthBatchSelection } from "../domain/yarnLengthBatch.js";
 
 const OPERATION_ORDER = ["K", "M", "T"];
 const OPERATION_ICON_URLS = {
@@ -46,7 +51,7 @@ function resizeCamProgram(event, trackCount, feedCount) {
 
 function displayYarnLength(value) {
   const length = Number(value);
-  return Number.isFinite(length) && length > 0 ? length.toFixed(1) : "";
+  return Number.isFinite(length) && length > 0 ? String(length) : "";
 }
 
 function openYarnLibrary() {
@@ -55,11 +60,35 @@ function openYarnLibrary() {
 
 function commitYarnLength(event) {
   const input = event.currentTarget;
-  setSingleJerseyFeedYarnLength(
+  const result = setSingleJerseyFeedYarnLength(
     Number(input.dataset.feedIndex),
     Number(input.dataset.yarnIndex),
     input.value
   );
+  if (!result.ok) input.value = displayYarnLength(result.previousValue);
+  input.setCustomValidity("");
+  setYarnLengthNotice(input, result.ok ? "" : t("camProgram.invalidYarnLength", GLOBAL_STATE.language));
+  return result;
+}
+
+function setYarnLengthNotice(input, message) {
+  input.closest(".cam-feed-yarn-slot").querySelector(".cam-yarn-length-feedback").textContent = message;
+}
+
+function validateYarnLengthDraft(event) {
+  const input = event.currentTarget;
+  const validation = validateYarnLengthInput(input.value);
+  input.setCustomValidity(validation.ok ? "" : t("camProgram.invalidYarnLength", GLOBAL_STATE.language));
+  setYarnLengthNotice(input, "");
+}
+
+function clearYarnLength(event, feedIndex, yarnIndex) {
+  const result = clearSingleJerseyFeedYarnLength(feedIndex, yarnIndex);
+  const input = event.currentTarget.closest(".cam-feed-yarn-slot").querySelector("input[data-yarn-index]");
+  input.value = "";
+  input.setCustomValidity("");
+  setYarnLengthNotice(input, t("camProgram.yarnLengthCleared", GLOBAL_STATE.language));
+  return result;
 }
 
 function finishYarnLengthOnEnter(event) {
@@ -68,20 +97,98 @@ function finishYarnLengthOnEnter(event) {
   event.currentTarget.blur();
 }
 
-function applyBatchYarnLength(event, feedCount) {
+// Local selection-time UI snapshots; none of this is project data.
+const selectedBatchTargets = new Map();
+let selectedStructureRevision = null;
+const selectedFeedFilters = new Set();
+let batchFeedScope = "all";
+let batchFeedback = "";
+const assignmentKey = (feed, yarn) => `${feed}:${yarn}`;
+const batchSelection = () => ({ structureRevision: selectedStructureRevision, targets: [...selectedBatchTargets.values()] });
+const batchStructureCurrent = () => selectedStructureRevision === GLOBAL_STATE.feedYarnStructureRevision;
+function clearBatchSelection() {
+  selectedBatchTargets.clear();
+  selectedStructureRevision = null;
+}
+
+function candidateFeedIndices(feedCount) {
+  return getSingleJerseyFeedIndices(batchFeedScope, feedCount, [...selectedFeedFilters]);
+}
+
+function batchMessage() {
+  const targets = [...selectedBatchTargets.values()];
+  if (targets.length) {
+    const checked = validateYarnLengthBatchSelection(GLOBAL_STATE.singleJerseyCamProgram, batchSelection(), GLOBAL_STATE.feedYarnStructureRevision);
+    if (!checked.ok) return t(checked.reason === "STALE_ASSIGNMENT_STRUCTURE"
+      ? "camProgram.batchStructureChanged" : "camProgram.batchTargetsChanged", GLOBAL_STATE.language);
+  }
+  return batchFeedback || (targets.length ? "" : t("camProgram.batchNoTargets", GLOBAL_STATE.language));
+}
+
+function refreshBatchControls(form = document.querySelector(".cam-yarn-length-batch")) {
+  if (!form) return;
+  const count = selectedBatchTargets.size;
+  form.querySelector(".cam-batch-target-count").textContent = t("camProgram.batchCount", GLOBAL_STATE.language, { count });
+  form.querySelector(".cam-batch-feedback").textContent = batchMessage();
+  form.querySelector('button[type="submit"]').disabled = count === 0;
+  const feedCount = GLOBAL_STATE.singleJerseyCamProgram?.tracks[0]?.length;
+  const candidates = feedCount ? candidateFeedIndices(feedCount) : [];
+  form.closest("#single-jersey-cam-editor")?.querySelectorAll('input[name="selected-yarn"]').forEach(input => {
+    const selected = selectedBatchTargets.get(assignmentKey(input.dataset.batchFeed, input.dataset.batchYarn));
+    input.checked = batchStructureCurrent() && !!selected && String(selected.yarnId) === input.dataset.batchYarnId;
+    input.disabled = !candidates.includes(Number(input.dataset.batchFeed));
+  });
+}
+
+function selectBatchYarn(event, target) {
+  const key = assignmentKey(target.feedIndex, target.yarnIndex);
+  if (event.currentTarget.checked) {
+    if (!batchStructureCurrent()) clearBatchSelection();
+    if (!selectedBatchTargets.size) selectedStructureRevision = GLOBAL_STATE.feedYarnStructureRevision;
+    selectedBatchTargets.set(key, { ...target });
+  }
+  else selectedBatchTargets.delete(key);
+  if (!selectedBatchTargets.size) selectedStructureRevision = null;
+  batchFeedback = "";
+  refreshBatchControls();
+}
+
+function changeBatchScope(event) {
+  batchFeedScope = event.currentTarget.value;
+  clearBatchSelection();
+  batchFeedback = "";
+  refreshBatchControls(event.currentTarget.form);
+}
+
+function selectFeedFilter(event, feedIndex) {
+  if (event.currentTarget.checked) selectedFeedFilters.add(feedIndex);
+  else selectedFeedFilters.delete(feedIndex);
+  if (batchFeedScope === "selected") {
+    clearBatchSelection();
+    batchFeedback = "";
+    refreshBatchControls();
+  }
+}
+
+function validateBatchDraft(event) {
+  const input = event.currentTarget;
+  const validation = validateYarnLengthInput(input.value);
+  input.setCustomValidity(validation.ok ? "" : t("camProgram.batchInvalidValue", GLOBAL_STATE.language));
+  batchFeedback = "";
+  refreshBatchControls(input.form);
+}
+
+function applyBatchYarnLength(event) {
   event.preventDefault();
   const form = event.currentTarget;
-  const editor = form.closest("#single-jersey-cam-editor");
-  const selectedFeedIndices = Array.from(
-    editor.querySelectorAll('input[name="selected-feed"]:checked'),
-    (input) => Number(input.value)
-  );
-  const feedIndices = getSingleJerseyFeedIndices(
-    form.elements.scope.value,
-    feedCount,
-    selectedFeedIndices
-  );
-  setSingleJerseyFeedYarnLengths(feedIndices, form.elements.yarnLength.value);
+  const result = setSingleJerseyFeedYarnLengths(batchSelection(), form.elements.yarnLength.value);
+  batchFeedback = result.ok ? t("camProgram.batchUpdated", GLOBAL_STATE.language, { count: result.updatedCount })
+    : t(result.reason === "INVALID_YARN_LENGTH" ? "camProgram.batchInvalidValue"
+      : result.reason === "STALE_ASSIGNMENT_STRUCTURE" ? "camProgram.batchStructureChanged"
+      : result.reason === "NO_TARGETS" ? "camProgram.batchNoTargets" : "camProgram.batchTargetsChanged", GLOBAL_STATE.language);
+  if (result.ok || result.reason !== "INVALID_YARN_LENGTH") clearBatchSelection();
+  refreshBatchControls(form);
+  return result;
 }
 
 function feedYarnLengthEditor(feed, feedIndex, language) {
@@ -90,6 +197,16 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
     : [{ yarnId: 0, yarnLengthCmPer100Needles: 0 }];
   return html`<div class="cam-feed-yarn-lengths">
     ${yarns.map((yarn, yarnIndex) => html`<div class="cam-feed-yarn-slot">
+      <label>
+        <input type="checkbox" name="selected-yarn"
+          data-batch-feed=${feedIndex} data-batch-yarn=${yarnIndex} data-batch-yarn-id=${yarn.yarnId}
+          .checked=${live(batchStructureCurrent() && selectedBatchTargets.get(assignmentKey(feedIndex, yarnIndex))?.yarnId === yarn.yarnId)}
+          ?disabled=${!candidateFeedIndices(GLOBAL_STATE.singleJerseyCamProgram.tracks[0].length).includes(feedIndex)}
+          aria-label=${t("camProgram.batchSelectAssignment", language, { feed: feedIndex + 1, yarn: yarnIndex + 1,
+            name: GLOBAL_STATE.yarnLibrary.find(asset => String(asset.id) === String(yarn.yarnId))?.name ?? String(yarn.yarnId) })}
+          @change=${event => selectBatchYarn(event, { feedIndex, yarnIndex, yarnId: yarn.yarnId })} />
+        <span>${t("camProgram.batchSelect", language)}</span>
+      </label>
       <div class="cam-feed-yarn-assignment">
         <button type="button" class="cam-feed-yarn-name"
           title=${GLOBAL_STATE.yarnLibrary.find(asset => String(asset.id) === String(yarn.yarnId))?.name ?? ""}
@@ -108,16 +225,19 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
         ? t("camProgram.yarnLength", language)
         : t("camProgram.yarn", language, { number: yarnIndex + 1 })}</span>
       <input
-        type="number"
-        min="0"
-        step="0.1"
+        type="text"
         inputmode="decimal"
         data-feed-index=${feedIndex}
         data-yarn-index=${yarnIndex}
         .value=${displayYarnLength(yarn.yarnLengthCmPer100Needles)}
+        @input=${validateYarnLengthDraft}
         @change=${commitYarnLength}
         @keydown=${finishYarnLengthOnEnter} />
       </label>
+      <button type="button" class="btn cam-yarn-length-clear"
+        aria-label=${t("camProgram.clearYarnLengthForYarn", language, { feed: feedIndex + 1, yarn: yarnIndex + 1 })}
+        @click=${event => clearYarnLength(event, feedIndex, yarnIndex)}>${t("camProgram.clearYarnLength", language)}</button>
+      <small class="cam-yarn-length-feedback" role="status" aria-live="polite"></small>
     </div>`)}
     <span class="cam-yarn-length-unit">
       ${t("camProgram.yarnLengthUnit", language)}
@@ -129,29 +249,33 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
   </div>`;
 }
 
-function batchYarnLengthEditor(feedCount, language) {
+function batchYarnLengthEditor(language) {
   return html`<form
     class="cam-yarn-length-batch"
-    @submit=${(event) => applyBatchYarnLength(event, feedCount)}>
+    novalidate
+    ${ref(form => { if (form) refreshBatchControls(form); })}
+    @submit=${applyBatchYarnLength}>
     <span>${t("camProgram.batchYarnLength", language)}</span>
     <input
       name="yarnLength"
-      type="number"
-      min="0"
-      step="0.1"
+      type="text"
       inputmode="decimal"
       placeholder="23.0"
+      @input=${validateBatchDraft}
       aria-label=${t("camProgram.batchYarnLength", language)} />
     <span>${t("camProgram.yarnLengthUnit", language)}</span>
-    <select name="scope">
+    <select name="scope" aria-label=${t("camProgram.batchFilter", language)}
+      .value=${live(batchFeedScope)} @change=${changeBatchScope}>
       <option value="all">${t("camProgram.batchAll", language)}</option>
       <option value="odd">${t("camProgram.batchOdd", language)}</option>
       <option value="even">${t("camProgram.batchEven", language)}</option>
       <option value="selected">${t("camProgram.batchSelected", language)}</option>
     </select>
-    <button type="submit" class="btn solid">
+    <button type="submit" class="btn solid" ?disabled=${selectedBatchTargets.size === 0}>
       ${t("camProgram.batchApply", language)}
     </button>
+    <span class="cam-batch-target-count" role="status" aria-live="polite"></span>
+    <small class="cam-batch-feedback" role="status" aria-live="polite"></small>
   </form>`;
 }
 
@@ -191,6 +315,8 @@ function camProgramGrid(camProgram, language) {
                   type="checkbox"
                   name="selected-feed"
                   value=${feed}
+                  .checked=${live(selectedFeedFilters.has(feed))}
+                  @change=${event => selectFeedFilter(event, feed)}
                   aria-label=${t("camProgram.selectFeed", language, {
                     number: feed + 1,
                   })} />
@@ -240,6 +366,10 @@ export function singleJerseyCamProgramEditor() {
   const camProgram = GLOBAL_STATE.singleJerseyCamProgram;
 
   if (camProgram === null) {
+    clearBatchSelection();
+    selectedFeedFilters.clear();
+    batchFeedScope = "all";
+    batchFeedback = "";
     return html`<section id="single-jersey-cam-editor" class="cam-program-empty">
       <div class="cam-program-header">
         <div>
@@ -290,7 +420,7 @@ export function singleJerseyCamProgramEditor() {
               resizeCamProgram(event, trackCount, event.target.value)} />
         </label>
       </div>
-      ${batchYarnLengthEditor(feedCount, language)}
+      ${batchYarnLengthEditor(language)}
       ${operationLegend(language)}
       <span class="cam-program-cycle-hint">
         ${t("camProgram.cycleHint", language)}

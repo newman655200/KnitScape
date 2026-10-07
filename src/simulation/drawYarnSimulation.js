@@ -22,9 +22,7 @@ export function drawYarnSimulation({
   canvasWidth,
   canvasHeight,
   yarnPathLinks,
-  resolvedPathByLink,
-  modelPathByLink,
-  uvOffsets,
+  yarnStrands,
   uvStripCache = new Map(),
   feedYarnPlies = new Map(),
   feedCount = 0,
@@ -42,9 +40,12 @@ export function drawYarnSimulation({
   const midCtx = midCanvas.getContext("2d");
   const frontCtx = frontCanvas.getContext("2d");
 
-  function rowYarnPly(link, ply) {
+  function rowYarnPly(link, ply, yarnIndex = 0) {
     if (ply === activeYarnPlies[0] && feedCount) {
-      ply = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount)) || ply;
+      const plies = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount));
+      if (plies) ply = plies[yarnIndex];
+      else if (yarnIndex > 0) return null;
+      if (!ply) return null;
     }
     if (!hasYarnSequenceMask) return ply;
 
@@ -57,6 +58,17 @@ export function drawYarnSimulation({
 
     if (!sequenceMaskColor) return ply;
     return { ...ply, sequenceMaskColor };
+  }
+
+  function forEachStrand(ply, drawStrand) {
+    const count = ply === activeYarnPlies[0] ? yarnStrands.length : 1;
+    for (let yarnIndex = 0; yarnIndex < count; yarnIndex++) drawStrand(yarnIndex);
+  }
+
+  function parallelOffset(link, ply, yarnIndex) {
+    if (ply !== activeYarnPlies[0] || !feedCount) return 0;
+    const count = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount))?.length || 1;
+    return (yarnIndex - (count - 1) / 2) * ply.diameter;
   }
 
   function collectSequenceMaskPath(maskBatches, ply, pathData) {
@@ -87,18 +99,20 @@ export function drawYarnSimulation({
     });
   }
 
-  function buildYarnDrawCommand(link, ply) {
-    const rowPly = rowYarnPly(link, ply);
-    const pathData = resolvedPathByLink.get(link.index);
-    if (!pathData) return null;
+  function buildYarnDrawCommand(link, ply, yarnIndex) {
+    const rowPly = rowYarnPly(link, ply, yarnIndex);
+    const strand = yarnStrands[yarnIndex];
+    const pathData = strand.resolvedPathByLink.get(link.index);
+    if (!rowPly || !pathData) return null;
 
     const lineWidth = stitchWidth * rowPly.diameter;
     const repeatMm = rowPly.texture?.pbr?.physicalRepeatLengthMm;
     const physicalRepeatLengthMm = Number.isFinite(repeatMm) && repeatMm > 0 ? repeatMm : undefined;
     const uvScaleKey = physicalRepeatLengthMm === undefined ? "legacy" : `${machineGauge}|${physicalRepeatLengthMm}`;
-    const key = `${link.index}|${lineWidth}|${uvScaleKey}`;
+    const normalOffsetModel = parallelOffset(link, ply, yarnIndex);
+    const key = `${yarnIndex}|${link.index}|${lineWidth}|${normalOffsetModel}|${uvScaleKey}`;
     if (!uvStripCache.has(key)) {
-      const modelPathData = modelPathByLink.get(link.index);
+      const modelPathData = strand.modelPathByLink.get(link.index);
       const modelStart = pathEndpoints(modelPathData)?.start;
       const displayStart = pathEndpoints(pathData)?.start;
       if (!modelStart || !displayStart) return null;
@@ -108,7 +122,8 @@ export function drawYarnSimulation({
           x: displayStart.x + (point.x - modelStart.x) * stitchWidth,
           y: displayStart.y + (point.y - modelStart.y) * stitchWidth,
         }),
-        arcLengthOffset: uvOffsets.get(link.index),
+        arcLengthOffset: strand.uvOffsets?.get(link.index),
+        normalOffsetModel,
         yarnWidth: lineWidth,
         textureRepeatLength: YARN_UV_TEXTURE_REPEAT_LENGTH,
         physicalRepeatLengthMm,
@@ -129,13 +144,22 @@ export function drawYarnSimulation({
   function drawSegmentsToLayerFallback(context, layerLinks) {
     if (!layerLinks.length) return;
 
-    activeYarnPlies.forEach((ply) => {
+    activeYarnPlies.forEach(ply => forEachStrand(ply, yarnIndex => {
       const maskBatches = new Map();
 
       layerLinks.forEach((link) => {
-        const rowPly = rowYarnPly(link, ply);
-        const pathData = resolvedPathByLink.get(link.index);
-        if (!pathData) return;
+        const rowPly = rowYarnPly(link, ply, yarnIndex);
+        let pathData = yarnStrands[yarnIndex].resolvedPathByLink.get(link.index);
+        if (!rowPly || !pathData) return;
+        if (parallelOffset(link, ply, yarnIndex) !== 0) {
+          const positions = buildYarnDrawCommand(link, ply, yarnIndex)?.strip.positions;
+          if (!positions) return;
+          const points = [];
+          for (let i = 0; i < positions.length; i += 4) {
+            points.push(`${i === 0 ? "M" : "L"} ${(positions[i] + positions[i + 2]) / 2} ${(positions[i + 1] + positions[i + 3]) / 2}`);
+          }
+          pathData = points.join(" ");
+        }
 
         const path = new Path2D(pathData);
         drawYarnTexturePath(context, path, rowPly, stitchWidth, {
@@ -145,7 +169,7 @@ export function drawYarnSimulation({
       });
 
       drawBatchedSequenceMasks(context, maskBatches);
-    });
+    }));
   }
 
   function drawSegmentsToLayerUv(renderer, fallbackContext, layerLinks) {
@@ -157,13 +181,13 @@ export function drawYarnSimulation({
     renderer.retainTextures(layerTextureSources(layerLinks));
     renderer.clear(canvasWidth, canvasHeight);
 
-    activeYarnPlies.forEach((ply) => {
+    activeYarnPlies.forEach(ply => forEachStrand(ply, yarnIndex => {
       layerLinks.forEach((link) => {
-        const command = buildYarnDrawCommand(link, ply);
+        const command = buildYarnDrawCommand(link, ply, yarnIndex);
         if (!command?.strip?.indices.length) return;
         renderer.drawStrip(command.strip, command.ply);
       });
-    });
+    }));
 
     renderer.flush();
   }
@@ -177,8 +201,12 @@ export function drawYarnSimulation({
     layers[link.layer].push(link);
   });
   function layerTextureSources(layerLinks) {
-    return layerLinks.flatMap(link => activeYarnPlies.flatMap(ply =>
-      Object.values(materialMaps(rowYarnPly(link, ply)))));
+    const sources = [];
+    layerLinks.forEach(link => activeYarnPlies.forEach(ply => forEachStrand(ply, yarnIndex => {
+      const material = rowYarnPly(link, ply, yarnIndex);
+      if (material) sources.push(...Object.values(materialMaps(material)));
+    })));
+    return sources;
   }
   for (const [layer, canvas] of Object.entries({ back: backCanvas, front: frontCanvas, mid: midCanvas })) {
     retainWebglYarnTextures(canvas, layerTextureSources(layers[layer]));

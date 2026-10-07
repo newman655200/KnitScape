@@ -125,6 +125,8 @@ export function simulationPointerInteraction(simContainer) {
   }, { passive: false });
 
   simContainer.addEventListener("pointerdown", (e) => {
+    // Result text is interactive UI; still let #site handle outside-modal clicks.
+    if (e.target.closest?.(".yarn-solver-feedback")) return;
     dispatch({ editingRepeat: -1 });
 
     if (e.button !== 0) return;

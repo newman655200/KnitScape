@@ -12,6 +12,8 @@ import {
 } from "./constants.js";
 import { getInitialLanguage } from "./i18n/index.js";
 import { createYarnAsset } from "./domain/yarnLibrary.js";
+import { PREVIEW_VALIDITY } from "./simulation/previewValidity.js";
+import { hasFeedYarnStructureChanged } from "./domain/feedYarnStructure.js";
 
 let GLOBAL_STATE = {
   language: getInitialLanguage(),
@@ -40,9 +42,14 @@ let GLOBAL_STATE = {
   texturePreviewInteractionActive: false,
   machineGauge: DEFAULT_MACHINE_GAUGE,
   yarnLengthMetrics: null,
+  // Derived from the current machine preview; excluded from project persistence.
+  yarnLengthSolverResults: [],
+  previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW,
   needleArrangementInputs: ["", "", "", ""],
   needleArrangement: [],
   singleJerseyCamProgram: null,
+  // Runtime assignment identity generation; never accepted from project data.
+  feedYarnStructureRevision: 0,
   yarnLibrary: [createYarnAsset(0, "Yarn 1")],
   yarnLibraryQuery: { search: "", category: "ALL", sort: "name" },
   yarnLibraryError: null,
@@ -110,7 +117,9 @@ let GLOBAL_STATE = {
 };
 
 function loadWorkspace(workspace) {
-  GLOBAL_STATE = { ...GLOBAL_STATE, ...workspace };
+  GLOBAL_STATE = { ...GLOBAL_STATE, ...prepareAction(workspace, {
+    replaceFeedYarnStructure: Object.hasOwn(workspace, "singleJerseyCamProgram"),
+  }) };
   GLOBAL_STATE.updateSim = true;
 }
 
@@ -165,9 +174,20 @@ function undo() {
   StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
-function dispatch(action) {
-  const changes = Object.keys(action);
-  StateMonitor.syncState(updateState(action), changes);
+function prepareAction(action, { replaceFeedYarnStructure = false } = {}) {
+  // Only this layer writes the revision, atomically with the validated mutation.
+  const { feedYarnStructureRevision: _incomingRevision, ...prepared } = action;
+  if (Object.hasOwn(prepared, "singleJerseyCamProgram") &&
+    (replaceFeedYarnStructure || hasFeedYarnStructureChanged(GLOBAL_STATE.singleJerseyCamProgram, prepared.singleJerseyCamProgram))) {
+    prepared.feedYarnStructureRevision = GLOBAL_STATE.feedYarnStructureRevision + 1;
+  }
+  return prepared;
+}
+
+function dispatch(action, options) {
+  const prepared = prepareAction(action, options);
+  const changes = Object.keys(prepared);
+  StateMonitor.syncState(updateState(prepared), changes);
 }
 
 const StateMonitor = (() => {

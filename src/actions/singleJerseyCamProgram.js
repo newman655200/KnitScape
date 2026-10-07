@@ -1,5 +1,8 @@
 import { dispatch, GLOBAL_STATE } from "../state.js";
 import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
+import { validateYarnLengthInput } from "../domain/yarnLengthInput.js";
+import { preflightYarnLengthBatch } from "../domain/yarnLengthBatch.js";
+import { PREVIEW_VALIDITY } from "../simulation/previewValidity.js";
 
 const DEFAULT_TRACK_COUNT = 4;
 const DEFAULT_FEED_COUNT = 4;
@@ -24,11 +27,6 @@ function validateOperation(operation) {
   }
 }
 
-function editableYarnLength(value) {
-  const length = value === "" || value == null ? 0 : Number(value);
-  return Number.isFinite(length) && length > 0 ? length : 0;
-}
-
 function validateFeedYarnIndex(camProgram, feedIndex, yarnIndex) {
   if (
     !Number.isInteger(feedIndex) ||
@@ -43,13 +41,15 @@ function validateFeedYarnIndex(camProgram, feedIndex, yarnIndex) {
 }
 
 function normalizeFeedYarn(yarn) {
-  const yarnLength = Number(yarn?.yarnLengthCmPer100Needles);
+  const rawYarnLength = yarn?.yarnLengthCmPer100Needles;
+  const yarnLength = validateYarnLengthInput(rawYarnLength, { allowUnset: true });
   const tension = yarn?.tensionCN == null ? null : Number(yarn.tensionCN);
 
   if (yarn?.yarnId == null || yarn.yarnId === "") {
     throw new TypeError("yarnId is required.");
   }
-  if (!Number.isFinite(yarnLength) || yarnLength < 0) {
+  // Legacy unset values stay readable, but a missing project field was already invalid.
+  if (rawYarnLength === undefined || !yarnLength.ok) {
     throw new TypeError("yarnLengthCmPer100Needles must be a non-negative number.");
   }
   if (tension !== null && (!Number.isFinite(tension) || tension < 0)) {
@@ -58,7 +58,7 @@ function normalizeFeedYarn(yarn) {
 
   return {
     yarnId: yarn.yarnId,
-    yarnLengthCmPer100Needles: yarnLength,
+    yarnLengthCmPer100Needles: yarnLength.value,
     tensionCN: tension,
     placement: yarn.placement ?? "parallel",
   };
@@ -121,7 +121,8 @@ export function createSingleJerseyCamProgram(
 ) {
   const singleJerseyCamProgram = buildCamProgram(trackCount, feedCount);
   dispatch({ singleJerseyCamProgram,
-    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, singleJerseyCamProgram.feeds) });
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, singleJerseyCamProgram.feeds) },
+    { replaceFeedYarnStructure: true });
 }
 
 export function resizeSingleJerseyCamProgram(trackCount, feedCount) {
@@ -181,7 +182,8 @@ export function setSingleJerseyFeedYarns(feedIndex, yarns) {
       : { yarns: feed.yarns.map((yarn) => ({ ...yarn })) }
   );
   dispatch({ singleJerseyCamProgram: { ...camProgram, feeds },
-    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, feeds) });
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, feeds) },
+    { replaceFeedYarnStructure: true });
 }
 
 export function getSingleJerseyFeedIndices(
@@ -202,10 +204,12 @@ export function getSingleJerseyFeedIndices(
   );
 }
 
-export function setSingleJerseyFeedYarnLength(feedIndex, yarnIndex, value) {
+function commitFeedYarnLength(feedIndex, yarnIndex, validation) {
   const camProgram = currentCamProgram();
   validateFeedYarnIndex(camProgram, feedIndex, yarnIndex);
-  const yarnLengthCmPer100Needles = editableYarnLength(value);
+  const previousValue = camProgram.feeds[feedIndex].yarns[yarnIndex].yarnLengthCmPer100Needles;
+  if (!validation.ok) return { ...validation, previousValue };
+  const yarnLengthCmPer100Needles = validation.value;
   const feeds = camProgram.feeds.map((feed, currentFeedIndex) => ({
     yarns: feed.yarns.map((yarn, currentYarnIndex) => ({
       ...yarn,
@@ -216,27 +220,36 @@ export function setSingleJerseyFeedYarnLength(feedIndex, yarnIndex, value) {
     })),
   }));
   dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+  return { ...validation, previousValue };
 }
 
-export function setSingleJerseyFeedYarnLengths(feedIndices, value) {
-  const camProgram = currentCamProgram();
-  const selectedFeeds = new Set(
-    feedIndices.filter(
-      (index) =>
-        Number.isInteger(index) && index >= 0 && index < camProgram.feeds.length
-    )
-  );
-  if (!selectedFeeds.size) return;
-  const yarnLengthCmPer100Needles = editableYarnLength(value);
-  const feeds = camProgram.feeds.map((feed, feedIndex) => ({
-    yarns: feed.yarns.map((yarn) => ({
-      ...yarn,
-      yarnLengthCmPer100Needles: selectedFeeds.has(feedIndex)
-        ? yarnLengthCmPer100Needles
-        : yarn.yarnLengthCmPer100Needles,
-    })),
-  }));
-  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+export function setSingleJerseyFeedYarnLength(feedIndex, yarnIndex, value) {
+  return commitFeedYarnLength(feedIndex, yarnIndex, validateYarnLengthInput(value));
+}
+
+export function clearSingleJerseyFeedYarnLength(feedIndex, yarnIndex) {
+  return commitFeedYarnLength(feedIndex, yarnIndex, validateYarnLengthInput(0, { allowUnset: true }));
+}
+
+export function setSingleJerseyFeedYarnLengths(selection, value) {
+  const camProgram = GLOBAL_STATE.singleJerseyCamProgram;
+  const preflight = preflightYarnLengthBatch(camProgram, selection, value, GLOBAL_STATE.feedYarnStructureRevision);
+  if (!preflight.ok) return preflight;
+  const selected = new Map();
+  preflight.targets.forEach(({ feedIndex, yarnIndex }) => {
+    if (!selected.has(feedIndex)) selected.set(feedIndex, new Set());
+    selected.get(feedIndex).add(yarnIndex);
+  });
+  const feeds = camProgram.feeds.map((feed, feedIndex) => !selected.has(feedIndex) ? feed : {
+    ...feed,
+    yarns: feed.yarns.map((yarn, yarnIndex) => !selected.get(feedIndex).has(yarnIndex) ? yarn : {
+      ...yarn, yarnLengthCmPer100Needles: preflight.value,
+    }),
+  });
+  // Clear derived validation in the same commit, including consumers before runner.
+  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds }, yarnLengthSolverResults: [],
+    previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
+  return { ok: true, operation: "SET", value: preflight.value, updatedCount: preflight.targets.length };
 }
 
 export function cycleSingleJerseyCamOperation(trackIndex, feedIndex) {

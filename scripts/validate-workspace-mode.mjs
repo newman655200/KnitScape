@@ -109,6 +109,7 @@ try {
   const camBeforeLibraryLoad = state().singleJerseyCamProgram;
   const arrangementBeforeLibraryLoad = state().needleArrangement;
   const inputsBeforeLibraryLoad = state().needleArrangementInputs;
+  const revisionBeforeLibraryLoad = state().feedYarnStructureRevision;
 
   loadJSON({
     width: 6,
@@ -133,6 +134,8 @@ try {
   assert.equal(state().singleJerseyCamProgram, camBeforeLibraryLoad);
   assert.equal(state().needleArrangement, arrangementBeforeLibraryLoad);
   assert.equal(state().needleArrangementInputs, inputsBeforeLibraryLoad);
+  assert.equal(state().feedYarnStructureRevision, revisionBeforeLibraryLoad,
+    "Legacy Pattern-only loading must retain assignment identity.");
   assert.equal(state().repeats.length, 1);
   assert.deepEqual(state().repeats[0].bitmap.toJSON(), {
     width: 2,
@@ -216,7 +219,7 @@ try {
   assert.match(loadJSONSource, /workspaceMode:\s*"pattern"/);
   assert.doesNotMatch(
     loadJSONSource,
-    /singleJerseyCamProgram|needleArrangement/,
+    /singleJerseyCamProgram\s*:|needleArrangement\s*:/,
     "Fabric Pattern loading must not alter Machine-owned data."
   );
 

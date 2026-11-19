@@ -5,6 +5,9 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "validate:sop-diagonal-release": "node --experimental-default-type=module scripts/validate-sop-diagonal-release.mjs",
+    "validate:sop-flat-layout": "node --experimental-default-type=module scripts/validate-sop-flat-layout.mjs",
+    "validate:sop-interlock-swatch": "node --experimental-default-type=module scripts/validate-sop-interlock-swatch.mjs",
     "validate:sop-visual-joint": "node --experimental-default-type=module scripts/validate-sop-visual-joint.mjs",
     "validate:sop-joint-lifecycle": "node --experimental-default-type=module scripts/validate-sop-joint-lifecycle.mjs",
     "validate:spatial-debug-views": "node --experimental-default-type=module scripts/validate-spatial-debug-views.mjs",

@@ -142,5 +142,13 @@ function init() {
   fitChart();
 }
 
-window.onload = init;
+window.onload = async () => {
+  const exampleStatus = document.querySelector("[data-swatch-example]");
+  if (exampleStatus) {
+    const { startExampleEditor } = await import("./swatchPreview.js");
+    await startExampleEditor(init, exampleStatus);
+  } else {
+    init();
+  }
+};
 window.onresize = measureWindow;

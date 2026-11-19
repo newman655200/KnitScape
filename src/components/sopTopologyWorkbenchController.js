@@ -1,17 +1,27 @@
+import { color as parseColor } from 'd3';
 import { buildSopTopology } from '../simulation/sopTopologyAdapter.js';
-import { buildSopSpatialHypothesis, SOP_SPATIAL_DEFAULTS, buildSopVisualSwatch, SOP_VISUAL_SWATCH_DEFAULTS } from '../simulation/sopSpatialHypothesis.js';
+import { buildSopSpatialHypothesis, SOP_SPATIAL_DEFAULTS } from '../simulation/sopSpatialHypothesis.js';
+import { buildSopInterlockSwatch, SOP_INTERLOCK_DEFAULTS } from '../simulation/sopInterlockSwatch.js';
 import { createYarnSpatialPreviewRenderer } from '../simulation/yarnSpatialPreviewRenderer.js';
 import { createSimulationSnapshot } from '../simulation/simulationSnapshot.js';
 
 const DEFAULT_ROI = { needleIndex: 16, rowStart: 21, rowEnd: 24 };
 const { enabled: _defaultEnabled, ...DEFAULT_OPTIONS } = SOP_SPATIAL_DEFAULTS;
+// Leave the automatic inspection and whole-sheet tessellation to the swatch builder.
+// An explicit setOptions({ radialSegments }) then persists across size changes.
+const { radialSegments: _automaticSegments, ...SWATCH_OPTION_DEFAULTS } = SOP_INTERLOCK_DEFAULTS;
 const sourceKey = context => JSON.stringify([context.projectGeneration, context.feedYarnStructureRevision,
   context.machineSnapshot?.inputSignature, context.machineSnapshotPending, context.machineSnapshotError]);
 const badRenderer = status => ['INVALID', 'ERROR', 'UNAVAILABLE', 'CONTEXT_LOST'].includes(status?.status);
+export const swatchYarnKey = yarn => JSON.stringify([yarn.yarnIndex, String(yarn.yarnId)]);
+const linearChannel = byte => {
+  const channel = byte / 255;
+  return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+};
 
 // This controller consumes the coordinator's already computed machine snapshot only.
-export function createSopTopologyWorkbenchController({ context, session = null, onChange = () => {},
-  createRenderer = createYarnSpatialPreviewRenderer, buildHypothesis = buildSopSpatialHypothesis, buildSwatch = buildSopVisualSwatch,
+export function createSopTopologyWorkbenchController({ context, session = null, startInSwatch = false, onChange = () => {},
+  createRenderer = createYarnSpatialPreviewRenderer, buildHypothesis = buildSopSpatialHypothesis, buildSwatch = buildSopInterlockSwatch,
   auditGeometry = async (input, settings) => (await import('../simulation/yarnGeometryAudit.js')).auditYarnGeometry(input, settings),
   planVisualCorrection = async (input, report) => (await import('../simulation/sopSpatialHypothesis.js')).planAuditedVisualTransitionTrims(input, report),
   applyVisualCorrection = null,
@@ -20,9 +30,10 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
   let current = context, key = sourceKey(context), disposed = false, epoch = 0, pending = null;
   const saved = session?.projectGeneration === context.projectGeneration ? session : null;
   let roi = createSimulationSnapshot({ ...DEFAULT_ROI, ...saved?.roi });
-  let options = createSimulationSnapshot({ ...DEFAULT_OPTIONS, ...saved?.options });
-  let enabled = false, view = saved?.view ?? null, yarnFilter = saved?.yarnFilter ?? 'all';
-  let swatch = false, evidenceView = false, selectionFilter = {}, materialBindings = saved?.materialBindings ?? {}, scanAxis = 'x';
+  let options = createSimulationSnapshot(startInSwatch ? { ...SWATCH_OPTION_DEFAULTS, fullSize: false } : { ...DEFAULT_OPTIONS, ...saved?.options });
+  let enabled = startInSwatch, view = startInSwatch ? null : saved?.view ?? null, yarnFilter = startInSwatch ? 'all' : saved?.yarnFilter ?? 'all';
+  let swatch = startInSwatch, evidenceView = false, selectionFilter = {}, materialBindings = saved?.materialBindings ?? {}, scanAxis = 'x';
+  let generatedChains = 0;
   let topology = null, derivedGeometry = null, selectedLinkId = null, error = null;
   let renderer = null, viewport = null, clearing = false, rendererStatus = Object.freeze({ status: 'UNMOUNTED' });
   let sceneEpoch = 0, profileRunning = false, profileReport = null;
@@ -39,7 +50,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
     auditEpoch++; auditRunning = false; auditProgress = auditReport = auditPathIds = auditSelectedFindingId = null;
     correctionPlan = correctionReport = null; correctionRunning = false;
     comparisonState = 'G0'; comparisonStates = Object.freeze({ G0: null, Gt: null, Gn: null }); jointTargetId = null;
-    derivedGeometry = null;
+    generatedChains = 0; derivedGeometry = null;
     if (renderer && !clearing) {
       clearing = true;
       try { renderer.update({ scene: [] }); } catch { /* Disposing also releases a failed scene. */ }
@@ -59,7 +70,8 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
       current.machineSnapshot.projectGeneration !== current.projectGeneration ||
       current.machineSnapshot.feedYarnStructureRevision !== current.feedYarnStructureRevision) {
       return createSimulationSnapshot({ status: 'UNAVAILABLE', reason: current.machineSnapshotPending ? 'MACHINE_SNAPSHOT_PENDING' :
-        current.machineSnapshotError ? 'MACHINE_SNAPSHOT_ERROR' : 'CURRENT_MACHINE_SNAPSHOT_REQUIRED',
+        current.machineSnapshotError || (!current.singleJerseyCamProgram?.tracks?.length ? 'SOP_CAM_REQUIRED' :
+          !current.needleArrangement?.length ? 'SOP_NEEDLE_ARRANGEMENT_REQUIRED' : 'CURRENT_MACHINE_SNAPSHOT_REQUIRED'),
         roi, operations: [], occurrences: [], links: [], strands: [], cnReferences: [], spatialRelations: [] });
     }
     try { return buildSopTopology(current.machineSnapshot, swatch ? { window: 'full' } : roi); }
@@ -71,15 +83,20 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
     const source = evidenceView && swatch ? result.evidenceScene : result.scene;
     return source.filter(item => {
       const path = paths.get(item.id);
-      return path && (!auditPathIds || auditPathIds.includes(path.id)) && (yarnFilter === 'all' || path.yarnId === yarnFilter) &&
+      return path && (!auditPathIds || auditPathIds.includes(path.id)) && (yarnFilter === 'all' ||
+        String(path.yarnId) === String(yarnFilter) || swatchYarnKey(path) === yarnFilter) &&
         Object.entries(selectionFilter).every(([key, value]) => value === null || value === '' ||
           (key === 'occurrenceId' ? Object.entries(path.provenance ?? {}).some(([field, ids]) =>
             /(?:^occurrenceIds$|OccurrenceIds$)/.test(field) && Array.isArray(ids) && ids.includes(value)) : path[key] === value));
     }).map(item => {
       if (!swatch) return item;
-      const path = paths.get(item.id), assetId = materialBindings[path.yarnId] ?? path.yarnId;
+      const path = paths.get(item.id), assetId = materialBindings[swatchYarnKey(path)] ?? materialBindings[path.yarnId] ?? path.yarnId;
       const asset = current.yarnLibrary?.find(asset => String(asset.id) === String(assetId));
-      return { ...item, material: { ...item.material, pbr: asset?.pbr ?? null, scanAxis } };
+      // Scan alpha blends onto the yarn asset color, including with a BaseColor map.
+      const rgb = debugMode === 'pbr' && asset?.color
+        ? parseColor(asset.color)?.rgb().clamp() : null;
+      return { ...item, material: { ...item.material, color: rgb ? [rgb.r, rgb.g, rgb.b].map(linearChannel) : item.material.color,
+        pbr: asset?.pbr ?? null, ambient: .35, lightIntensity: 5.6, lightDirection: [-.60, .70, .71], scanAxis } };
     });
   }
   function applyScene() {
@@ -104,10 +121,21 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
     const isCurrent = () => !disposed && enabled && token === epoch && topology === captured;
     pending = Promise.resolve().then(async () => {
       if (!isCurrent()) return;
-      const result = swatch ? buildSwatch(captured, options) : buildHypothesis(captured, { ...options, enabled: true });
+      const result = swatch ? await buildSwatch(captured, { ...options,
+        repeatWidth: current.needleArrangement?.length, repeatHeight: current.singleJerseyCamProgram?.tracks?.[0]?.length },
+        options.fullSize ? async count => {
+          if (!isCurrent()) return false;
+          generatedChains = count;
+          notify();
+          await new Promise(resolve => setTimeout(resolve, 0));
+          return isCurrent();
+        } : undefined) : buildHypothesis(captured, { ...options, enabled: true });
       if (!isCurrent()) return;
       if (result.status !== 'OK') { fail(result.reason || result.diagnostics?.map(item => item.message || item.code).join('; ') || result.status); return; }
       renderer = createRenderer({
+        swatchLighting: swatch,
+        scanHalfWidth: result.mode === 'SOP_INTERLOCK_SWATCH'
+          ? Math.PI * result.parameters.radiusMm / result.parameters.uvRepeatLengthMm : 1,
         onViewChange(next) { if (isCurrent()) { view = createSimulationSnapshot(next); notify(); } },
         onStatusChange(next) {
           if (!isCurrent()) return;
@@ -122,7 +150,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
       let applied, appliedSceneEpoch;
       do {
         appliedSceneEpoch = sceneEpoch;
-        applied = renderer.update({ scene: filteredScene(result), batchOrder: swatch ? 'material' : 'source', debugMode, ...(view ? { view } : {}), fit: !view });
+        applied = renderer.update({ scene: filteredScene(result), batchOrder: swatch ? 'material' : 'source', debugMode, ...(view ? { view } : swatch ? { view: { yaw: 0, pitch: 0 } } : {}), fit: !view });
         if (badRenderer(applied)) { fail(applied); return; }
         await renderer.ready?.();
         if (!isCurrent()) return;
@@ -177,7 +205,9 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
   }
   const api = {
     get model() { return Object.freeze({ mode: swatch ? 'VISUAL_SWATCH_TEST_ONLY' : enabled ? 'SPATIAL_HYPOTHESIS_TEST_ONLY' : 'SOURCE_TOPOLOGY_VIEW',
-      roi, options, topology, derivedGeometry, yarnFilter, selectedLinkId, view, error, rendererStatus,
+      roi, options, topology, derivedGeometry, generatedChains, yarnFilter, selectedLinkId, view, error, rendererStatus,
+      needsGeneration: swatch && !enabled, sourcePending: !!current.machineSnapshotPending,
+      machineError: current.machineSnapshotError,
       evidenceView, selectionFilter, materialBindings, scanAxis, materialAssets: current.yarnLibrary ?? [],
       profileRunning, profileReport, auditRunning, auditProgress, auditReport, auditPathIds, auditSelectedFindingId,
       correctionPlan, correctionReport, correctionRunning, comparisonState, comparisonStates, jointTargetId, debugMode,
@@ -187,18 +217,27 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
     setROI(patch) { if (disposed) return; roi = createSimulationSnapshot({ ...roi, ...patch }); rebuild(); },
     setHypothesisEnabled(next) {
       if (disposed) return;
-      if (swatch) { swatch = false; options = createSimulationSnapshot(DEFAULT_OPTIONS); }
+      if (swatch) { swatch = false; options = createSimulationSnapshot(DEFAULT_OPTIONS); yarnFilter = 'all'; }
       enabled = next === true; rebuild();
     },
-    generateSwatch() {
+    generateSwatch(fullSize = false) {
       if (disposed) return;
-      swatch = enabled = true; evidenceView = false; selectionFilter = {}; view = null;
-      options = createSimulationSnapshot(SOP_VISUAL_SWATCH_DEFAULTS); rebuild();
+      if (swatch && enabled && topology?.status === 'READY') {
+        view = null;
+        api.setOptions({ fullSize });
+        return;
+      }
+      swatch = enabled = true; evidenceView = false; selectionFilter = {}; view = null; yarnFilter = 'all';
+      options = createSimulationSnapshot({ ...SWATCH_OPTION_DEFAULTS, fullSize }); rebuild();
     },
     setEvidenceView(next) { if (!disposed) { evidenceView = next === true; applyScene(); } },
     setSelectionFilter(patch) { if (!disposed) { auditPathIds = auditSelectedFindingId = null;
       selectionFilter = { ...selectionFilter, ...patch }; applyScene(); } },
-    setMaterialBinding(yarnId, assetId) { if (!disposed) { materialBindings = { ...materialBindings, [yarnId]: assetId }; applyScene(); } },
+    setMaterialBinding(yarnId, assetId, yarnIndex) {
+      if (disposed) return;
+      const key = yarnIndex == null ? yarnId : swatchYarnKey({ yarnId, yarnIndex });
+      materialBindings = { ...materialBindings, [key]: assetId }; applyScene();
+    },
     setScanAxis(next) { if (!disposed && ['x', 'y'].includes(next)) { scanAxis = next; applyScene(); } },
     setDebugMode(next) { if (!disposed && ['pbr', 'unlit', 'normals', 'wireframe'].includes(next)) { debugMode = next; applyScene(); } },
     setComparisonState(next) { if (!disposed && ['G0', 'Gt', 'Gn'].includes(next) && next !== comparisonState) activateComparison(next); },
@@ -277,7 +316,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
         if (!currentAudit()) return;
         let plan = null;
         if (report?.status === 'COMPLETE' && report.complete === true) {
-          try { plan = await planVisualCorrection(captured, report); }
+          try { if (captured.mode !== 'SOP_INTERLOCK_SWATCH') plan = await planVisualCorrection(captured, report); }
           catch (caught) { plan = { status: 'REJECTED', reason: String(caught.message || caught) }; }
           if (!currentAudit()) return;
           auditCache.set(captured, { report, plan });
@@ -325,15 +364,29 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
     },
     updateContext(next) {
       if (disposed) return;
-      if (next.workbenchMode && next.workbenchMode !== 'pbr25d') { api.dispose(); return; }
+      if (next.workbenchMode && !['pbr25d', 'sop3d'].includes(next.workbenchMode)) { api.dispose(); return; }
       const nextKey = sourceKey(next), newProject = next.projectGeneration !== current.projectGeneration;
       const replacedSnapshot = next.machineSnapshot !== current.machineSnapshot;
       const replacedMaterials = next.yarnLibrary !== current.yarnLibrary;
-      if (newProject) { roi = createSimulationSnapshot(DEFAULT_ROI); options = createSimulationSnapshot(DEFAULT_OPTIONS);
-        enabled = swatch = evidenceView = false; view = null; yarnFilter = 'all'; materialBindings = {}; selectionFilter = {}; }
+      const awaitingPublishedInput = swatch && enabled && current.machineSnapshotPending && !newProject &&
+        current.feedYarnStructureRevision === next.feedYarnStructureRevision &&
+        current.chart === next.chart && current.singleJerseyCamProgram === next.singleJerseyCamProgram &&
+        current.needleArrangement === next.needleArrangement;
+      if (newProject) { roi = createSimulationSnapshot(DEFAULT_ROI);
+        options = createSimulationSnapshot(swatch ? { ...SWATCH_OPTION_DEFAULTS, fullSize: false } : DEFAULT_OPTIONS);
+        enabled = evidenceView = false; view = null; yarnFilter = 'all'; materialBindings = {}; selectionFilter = {}; }
       current = next;
-      if (nextKey !== key || replacedSnapshot) { key = nextKey; rebuild(); }
-      else if (swatch && replacedMaterials) applyScene();
+      if (replacedMaterials) {
+        const validIds = new Set((next.yarnLibrary ?? []).map(asset => String(asset.id)));
+        materialBindings = Object.fromEntries(Object.entries(materialBindings).filter(([, id]) => validIds.has(String(id))));
+      }
+      if (nextKey !== key || replacedSnapshot) {
+        key = nextKey;
+        if (swatch && !awaitingPublishedInput) {
+          enabled = false; release(); topology = null; error = selectedLinkId = null;
+          yarnFilter = 'all'; selectionFilter = {}; notify();
+        } else rebuild();
+      } else if (swatch && replacedMaterials) applyScene();
     },
     exportSession() { return createSimulationSnapshot({ projectGeneration: current.projectGeneration, roi, options, view, yarnFilter, materialBindings }); },
     exportGeometryAudit() {

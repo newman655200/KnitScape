@@ -1,11 +1,12 @@
 import { html, svg, render, nothing } from 'lit-html';
+import './sopSwatch.css';
 import { live } from 'lit-html/directives/live.js';
-import { createSopTopologyWorkbenchController } from '../components/sopTopologyWorkbenchController.js';
+import { createSopTopologyWorkbenchController, swatchYarnKey } from '../components/sopTopologyWorkbenchController.js';
 import { download } from '../utils.js';
 
 const number = value => Number.isFinite(value) ? value.toLocaleString('en-US', { maximumFractionDigits: 6 }) : '—';
 const color = yarnIndex => yarnIndex === 0 ? '#ffb45b' : '#58d5ed';
-const matches = (item, filter) => filter === 'all' || item.yarnId === filter;
+const matches = (item, filter) => filter === 'all' || String(item.yarnId) === String(filter);
 const describe = link => `Feed ${link.feedIndex + 1} · Yarn ${link.yarnIndex + 1} (${link.yarnId}) · link ${link.index} · row ${link.row} · needle ${link.needle}\n` +
   `${link.source.originalCnIndex}→${link.source.finalCnIndex} / ${link.target.originalCnIndex}→${link.target.finalCnIndex}\n` +
   `${link.boundary} (${link.sourceBoundary}→${link.targetBoundary}) · ${link.pathOrigin}\n${link.sourceEvidence.path}`;
@@ -18,17 +19,15 @@ function downloadAudit(report) {
 
 function geometryAuditView(model, controller) {
   const report = model.auditReport, findings = report?.findings ?? [];
-  const correction = model.correctionReport;
-  const { localAudit: _localAudit, ...intersections } = correction?.intersections ?? {};
   const selected = findings.find(item => item.id === model.auditSelectedFindingId);
   const { findings: _findings, sources: _sources, ...summary } = report ?? {};
   const sourceLabel = id => {
     const source = report?.sources?.[id];
     return source ? `row ${source.row ?? '—'} / needle ${source.needle ?? '—'} / Feed ${source.feedIndex == null ? '—' : source.feedIndex + 1} / Yarn ${source.yarnId ?? '—'} / ${source.geometryRole ?? '—'}` : id;
   };
-  return html`<details class="spatial-diagnostics" data-swatch-audit-panel open>
-    <summary>Round 11.1 · 接头单案例与三维几何审计</summary>
-    <p>按需异步检查完整生成窗口；纱线、坐标和证据视图筛选不缩小诊断范围。相机及 PBR 修改复用结果，几何变化使结果失效。</p>
+  return html`<details class="spatial-diagnostics" data-swatch-audit-panel>
+    <summary>样布几何检查</summary>
+    <p>检查当前生成窗口的全部管面。可按结果定位到纱段。</p>
     <p>分类仅针对当前视觉几何。CN_REFERENCE 不等于接触，视觉遮挡不等于管体穿透；未证明合法性的关系保留 UNKNOWN，不自动修正拓扑或几何。</p>
     <div class="spatial-view-controls">
       <button class="btn" data-swatch-audit ?disabled=${!model.derivedGeometry || model.auditRunning || model.correctionRunning || model.profileRunning}
@@ -39,30 +38,7 @@ function geometryAuditView(model, controller) {
         @click=${() => controller.clearAuditSelection()}>退出结果定位</button>
       <button class="btn" data-swatch-audit-export ?disabled=${!report}
         @click=${() => downloadAudit(controller.exportGeometryAudit())}>导出完整诊断 JSON</button>
-      <button class="btn" data-swatch-joint-case ?disabled=${!model.derivedGeometry || model.correctionRunning}
-        @click=${() => controller.selectRound11JointCase()}>选择 Round 11.1 单案例</button>
-      <button class="btn" data-swatch-trim-diagnostic ?disabled=${model.auditRunning || model.correctionRunning || model.profileRunning ||
-        model.comparisonState !== 'G0' || !model.jointTargetId || !report?.complete}
-        @click=${() => controller.createTrimDiagnostic()}>生成 Gt 单接头失败对照</button>
-      <button class="btn" data-swatch-audit-correct ?disabled=${model.auditRunning || model.correctionRunning || model.profileRunning ||
-        model.comparisonState !== 'G0' || !model.jointTargetId || !report?.complete}
-        @click=${() => controller.applyGeometryCorrection()}>${model.correctionRunning ? '正在检查单接头候选…' : '生成 Gn 单接头候选'}</button>
-      <button class="btn" data-swatch-joint-cancel ?disabled=${!model.correctionRunning}
-        @click=${() => controller.cancelGeometryCorrection()}>取消候选检查</button>
     </div>
-    <div class="spatial-view-controls"><label>同条件几何对照<select data-swatch-comparison .value=${live(model.comparisonState)}
-      @change=${event => controller.setComparisonState(event.currentTarget.value)}>
-      <option value="G0" ?disabled=${!model.comparisonStates.G0}>G0 · 原始显示基线（仍有已知几何问题）</option>
-      <option value="Gt" ?disabled=${!model.comparisonStates.Gt}>Gt · 截短失败对照（不推荐）</option>
-      <option value="Gn" ?disabled=${!model.comparisonStates.Gn}>Gn · 单接头候选（尚未验收）</option></select></label></div>
-    <p data-swatch-joint-target>单案例来源：${model.jointTargetId ?? '未选择'}。选择后保留完整邻域；只对已核验来源的 row 22 / needle 16 / yarnIndex 1 接头生成对照。</p>
-    <p data-swatch-comparison-status>当前 ${model.comparisonState} · ${model.geometryVersion ?? '—'}。切换保留相机、PBR 和筛选；旧诊断与性能结果失效。Gn 保持候选，须通过同视角与全场景复审。</p>
-    ${correction ? html`<pre data-swatch-correction-report>${JSON.stringify({ status: correction.status, reason: correction.reason,
-      comparisonState: correction.comparisonState, recommendation: correction.recommendation, policy: correction.policy,
-      applied: correction.applied, counts: correction.counts, pathId: correction.pathId,
-      interfaces: correction.interfaces, meshIntegrity: correction.meshIntegrity, arcLengthMm: correction.arcLengthMm,
-      deltaArcLengthMm: correction.deltaArcLengthMm, section: correction.section, intersections }, null, 2)}</pre>
-      <p>显示过渡仍为 VISUAL_ASSUMPTION，物理关系保持 UNKNOWN；请在当前几何重新检测完整样布。</p>` : nothing}
     <p role="status" data-swatch-audit-status>${model.auditRunning ? 'RUNNING' : report?.status ?? model.auditProgress?.phase ?? 'NOT_RUN'}
       ${report ? report.complete === true ? ' · 完整诊断完成' : ' · 诊断未完成，不可据此判定无相交' : ''}</p>
     ${model.auditRunning ? html`<pre data-swatch-audit-progress>${JSON.stringify(model.auditProgress, null, 2)}</pre>` : nothing}
@@ -85,70 +61,59 @@ function geometryAuditView(model, controller) {
 }
 
 function swatchView(model, controller) {
-  const { topology: t, derivedGeometry: g, selectionFilter: filter, materialAssets: assets } = model;
-  const yarns = [...new Map((t?.strands ?? []).map(item => [item.yarnId, item])).values()];
-  const paths = (g?.paths ?? []).filter(item => (!model.auditPathIds || model.auditPathIds.includes(item.id)) && matches(item, model.yarnFilter) &&
-    Object.entries(filter).every(([key, value]) => value === null || value === '' ||
-      (key === 'occurrenceId' ? Object.entries(item.provenance ?? {}).some(([field, ids]) =>
-        /(?:^occurrenceIds$|OccurrenceIds$)/.test(field) && Array.isArray(ids) && ids.includes(value)) : item[key] === value)));
-  const selected = g?.paths.find(item => item.id === model.selectedLinkId);
-  const coordinate = (label, key) => html`<label>${label}<input type="number" min="0" step="1" data-swatch-filter=${key}
-    .value=${live(filter[key] == null ? '' : String(filter[key]))} placeholder="全部"
-    @change=${event => controller.setSelectionFilter({ [key]: event.currentTarget.value === '' ? null : event.currentTarget.valueAsNumber })}></label>`;
-  return html`<section class="sop-topology-workbench sop-swatch" aria-label="完整三维视觉样布">
-    <h3>SOP → 三维视觉样布</h3>
-    <p>当前设计窗口 · SOURCE_DERIVED 组织来源 / VISUAL_ASSUMPTION 线圈形状与空间关系。TEST_ONLY，非实物纱线连续性或尺寸预测。</p>
-    <div class="spatial-controls">
-      <label>显示视图<select data-swatch-evidence .value=${live(model.evidenceView ? 'evidence' : 'visual')}
-        @change=${event => controller.setEvidenceView(event.currentTarget.value === 'evidence')}>
-        <option value="visual">完整视觉样布 · 含独立假设过渡</option><option value="evidence">证据分段视图 · 隐去假设过渡</option></select></label>
-      <label>接头诊断显示<select data-swatch-debug .value=${live(model.debugMode)}
-        @change=${event => controller.setDebugMode(event.currentTarget.value)}>
-        <option value="pbr">PBR</option><option value="unlit">无贴图纯色 / 无光照</option>
-        <option value="normals">几何法线</option><option value="wireframe">线框 / 边界</option></select></label>
-      <label>显示纱线<select data-swatch-yarn .value=${live(model.yarnFilter)} @change=${event => controller.setYarnFilter(event.currentTarget.value)}>
-        <option value="all">全部纱线</option>${yarns.map(item => html`<option value=${item.yarnId}>${item.yarnIndex === 0 ? '主纱' : '氨纶 / 第二纱'} · ${item.name}</option>`)}</select></label>
-      ${coordinate('Feed 索引（0 起）', 'feedIndex')}${coordinate('row 索引（0 起）', 'row')}${coordinate('needle 索引（0 起）', 'needle')}
-      <label>源 occurrence ID<input data-swatch-occurrence .value=${live(filter.occurrenceId ?? '')} placeholder="全部"
-        @change=${event => controller.setSelectionFilter({ occurrenceId: event.currentTarget.value.trim() })}></label>
+  const g = model.derivedGeometry, coverage = g?.coverage;
+  const assignments = [...new Map((model.topology?.strands ?? []).map(y => [swatchYarnKey(y), y])).values()];
+  const yarnLabel = y => `${y.yarnIndex === 0 ? '主纱' : '第二纱'} · ${y.name || y.yarnId}`;
+  const presets = [['正面', 0, 0], ['背面', Math.PI, 0], ['斜视', .72, .28]];
+  const progress = model.generatedChains ? `正在生成连续纱线… 已完成 ${model.generatedChains} 条` : '正在生成连续纱线…';
+  const reason = model.topology?.reason;
+  const sourceMessages = {
+    MACHINE_SNAPSHOT_PENDING: '正在计算当前 SOP 的组织…',
+    SOP_CAM_REQUIRED: '当前 SOP 缺少单面机 Cam 程序。',
+    SOP_NEEDLE_ARRANGEMENT_REQUIRED: '当前 SOP 缺少排针顺序。',
+    CURRENT_MACHINE_SNAPSHOT_REQUIRED: '当前 SOP 尚无可用的机器组织结果。',
+  };
+  const status = model.error || model.machineError || (model.needsGeneration
+    ? model.sourcePending ? 'SOP 已修改，正在计算组织。' : 'SOP 已修改，请重新生成。'
+    : sourceMessages[reason] || reason || (g ? '' : progress));
+  return html`<section class="sop-sample" aria-label="SOP 三维样布">
+    <div class="sample-layout">
+      <div class="sample-stage"><div data-sop-viewport></div></div>
+      <aside class="sample-sidebar">
+        <h2>三维样布</h2>
+        <p data-swatch-size>${coverage
+          ? `${coverage.windowMode === 'repeat' ? '2 × 2 组织重复' : '当前设计窗口'} · ${coverage.width} 针 × ${coverage.height} 行`
+          : '当前 SOP'}</p>
+        <p role="status" data-swatch-status>${status}</p>
+        ${model.needsGeneration || model.error || (reason && !model.sourcePending)
+          ? html`<button data-swatch-regenerate ?disabled=${model.sourcePending}
+              @click=${() => controller.generateSwatch(model.options.fullSize)}>重新生成三维样布</button>` : nothing}
+        ${coverage?.canToggleSize ? html`<button data-swatch-extent @click=${() => controller.generateSwatch(!model.options.fullSize)}>
+          ${model.options.fullSize ? '返回 2 × 2 小样' : `展开到 ${coverage.sourceWidth} × ${coverage.sourceHeight}`}</button>` : nothing}
+        <h3>观察角度</h3>
+        <div class="sample-controls">${presets.map(([label, yaw, pitch]) => html`<button
+          aria-pressed=${Math.abs((model.view?.yaw ?? 0) - yaw) < .001 && Math.abs((model.view?.pitch ?? 0) - pitch) < .001}
+          @click=${() => controller.setView({ yaw, pitch })}>${label}</button>`)}
+          <button @click=${() => controller.fit()}>适配</button></div>
+        <p class="swatch-foot">拖动旋转 · 滚轮缩放</p>
+        <hr><h3>纱线材质</h3>
+        ${assignments.map(y => html`<label>${yarnLabel(y)}
+          <select data-swatch-material=${y.yarnId} data-yarn-slot=${y.yarnIndex}
+            .value=${live(String(model.materialBindings[swatchYarnKey(y)] ?? model.materialBindings[y.yarnId] ?? y.yarnId))}
+            @change=${e => controller.setMaterialBinding(y.yarnId, e.currentTarget.value, y.yarnIndex)}>
+            ${model.materialAssets.map(asset => html`<option value=${String(asset.id)}>${asset.name}${asset.pbr ? ' · PBR' : ''}</option>`)}
+          </select></label>`)}
+        <label>显示<select data-swatch-yarn .value=${live(model.yarnFilter)} @change=${e => controller.setYarnFilter(e.currentTarget.value)}>
+          <option value="all">全部纱线</option>${assignments.map(y => html`<option value=${swatchYarnKey(y)}>${yarnLabel(y)}</option>`)}</select></label>
+        <label>着色<select data-swatch-debug .value=${live(model.debugMode)} @change=${e => controller.setDebugMode(e.currentTarget.value)}>
+          <option value="pbr">PBR 材质</option><option value="unlit">纱线识别色</option><option value="wireframe">管面线框</option></select></label>
+        <hr><p class="swatch-foot">组织取自 SOP。圈形、管径及空间排列为视觉假设，实机验证待确认。</p>
+      </aside>
     </div>
-    <fieldset class="spatial-controls"><legend>现有 PBR 资产分配 · 仅本次三维视图</legend>
-      ${yarns.map(item => html`<label>${item.name}<select data-swatch-material=${item.yarnId}
-        .value=${live(String(model.materialBindings[item.yarnId] ?? item.yarnId))}
-        @change=${event => controller.setMaterialBinding(item.yarnId, event.currentTarget.value)}>
-        ${assets.map(asset => html`<option value=${String(asset.id)}>${asset.name}${asset.pbr ? ' · PBR' : ' · 无贴图'}</option>`)}</select></label>`)}
-      <label>扫描纱线方向 · VISUAL_ASSUMPTION<select data-swatch-axis .value=${live(model.scanAxis)} @change=${event => controller.setScanAxis(event.currentTarget.value)}>
-        <option value="x">图像 X → 沿纱线 U</option><option value="y">图像 Y → 沿纱线 U</option></select></label>
-      <label>视觉半径 (mm) · TEST_ONLY<input data-swatch-radius type="number" min="0.001" step="0.005"
-        .value=${live(String(model.options.radiusMm))} @change=${event => controller.setOptions({ radiusMm: event.currentTarget.valueAsNumber })}></label>
-    </fieldset>
-    <p>没有贴图时，可在「纱线库」中给已有纱线导入 PBR，再回到本视图选择。UV 沿中心线 / 截面周向；扫描方向与尺度待校准。</p>
-    <div class="spatial-view-controls">
-      <button class="btn" data-swatch-front @click=${() => controller.setView({ yaw: 0, pitch: 0 })}>样布正面</button>
-      <button class="btn" data-swatch-back @click=${() => controller.setView({ yaw: Math.PI, pitch: 0 })}>样布反面</button>
-      <button class="btn" @click=${() => controller.setView({ yaw: .8, pitch: .4 })}>样布斜视</button>
-      <button class="btn" @click=${() => controller.setView({ yaw: Math.PI / 2, pitch: 0 })}>样布边缘</button>
-      <button class="btn" @click=${() => controller.fit()}>适配完整样布</button>
-      <button class="btn" ?disabled=${!g} @click=${() => controller.focusSelected()}>局部放大</button>
-      <button class="btn" @click=${() => controller.generateSwatch()}>重新生成</button>
-      <button class="btn" @click=${() => controller.setHypothesisEnabled(false)}>局部来源检查</button>
-    </div>
-    <p>同一模型旋转正反面；拖动 / 方向键旋转 360°，滚轮 / ＋ / − 缩放。开放边界，不自动铺贴或闭合。</p>
-    <div class="spatial-viewport" data-sop-viewport></div>
-    <p role="status" data-swatch-status>${model.error ? `样布已清除：${model.error}` : g ? '样布生成完成' : `等待当前有效快照或正在生成：${t?.reason ?? t?.status}`} · Renderer ${model.rendererStatus.status}</p>
-    <div class="sop-evidence-banner">形状、Z、视觉半径、旧圈保持形状及独立过渡均为 VISUAL_ASSUMPTION。过渡不进入 YarnChain 长度统计或物理接触求解。MACHINE_CONFIRMED：无新增；PHYSICALLY_VALIDATED：未使用。</div>
-    <details class="spatial-diagnostics" open><summary>窗口覆盖 / 边界 / 未生成单元</summary><pre data-swatch-coverage>${JSON.stringify(g?.coverage ?? null, null, 2)}</pre></details>
-    <button class="btn" data-swatch-profile ?disabled=${!g || model.profileRunning || model.auditRunning || model.correctionRunning}
-      @click=${() => controller.profileSwatch()}>${model.profileRunning ? '正在测量旋转性能…' : '测量当前样布旋转性能'}</button>
-    <p>按当前画面自动旋转一周后恢复视角；记录 120 帧 CPU 提交与可用的 GPU 计时。测量期间请保持页面前台。</p>
-    ${model.profileReport ? html`<pre data-swatch-profile-report>${JSON.stringify(model.profileReport, null, 2)}</pre>` : nothing}
+    <details><summary>组织来源与渲染信息</summary><pre data-swatch-coverage>${JSON.stringify(coverage, null, 2)}</pre>
+      <pre data-swatch-render-diagnostics>${JSON.stringify(model.renderDiagnostics, null, 2)}</pre>
+      <button @click=${() => controller.setHypothesisEnabled(false)}>查看组织来源</button></details>
     ${geometryAuditView(model, controller)}
-    <details class="spatial-diagnostics" open><summary>PBR 各通道与渲染资源</summary><pre data-swatch-render-diagnostics>${JSON.stringify(model.renderDiagnostics, null, 2)}</pre></details>
-    <label>选择几何段（当前筛选前 60 条）<select data-swatch-select .value=${live(model.selectedLinkId ?? '')}
-      @change=${event => controller.selectLink(event.currentTarget.value)}><option value="">选择后查看来源</option>
-      ${paths.slice(0, 60).map(path => html`<option value=${path.id}>row ${path.row} / needle ${path.needle} / Feed ${path.feedIndex + 1} / ${path.geometryRole ?? 'VISUAL_ASSUMPTION'}</option>`)}</select></label>
-    <details class="spatial-diagnostics" ?open=${!!selected}><summary>occurrence / link / CN / YarnChain 来源与假设</summary>
-      <pre>${selected ? JSON.stringify({ id: selected.id, evidenceStatus: selected.evidenceStatus, geometryRole: selected.geometryRole, provenance: selected.provenance }, null, 2) : '按 Feed、纱线、row、needle 或 occurrence 筛选，再选择几何段。'}</pre></details>
   </section>`;
 }
 
@@ -168,7 +133,7 @@ function topologyView(model, controller) {
     .value=${live(String(roi[key]))} @input=${event => controller.setROI({ [key]: event.currentTarget.valueAsNumber })}></label>`;
   return html`<section class="sop-topology-workbench" aria-label="真实 SOP 拓扑与空间假设">
     <h3>真实 SOP 拓扑 / 2.5D 假设实验</h3>
-    <button class="btn" data-swatch-generate @click=${() => controller.generateSwatch()}>生成完整三维视觉样布 · Round9</button>
+    <button class="btn" data-swatch-generate @click=${() => controller.generateSwatch()}>生成三维样布</button>
     <p>本轮指定 SOP 已确认设备：润山单面大圆机。型号、针筒直径、总 Feed 与软件模板映射：UNKNOWN；视图读取当前 Machine 快照，不自动辨认机型。</p>
     <p class="sop-evidence-banner">${model.mode} · 软件路径与逻辑引用可追溯；物理上下 SPATIAL_ORDER / 接触 CONTACT：UNKNOWN。</p>
     <fieldset class="spatial-controls"><legend>局部 ROI · 0-based 索引</legend>
@@ -305,7 +270,7 @@ function topologyView(model, controller) {
   </section>`;
 }
 
-export function createSopTopologyWorkbench({ container, context, session, createRenderer, buildHypothesis }) {
+export function createSopTopologyWorkbench({ container, context, session, createRenderer, buildHypothesis, startInSwatch = false }) {
   let controller, disposed = false;
   const redraw = () => {
     if (disposed) return;
@@ -319,8 +284,8 @@ export function createSopTopologyWorkbench({ container, context, session, create
       container.querySelector('[data-sop-continuity]')?.setAttribute('viewBox', source.getAttribute('viewBox'));
     }
   };
-  controller = createSopTopologyWorkbenchController({ context, session, createRenderer, buildHypothesis, onChange: redraw });
-  redraw(); controller.mount(container.querySelector('[data-sop-viewport]'));
+  controller = createSopTopologyWorkbenchController({ context, session, createRenderer, buildHypothesis, startInSwatch, onChange: redraw });
+  redraw();
   return { updateContext: next => controller.updateContext(next), exportSession: () => controller.exportSession(),
     ready: () => controller.ready(), get derivedGeometry() { return controller.model.derivedGeometry; },
     dispose() { if (disposed) return; disposed = true; controller.dispose(); render(nothing, container); } };

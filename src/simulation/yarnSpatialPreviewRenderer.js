@@ -44,6 +44,8 @@ uniform float u_roughness;
 uniform float u_anisotropy;
 uniform float u_ambient;
 uniform float u_lightIntensity;
+uniform bool u_swatchLighting;
+uniform float u_scanHalfWidth;
 uniform int u_debugMode;
 uniform int u_uvReference;
 uniform int u_hasBaseColor;
@@ -60,40 +62,9 @@ float lambdaGGX(vec3 w, vec3 t, vec3 b, vec3 n, float ax, float ay) {
   vec2 transverse = vec2(ax * dot(w, t), ay * dot(w, b));
   return 0.5 * (length(vec3(transverse, wn)) / wn - 1.0);
 }
-void main() {
-  vec3 n = normalize(v_normal);
-  if (u_debugMode == 1) {
-    gl_FragColor = vec4(u_color, 1.0);
-    return;
-  }
-  if (u_debugMode == 2) {
-    gl_FragColor = vec4(n * 0.5 + 0.5, 1.0);
-    return;
-  }
-  vec3 t = normalize(v_tangent - n * dot(v_tangent, n));
-  vec3 b = normalize(cross(n, t));
-  vec3 v = normalize(u_eye - v_position);
-  vec3 l = normalize(u_lightDirection);
+vec3 directLight(vec3 l, vec3 n, vec3 v, vec3 t, vec3 b, vec3 color, float roughness) {
   float nl = max(dot(n, l), 0.0);
   float nv = max(dot(n, v), 0.0);
-  vec3 color = u_color;
-  float roughness = u_roughness;
-  // Mirror transverse scan coordinates so V=0 and V=1 have identical samples.
-  // This is a visual scan projection, not a calibrated wrap of a real yarn scan.
-  vec2 scanUv = vec2(fract(v_uv.x), 1.0 - abs(2.0 * fract(v_uv.y) - 1.0));
-  if (u_scanAxisY == 1) scanUv = scanUv.yx;
-  if (u_hasBaseColor == 1) {
-    vec4 texel = texture2D(u_baseColorMap, scanUv);
-    color = mix(color, srgbToLinear(texel.rgb), texel.a);
-  }
-  if (u_hasRoughness == 1) roughness = clamp(texture2D(u_roughnessMap, scanUv).r, 0.08, 1.0);
-  if (u_uvReference == 1) {
-    float checker = mod(floor(v_uv.x * 2.0) + floor(v_uv.y * 8.0), 2.0);
-    color = mix(vec3(0.04, 0.27, 0.38), vec3(0.88, 0.57, 0.16), checker);
-    float seam = step(0.96, fract(v_uv.y));
-    color = mix(color, vec3(0.75, 0.04, 0.12), seam);
-  }
-  vec3 linearColor = color * u_ambient;
   if (nl > 0.0 && nv > 0.0) {
     float halfLength = length(v + l);
     if (halfLength > 0.0001) {
@@ -110,8 +81,56 @@ void main() {
       float g = 1.0 / (1.0 + lambdaGGX(v, t, b, n, ax, ay) + lambdaGGX(l, t, b, n, ax, ay));
       float fresnel = 0.04 + 0.96 * pow(1.0 - clamp(dot(v, h), 0.0, 1.0), 5.0);
       float specular = fresnel * d * g / max(4.0 * nv * nl, 0.0001);
-      linearColor += u_lightIntensity * nl * ((1.0 - fresnel) * color / PI + vec3(specular));
+      return nl * ((1.0 - fresnel) * color / PI + vec3(specular));
     }
+  }
+  return vec3(0.0);
+}
+void main() {
+  vec3 n = normalize(v_normal);
+  if (u_debugMode == 1) {
+    gl_FragColor = vec4(u_color, 1.0);
+    return;
+  }
+  if (u_debugMode == 2) {
+    gl_FragColor = vec4(n * 0.5 + 0.5, 1.0);
+    return;
+  }
+  vec3 t = normalize(v_tangent - n * dot(v_tangent, n));
+  vec3 b = normalize(cross(n, t));
+  vec3 v = normalize(u_eye - v_position);
+  vec3 l = normalize(u_lightDirection);
+  vec3 color = u_color;
+  float roughness = u_roughness;
+  // Mirror transverse scan coordinates so V=0 and V=1 have identical samples.
+  // This is a visual scan projection, not a calibrated wrap of a real yarn scan.
+  vec2 scanUv = vec2(fract(v_uv.x), 1.0 - abs(2.0 * fract(v_uv.y) - 1.0));
+  // A mirrored half-turn of the display tube spans pi*r in the square SOP scans.
+  // Keeping its scale relative to U avoids squeezing an entire image into a few pixels.
+  scanUv.y = 0.5 + (scanUv.y - 0.5) * u_scanHalfWidth;
+  if (u_scanAxisY == 1) scanUv = scanUv.yx;
+  if (u_hasBaseColor == 1) {
+    vec4 texel = texture2D(u_baseColorMap, scanUv);
+    color = mix(color, srgbToLinear(texel.rgb), texel.a);
+  }
+  if (u_hasRoughness == 1) roughness = clamp(texture2D(u_roughnessMap, scanUv).r, 0.08, 1.0);
+  if (u_uvReference == 1) {
+    float checker = mod(floor(v_uv.x * 2.0) + floor(v_uv.y * 8.0), 2.0);
+    color = mix(vec3(0.04, 0.27, 0.38), vec3(0.88, 0.57, 0.16), checker);
+    float seam = step(0.96, fract(v_uv.y));
+    color = mix(color, vec3(0.75, 0.04, 0.12), seam);
+  }
+  vec3 linearColor = color * u_ambient;
+  if (u_swatchLighting) {
+    // A small display roughness bias broadens the shinier scan highlights
+    // while retaining the scalar map's variation and the two materials' contrast.
+    roughness = mix(roughness, 0.58, 0.18);
+  }
+  linearColor += u_lightIntensity * directLight(l, n, v, t, b, color, roughness);
+  if (u_swatchLighting) {
+    // A softer reverse key reveals the back when orbiting this open fabric.
+    vec3 reverseLight = normalize(vec3(0.52, 0.65, -0.83));
+    linearColor += u_lightIntensity * 0.83 * directLight(reverseLight, n, v, t, b, color, roughness);
   }
   vec3 mapped = linearColor / (vec3(1.0) + linearColor);
   gl_FragColor = vec4(pow(mapped, vec3(1.0 / 2.2)), 1.0);
@@ -222,7 +241,7 @@ function sceneBounds(scene) {
  * Async image failures clear the scene. Invalid synchronous updates remain atomic.
  * All drawing is on demand. suspend preserves GPU data; resume restarts drawing.
  */
-export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange } = {}) {
+export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange, swatchLighting = false, scanHalfWidth = 1 } = {}) {
   let container = null, canvas = null, win = null, gl = null, observer = null;
   let geometryIdentity = null, geometry = null, uploadedGeometry = null, buffers = [];
   let drawItems = [], batchOrder = "source", debugMode = "pbr";
@@ -364,7 +383,8 @@ export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange 
       channels.metallic = { status: "NONMETALLIC_BASELINE", assigned: Boolean(mapKey(pbr?.metallic)), value: 0, reason: "No metallic material evidence; input map disabled." };
       materialReports.push({ channels, mapping: { status: "VISUAL_ASSUMPTION", scanAxis: item.material.scanAxis,
         uv: "U = cumulative arc length / TEST_ONLY repeat; V = normalized circumference",
-        transverse: "Mirrored V gives matching circumference seam samples; longitudinal scan repeats without seam calibration.",
+        transverse: "Mirrored V samples a centered scan strip; its width is relative to the axial texture repeat.",
+        scanWidthFraction: scanHalfWidth,
         alpha: "BaseColor alpha composites onto fallback color; does not remove tube geometry.",
         minification: "POT maps use trilinear mipmaps; RGBA8 encoded-color averaging is a VISUAL_ASSUMPTION, not linear-light filtering. NPOT maps retain LINEAR. U fract derivatives and uncalibrated scan edges can still show repeat-boundary artifacts.",
         physicalScale: "NOT_CALIBRATED; project YarnAsset is unchanged." } });
@@ -420,6 +440,13 @@ export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange 
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mipmaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
       entry.levels = 1; entry.bytes = entry.width * entry.height * 4;
       if (mipmaps) {
+        // A tube seen obliquely can cover many scan texels around its circumference
+        // while retaining detail along the yarn. Filter those directions independently.
+        const filter = swatchLighting && gl.getExtension("EXT_texture_filter_anisotropic");
+        if (filter) {
+          const limit = gl.getParameter(filter.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+          gl.texParameterf(gl.TEXTURE_2D, filter.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(limit, 4));
+        }
         gl.generateMipmap(gl.TEXTURE_2D);
         let width = entry.width, height = entry.height;
         while (width > 1 || height > 1) {
@@ -445,7 +472,7 @@ export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange 
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(`Spatial program failed: ${gl.getProgramInfoLog(program)}`);
       attributes = ["a_position", "a_normal", "a_tangent", "a_uv"].map(name => gl.getAttribLocation(program, name));
       if (attributes.some(location => location < 0)) throw new Error("Spatial shader is missing a geometry attribute.");
-      uniforms = Object.fromEntries(["model", "view", "projection", "eye", "color", "lightDirection", "roughness", "anisotropy", "ambient", "lightIntensity", "debugMode", "uvReference", "hasBaseColor", "hasRoughness", "scanAxisY", "baseColorMap", "roughnessMap"]
+      uniforms = Object.fromEntries(["model", "view", "projection", "eye", "color", "lightDirection", "roughness", "anisotropy", "ambient", "lightIntensity", "swatchLighting", "scanHalfWidth", "debugMode", "uvReference", "hasBaseColor", "hasRoughness", "scanAxisY", "baseColorMap", "roughnessMap"]
         .map(name => [name, gl.getUniformLocation(program, `u_${name}`)]));
     } finally {
       for (const shader of shaders) gl.deleteShader(shader);
@@ -540,7 +567,9 @@ export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange 
       if (canvas.height !== h) canvas.height = h;
       gl.viewport(0, 0, w, h); gl.enable(gl.DEPTH_TEST); gl.depthMask(true); gl.depthFunc(gl.LEQUAL); gl.clearDepth(1);
       gl.enable(gl.CULL_FACE); gl.cullFace(gl.BACK); gl.frontFace(gl.CCW); gl.disable(gl.BLEND);
-      gl.clearColor(0.035, 0.045, 0.065, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      if (swatchLighting) gl.clearColor(0.80, 0.80, 0.78, 1);
+      else gl.clearColor(0.035, 0.045, 0.065, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       if (!geometry) { lastDrawCalls = 0; return setStatus("EMPTY"); }
       if (texturesLoading) return currentStatus();
       const camera = buildYarnSpatialCamera(view, w / h, geometry.bounds);
@@ -556,6 +585,8 @@ export function createYarnSpatialPreviewRenderer({ onViewChange, onStatusChange 
       if (query) { timer.beginQueryEXT(timer.TIME_ELAPSED_EXT, query); profile.queries.push(query); profile.activeQuery = true; }
       for (const [name, matrix] of [["model", IDENTITY], ["view", camera.view], ["projection", camera.projection]]) gl.uniformMatrix4fv(uniforms[name], false, matrix);
       gl.uniform3fv(uniforms.eye, camera.eye);
+      gl.uniform1i(uniforms.swatchLighting, swatchLighting ? 1 : 0);
+      gl.uniform1f(uniforms.scanHalfWidth, scanHalfWidth);
       gl.uniform1i(uniforms.debugMode, debugMode === "pbr" ? 0 : debugMode === "normals" ? 2 : 1);
       const items = drawItems;
       for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {

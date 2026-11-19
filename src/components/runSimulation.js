@@ -41,10 +41,10 @@ function structureLineTrialKeydown(event) {
 }
 
 function focusOperationPreview(onlyIfOutside = false) {
-  if (!window.requestAnimationFrame || GLOBAL_STATE.workbenchMode === "pbr25d") return;
+  if (!window.requestAnimationFrame || GLOBAL_STATE.workbenchMode !== "classic2d") return;
   const generation = GLOBAL_STATE.projectGeneration, preview = machinePreview;
   window.requestAnimationFrame(() => {
-    if (GLOBAL_STATE.workbenchMode === "pbr25d" || GLOBAL_STATE.projectGeneration !== generation || preview !== machinePreview) return;
+    if (GLOBAL_STATE.workbenchMode !== "classic2d" || GLOBAL_STATE.projectGeneration !== generation || preview !== machinePreview) return;
     const overlay = document.getElementById("operation-preview-overlay");
     const viewport = document.getElementById("sim-after-container");
     const status = document.getElementById("operation-focus-status");
@@ -116,7 +116,8 @@ export function simulationView() {
   const operationPreview = operationDemoEnabled
     ? machinePreview?.getOperationPreview?.(operationCursor.row, operationCursor.needle) ?? null : null;
 
-  return html`<div id="sim-pane">
+  const showSwatch = GLOBAL_STATE.workbenchMode === "sop3d";
+  return html`<div id="sim-pane" class=${showSwatch ? "swatch-preview-active" : ""}>
     <div id="sim-container" data-code-guide-key="simulation.canvas">
       <div class="simulation-preview-grid ${showDesignComparison
         ? "comparison-active"
@@ -264,6 +265,8 @@ export function simulationView() {
         ${buttonIcon("fit", t("simulation.fit", language))}
       </button>
     </div>
+    ${showSwatch ? html`<section id="sop-swatch-workbench-slot" aria-label="三维样布预览"
+      @keydown=${event => event.stopPropagation()} @keyup=${event => event.stopPropagation()}></section>` : null}
   </div>`;
 }
 

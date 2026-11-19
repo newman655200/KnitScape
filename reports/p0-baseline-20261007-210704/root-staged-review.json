@@ -1,0 +1,12 @@
+{
+  "rootReviewed": true,
+  "reviewScope": "All staged production code, config/copy/styles and existing validator adaptations; independent reviewer reads complete staged patch and new tests",
+  "exactScope": 39,
+  "unexpectedDeletes": 0,
+  "binaryAssets": 0,
+  "schemaMigration": false,
+  "runtimePersistence": false,
+  "unrelatedHunksFound": 0,
+  "patchSHA256": "DBDA226BA5DB6368DCDEC6455DF2753ADDA02A1162AF42D059D6FC379498A9C3",
+  "note": "Known A-F nonblocking debts remain as documented in CONDITIONAL PASS; no changes made for baseline"
+}

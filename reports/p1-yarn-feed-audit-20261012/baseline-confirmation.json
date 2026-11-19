@@ -1,0 +1,9 @@
+{
+  "auditDirectory": "reports/p1-yarn-feed-audit-20261012",
+  "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+  "tag": "baseline-trusted-yarn-length",
+  "branch": "main",
+  "protectedFiles": 1035,
+  "trackedClean": true,
+  "allowedWrites": "reports/p1-yarn-feed-audit-20261012 only; ordinary ignored build output"
+}

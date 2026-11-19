@@ -1,0 +1,41 @@
+warning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/validate-feed-yarn-pbr-renderer.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/validate-single-jersey-cam-editor.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/validate-single-jersey-execution-integration.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/validate-yarn-length-solver.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/validate-yarn-simulation-characterization.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/actions/singleJerseyCamProgram.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/codeGuide/generatedLines.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/runSimulation.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/events/simulationPointerInteraction.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/i18n/translations.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/simulation/drawYarnSimulation.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/simulation/yarnLengthSolver.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/simulation/yarnPathUvStrip.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/simulation/yarnSimulation.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/simulation/yarnTextureBrush.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/state.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/views/singleJerseyCamProgramEditor.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/views/yarnLengthReadout.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'styles.css', LF will be replaced by CRLF the next time Git touches it
+ package.json                                       |   6 +
+ scripts/validate-feed-yarn-pbr-renderer.mjs        |  26 ++--
+ scripts/validate-single-jersey-cam-editor.mjs      |  37 +++--
+ ...alidate-single-jersey-execution-integration.mjs |   7 +
+ scripts/validate-yarn-length-solver.mjs            |   3 +-
+ .../validate-yarn-simulation-characterization.mjs  |   8 +-
+ src/actions/singleJerseyCamProgram.js              |  69 +++++----
+ src/codeGuide/generatedLines.json                  |  12 +-
+ src/components/runSimulation.js                    |  12 ++
+ src/events/simulationPointerInteraction.js         |   2 +
+ src/i18n/translations.js                           | 144 +++++++++++++++++-
+ src/simulation/drawYarnSimulation.js               |  72 ++++++---
+ src/simulation/yarnLengthSolver.js                 |  20 ++-
+ src/simulation/yarnPathUvStrip.js                  |  11 +-
+ src/simulation/yarnSimulation.js                   | 103 ++++++++-----
+ src/simulation/yarnTextureBrush.js                 |  20 +--
+ src/state.js                                       |   4 +
+ src/views/singleJerseyCamProgramEditor.js          | 165 +++++++++++++++++----
+ src/views/yarnLengthReadout.js                     |   1 +
+ styles.css                                         |  27 ++++
+ 20 files changed, 588 insertions(+), 161 deletions(-)

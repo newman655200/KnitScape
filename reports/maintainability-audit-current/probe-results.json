@@ -1,0 +1,105 @@
+[
+  {
+    "name": "length",
+    "command": "node --experimental-vm-modules reports/maintainability-audit-current/length-probe.mjs",
+    "exit": 0,
+    "results": [
+      {
+        "width": 30,
+        "height": 40,
+        "feed": 8,
+        "yarn": 1,
+        "target": 23,
+        "solver": 22.999733873071612,
+        "solvedLoopHeight": 0.470611572265625,
+        "status": "CONVERGED",
+        "internalRepeatDiagnostic": 24.077277996023074,
+        "unit": "cm/100 needle passages",
+        "selectedRows": [
+          15,
+          23,
+          31
+        ],
+        "sourceNeedlePadded": [
+          5,
+          21
+        ],
+        "linkCount": 168,
+        "denominator": 48,
+        "measuredCountLabel": 30,
+        "meaning": "Diagnostic only; not factory authority; independent integration, same generated path, different window."
+      },
+      {
+        "width": 32,
+        "height": 40,
+        "feed": 8,
+        "yarn": 1,
+        "target": 23,
+        "solver": 22.999580039157998,
+        "solvedLoopHeight": 0.45442504882812507,
+        "status": "CONVERGED",
+        "internalRepeatDiagnostic": 23.701615834833124,
+        "unit": "cm/100 needle passages",
+        "selectedRows": [
+          15,
+          23,
+          31
+        ],
+        "sourceNeedlePadded": [
+          5,
+          21
+        ],
+        "linkCount": 168,
+        "denominator": 48,
+        "measuredCountLabel": 32,
+        "meaning": "Diagnostic only; not factory authority; independent integration, same generated path, different window."
+      }
+    ]
+  },
+  {
+    "name": "state",
+    "command": "node reports/maintainability-audit-current/state-probe.mjs",
+    "exit": 0,
+    "results": [
+      {
+        "case": "stale activeYarn after New and Load",
+        "activeYarn": 2,
+        "paletteLength": 1,
+        "newRowIndex": 2,
+        "brushIndex": 2,
+        "paletteEntryMissing": true
+      },
+      {
+        "case": "older library request overwrites newer New",
+        "afterNew": [
+          30,
+          40
+        ],
+        "afterOldRequest": [
+          2,
+          2
+        ],
+        "boundary": "Actual importers source; Bimp and sequence helpers real; dispatch, fitChart, ply normalizer/browser boundaries stubbed."
+      }
+    ]
+  },
+  {
+    "name": "material",
+    "command": "node --experimental-vm-modules reports/maintainability-audit-current/material-probe.mjs",
+    "exit": 0,
+    "results": [
+      {
+        "case": "valid zero strength",
+        "input": 0,
+        "observedUniform": 0.75,
+        "boundary": "Actual drawStrip JavaScript method; map loader and GL side effects stubbed; no GPU output claim."
+      },
+      {
+        "case": "PBR group replacement",
+        "previousRepeatMm": 22.987,
+        "repeatPropertyRetained": false,
+        "boundary": "Actual importYarnPbr action; new maps supplied as importer fixture. Actual importPbrFiles return shape separately checked in source; no image decoder/GPU claim."
+      }
+    ]
+  }
+]

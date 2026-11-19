@@ -1,0 +1,565 @@
+diff --git a/package.json b/package.json
+index 8cbe555..fdc4d83 100644
+--- a/package.json
++++ b/package.json
+@@ -5,6 +5,7 @@
+   "author": "branchwelder",
+   "license": "MIT",
+   "scripts": {
++    "validate:yarn-material-authority": "node scripts/validate-yarn-material-authority.mjs",
+     "validate": "node scripts/validate.mjs",
+     "dev": "vite",
+     "host": "vite --host",
+diff --git a/scripts/validate-single-jersey-execution-integration.mjs b/scripts/validate-single-jersey-execution-integration.mjs
+index 05d9b2f..926b071 100644
+--- a/scripts/validate-single-jersey-execution-integration.mjs
++++ b/scripts/validate-single-jersey-execution-integration.mjs
+@@ -205,7 +205,8 @@ const virtualModules = new Map([
+     "../simulation/yarnSimulation",
+     {
+       id: "\0single-jersey-simulate-stub",
+-      code: `export const simulate = (...args) =>
++      code: `export const yarnMaterialGeometryKey = () => "fixed-machine-routing-fixture";
++        export const simulate = (...args) =>
+         globalThis.__singleJerseySimulateStub(...args);`,
+     },
+   ],
+@@ -569,7 +570,7 @@ assert.match(
+ );
+ assert.match(
+   runSimulationSource,
+-  /if\s*\(machineSimulationInput\s*===\s*null\)\s*(?:return;|\{[^}]*return;)/
++  /if\s*\(machineSimulationInput\s*===\s*null\)\s*(?:return;|\{(?:[^{}]|\{[^{}]*\})*return;)/
+ );
+ assert.ok(
+   runSimulationSource.indexOf(
+diff --git a/scripts/validate-texture-cache-lifecycle.mjs b/scripts/validate-texture-cache-lifecycle.mjs
+index eea209d..31aadd5 100644
+--- a/scripts/validate-texture-cache-lifecycle.mjs
++++ b/scripts/validate-texture-cache-lifecycle.mjs
+@@ -72,7 +72,7 @@ try {
+   assert.ok(!deletedTextures.includes(renderer.fallbackTexture));
+ 
+   assert.equal(typeof materialMaps, "function", "Draw layers need the Renderer map sources.");
+-  const slots = ["baseColor", "normal", "roughness", "height", "ambientOcclusion"];
++  const slots = ["baseColor", "normal", "roughness", "height", "ambientOcclusion", "metallic"];
+   const pbr = Object.fromEntries(slots.map(slot => [slot, { assetRef: `${slot}-ref` }]));
+   const sources = materialMaps({ texture: { pbr } });
+   for (const slot of slots) assert.equal(sources[slot].assetRef, `${slot}-ref`);
+diff --git a/scripts/validate-two-ply-yarn.mjs b/scripts/validate-two-ply-yarn.mjs
+index 4cdc8fa..85b26a0 100644
+--- a/scripts/validate-two-ply-yarn.mjs
++++ b/scripts/validate-two-ply-yarn.mjs
+@@ -519,6 +519,7 @@ try {
+       roughness: null,
+       height: null,
+       ambientOcclusion: null,
++      metallic: null,
+     },
+   };
+   const texturedPlies = [
+diff --git a/src/components/runSimulation.js b/src/components/runSimulation.js
+index 3f021b8..58d0eb7 100644
+--- a/src/components/runSimulation.js
++++ b/src/components/runSimulation.js
+@@ -1,4 +1,4 @@
+-import { simulate } from "../simulation/yarnSimulation";
++import { simulate, yarnMaterialGeometryKey } from "../simulation/yarnSimulation";
+ import { PREVIEW_VALIDITY } from "../simulation/previewValidity.js";
+ import { retainYarnAssetTextureImages } from "../simulation/yarnTextureBrush.js";
+ import { retainWebglYarnTextures } from "../simulation/yarnUvWebglRenderer.js";
+@@ -203,6 +203,7 @@ export function stopSimulation() {
+ export function runSimulation() {
+   return ({ state }) => {
+     let queueSim = false;
++    let materialGeometryKey = yarnMaterialGeometryKey(state);
+ 
+     function run() {
+       queueSim = false;
+@@ -235,8 +236,6 @@ export function runSimulation() {
+       stopSims = [baseSimulationResult.stopSim];
+       dispatch({
+         yarnLengthMetrics: baseSimulationResult.yarnLengthMetrics,
+-        yarnLengthSolverResults: [],
+-        previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW,
+       });
+ 
+       clearSimulationCanvases(AFTER_SIMULATION_TARGET.canvasIDs);
+@@ -259,6 +258,7 @@ export function runSimulation() {
+ 
+       setMachineExecutionError(null);
+       if (machineSimulationInput === null) {
++        dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
+         releaseAfterYarnTextures();
+         return;
+       }
+@@ -303,8 +303,16 @@ export function runSimulation() {
+ 
+         if (found) {
+           stopSimulation();
+-          // Old results cannot validate newly edited facts during the debounce.
+-          dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
++          const nextKey = yarnMaterialGeometryKey(state);
++          const onlyMaterialChanges = !["repeats", "yarnSequence", "machineGauge",
++            "chart", "needleArrangement", "singleJerseyCamProgram"].some(key => changes.includes(key));
++          const geometryChanged = nextKey !== materialGeometryKey;
++          materialGeometryKey = nextKey;
++          // Only changed geometry/targets invalidate length. Rendering controls,
++          // maps, color and physical UV keep their last validated geometry result.
++          if (!onlyMaterialChanges || geometryChanged) {
++            dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
++          }
+           debouncedRun();
+         }
+ 
+diff --git a/src/domain/yarnLibrary.js b/src/domain/yarnLibrary.js
+index 55194e6..54046df 100644
+--- a/src/domain/yarnLibrary.js
++++ b/src/domain/yarnLibrary.js
+@@ -17,6 +17,14 @@ export function normalizeYarnLibrary(assets = [], feeds = []) {
+     const normalized = createYarnAsset(asset?.id, asset?.name, asset?.category);
+     normalized.createdAt = asset.createdAt ?? normalized.createdAt;
+     normalized.updatedAt = asset.updatedAt ?? normalized.createdAt;
++    if (asset.color != null) {
++      if (typeof asset.color !== "string" || !asset.color.trim()) throw new TypeError("Yarn color must be a nonempty string.");
++      normalized.color = asset.color.trim();
++    }
++    if (asset.diameter != null) {
++      if (!Number.isFinite(asset.diameter) || asset.diameter <= 0) throw new TypeError("Yarn diameter must be positive.");
++      normalized.diameter = asset.diameter;
++    }
+     const pbr = normalizeYarnPbr(asset.pbr);
+     if (pbr) normalized.pbr = pbr;
+     if (![normalized.createdAt, normalized.updatedAt].every(value =>
+diff --git a/src/i18n/translations.js b/src/i18n/translations.js
+index 4a9c4cc..a07f95d 100644
+--- a/src/i18n/translations.js
++++ b/src/i18n/translations.js
+@@ -44,7 +44,7 @@ export const translations = {
+     "yarnLibrary.pbrRepeatInvalid": "请输入大于 0 的毫米数，或留空。",
+     "yarnLibrary.pbrReplace": "更换 PBR",
+     "yarnLibrary.pbrClear": "清除 PBR",
+-    "yarnLibrary.pbrHelp": "一次选择一组 PNG / JPG / WebP；按 BaseColor / Albedo / Diffuse、Normal、Roughness、Height / Displacement、AO 识别，允许缺图。",
++    "yarnLibrary.pbrHelp": "一次选择一组 PNG / JPG / WebP；按 BaseColor / Albedo / Diffuse、Normal、Roughness、Height / Displacement、AO、Metallic / Metalness 识别，允许缺图。",
+     "yarnLibrary.pbrImportFailed": "PBR 导入失败，请选择有效图片。原材质已保留。",
+     "yarnLibrary.pbrUnrecognized": "未识别到 PBR 图片，请检查文件名。原材质已保留。",
+     "yarnLibrary.pbrAmbiguous": "同一贴图类型包含多个文件，请每种类型只选择一张。原材质已保留。",
+@@ -287,7 +287,7 @@ export const translations = {
+     "yarnLibrary.pbrRepeatInvalid": "請輸入大於 0 的毫米數，或留空。",
+     "yarnLibrary.pbrReplace": "更換 PBR",
+     "yarnLibrary.pbrClear": "清除 PBR",
+-    "yarnLibrary.pbrHelp": "一次選擇一組 PNG / JPG / WebP；依 BaseColor / Albedo / Diffuse、Normal、Roughness、Height / Displacement、AO 識別，允許缺圖。",
++    "yarnLibrary.pbrHelp": "一次選擇一組 PNG / JPG / WebP；依 BaseColor / Albedo / Diffuse、Normal、Roughness、Height / Displacement、AO、Metallic / Metalness 識別，允許缺圖。",
+     "yarnLibrary.pbrImportFailed": "PBR 匯入失敗，請選擇有效圖片。原材質已保留。",
+     "yarnLibrary.pbrUnrecognized": "未識別到 PBR 圖片，請檢查檔名。原材質已保留。",
+     "yarnLibrary.pbrAmbiguous": "同一貼圖類型包含多個檔案，請每種類型只選擇一張。原材質已保留。",
+@@ -530,7 +530,7 @@ export const translations = {
+     "yarnLibrary.pbrRepeatInvalid": "Enter a length greater than 0 mm, or leave blank.",
+     "yarnLibrary.pbrReplace": "Replace PBR",
+     "yarnLibrary.pbrClear": "Clear PBR",
+-    "yarnLibrary.pbrHelp": "Select a group of PNG / JPG / WebP files. Names identify BaseColor / Albedo / Diffuse, Normal, Roughness, Height / Displacement and AO; missing maps are allowed.",
++    "yarnLibrary.pbrHelp": "Select a group of PNG / JPG / WebP files. Names identify BaseColor / Albedo / Diffuse, Normal, Roughness, Height / Displacement, AO and Metallic / Metalness; missing maps are allowed.",
+     "yarnLibrary.pbrImportFailed": "PBR import failed. Select valid images. The previous material was kept.",
+     "yarnLibrary.pbrUnrecognized": "No PBR images recognized. Check file names. The previous material was kept.",
+     "yarnLibrary.pbrAmbiguous": "Multiple files match the same map type. Select one per type. The previous material was kept.",
+@@ -773,7 +773,7 @@ export const translations = {
+     "yarnLibrary.pbrRepeatInvalid": "Nhập độ dài lớn hơn 0 mm hoặc để trống.",
+     "yarnLibrary.pbrReplace": "Thay PBR",
+     "yarnLibrary.pbrClear": "Xóa PBR",
+-    "yarnLibrary.pbrHelp": "Chọn một nhóm PNG / JPG / WebP. Tên nhận dạng BaseColor / Albedo / Diffuse, Normal, Roughness, Height / Displacement và AO; cho phép thiếu ảnh.",
++    "yarnLibrary.pbrHelp": "Chọn một nhóm PNG / JPG / WebP. Tên nhận dạng BaseColor / Albedo / Diffuse, Normal, Roughness, Height / Displacement, AO và Metallic / Metalness; cho phép thiếu ảnh.",
+     "yarnLibrary.pbrImportFailed": "Không thể nhập PBR. Chọn ảnh hợp lệ. Vật liệu cũ được giữ nguyên.",
+     "yarnLibrary.pbrUnrecognized": "Không nhận dạng được ảnh PBR. Kiểm tra tên tệp. Vật liệu cũ được giữ nguyên.",
+     "yarnLibrary.pbrAmbiguous": "Nhiều tệp cùng loại bản đồ. Chọn một tệp mỗi loại. Vật liệu cũ được giữ nguyên.",
+diff --git a/src/simulation/drawYarnSimulation.js b/src/simulation/drawYarnSimulation.js
+index c88c4b8..9ba90dd 100644
+--- a/src/simulation/drawYarnSimulation.js
++++ b/src/simulation/drawYarnSimulation.js
+@@ -41,13 +41,16 @@ export function drawYarnSimulation({
+   const frontCtx = frontCanvas.getContext("2d");
+ 
+   function rowYarnPly(link, ply, yarnIndex = 0) {
++    const assigned = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount || 1));
++    const explicitMaterial = assigned?.some(item => item.assetMaterial) || assigned?.length > 1;
++    if (ply !== activeYarnPlies[0] && explicitMaterial) return null;
+     if (ply === activeYarnPlies[0] && feedCount) {
+       const plies = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount));
+       if (plies) ply = plies[yarnIndex];
+       else if (yarnIndex > 0) return null;
+       if (!ply) return null;
+     }
+-    if (!hasYarnSequenceMask) return ply;
++    if (!hasYarnSequenceMask || ply.assetMaterial) return ply;
+ 
+     const paletteIndex = yarnIndexForSequenceRow(
+       normalizedYarnSequence,
+@@ -67,8 +70,11 @@ export function drawYarnSimulation({
+ 
+   function parallelOffset(link, ply, yarnIndex) {
+     if (ply !== activeYarnPlies[0] || !feedCount) return 0;
+-    const count = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount))?.length || 1;
+-    return (yarnIndex - (count - 1) / 2) * ply.diameter;
++    const plies = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount));
++    if (!plies) return 0;
++    const total = plies.reduce((sum, item) => sum + item.diameter, 0);
++    return plies.slice(0, yarnIndex).reduce((sum, item) => sum + item.diameter, 0)
++      + plies[yarnIndex].diameter / 2 - total / 2;
+   }
+ 
+   function collectSequenceMaskPath(maskBatches, ply, pathData) {
+diff --git a/src/simulation/yarnPathGeometry.js b/src/simulation/yarnPathGeometry.js
+index 6adbf14..576e80c 100644
+--- a/src/simulation/yarnPathGeometry.js
++++ b/src/simulation/yarnPathGeometry.js
+@@ -66,6 +66,7 @@ export function buildYarnPathGeometry({
+   canvasHeight,
+   primaryLengthScaleY,
+   primaryYarnDiameter,
++  yarnDiameterForCourse = null,
+   machineGauge,
+   modelLoopHeight = null,
+   includeSummaryMetrics = true,
+@@ -209,9 +210,10 @@ export function buildYarnPathGeometry({
+ 
+   function getBasePointPosition(point, modelNodes = nodes) {
+     const node = modelNodes[point.cnIndex];
++    const diameter = yarnDiameterForCourse?.(point.row) ?? primaryYarnDiameter;
+     return {
+-      x: node.modelX + (primaryYarnDiameter / 2) * point.normal[0],
+-      y: node.modelY + (primaryYarnDiameter / 2) * point.normal[1],
++      x: node.modelX + (diameter / 2) * point.normal[0],
++      y: node.modelY + (diameter / 2) * point.normal[1],
+     };
+   }
+ 
+@@ -525,6 +527,7 @@ export function buildYarnPathGeometry({
+     stitchPattern: periodicStitches,
+     yarnGraph: new YarnModel(new ProcessModel(periodicStitches).cn),
+     canvasWidth, canvasHeight, primaryLengthScaleY, primaryYarnDiameter,
++    yarnDiameterForCourse,
+     machineGauge, modelLoopHeight: loopHeight,
+     includeSummaryMetrics: false,
+     includeDisplayPaths: false,
+diff --git a/src/simulation/yarnSimulation.js b/src/simulation/yarnSimulation.js
+index 72e710d..d60420e 100644
+--- a/src/simulation/yarnSimulation.js
++++ b/src/simulation/yarnSimulation.js
+@@ -65,6 +65,17 @@ function normalizeYarnPlies(yarnPlies, palette) {
+       ];
+ }
+ 
++// The runner uses the same resolved geometry inputs as simulate. Material-only
++// changes must not erase a valid length result while a redraw is debounced.
++export function yarnMaterialGeometryKey({ yarnPlies, yarnPalette, yarnLibrary, singleJerseyCamProgram }) {
++  const primary = normalizeYarnPlies(yarnPlies, yarnPalette)[0];
++  const materials = resolveFeedYarnPlies(singleJerseyCamProgram?.feeds, yarnLibrary, primary);
++  return JSON.stringify({
++    lengthScaleY: Math.min(1.1, Math.max(0.9, Number(yarnPlies?.[0]?.lengthScaleY) || 1)),
++    diameters: materials.size ? [...materials.values()].map(plies => plies.map(ply => ply.diameter)) : [primary.diameter],
++  });
++}
++
+ function shouldRenderTextures({
+   texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
+   texturePreviewInteractionActive = false,
+@@ -139,19 +150,31 @@ export function simulate(
+   }
+ 
+   const [backCanvas, midCanvas, frontCanvas] = getCanvases(canvasIDs);
++  const allFeedYarnPlies = feeds === null ? new Map()
++    : resolveFeedYarnPlies(feeds, yarnLibrary, activeYarnPlies[0]);
++  const strandCount = Math.max(1, ...[...allFeedYarnPlies.values()].map(plies => plies.length));
++  const diameterProfiles = Array.from({ length: strandCount }, (_, yarnIndex) =>
++    Array.from(allFeedYarnPlies.values(), plies => (plies[yarnIndex] ?? plies[0]).diameter));
+   const geometryOptions = {
+     pattern,
+     stitchPattern,
+     canvasWidth,
+     canvasHeight,
+     primaryLengthScaleY,
+-    primaryYarnDiameter: activeYarnPlies[0].diameter,
++    primaryYarnDiameter: diameterProfiles[0][0] ?? activeYarnPlies[0].diameter,
+     machineGauge,
+   };
+-  const geometry = buildYarnPathGeometry({
+-    ...geometryOptions,
+-    yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
++  const geometryByProfile = new Map();
++  const strandGeometries = diameterProfiles.map(profile => {
++    const key = JSON.stringify(profile);
++    if (!geometryByProfile.has(key)) geometryByProfile.set(key, buildYarnPathGeometry({
++      ...geometryOptions,
++      yarnDiameterForCourse: profile.length ? row => profile[courseToFeedIndex(row, profile.length)] : null,
++      yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
++    }));
++    return geometryByProfile.get(key);
+   });
++  const geometry = strandGeometries[0];
+   const solverLengths = (Array.isArray(feeds) ? feeds : []).map((feed) =>
+     (Array.isArray(feed?.yarns) ? feed.yarns : []).map((yarn) => {
+       const length = yarn?.yarnLengthCmPer100Needles;
+@@ -178,7 +201,8 @@ export function simulate(
+         pixels: Array.from(pattern.pixels),
+         gauge: normalizeMachineGauge(machineGauge),
+         primaryLengthScaleY,
+-        primaryYarnDiameter: activeYarnPlies[0].diameter,
++        primaryYarnDiameter: geometryOptions.primaryYarnDiameter,
++        diameterProfiles,
+         solverLengths,
+       })
+     : null;
+@@ -188,7 +212,7 @@ export function simulate(
+     ? structuredClone(solverResultCache.results)
+     : [];
+   const solverGeometryByHeight = new Map();
+-  let evaluateModelLength = null;
++  const evaluators = new Map();
+   (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
+     if (cacheHit) return;
+     const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
+@@ -201,39 +225,51 @@ export function simulate(
+       return;
+     }
+     const feedLinks = geometry.yarnPathLinks.filter((link) => belongsToFeed(link.row));
+-    // Equal targets on the same course topology share computation, not slot state.
++    // Equal targets share computation only with the same diameter profile.
+     const uniqueTargets = new Map();
++    const targetKey = index => JSON.stringify([solverLengths[feedIndex][index], diameterProfiles[index]]);
+     yarnIndices.forEach(index => {
+-      const length = solverLengths[feedIndex][index];
+-      if (!uniqueTargets.has(length)) uniqueTargets.set(length, index);
++      const key = targetKey(index);
++      if (!uniqueTargets.has(key)) uniqueTargets.set(key, index);
+     });
+     const uniqueIndices = [...uniqueTargets.values()];
+     try {
+-      const results = solveFeedYarnLengths({
+-        feeds: [{ yarns: uniqueIndices.map((index) => yarns[index]) }],
+-        gauge: machineGauge,
+-        buildGeometry: (loopHeight) => {
+-          if (!solverGeometryByHeight.has(loopHeight)) {
+-            evaluateModelLength ??= geometry.createModelLengthEvaluator();
+-            solverGeometryByHeight.set(loopHeight, evaluateModelLength(loopHeight));
+-          }
+-          const candidate = solverGeometryByHeight.get(loopHeight);
+-          // A view of this Feed's courses; keep original rows and link indices.
+-          return {
+-            yarnPathLinks: feedLinks,
+-            get modelPathByLink() { return candidate.modelPathByLink; },
+-            measuredModelLengthPer100NeedlesByCourse: new Map(
+-              [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
+-                ([course]) => belongsToFeed(course)
+-              )
+-            ),
+-          };
+-        },
++      const groups = new Map();
++      uniqueIndices.forEach(index => {
++        const key = JSON.stringify(diameterProfiles[index]);
++        if (!groups.has(key)) groups.set(key, []);
++        groups.get(key).push(index);
+       });
+-      const resultsByLength = new Map(results.map(result =>
+-        [solverLengths[feedIndex][uniqueIndices[result.yarnIndex]], result]));
++      const resultsByLength = new Map();
++      for (const indices of groups.values()) {
++        const index = indices[0];
++        const results = solveFeedYarnLengths({
++          feeds: [{ yarns: indices.map(index => yarns[index]) }],
++          gauge: machineGauge,
++          buildGeometry: (loopHeight) => {
++            const strandGeometry = strandGeometries[index];
++            const key = JSON.stringify([diameterProfiles[index], loopHeight]);
++            if (!solverGeometryByHeight.has(key)) {
++              if (!evaluators.has(strandGeometry)) evaluators.set(strandGeometry, strandGeometry.createModelLengthEvaluator());
++              solverGeometryByHeight.set(key, evaluators.get(strandGeometry)(loopHeight));
++            }
++            const candidate = solverGeometryByHeight.get(key);
++            // A view of this Feed's courses; keep original rows and link indices.
++            return {
++              yarnPathLinks: feedLinks,
++              get modelPathByLink() { return candidate.modelPathByLink; },
++              measuredModelLengthPer100NeedlesByCourse: new Map(
++                [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
++                  ([course]) => belongsToFeed(course)
++                )
++              ),
++            };
++          },
++        });
++        results.forEach((result, resultIndex) => resultsByLength.set(targetKey(indices[resultIndex]), result));
++      }
+       yarnIndices.forEach(yarnIndex => {
+-        const result = structuredClone(resultsByLength.get(solverLengths[feedIndex][yarnIndex]));
++        const result = structuredClone(resultsByLength.get(targetKey(yarnIndex)));
+         result.feedIndex = feedIndex;
+         result.yarnIndex = yarnIndex;
+         yarnLengthSolverResults.push(result);
+@@ -271,17 +307,17 @@ export function simulate(
+   ])];
+   if (yarnLibrary !== null) retainYarnAssetTextureImages([...textureMaterials, ...activeYarnPlies]);
+   const renderUvTextures = renderTextures && textureMaterials.some(hasUvTextureMap);
+-  const strandCount = Math.max(1, ...[...feedYarnPlies.values()].map(plies => plies.length));
+   const yarnStrands = Array.from({ length: strandCount }, (_, yarnIndex) => {
++    const strandGeometry = strandGeometries[yarnIndex];
+     const solvedModelPaths = new Map();
+     yarnLengthSolverResults.forEach(result => {
+       if (result.yarnIndex !== yarnIndex || !result.converged) return;
+       result.solvedPathByLink.forEach((path, index) => solvedModelPaths.set(index, path));
+     });
+-    const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
+-    const modelPathByLink = new Map(geometry.modelPathByLink);
++    const resolvedPathByLink = strandGeometry.resolveModelPathsForDisplay(solvedModelPaths);
++    const modelPathByLink = new Map(strandGeometry.modelPathByLink);
+     // A failed Yarn keeps its own base paths; other slots retain their solves.
+-    if (resolvedPathByLink !== geometry.resolvedPathByLink) {
++    if (resolvedPathByLink !== strandGeometry.resolvedPathByLink) {
+       solvedModelPaths.forEach((path, index) => modelPathByLink.set(index, path));
+       yarnLengthSolverResults.forEach(result => {
+         if (result.yarnIndex === yarnIndex && result.converged && result.solvedPathByLink.size) {
+diff --git a/src/simulation/yarnTextureBrush.js b/src/simulation/yarnTextureBrush.js
+index 4a60d16..02da095 100644
+--- a/src/simulation/yarnTextureBrush.js
++++ b/src/simulation/yarnTextureBrush.js
+@@ -5,6 +5,7 @@ import {
+   YARN_PBR_MAP_KEYS,
+ } from "../yarnTexture/yarnScanTexture";
+ import { yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
++import { resolveYarnMaterial } from "../domain/yarnMaterial.js";
+ 
+ const imageCache = new Map();
+ const retainedImageKeys = new Set();
+@@ -113,6 +114,7 @@ export function collectYarnTextureSources(texture) {
+     texture?.pbr?.roughness,
+     texture?.pbr?.height,
+     texture?.pbr?.ambientOcclusion,
++    texture?.pbr?.metallic,
+   ]
+     .map(getYarnPbrMapSource)
+     .concat(texture.processedDataUrl || [])
+@@ -128,12 +130,12 @@ export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedInd
+     const yarns = Array.isArray(feed?.yarns) && feed.yarns.length ? feed.yarns : [null];
+     materials.set(index, yarns.map(yarn => {
+       const yarnId = yarn?.yarnId;
+-      const pbr = yarnId === null || yarnId === undefined || yarnId === ""
+-        ? null : library.get(String(yarnId))?.pbr;
+-      const hasMaps = pbr && YARN_PBR_MAP_KEYS.some(key => pbr[key]?.assetRef);
+-      return hasMaps
+-        ? { ...primaryPly, texture: normalizeYarnTexture({ pbr, textureStrength: 1 }) }
+-        : primaryPly;
++      const asset = yarnId === null || yarnId === undefined || yarnId === ""
++        ? null : library.get(String(yarnId));
++      const material = resolveYarnMaterial({ yarnAsset: asset, legacyContext: primaryPly });
++      const hasAssetFields = Object.values(material.source).includes("ASSET");
++      // Preserve the historical no-field adapter identity for old projects.
++      return hasAssetFields ? { ...primaryPly, ...material, assetMaterial: true } : primaryPly;
+     }));
+   });
+   return materials;
+diff --git a/src/simulation/yarnUvWebglRenderer.js b/src/simulation/yarnUvWebglRenderer.js
+index 6c14eb0..524cd85 100644
+--- a/src/simulation/yarnUvWebglRenderer.js
++++ b/src/simulation/yarnUvWebglRenderer.js
+@@ -26,6 +26,7 @@ uniform sampler2D u_normalMap;
+ uniform sampler2D u_roughnessMap;
+ uniform sampler2D u_heightMap;
+ uniform sampler2D u_ambientOcclusionMap;
++uniform sampler2D u_metallicMap;
+ uniform vec4 u_tint;
+ uniform float u_textureStrength;
+ uniform float u_fuzzStrength;
+@@ -34,6 +35,7 @@ uniform bool u_hasNormalMap;
+ uniform bool u_hasRoughnessMap;
+ uniform bool u_hasHeightMap;
+ uniform bool u_hasAmbientOcclusionMap;
++uniform bool u_hasMetallicMap;
+ 
+ varying vec2 v_uv;
+ 
+@@ -53,11 +55,15 @@ void main() {
+ 
+   float roughness = u_hasRoughnessMap ? texture2D(u_roughnessMap, v_uv).r : 0.55;
+   float ao = u_hasAmbientOcclusionMap ? texture2D(u_ambientOcclusionMap, v_uv).r : 1.0;
++  float metallic = u_hasMetallicMap ? texture2D(u_metallicMap, v_uv).r : 0.0;
+   float edge = smoothstep(0.0, 0.22, v_uv.y) * smoothstep(1.0, 0.78, v_uv.y);
+   float highlight = max(0.0, relief * (1.0 - roughness));
+   float alpha = base.a * mix(edge, 1.0, 1.0 - u_fuzzStrength * 0.35);
+ 
+-  gl_FragColor = vec4((base.rgb + highlight * 0.22) * ao, alpha);
++  // Only color the existing highlight; no new lighting/BRDF model. Black
++  // nonmetallic maps preserve the previous formula exactly.
++  vec3 highlightColor = mix(vec3(1.0), base.rgb, metallic);
++  gl_FragColor = vec4((base.rgb + highlightColor * highlight * 0.22) * ao, alpha);
+ }
+ `;
+ 
+@@ -134,6 +140,7 @@ export function materialMaps(material) {
+     roughness: getYarnPbrMapSource(pbr.roughness),
+     height: getYarnPbrMapSource(pbr.height),
+     ambientOcclusion: getYarnPbrMapSource(pbr.ambientOcclusion),
++    metallic: getYarnPbrMapSource(pbr.metallic),
+   };
+ }
+ 
+@@ -152,6 +159,8 @@ export class YarnUvWebglRenderer {
+       normalMap: gl.getUniformLocation(this.program, "u_normalMap"),
+       roughnessMap: gl.getUniformLocation(this.program, "u_roughnessMap"),
+       heightMap: gl.getUniformLocation(this.program, "u_heightMap"),
++      metallicMap: gl.getUniformLocation(this.program, "u_metallicMap"),
++      hasMetallicMap: gl.getUniformLocation(this.program, "u_hasMetallicMap"),
+       ambientOcclusionMap: gl.getUniformLocation(
+         this.program,
+         "u_ambientOcclusionMap"
+@@ -340,12 +349,15 @@ export class YarnUvWebglRenderer {
+       roughness: this.textureFromDataUrl(maps.roughness),
+       height: this.textureFromDataUrl(maps.height),
+       ambientOcclusion: this.textureFromDataUrl(maps.ambientOcclusion),
++      metallic: this.textureFromDataUrl(maps.metallic),
+     };
+ 
+     this.bindTexture(0, this.locations.baseColorMap, textures.baseColor);
+     this.bindTexture(1, this.locations.normalMap, textures.normal);
+     this.bindTexture(2, this.locations.roughnessMap, textures.roughness);
+     this.bindTexture(3, this.locations.heightMap, textures.height);
++    this.bindTexture(5, this.locations.metallicMap, textures.metallic);
++    gl.uniform1i(this.locations.hasMetallicMap, textures.metallic ? 1 : 0);
+     this.bindTexture(
+       4,
+       this.locations.ambientOcclusionMap,
+diff --git a/src/yarnTexture/yarnScanTexture.js b/src/yarnTexture/yarnScanTexture.js
+index 62fe792..4ce8fac 100644
+--- a/src/yarnTexture/yarnScanTexture.js
++++ b/src/yarnTexture/yarnScanTexture.js
+@@ -17,6 +17,7 @@ export const DEFAULT_YARN_SCAN_TEXTURE = Object.freeze({
+     roughness: null,
+     height: null,
+     ambientOcclusion: null,
++    metallic: null,
+   }),
+ });
+ 
+@@ -92,6 +93,7 @@ export function normalizePbrTextureMaps(pbr = {}) {
+     roughness: normalizePbrTextureMap(source.roughness),
+     height: normalizePbrTextureMap(source.height),
+     ambientOcclusion: normalizePbrTextureMap(source.ambientOcclusion),
++    metallic: normalizePbrTextureMap(source.metallic),
+     ...physicalRepeatMetadata(source),
+   };
+ }
+@@ -181,6 +183,7 @@ export function identifyPbrMap(fileName) {
+     roughness: "roughness",
+     height: "height|displacement",
+     ambientOcclusion: "ao|ambient[ _-]*occlusion",
++    metallic: "metallic|metalness",
+   };
+   return Object.keys(aliases).find(key =>
+     new RegExp(`(^|[^a-z])(${aliases[key]})([^a-z]|$)`).test(name)) ?? null;
+@@ -214,7 +217,7 @@ export function normalizeYarnPbr(pbr) {
+     }
+     return [key, map];
+   }));
+-  if (!Object.values(maps).some(Boolean)) return null;
++  if (!Object.values(maps).some(Boolean) && !physicalRepeatMetadata(pbr).physicalRepeatLengthMm) return null;
+   const previewDataUrl = pbr.previewDataUrl || "";
+   if (previewDataUrl && !isImageDataUrl(previewDataUrl)) throw new TypeError("Invalid PBR preview.");
+   return { ...maps, previewDataUrl, ...physicalRepeatMetadata(pbr) };

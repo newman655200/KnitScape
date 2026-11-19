@@ -1,0 +1,4144 @@
+[
+  {
+    "testCase": "STEP-1",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 3,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-1",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-2",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-3",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "100",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "46.7722",
+        "status": "UNREACHABLE_TARGET",
+        "target": "100.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · PARTIAL\n      部分目标未应用；对应纱线显示基础路径。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        100.0000\n        46.7722\n        UNREACHABLE_TARGET\n        未应用\n        目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "PARTIAL"
+  },
+  {
+    "testCase": "STEP-4",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-5-negative",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "未保存：请输入有限正数，或清除目标。原目标保持不变。",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-5-zero",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "未保存：请输入有限正数，或清除目标。原目标保持不变。",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-5-empty",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "未保存：请输入有限正数，或清除目标。原目标保持不变。",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-5-abc",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "未保存：请输入有限正数，或清除目标。原目标保持不变。",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-6",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-7",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-8",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "25",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "24.9999",
+        "status": "CONVERGED",
+        "target": "25.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        25.0000\n        24.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-9",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 2 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-10",
+    "count": "将修改 2 根纱线",
+    "disabled": false,
+    "feedback": "未修改任何纱线：请输入有限正数。",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": true,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": true,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-11",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 2 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "100",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "100",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "46.7722",
+        "status": "UNREACHABLE_TARGET",
+        "target": "100.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 2,
+        "reason": "目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "46.7722",
+        "status": "UNREACHABLE_TARGET",
+        "target": "100.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · PARTIAL\n      部分目标未应用；对应纱线显示基础路径。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        100.0000\n        46.7722\n        UNREACHABLE_TARGET\n        未应用\n        目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        100.0000\n        46.7722\n        UNREACHABLE_TARGET\n        未应用\n        目标超出当前模型可解范围\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "PARTIAL"
+  },
+  {
+    "testCase": "STEP-12-before",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 2 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-12-replaced",
+    "count": "将修改 2 根纱线",
+    "disabled": false,
+    "feedback": "未修改任何纱线：目标已变化，请重新选择。",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": true,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-12",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "未修改任何纱线：目标已变化，请重新选择。",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-13",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "未修改任何纱线：目标已变化，请重新选择。",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "STEP-13",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "请选择需要修改的纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "ABA-selected",
+    "count": "将修改 2 根纱线",
+    "disabled": false,
+    "feedback": "",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": true,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": true,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "ABA-removed",
+    "count": "将修改 2 根纱线",
+    "disabled": false,
+    "feedback": "未修改任何纱线：目标已变化，请重新选择。",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": true,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "ABA-recreated",
+    "count": "将修改 2 根纱线",
+    "disabled": false,
+    "feedback": "",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": true,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": true,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "ABA-applied",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 2 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "SHIFT-before",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 2 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "SHIFT-after-delete",
+    "count": "将修改 1 根纱线",
+    "disabled": false,
+    "feedback": "",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": true,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "SHIFT-applied",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "27",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "27.0000",
+        "status": "CONVERGED",
+        "target": "27.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        27.0000\n        27.0000\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "MACHINE-base",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Gauge-31",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.4863–48.2809",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Gauge-restored",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Cam-T",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.8394–44.2710",
+        "solved": "23.0001",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.3258–54.1526",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        23.0001\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            12.8394–44.2710\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.3258–54.1526",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Arrangement-4321",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.8394–44.2710",
+        "solved": "23.0001",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.3258–54.1526",
+        "solved": "22.9998",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        23.0001\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            12.8394–44.2710\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9998\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.3258–54.1526",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Machine-restored",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Feed-Yarn-added",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "",
+        "valid": true,
+        "value": "18",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "",
+        "valid": true,
+        "value": "23",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 0,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "17.9994",
+        "status": "CONVERGED",
+        "target": "18.0000",
+        "yarn": 1
+      },
+      {
+        "applied": "已应用",
+        "feed": 1,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 2,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      },
+      {
+        "applied": "已应用",
+        "feed": 3,
+        "reason": "—\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+        "solved": "22.9999",
+        "status": "CONVERGED",
+        "target": "23.0000",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · VALIDATED\n      全部参与求解的目标已收敛并应用。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 1 · Yarn 2\n        18.0000\n        17.9994\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 2 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 3 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722\n          \n        \n      \n        Feed 4 · Yarn 1\n        23.0000\n        22.9999\n        CONVERGED\n        已应用\n        —\n          \n            模型可解范围（非实际工艺范围）:\n            14.0336–46.7722",
+    "validity": "VALIDATED"
+  },
+  {
+    "testCase": "Clear-all",
+    "count": "将修改 0 根纱线",
+    "disabled": true,
+    "feedback": "已更新 1 根纱线",
+    "inputs": [
+      {
+        "feed": 0,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 0
+      },
+      {
+        "feed": 0,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 1
+      },
+      {
+        "feed": 1,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 0
+      },
+      {
+        "feed": 2,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 0
+      },
+      {
+        "feed": 3,
+        "notice": "目标已清除",
+        "valid": true,
+        "value": "",
+        "yarn": 0
+      }
+    ],
+    "rows": [
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 0,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 1
+      },
+      {
+        "applied": "未应用",
+        "feed": 1,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 2,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      },
+      {
+        "applied": "未应用",
+        "feed": 3,
+        "reason": "未设置目标",
+        "solved": "—",
+        "status": "NOT_SET",
+        "target": "—",
+        "yarn": 0
+      }
+    ],
+    "selections": [
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 0,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 0,
+        "yarn": 1,
+        "yarnId": "yarn-1791356248419"
+      },
+      {
+        "checked": false,
+        "feed": 1,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 2,
+        "yarn": 0,
+        "yarnId": "0"
+      },
+      {
+        "checked": false,
+        "feed": 3,
+        "yarn": 0,
+        "yarnId": "0"
+      }
+    ],
+    "summary": "目标纱长求解 · DESIGN_PREVIEW\n      基础设计预览，尚无完整目标验证结果。\n      仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\n    \n    \n      cm / 100针\n      \n        Feed × Yarn目标\n        模型求解值求解状态\n        是否应用原因 / 模型范围\n      \n      \n        Feed 1 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 1 · Yarn 2\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 2 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 3 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标\n          \n        \n      \n        Feed 4 · Yarn 1\n        —\n        —\n        NOT_SET\n        未应用\n        未设置目标",
+    "validity": "DESIGN_PREVIEW"
+  }
+]

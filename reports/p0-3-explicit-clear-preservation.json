@@ -1,0 +1,450 @@
+[
+  {
+    "path": "package.json",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/validate-feed-yarn-pbr-renderer.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/validate-single-jersey-cam-editor.mjs",
+    "unchanged": false
+  },
+  {
+    "path": "scripts/validate-single-jersey-execution-integration.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/validate-yarn-length-solver.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/validate-yarn-simulation-characterization.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "src/actions/singleJerseyCamProgram.js",
+    "unchanged": false
+  },
+  {
+    "path": "src/codeGuide/generatedLines.json",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/runSimulation.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/events/simulationPointerInteraction.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/i18n/translations.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/simulation/drawYarnSimulation.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/simulation/yarnLengthSolver.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/simulation/yarnPathUvStrip.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/simulation/yarnSimulation.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/simulation/yarnTextureBrush.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/state.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/views/singleJerseyCamProgramEditor.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/views/yarnLengthReadout.js",
+    "unchanged": true
+  },
+  {
+    "path": "styles.css",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-1-yarn-length-trust.md",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/browser-results.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/browser-run-summary.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-A.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-A.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-B.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-B.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-C.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-C.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-D.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-D.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-E.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-E.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-F.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-F.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-G.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/case-G.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-browser/same-feed-partial-detail.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-build.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-diff-check.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-validate.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-2-yarn-length-feedback.md",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/A-negative.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/A-negative.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/B-nonnumeric.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/B-nonnumeric.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/C-Infinity.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/C-Infinity.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/C-NaN.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/C-NaN.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/D-all-clear.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/D-all-clear.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/D-one-clear.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/D-one-clear.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/E-after-27.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/E-after-27.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/E-before-23.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/E-before-23.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/F-pair-23-18.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/F-pair-23-18.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/F-pair-reject.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/F-pair-reject.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/before-negative.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/before-negative.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/browser-errors.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/incomplete-number.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/incomplete-number.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/initial-23.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/initial-23.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/positive-decimal.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/positive-decimal.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-A.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-A.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-B.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-B.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-C.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-C.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-D.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-D.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-E.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-E.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-F.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-F.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-G.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-G.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/regression-summary.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-browser/summary.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-build.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-diff-check.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-input-audit-before.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-input-audit.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-preservation-check.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-validate.log",
+    "unchanged": true
+  },
+  {
+    "path": "reports/p0-3-yarn-length-input-safety.md",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/01-length-23.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/02-unreachable-100.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/03-library-fields.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/04-multi-yarn.jpg",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/algorithm-evidence.json",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/reproduce.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/test-project.knitscape",
+    "unchanged": true
+  },
+  {
+    "path": "reports/yarn-user-audit-2026-10-06/ui-evidence.txt",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/browser-yarn-length-feedback.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/browser-yarn-length-input.mjs",
+    "unchanged": false
+  },
+  {
+    "path": "scripts/validate-multi-yarn-renderer.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/validate-yarn-length-failure-integration.mjs",
+    "unchanged": false
+  },
+  {
+    "path": "scripts/validate-yarn-length-input-integration.mjs",
+    "unchanged": false
+  },
+  {
+    "path": "scripts/validate-yarn-length-result-integration.mjs",
+    "unchanged": false
+  },
+  {
+    "path": "scripts/validate.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "src/domain/yarnLengthInput.js",
+    "unchanged": false
+  },
+  {
+    "path": "src/simulation/previewValidity.js",
+    "unchanged": true
+  },
+  {
+    "path": "src/views/yarnLengthSolverFeedback.js",
+    "unchanged": true
+  }
+]

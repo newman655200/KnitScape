@@ -1,0 +1,1628 @@
+{
+  "comparisons": {
+    "firstYarnAddedSecond": {
+      "modelIdentical": true,
+      "displayPathIdentical": true,
+      "model": {
+        "points": 112906,
+        "changed": 0,
+        "maxDelta": 0,
+        "maxDx": 0,
+        "maxDy": 0
+      },
+      "renderedVertices": {
+        "points": 259140,
+        "changed": 259140,
+        "maxDelta": 3.0375757601399043,
+        "maxDx": 3.03753662109375,
+        "maxDy": 3.03753662109375
+      }
+    },
+    "firstYarnSecond8vs23": {
+      "model": {
+        "points": 112906,
+        "changed": 0,
+        "maxDelta": 0,
+        "maxDx": 0,
+        "maxDy": 0
+      },
+      "renderedVertices": {
+        "points": 259140,
+        "changed": 0,
+        "maxDelta": 0,
+        "maxDx": 0,
+        "maxDy": 0
+      }
+    },
+    "second8vsUnset": {
+      "modelIdentical": true
+    },
+    "tension": {
+      "modelIdentical": true,
+      "renderedVertices": [
+        {
+          "points": 259140,
+          "changed": 0,
+          "maxDelta": 0,
+          "maxDx": 0,
+          "maxDy": 0
+        },
+        {
+          "points": 286510,
+          "changed": 0,
+          "maxDelta": 0,
+          "maxDx": 0,
+          "maxDy": 0
+        }
+      ]
+    },
+    "diameter": {
+      "model": {
+        "points": 112906,
+        "changed": 112906,
+        "maxDelta": 6.107401164870283,
+        "maxDx": 0.06888789525462613,
+        "maxDy": 6.107373503689239
+      }
+    },
+    "pbr": {
+      "modelIdentical": true,
+      "displayIdentical": true
+    },
+    "zoom": {
+      "modelIdentical": true
+    }
+  },
+  "topology": {
+    "operationsFirstRepeat": [
+      [
+        "K",
+        "K",
+        "K",
+        "T"
+      ],
+      [
+        "K",
+        "K",
+        "K",
+        "T"
+      ],
+      [
+        "K",
+        "K",
+        "T",
+        "K"
+      ],
+      [
+        "K",
+        "K",
+        "T",
+        "K"
+      ],
+      [
+        "K",
+        "T",
+        "K",
+        "K"
+      ],
+      [
+        "K",
+        "T",
+        "K",
+        "K"
+      ],
+      [
+        "T",
+        "K",
+        "K",
+        "K"
+      ],
+      [
+        "T",
+        "K",
+        "K",
+        "K"
+      ]
+    ],
+    "all1280PixelsMatched": true,
+    "layers": {
+      "front": 1896,
+      "back": 2479,
+      "mid": 144
+    }
+  },
+  "cases": {
+    "T1-23": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.53131103515625,
+        0.42705078125000007,
+        0.53131103515625,
+        0.40824584960937504,
+        0.537738037109375,
+        0.42187347412109377,
+        0.537738037109375,
+        0.470611572265625
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.59112548828125,
+          "minY": 192.5760955810547,
+          "maxX": 854.7186889648438,
+          "maxY": 699.137939453125,
+          "width": 810.1275634765625,
+          "height": 506.5618438720703
+        }
+      ]
+    },
+    "T2-8": {
+      "previewValidity": "INVALID",
+      "heights": [
+        0.05,
+        0.05,
+        0.05,
+        0.05,
+        0.05,
+        0.05,
+        0.05,
+        0.05
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.5890007019043,
+          "minY": 147.38270568847656,
+          "maxX": 854.8993530273438,
+          "maxY": 770.3370361328125,
+          "width": 810.3103523254395,
+          "height": 622.9543304443359
+        }
+      ]
+    },
+    "T3-23+8": {
+      "previewValidity": "PARTIAL",
+      "heights": [
+        0.53131103515625,
+        0.05,
+        0.42705078125000007,
+        0.05,
+        0.53131103515625,
+        0.05,
+        0.40824584960937504,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.42187347412109377,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.470611572265625,
+        0.05
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 41.558956146240234,
+          "minY": 189.5392303466797,
+          "maxX": 857.7561645507812,
+          "maxY": 697.5009155273438,
+          "width": 816.197208404541,
+          "height": 507.96168518066406
+        },
+        {
+          "minX": 41.5568733215332,
+          "minY": 144.34573364257812,
+          "maxX": 857.4397583007812,
+          "maxY": 773.3742065429688,
+          "width": 815.882884979248,
+          "height": 629.0284729003906
+        }
+      ]
+    },
+    "T4-23+23": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.53131103515625,
+        0.53131103515625,
+        0.42705078125000007,
+        0.42705078125000007,
+        0.53131103515625,
+        0.53131103515625,
+        0.40824584960937504,
+        0.40824584960937504,
+        0.537738037109375,
+        0.537738037109375,
+        0.42187347412109377,
+        0.42187347412109377,
+        0.537738037109375,
+        0.537738037109375,
+        0.470611572265625,
+        0.470611572265625
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 41.558956146240234,
+          "minY": 189.5392303466797,
+          "maxX": 857.7561645507812,
+          "maxY": 697.5009155273438,
+          "width": 816.197208404541,
+          "height": 507.96168518066406
+        },
+        {
+          "minX": 41.95957946777344,
+          "minY": 192.8364715576172,
+          "maxX": 856.9779052734375,
+          "maxY": 702.1751098632812,
+          "width": 815.0183258056641,
+          "height": 509.33863830566406
+        }
+      ]
+    },
+    "T5-diameter036": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.3823593139648438,
+        0.30345001220703127,
+        0.3823593139648438,
+        0.2898818969726562,
+        0.39455871582031254,
+        0.30452117919921873,
+        0.39455871582031254,
+        0.3395721435546875
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 191.61294659063185,
+          "maxModelLengthPer100Needles": 672.7970253042004,
+          "minLengthCmPer100Needles": 15.209277635631404,
+          "maxLengthCmPer100Needles": 53.4032638835209
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 198.6181257166812,
+          "maxModelLengthPer100Needles": 774.4194300697674,
+          "minLengthCmPer100Needles": 15.76531372876157,
+          "maxLengthCmPer100Needles": 61.46954226178779
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 191.61294659063185,
+          "maxModelLengthPer100Needles": 672.7970253042004,
+          "minLengthCmPer100Needles": 15.209277635631404,
+          "maxLengthCmPer100Needles": 53.4032638835209
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 199.8188814898834,
+          "maxModelLengthPer100Needles": 800.8976900935088,
+          "minLengthCmPer100Needles": 15.860623718259495,
+          "maxLengthCmPer100Needles": 63.571254151172255
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 189.23941462852238,
+          "maxModelLengthPer100Needles": 679.0969990578487,
+          "minLengthCmPer100Needles": 15.020878536138962,
+          "maxLengthCmPer100Needles": 53.90332430021674
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 197.19766331371227,
+          "maxModelLengthPer100Needles": 794.2846578103838,
+          "minLengthCmPer100Needles": 15.652564525525909,
+          "maxLengthCmPer100Needles": 63.04634471369921
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 189.2394146285224,
+          "maxModelLengthPer100Needles": 679.0969990578488,
+          "minLengthCmPer100Needles": 15.020878536138966,
+          "maxLengthCmPer100Needles": 53.90332430021675
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 194.47802416115255,
+          "maxModelLengthPer100Needles": 733.9754743403657,
+          "minLengthCmPer100Needles": 15.436693167791484,
+          "maxLengthCmPer100Needles": 58.25930327576653
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.42737579345703,
+          "minY": 167.8064422607422,
+          "maxX": 859.7882080078125,
+          "maxY": 544.8532104492188,
+          "width": 815.3608322143555,
+          "height": 377.04676818847656
+        }
+      ]
+    },
+    "T5-secondDiameter014": {
+      "previewValidity": "PARTIAL",
+      "heights": [
+        0.53131103515625,
+        0.05,
+        0.42705078125000007,
+        0.05,
+        0.53131103515625,
+        0.05,
+        0.40824584960937504,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.42187347412109377,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.470611572265625,
+        0.05
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 140.86671041109932,
+          "maxModelLengthPer100Needles": 617.1510900330693,
+          "minLengthCmPer100Needles": 11.181295138881008,
+          "maxLengthCmPer100Needles": 48.98636777137487
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 146.40289700989493,
+          "maxModelLengthPer100Needles": 715.2249908471331,
+          "minLengthCmPer100Needles": 11.62072995016041,
+          "maxLengthCmPer100Needles": 56.77098364849119
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 140.86671041109935,
+          "maxModelLengthPer100Needles": 617.1510900330692,
+          "minLengthCmPer100Needles": 11.18129513888101,
+          "maxLengthCmPer100Needles": 48.986367771374866
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 147.29667043516656,
+          "maxModelLengthPer100Needles": 741.9826088259591,
+          "minLengthCmPer100Needles": 11.691673215791345,
+          "maxLengthCmPer100Needles": 58.894869575560506
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 139.51445124094067,
+          "maxModelLengthPer100Needles": 625.6852023115504,
+          "minLengthCmPer100Needles": 11.073959567249664,
+          "maxLengthCmPer100Needles": 49.663762933479305
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 145.83641571827883,
+          "maxModelLengthPer100Needles": 737.3754393241501,
+          "minLengthCmPer100Needles": 11.575765497638383,
+          "maxLengthCmPer100Needles": 58.52917549635441
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 139.5144512409407,
+          "maxModelLengthPer100Needles": 625.6852023115504,
+          "minLengthCmPer100Needles": 11.073959567249668,
+          "maxLengthCmPer100Needles": 49.663762933479305
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 143.70875553072878,
+          "maxModelLengthPer100Needles": 674.4976515046125,
+          "minLengthCmPer100Needles": 11.406882470251597,
+          "maxLengthCmPer100Needles": 53.538251088178605
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 42.822357177734375,
+          "minY": 190.80458068847656,
+          "maxX": 856.4905395507812,
+          "maxY": 697.3662719726562,
+          "width": 813.6681823730469,
+          "height": 506.5616912841797
+        },
+        {
+          "minX": 43.839454650878906,
+          "minY": 147.10447692871094,
+          "maxX": 855.2566528320312,
+          "maxY": 770.9653930664062,
+          "width": 811.4171981811523,
+          "height": 623.8609161376953
+        }
+      ]
+    },
+    "T7-tension5-4": {
+      "previewValidity": "PARTIAL",
+      "heights": [
+        0.53131103515625,
+        0.05,
+        0.42705078125000007,
+        0.05,
+        0.53131103515625,
+        0.05,
+        0.40824584960937504,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.42187347412109377,
+        0.05,
+        0.537738037109375,
+        0.05,
+        0.470611572265625,
+        0.05
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 41.558956146240234,
+          "minY": 189.5392303466797,
+          "maxX": 857.7561645507812,
+          "maxY": 697.5009155273438,
+          "width": 816.197208404541,
+          "height": 507.96168518066406
+        },
+        {
+          "minX": 41.5568733215332,
+          "minY": 144.34573364257812,
+          "maxX": 857.4397583007812,
+          "maxY": 773.3742065429688,
+          "width": 815.882884979248,
+          "height": 629.0284729003906
+        }
+      ]
+    },
+    "T8-base-unset": {
+      "previewValidity": "DESIGN_PREVIEW",
+      "heights": [],
+      "range": [],
+      "bounds": [
+        {
+          "minX": 44.5890007019043,
+          "minY": 147.38270568847656,
+          "maxX": 854.8993530273438,
+          "maxY": 770.3370361328125,
+          "width": 810.3103523254395,
+          "height": 622.9543304443359
+        }
+      ]
+    },
+    "T9-width32": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.45442504882812507
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.69291285171886,
+          "maxModelLengthPer100Needles": 645.8310194372225,
+          "minLengthCmPer100Needles": 12.913749957605182,
+          "maxLengthCmPer100Needles": 51.26283716782954
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.3284074248191,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345015,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.3284074248191,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345015,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.32840742481906,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345012,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 167.8139920575216,
+          "maxModelLengthPer100Needles": 713.7063832101273,
+          "minLengthCmPer100Needles": 13.320235619565775,
+          "maxLengthCmPer100Needles": 56.65044416730385
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.615055084228516,
+          "minY": 210.76979064941406,
+          "maxX": 854.725830078125,
+          "maxY": 687.6176147460938,
+          "width": 810.1107749938965,
+          "height": 476.8478240966797
+        }
+      ]
+    },
+    "T10-width28": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.45442504882812507
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.69291285171886,
+          "maxModelLengthPer100Needles": 645.8310194372225,
+          "minLengthCmPer100Needles": 12.913749957605182,
+          "maxLengthCmPer100Needles": 51.26283716782954
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.3284074248191,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345015,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.3284074248191,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345015,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.32840742481906,
+          "maxModelLengthPer100Needles": 752.696796045235,
+          "minLengthCmPer100Needles": 13.440442339345012,
+          "maxLengthCmPer100Needles": 59.745308186090526
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 167.8139920575216,
+          "maxModelLengthPer100Needles": 713.7063832101273,
+          "minLengthCmPer100Needles": 13.320235619565775,
+          "maxLengthCmPer100Needles": 56.65044416730385
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.56372833251953,
+          "minY": 178.87242126464844,
+          "maxX": 854.6893310546875,
+          "maxY": 719.2999877929688,
+          "width": 810.125602722168,
+          "height": 540.4275665283203
+        }
+      ]
+    },
+    "T11-height48": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.42425384521484377,
+        0.5345245361328126,
+        0.44912872314453123
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.69291285171883,
+          "maxModelLengthPer100Needles": 645.8310194372225,
+          "minLengthCmPer100Needles": 12.913749957605182,
+          "maxLengthCmPer100Needles": 51.26283716782954
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.32840742481906,
+          "maxModelLengthPer100Needles": 752.6967960452351,
+          "minLengthCmPer100Needles": 13.440442339345012,
+          "maxLengthCmPer100Needles": 59.74530818609054
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.69291285171883,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.913749957605182,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.32840742481906,
+          "maxModelLengthPer100Needles": 752.6967960452351,
+          "minLengthCmPer100Needles": 13.440442339345012,
+          "maxLengthCmPer100Needles": 59.74530818609054
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.32840742481906,
+          "maxModelLengthPer100Needles": 752.6967960452351,
+          "minLengthCmPer100Needles": 13.440442339345012,
+          "maxLengthCmPer100Needles": 59.74530818609054
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 162.6929128517188,
+          "maxModelLengthPer100Needles": 645.8310194372224,
+          "minLengthCmPer100Needles": 12.91374995760518,
+          "maxLengthCmPer100Needles": 51.262837167829524
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.06639461873783,
+          "maxModelLengthPer100Needles": 720.2047853493118,
+          "minLengthCmPer100Needles": 13.340270072862316,
+          "maxLengthCmPer100Needles": 57.16625483710162
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.615055084228516,
+          "minY": 164.01353454589844,
+          "maxX": 854.725830078125,
+          "maxY": 732.3152465820312,
+          "width": 810.1107749938965,
+          "height": 568.3017120361328
+        }
+      ]
+    },
+    "T12-gauge28": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.38343048095703125,
+        0.3033905029296875,
+        0.38343048095703125,
+        0.289703369140625,
+        0.3918212890625,
+        0.30154571533203123,
+        0.3918212890625,
+        0.33754882812500003
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 14.843896291902842,
+          "maxLengthCmPer100Needles": 58.24395343715766
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 15.405701499092004,
+          "maxLengthCmPer100Needles": 67.29192252330276
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 14.843896291902842,
+          "maxLengthCmPer100Needles": 58.24395343715766
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 15.499088051183247,
+          "maxLengthCmPer100Needles": 69.70889057118487
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 14.673244650296093,
+          "maxLengthCmPer100Needles": 58.92823122437883
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 15.313509185791384,
+          "maxLengthCmPer100Needles": 69.20980371723981
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 14.673244650296095,
+          "maxLengthCmPer100Needles": 58.92823122437883
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 15.095502524843928,
+          "maxLengthCmPer100Needles": 63.60959726905635
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.603546142578125,
+          "minY": 176.3463897705078,
+          "maxX": 854.197021484375,
+          "maxY": 545.8766479492188,
+          "width": 809.5934753417969,
+          "height": 369.53025817871094
+        }
+      ]
+    },
+    "T13-scale15": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.53131103515625,
+        0.42705078125000007,
+        0.53131103515625,
+        0.40824584960937504,
+        0.537738037109375,
+        0.42187347412109377,
+        0.537738037109375,
+        0.470611572265625
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 66.88668823242188,
+          "minY": 288.8641357421875,
+          "maxX": 1282.0780029296875,
+          "maxY": 1048.7069091796875,
+          "width": 1215.1913146972656,
+          "height": 759.8427734375
+        }
+      ]
+    },
+    "T14-pbr": {
+      "previewValidity": "VALIDATED",
+      "heights": [
+        0.53131103515625,
+        0.42705078125000007,
+        0.53131103515625,
+        0.40824584960937504,
+        0.537738037109375,
+        0.42187347412109377,
+        0.537738037109375,
+        0.470611572265625
+      ],
+      "range": [
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        }
+      ],
+      "bounds": [
+        {
+          "minX": 44.59112548828125,
+          "minY": 192.5760955810547,
+          "maxX": 854.7186889648438,
+          "maxY": 699.137939453125,
+          "width": 810.1275634765625,
+          "height": 506.5618438720703
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,701 @@
+{
+  "passed": true,
+  "fixtureScope": "Real appRenderer and runner registration order; renderView records current state. Canvas/timers are fixtures. No browser UI claim.",
+  "renderer": [
+    {
+      "testCase": "single 23 to 27",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 27,
+            "solvedLengthCmPer100Needles": 26.999994326440053,
+            "errorCmPer100Needles": 0.0000056735599464374785,
+            "toleranceCmPer100Needles": 0.00079375,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999856051617197,
+            "errorCmPer100Needles": 0.00014394838280168187,
+            "toleranceCmPer100Needles": 0.00079375,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999856042155812,
+            "errorCmPer100Needles": 0.0001439578441862821,
+            "toleranceCmPer100Needles": 0.00079375,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99985636579647,
+            "errorCmPer100Needles": 0.00014363420352733413,
+            "toleranceCmPer100Needles": 0.00079375,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    },
+    {
+      "testCase": "Gauge 32 to 31",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 27,
+            "solvedLengthCmPer100Needles": 27.000770923072103,
+            "errorCmPer100Needles": 0.0007709230721086662,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999754436873406,
+            "errorCmPer100Needles": 0.0002455631265938645,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99975411409398,
+            "errorCmPer100Needles": 0.0002458859060162731,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999755211790223,
+            "errorCmPer100Needles": 0.0002447882097784816,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    },
+    {
+      "testCase": "Cam K to T",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 27,
+            "solvedLengthCmPer100Needles": 27.00077811425148,
+            "errorCmPer100Needles": 0.0007781142514851757,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99975443687339,
+            "errorCmPer100Needles": 0.00024556312661249444,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999754114093967,
+            "errorCmPer100Needles": 0.00024588590603490313,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99992024399263,
+            "errorCmPer100Needles": 0.00007975600736985612,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    },
+    {
+      "testCase": "Arrangement 1234 to 4321",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 27,
+            "solvedLengthCmPer100Needles": 27.00077811425148,
+            "errorCmPer100Needles": 0.0007781142514851757,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99975443687339,
+            "errorCmPer100Needles": 0.00024556312661249444,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999754114093967,
+            "errorCmPer100Needles": 0.00024588590603490313,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999920243992637,
+            "errorCmPer100Needles": 0.00007975600736519863,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    },
+    {
+      "testCase": "Feed Yarn identity",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            27
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 27,
+            "solvedLengthCmPer100Needles": 27.00077811425148,
+            "errorCmPer100Needles": 0.0007781142514851757,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99975443687339,
+            "errorCmPer100Needles": 0.00024556312661249444,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999754114093967,
+            "errorCmPer100Needles": 0.00024588590603490313,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999920243992637,
+            "errorCmPer100Needles": 0.00007975600736519863,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    },
+    {
+      "testCase": "batch exact targets",
+      "beforeDebounce": {
+        "previewValidity": "DESIGN_PREVIEW",
+        "lengths": [
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": []
+      },
+      "afterDebounce": {
+        "previewValidity": "VALIDATED",
+        "lengths": [
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ],
+          [
+            23
+          ]
+        ],
+        "results": [
+          {
+            "feedIndex": 0,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 23.000474993235844,
+            "errorCmPer100Needles": 0.0004749932358430992,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 1,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.99975443687339,
+            "errorCmPer100Needles": 0.00024556312661249444,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 2,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999754114093967,
+            "errorCmPer100Needles": 0.00024588590603490313,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          },
+          {
+            "feedIndex": 3,
+            "yarnIndex": 0,
+            "targetLengthCmPer100Needles": 23,
+            "solvedLengthCmPer100Needles": 22.999920243992637,
+            "errorCmPer100Needles": 0.00007975600736519863,
+            "toleranceCmPer100Needles": 0.0008193548387096774,
+            "status": "CONVERGED",
+            "converged": true,
+            "appliedToSimulation": true
+          }
+        ]
+      }
+    }
+  ],
+  "cache": [
+    {
+      "testCase": "zoom",
+      "solverCalls": 0,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "color",
+      "solverCalls": 0,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "Gauge",
+      "solverCalls": 4,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "primary diameter",
+      "solverCalls": 4,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "primary lengthScaleY",
+      "solverCalls": 4,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "target",
+      "solverCalls": 4,
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "Cam operation bitmap",
+      "solverCalls": 4,
+      "previewValidity": "VALIDATED"
+    }
+  ],
+  "singleMultiYarn": {
+    "edit": "A23 to 25; B18 unchanged",
+    "projectFeed0": {
+      "yarns": [
+        {
+          "yarnId": "A",
+          "yarnLengthCmPer100Needles": 25,
+          "tensionCN": 12,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "B",
+          "yarnLengthCmPer100Needles": 18,
+          "tensionCN": 19,
+          "placement": "parallel"
+        }
+      ]
+    },
+    "actualSolverInputs": [
+      {
+        "gauge": 32,
+        "feeds": [
+          {
+            "yarns": [
+              {
+                "yarnId": "A",
+                "yarnLengthCmPer100Needles": 25,
+                "tensionCN": 12,
+                "placement": "parallel"
+              },
+              {
+                "yarnId": "B",
+                "yarnLengthCmPer100Needles": 18,
+                "tensionCN": 19,
+                "placement": "parallel"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gauge": 32,
+        "feeds": [
+          {
+            "yarns": [
+              {
+                "yarnId": "C",
+                "yarnLengthCmPer100Needles": 23,
+                "tensionCN": 13,
+                "placement": "parallel"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gauge": 32,
+        "feeds": [
+          {
+            "yarns": [
+              {
+                "yarnId": "D",
+                "yarnLengthCmPer100Needles": 23,
+                "tensionCN": 14,
+                "placement": "parallel"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gauge": 32,
+        "feeds": [
+          {
+            "yarns": [
+              {
+                "yarnId": "E",
+                "yarnLengthCmPer100Needles": 23,
+                "tensionCN": 15,
+                "placement": "parallel"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "resultsFeed0": [
+      {
+        "feedIndex": 0,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 25,
+        "solvedLengthCmPer100Needles": 24.99927326548731,
+        "errorCmPer100Needles": 0.0007267345126905055,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "converged": true,
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 0,
+        "yarnIndex": 1,
+        "targetLengthCmPer100Needles": 18,
+        "solvedLengthCmPer100Needles": 18.000454251070515,
+        "errorCmPer100Needles": 0.000454251070513223,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "converged": true,
+        "appliedToSimulation": true
+      }
+    ],
+    "previewValidity": "VALIDATED"
+  },
+  "earlySynchronousObserver": [
+    {
+      "testCase": "single 23 to 27",
+      "previewValidity": "VALIDATED",
+      "resultCount": 4
+    },
+    {
+      "testCase": "Gauge 32 to 31",
+      "previewValidity": "VALIDATED",
+      "resultCount": 4
+    },
+    {
+      "testCase": "Cam K to T",
+      "previewValidity": "VALIDATED",
+      "resultCount": 4
+    },
+    {
+      "testCase": "Arrangement 1234 to 4321",
+      "previewValidity": "VALIDATED",
+      "resultCount": 4
+    },
+    {
+      "testCase": "Feed Yarn identity",
+      "previewValidity": "VALIDATED",
+      "resultCount": 4
+    },
+    {
+      "testCase": "batch exact targets",
+      "previewValidity": "DESIGN_PREVIEW",
+      "resultCount": 0
+    }
+  ],
+  "earlyObserverNote": "A synchronous consumer before runner can see the original dispatch snapshot with old VALIDATED for non-batch edits. Real renderer queues RAF and reads latest GLOBAL_STATE, so recorded user-visible frames cannot show this combination. Batch clears results in the same fact dispatch.",
+  "sourceHashes": {
+    "src/components/renderApp.js": "cda24282cab23714a798b11bc7f87e231a5cf09498a19f9d1e101c20e53973ab",
+    "src/index.js": "7b1b6a26cf50d496f9f7c39eb81271e33e5e8c25ea8227828d90bbab9da6e71c",
+    "src/state.js": "c1272f51c8428f6dbbb871e6f099582883ecfb5a879f061e995cb120348a3dd3",
+    "src/components/runSimulation.js": "fa17737489cf50e9645d7d4f0985eae9436de7081b60f8b0a0938cf3aa3f61fb",
+    "src/simulation/yarnSimulation.js": "15ee09c5891a1327cc0e0031d59380631741828ad6d3e0635eae71651703f3c0",
+    "src/simulation/yarnLengthSolver.js": "d64a561eb05bed9bf5881070834b9e703242285f65c92eead77577da711b41c4",
+    "src/actions/singleJerseyCamProgram.js": "d9ddea8c1f508768785c7a32f65452f01f5b57e23f643301529b395945c471c6"
+  }
+}

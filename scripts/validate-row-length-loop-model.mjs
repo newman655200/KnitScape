@@ -258,6 +258,7 @@ assert.equal(
 
 const simulationSource = [
   "src/simulation/yarnSimulation.js",
+  "src/simulation/computeYarnSimulation.js",
   "src/simulation/yarnPathGeometry.js",
   "src/simulation/drawYarnSimulation.js",
 ]
@@ -287,10 +288,14 @@ assert.doesNotMatch(
 assert.match(simulationSource, /yarnPlies\?\.\[0\]\?\.lengthScaleY/);
 assert.doesNotMatch(simulationSource, /yarnLinkForce|forceSimulation|function relax/);
 const runSimulationSource = fs.readFileSync("src/components/runSimulation.js", "utf8");
+const coordinatorSource = fs.readFileSync("src/components/simulationCoordinator.js", "utf8");
 assert.doesNotMatch(runSimulationSource, /simulation\.relax/);
+assert.match(runSimulationSource, /createSimulationCoordinator\(\)/);
+assert.match(runSimulationSource, /ownedCoordinator\.compute\(GLOBAL_STATE,/);
+assert.match(coordinatorSource, /computeYarnSimulation\(\{ \.\.\.common,/);
 assert.match(
   runSimulationSource,
-  /const debouncedRun = debounce\(run, 150\)/,
+  /window\.clearTimeout\(calculationTimer\);\s*calculationTimer = window\.setTimeout\(run, 150\)/,
   "yarn-length preview must wait for a short drag pause before recomputing."
 );
 assert.equal(fs.existsSync("src/simulation/YarnForce.js"), false);

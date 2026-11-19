@@ -1,0 +1,220 @@
+
+> knitscape@1.0.0 validate:project-load-lifecycle
+> node scripts/validate-project-load-lifecycle.mjs
+
+PASS: library: old request -> New -> old resolve
+PASS: library: old request -> Load JSON -> old resolve
+PASS: library: old request -> Load file -> old resolve
+PASS: file: old request -> New -> old resolve
+PASS: file: old request -> Load JSON -> old resolve
+PASS: file: old request -> Load file -> old resolve
+PASS: library: same lifecycle applies normally and retains legacy library policy
+PASS: library -> pending library: latest request wins before either completes
+PASS: library -> pending file: latest request wins before either completes
+PASS: file -> pending library: latest request wins before either completes
+PASS: file -> pending file: latest request wins before either completes
+PASS: library: stale rejection is silent; current rejection remains observable
+PASS: library: stale malformed result is ignored before validation
+PASS: library: current commit errors are not mistaken for stale source failures
+PASS: formal export and package retain the existing schema without lifecycle state
+FAIL: integrity: New resets selection before paint and resize
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 0
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:247:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:242:11
+FAIL: integrity: Full Load resets selection before paint and resize
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 0
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:247:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:242:11
+FAIL: integrity: Pattern-only Load resets selection before paint and resize
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 0
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:247:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:242:11
+PASS: integrity: pointer valid brush and line preserve slot 2
+FAIL: integrity: pointer rejects selection 2
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rejects selection -1
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rejects selection 0.5
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rejects selection NaN
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rejects selection Infinity
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rejects selection 0
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: pointer rechecks selection during drag
+AssertionError [ERR_ASSERTION]: Expected "actual" to be reference-equal to "expected":
++ actual - expected
+
+  Bimp {
+    height: 3,
+    pixels: Uint8ClampedArray(3) [
++     2,
++     2,
++     2
+-     0,
+-     0,
+-     0
+    ],
+    width: 1
+  }
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:282:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:275:11
+PASS: integrity: touch valid brush and line preserve slot 2
+FAIL: integrity: touch rejects selection 2
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rejects selection -1
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rejects selection 0.5
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rejects selection NaN
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rejects selection Infinity
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rejects selection 0
+AssertionError [ERR_ASSERTION]: invalid selection must perform no sequence write
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:271:16
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:265:13
+FAIL: integrity: touch rechecks selection during drag
+AssertionError [ERR_ASSERTION]: Expected "actual" to be reference-equal to "expected":
++ actual - expected
+
+  Bimp {
+    height: 3,
+    pixels: Uint8ClampedArray(3) [
++     2,
++     2,
++     2
+-     0,
+-     0,
+-     0
+    ],
+    width: 1
+  }
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:282:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:275:11
+FAIL: integrity: resize rejects stale selection and damaged existing rows
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:288:12
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:285:9
+FAIL: integrity: importer rejects raw reference 2 before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference -1 before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference 0.5 before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference NaN before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference Infinity before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference 0 before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: importer rejects raw reference null before normalization
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:298:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:293:11
+FAIL: integrity: import rejects bad references even in cropped rows/columns
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:305:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:302:9
+FAIL: integrity: exporter rejects invalid references and never serializes selection
+AssertionError [ERR_ASSERTION]: Missing expected exception.
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:311:12
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:308:9
+FAIL: integrity: delete slot 1 rebinds selection 2
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 1
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:329:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:324:11
+FAIL: integrity: delete slot 2 rebinds selection 2
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 0
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:329:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:324:11
+PASS: integrity: delete slot 2 rebinds selection 1
+FAIL: integrity: delete slot 0 rebinds selection 2
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 1
+
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:329:14
+    at check (file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:35:15)
+    at file:///C:/Users/liuchen/Desktop/knitscape/scripts/validate-project-load-lifecycle.mjs:324:11
+PASS: integrity: cannot delete the final palette slot
+19/49 project load lifecycle cases passed.

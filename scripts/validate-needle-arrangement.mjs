@@ -120,6 +120,8 @@ const requiredSources = [
   "src/views/view.js",
   "src/state.js",
   "src/components/runSimulation.js",
+  "src/components/simulationCoordinator.js",
+  "src/components/simulationPreviewHost.js",
 ];
 for (const sourcePath of requiredSources) {
   assert.ok(fs.existsSync(sourcePath), `${sourcePath} must exist.`);
@@ -137,6 +139,8 @@ const executionIntegrationSource = fs.readFileSync(
   "src/components/singleJerseyExecutionInput.js",
   "utf8"
 );
+const coordinatorSource = fs.readFileSync("src/components/simulationCoordinator.js", "utf8");
+const hostSource = fs.readFileSync("src/components/simulationPreviewHost.js", "utf8");
 const importersSource = fs.readFileSync("src/actions/importers.js", "utf8");
 
 assert.match(viewSource, /needleArrangementBar\(\)/);
@@ -179,22 +183,35 @@ assert.doesNotMatch(barSource, /requiresFourColumns/);
 assert.doesNotMatch(domainSource, /type\s*<=\s*4/);
 assert.doesNotMatch(domainSource, /\[1-4\]/);
 assert.doesNotMatch(domainSource, /needleTypeCount|matrixHeight|camMatrix/);
-assert.match(simulationSource, /const baseSimulation = GLOBAL_STATE\.chart/);
+assert.match(simulationSource,
+  /import\s+\{\s*createSimulationCoordinator\s*\}\s+from\s+"\.\/simulationCoordinator\.js"/);
+assert.equal((simulationSource.match(/createSimulationCoordinator\(/g) || []).length, 1);
+assert.match(simulationSource, /ownedCoordinator\.compute\(GLOBAL_STATE,/);
 assert.equal(
-  (simulationSource.match(/simulate\(\s*baseSimulation,/g) || []).length,
+  (coordinatorSource.match(/computeYarnSimulation\(\{\s*\.\.\.common,\s*pattern:\s*state\.chart,\s*scope:\s*"pattern"/g) || []).length,
   1,
-  "the before preview must continue to simulate the base Pattern."
+  "the before preview must continue to compute the base Pattern exactly once per actual input."
 );
 assert.equal(
-  (simulationSource.match(/simulate\(\s*machineSimulationInput,/g) || [])
+  (coordinatorSource.match(/computeYarnSimulation\(\{\s*\.\.\.common,\s*pattern:\s*machineInput,/g) || [])
     .length,
   1,
-  "only the after preview may simulate machine-derived input."
+  "only the Machine scope may compute machine-derived input."
 );
 assert.match(
-  simulationSource,
-  /createSingleJerseyExecutionInput\(\s*GLOBAL_STATE\.singleJerseyCamProgram,\s*GLOBAL_STATE\.needleArrangement,\s*baseSimulation\.width,\s*baseSimulation\.height\s*\)/s
+  coordinatorSource,
+  /createSingleJerseyExecutionInput\(\s*state\.singleJerseyCamProgram,\s*state\.needleArrangement,\s*state\.chart\.width,\s*state\.chart\.height\s*\)/s
 );
+assert.equal((coordinatorSource.match(/createSingleJerseyExecutionInput\(/g) || []).length, 1);
+assert.doesNotMatch(coordinatorSource + hostSource,
+  /resolveSingleJerseyOperations|createSingleJerseySimulationInput|tracks\s*\[/,
+  "the coordinator and renderer host must not duplicate the approved Domain/adapter logic.");
+assert.match(hostSource, /pattern:\s*\{\s*container:\s*"sim-before-container",\s*ids:\s*\["back",\s*"mid",\s*"front"\]/);
+assert.match(hostSource, /machine:\s*\{\s*container:\s*"sim-after-container",\s*ids:\s*\["back-arranged",\s*"mid-arranged",\s*"front-arranged"\]/);
+assert.match(hostSource, /draw\("pattern",\s*snapshots\.pattern,\s*state\);\s*draw\("machine",\s*snapshots\.machine,\s*state\)/,
+  "Classic before/after canvases must consume only their matching Pattern/Machine snapshots.");
+assert.doesNotMatch(simulationSource + hostSource, /\b(?:simulate|computeYarnSimulation)\s*\(/,
+  "runner and renderer host may not create independent calculations.");
 assert.match(
   executionIntegrationSource,
   /resolveSingleJerseyOperations/
@@ -217,16 +234,20 @@ for (const rejectedTerm of [
   "resolveNeedleSymbol",
 ]) {
   assert.equal(
-    simulationSource.includes(rejectedTerm),
+    (simulationSource + coordinatorSource + hostSource).includes(rejectedTerm),
     false,
-    `runSimulation must not contain ${rejectedTerm}.`
+    `runner, coordinator and host must not contain ${rejectedTerm}.`
   );
 }
 assert.equal(
   (simulationSource.match(/GLOBAL_STATE\.needleArrangement/g) || []).length,
   1,
-  "only the post-arrangement execution path may read needleArrangement."
+  "outside the coordinator, only the read-only operation display may read needleArrangement."
 );
+const operationViewSource = fs.readFileSync("src/views/machineOperationDemo.js", "utf8");
+assert.match(operationViewSource, /getNeedleTypeAtPosition/);
+assert.doesNotMatch(operationViewSource, /resolveSingleJerseyOperations|createSingleJerseySimulationInput|buildYarnPathGeometry|simulate\(/,
+  "The operation display must consume execution results, never create another execution or path authority.");
 assert.match(simulationSource, /id="sim-before-container"/);
 assert.match(simulationSource, /id="sim-after-container"/);
 assert.match(simulationSource, /GLOBAL_STATE\.showDesignComparison/);
@@ -243,7 +264,8 @@ assert.equal(
 );
 assert.match(
   simulationSource,
-  /yarnLengthMetrics:\s*baseSimulationResult\.yarnLengthMetrics/
+  /outputs\.yarnLengthMetrics\s*=\s*result\.pattern\.yarnLengthMetrics/,
+  "the legacy yarnLengthMetrics output must remain owned by the Pattern snapshot."
 );
 
 const stylesSource = fs.readFileSync("styles.css", "utf8");

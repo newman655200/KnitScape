@@ -1,0 +1,80 @@
+[
+  {
+    "input": "-1",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "NaN",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "Infinity",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "-Infinity",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "non-numeric",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "empty",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "0",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "undefined",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "null",
+    "returned": "undefined",
+    "targetAfter": 0,
+    "stateReplaced": true
+  },
+  {
+    "input": "23",
+    "returned": "undefined",
+    "targetAfter": 23,
+    "stateReplaced": true
+  },
+  {
+    "input": "27",
+    "returned": "undefined",
+    "targetAfter": 27,
+    "stateReplaced": true
+  },
+  {
+    "input": "0.5",
+    "returned": "undefined",
+    "targetAfter": 0.5,
+    "stateReplaced": true
+  },
+  {
+    "input": "23.14",
+    "returned": "undefined",
+    "targetAfter": 23.14,
+    "stateReplaced": true
+  }
+]

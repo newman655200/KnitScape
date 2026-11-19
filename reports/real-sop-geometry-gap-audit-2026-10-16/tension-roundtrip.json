@@ -1,0 +1,133 @@
+{
+  "passed": true,
+  "feeds": [
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": "yarn-1792072401481",
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": 5,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "audit-low",
+          "yarnLengthCmPer100Needles": 8,
+          "tensionCN": 4,
+          "placement": "parallel"
+        }
+      ]
+    }
+  ]
+}

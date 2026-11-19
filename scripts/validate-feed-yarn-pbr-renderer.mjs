@@ -147,7 +147,7 @@ try {
   globalThis.document = {
     createElement: () => createCanvas(),
     getElementById(id) {
-      if (["sim-container", "sim-before-container", "sim-after-container", "desktop"].includes(id)) {
+      if (["sim-container", "sim-before-container", "sim-after-container", "pbr-preview-container", "desktop"].includes(id)) {
         return { getBoundingClientRect: () => ({ width: 320, height: 240 }) };
       }
       if (id === "machine-execution-error") return null;
@@ -512,7 +512,7 @@ try {
     state.dispatch({ chart: Bimp.empty(4, 8, 0), yarnSequence: new Bimp(1, 8, Array(8).fill(0)),
       yarnPlies: [primaryPly], yarnLibrary: [runnerAsset], simScale: 1,
       singleJerseyCamProgram: { tracks: [["K"]], feeds: [feed(runnerAsset.id)] },
-      needleArrangement: [1], texturePerformanceMode: "quality" });
+      needleArrangement: [1], texturePerformanceMode: "quality", workbenchMode: "pbr25d" });
     if (!runnerRegistered) {
       state.StateMonitor.register([runnerModule.runSimulation()]);
       runnerRegistered = true;
@@ -520,7 +520,8 @@ try {
       const callbacks = [...previewTimers.values()]; previewTimers.clear();
       callbacks.forEach(callback => callback());
     }
-    for (let turn = 0; turn < 10 && !completeRunnerMap; turn++) await Promise.resolve();
+    // The PBR renderer is intentionally loaded only after entering its workspace.
+    for (let turn = 0; turn < 20 && !completeRunnerMap; turn++) await new Promise(resolve => setImmediate(resolve));
     assert.equal(typeof completeRunnerMap, "function", `${change}: real runner must start its after-preview lazy read.`);
     if (change === "newPattern") importers.newPattern();
     else if (change === "legacyPattern") {
@@ -533,7 +534,10 @@ try {
       state.dispatch({ [change]: change === "chart" ? Bimp.empty(5, 8, 0)
         : change === "texturePerformanceMode" ? "solid" : [1, 1] });
     }
-    assert.ok(previewTimers.size > 0, `${change}: replacement render remains in the real debounce window.`);
+    if (change !== "texturePerformanceMode")
+      assert.ok(previewTimers.size > 0, `${change}: replacement calculation remains in the real debounce window.`);
+    else assert.equal(runnerModule.getCurrentSimulationSnapshots().pending, false,
+      "Performance mode is display-only and must not schedule replacement calculations.");
     const previousDraws = draws.length, previousStrokes = strokes.length, previousUploads = uploads.length;
     completeRunnerMap(new Blob([pixelBytes], { type: "image/png" }));
     await settlePreparation();

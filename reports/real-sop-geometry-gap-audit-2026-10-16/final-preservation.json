@@ -1,0 +1,42 @@
+{
+  "sourceFilesCompared": 149,
+  "changes": [],
+  "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+  "branch": "main",
+  "tagObject": "7d33fe763c779989f92014ca29479dbb7d61e252",
+  "tagPeeledCommit": "7ababf264d495f6b96d4d66652c529424938ac4d",
+  "pbrSourceIntegrity": [
+    {
+      "slot": "baseColor",
+      "fileName": "Albedo.png",
+      "sha256": "e7edd170d0e181905c1b1e27aabc2062ec5621d48ab28afc1ee1c49284aadd55",
+      "sourceEqualsSavedBytes": true
+    },
+    {
+      "slot": "normal",
+      "fileName": "Normal.png",
+      "sha256": "0e0040be7030aa28f340905c6ba12c18820d5489e72f10e2756f3de6e20021c2",
+      "sourceEqualsSavedBytes": true
+    },
+    {
+      "slot": "roughness",
+      "fileName": "Roughness.png",
+      "sha256": "bbbfc014d3bf0684c94166eacbfad8ddac626b9cb28d64d67c0d72b55aa04c0c",
+      "sourceEqualsSavedBytes": true
+    },
+    {
+      "slot": "ambientOcclusion",
+      "fileName": "AO.png",
+      "sha256": "918a016d9cb4d65cd9d19c0bf561a51d1dd94c3ae44d8f0e625a44ef6b1a216b",
+      "sourceEqualsSavedBytes": true
+    }
+  ],
+  "validatorsPassed": 37,
+  "validatorsTotal": 37,
+  "validateExit": 0,
+  "buildExit": 0,
+  "sourceProjectSha256": "0d84dd7a3b7d408345015963279e5ea6548d501cbf84887d019a5f538b99eed8",
+  "reportBrokenLinks": [],
+  "status": "M package.json\n M scripts/validate-single-jersey-execution-integration.mjs\n M scripts/validate-texture-cache-lifecycle.mjs\n M scripts/validate-two-ply-yarn.mjs\n M src/components/runSimulation.js\n M src/domain/yarnLibrary.js\n M src/i18n/translations.js\n M src/simulation/drawYarnSimulation.js\n M src/simulation/yarnPathGeometry.js\n M src/simulation/yarnSimulation.js\n M src/simulation/yarnTextureBrush.js\n M src/simulation/yarnUvWebglRenderer.js\n M src/yarnTexture/yarnScanTexture.js\n?? PBR/\n?? ai-manufacturing-strategy-deck/\n?? docs/\n?? img009.jpg\n?? reports/\n?? scripts/validate-yarn-material-authority.mjs\n?? src/domain/yarnMaterial.js\n?? \"\\351\\235\\242\\346\\226\\231\\346\\224\\276\\345\\244\\247.jpg\"",
+  "reportSha256": "8da6b8208401e9322a47e5eaeec71f7b5805f401cd545458064c2fbe9fb6b238"
+}

@@ -1,0 +1,3 @@
+?? ai-manufacturing-strategy-deck/
+?? docs/
+?? reports/

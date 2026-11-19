@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { createServer } from "vite";
@@ -39,6 +40,113 @@ assert.match(
 );
 
 const sampler = await import("../src/simulation/yarnPathSampler.js");
+
+const endpointOptions = { spacing: 0.3, curveSteps: 4, maxPoints: 64 };
+const ordinaryCubic = "M 0 0 C 0 4 6 4 6 0";
+// Frozen raw model paths from local-c04-2026-10-22.json, links 1836 and 1837.
+// Keep the two fixtures here so this validator does not depend on audit reports.
+const join1836 = "M7.599305,12.658012C7.71818,12.776886,7.567182,13.37241,7.599305,13.376229";
+const join1837 = "M7.599305,13.376229C7.642279,13.381338,7.676237,12.303456,7.900695,12.126701";
+const relativeRepeatedCubic = "m 2 3 c 0 4 6 4 6 0 0 -4 6 -4 6 0";
+const separateCubics = "M 0 0 C 0 4 6 4 6 0 M 10 0 C 10 -4 16 -4 16 0";
+
+// Captured before the endpoint-frame fix: every coordinate, U and interior
+// frame must remain bit-for-bit unchanged, including sample count/capping.
+for (const [name, pathData, count, expectedHash] of [
+  ["ordinary C", ordinaryCubic, 33, "0a14c9e677edf0bbb4fcdc6371d337f5d2c5dd6747aa538f6d6027095c1eee5c"],
+  ["link 1836", join1836, 4, "e97b9ec7c029bb329d6b2c2a234ad88c9148526513031a034e369b6a798b2823"],
+  ["link 1837", join1837, 6, "eb75940c3b8b3ac8b95116305c7bf0e51f431b0c6c3d57255d5d3a2959033a00"],
+  ["relative/repeated C", relativeRepeatedCubic, 64, "cbd562caa6c8e5d7b78f69c40811e3910b5105a2bc1d4a7bc6a4a7f284621c6d"],
+  ["separate subpaths", separateCubics, 64, "b818a6ab082b4f54142c0ffc4e77ee8d81af80cfddd3bcdfc5b4be338e0fe752"],
+]) {
+  const samples = sampler.samplePathData(pathData, endpointOptions);
+  assert.equal(samples.length, count, `${name}: sample count must not change.`);
+  const stableSamples = samples.map((point, index) =>
+    index === 0 || index === samples.length - 1
+      ? { x: point.x, y: point.y, u: point.u } : point);
+  assert.equal(createHash("sha256").update(JSON.stringify(stableSamples)).digest("hex"),
+    expectedHash, `${name}: positions, U and interior frames must not change.`);
+}
+
+const assertFrame = (point, dx, dy, label) => {
+  const length = Math.hypot(dx, dy);
+  const expected = { tangentX: dx / length, tangentY: dy / length,
+    normalX: -dy / length, normalY: dx / length };
+  for (const [key, value] of Object.entries(expected)) {
+    assert.ok(Math.abs(point[key] - value) < 1e-12,
+      `${label}: ${key} must be ${value}, got ${point[key]}.`);
+  }
+};
+
+for (const options of [endpointOptions,
+  { spacing: 0.01, curveSteps: 24, maxPoints: 4 },
+  { spacing: Infinity, curveSteps: 1 }]) {
+  const points = sampler.samplePathData(ordinaryCubic, options);
+  assertFrame(points[0], 0, 4, "C start must follow P0→P1 independently of sampling");
+  assertFrame(points.at(-1), 0, -4, "C end must follow P2→P3 independently of sampling");
+}
+
+const beforeJoin = sampler.samplePathData(join1836, { spacing: 0.03 });
+const afterJoin = sampler.samplePathData(join1837, { spacing: 0.03 });
+assert.deepEqual([beforeJoin.at(-1).x, beforeJoin.at(-1).y],
+  [afterJoin[0].x, afterJoin[0].y], "1836→1837 must retain its shared raw endpoint.");
+assertFrame(beforeJoin.at(-1), 7.599305 - 7.567182, 13.376229 - 13.37241,
+  "real link 1836 end");
+assertFrame(afterJoin[0], 7.642279 - 7.599305, 13.381338 - 13.376229,
+  "real link 1837 start");
+
+for (const [name, pathData, endpoint, dx, dy] of [
+  ["start P0=P1 uses P0→P2", "M 0 0 C 0 0 0 4 6 0", 0, 0, 4],
+  ["start P0=P1=P2 uses P0→P3", "M 0 0 C 0 0 0 0 3 4", 0, 3, 4],
+  ["end P2=P3 uses P1→P3", "M 0 0 C 0 4 6 0 6 0", -1, 6, -4],
+  ["end P1=P2=P3 uses P0→P3", "M 0 0 C 3 4 3 4 3 4", -1, 3, 4],
+  ["start below epsilon skips P0→P1", "M 0 0 C 5e-7 5e-7 0 4 6 0", 0, 0, 4],
+  ["start at epsilon skips P0→P1", "M 0 0 C 1e-6 0 0 4 6 0", 0, 0, 4],
+  ["start above epsilon keeps P0→P1", "M 0 0 C 2e-6 0 0 4 6 0", 0, 1, 0],
+  ["start skips both near-degenerate controls", "M 0 0 C 5e-7 5e-7 1e-6 0 3 4", 0, 3, 4],
+  ["end below epsilon skips P2→P3", "M 0 6 C -4 0 -5e-7 -5e-7 0 0", -1, 4, 0],
+  ["end at epsilon skips P2→P3", "M 6 0 C 0 -4 -1e-6 0 0 0", -1, 0, 4],
+  ["end above epsilon keeps P2→P3", "M 6 0 C 0 -4 -2e-6 0 0 0", -1, 1, 0],
+  ["end skips both near-degenerate controls", "M -3 -4 C -1e-6 0 -5e-7 -5e-7 0 0", -1, 3, 4],
+]) {
+  assertFrame(sampler.samplePathData(pathData, endpointOptions).at(endpoint), dx, dy, name);
+}
+const degenerateCubic = sampler.samplePathData("M 2 3 C 2 3 2 3 2 3", endpointOptions);
+assert.equal(degenerateCubic.length, 1);
+assert.deepEqual([degenerateCubic[0].x, degenerateCubic[0].y, degenerateCubic[0].u], [2, 3, 0]);
+assertFrame(degenerateCubic[0], 1, 0, "all-degenerate C preserves the existing fallback");
+
+for (const pathData of [relativeRepeatedCubic,
+  "M 0 0 C 0 4 6 4 6 0 6 -4 12 -4 12 0", separateCubics]) {
+  const points = sampler.samplePathData(pathData, endpointOptions);
+  assertFrame(points[0], 0, 1, "first actual cubic start");
+  assertFrame(points.at(-1), 0, 1, "last actual cubic end, including repeated arguments");
+}
+const returningCubic = sampler.samplePathData("M 0 0 C 4 0 4 4 0 0",
+  { spacing: Infinity, curveSteps: 1 });
+assert.equal(returningCubic.length, 2);
+assert.deepEqual([returningCubic[0].x, returningCubic[0].y],
+  [returningCubic.at(-1).x, returningCubic.at(-1).y]);
+assertFrame(returningCubic[0], 1, 0, "coincident C endpoints retain the start direction");
+assertFrame(returningCubic.at(-1), -1, -1, "coincident C endpoints retain the end direction");
+// Non-C endpoint frames retain their existing flattened-segment behavior.
+// Empty or degenerate subpaths must not lend a cubic direction to another point.
+for (const [name, pathData, endpoint, dx, dy] of [
+  ["leading L", "M 0 0 L 2 0 C 2 4 6 4 6 0", 0, 1, 0],
+  ["trailing L", `${ordinaryCubic} L 8 0`, -1, 1, 0],
+  ["leading Q", "M 0 0 Q 0 4 4 4 C 6 4 8 4 8 0", 0, 1, 7],
+  ["trailing Q", `${ordinaryCubic} Q 6 -4 10 -4`, -1, 7, -1],
+  ["closing Z", `${ordinaryCubic} Z`, -1, -1, 0],
+  ["leading duplicate L endpoint", "M 0 0 L 0 0 C 0 4 6 4 6 0", 0, 0, 1],
+  ["trailing duplicate L endpoint", `${ordinaryCubic} L 6 0`, -1, 0, -1],
+  ["leading empty subpath", "M 0 0 M 10 0 C 10 4 16 4 16 0", 0, 1, 0],
+  ["trailing empty subpath", `${ordinaryCubic} M 20 20`, -1, 0, -1],
+  ["leading degenerate subpath", "M 0 0 C 0 0 0 0 0 0 M 10 0 L 10 4", 0, 1, 0],
+  ["trailing degenerate subpath", "M 0 0 L 0 4 M 10 4 C 10 4 10 4 10 4", -1, 0, 1],
+]) {
+  assertFrame(sampler.samplePathData(pathData, endpointOptions).at(endpoint), dx, dy,
+    `${name} must use the segment at the sampled endpoint`);
+}
 
 const lineSamples = sampler.samplePathData("M 0 0 L 10 0", { spacing: 2 });
 assert.equal(lineSamples[0].x, 0);
@@ -304,6 +412,7 @@ assert.match(
 
 const simulationSource = [
   "src/simulation/yarnSimulation.js",
+  "src/simulation/pbrPreviewRenderer.js",
   "src/simulation/yarnPathGeometry.js",
   "src/simulation/drawYarnSimulation.js",
 ]

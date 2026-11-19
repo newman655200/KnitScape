@@ -1,0 +1,10 @@
+{
+  "baseline": "reports/material-diameter-contract-2026-10-18/results.json",
+  "exactlyEqualFields": [
+    "softwareInputs",
+    "geometryInputs",
+    "runs",
+    "numericChecks"
+  ],
+  "numericDrift": false
+}

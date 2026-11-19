@@ -71,3 +71,17 @@ UNKNOWN / PENDING PROCESS CONFIRMATION：七个工艺问题、真实直径及其
 7. 完成后运行相关 `npm run validate:*` 和 `npm run build`。
 
 文档任务不属于功能开发；2026-10-17本轮只允许Markdown，不运行会生成构建产物的功能流程，不把历史npm通过写成本轮验证。任何影响物理结果的数据须说明Value、Unit、Source、Measurement/derivation principle、Confidence、Applicable state；未知不补默认“实测”。完整规则见 [PROCESS_VALIDATION.md](docs/PROCESS_VALIDATION.md)。
+
+## 6. 文件归档位置（2026-10-31 用户要求）
+
+不要在用户桌面新建本项目的报告、截图、备份、测试包或构建输出目录。
+
+- 主项目继续位于 `C:\Users\liuchen\Desktop\knitscape`。
+- 项目外证据统一放在 `C:\Users\liuchen\Documents\KnitScape\archives`，按任务/日期建子目录。
+- 已有桌面辅助目录迁移映射见 `C:\Users\liuchen\Documents\KnitScape\path-map.json`；历史报告中的旧路径保留为当时记录，查找文件时按映射定位。
+- 当前指定 SOP 包的新路径为 `C:\Users\liuchen\Documents\KnitScape\archives\knitscape-sop-retest-2026-10-29\browser-continuation\SOP-restored-23-8x3-retest.knitscape`。
+- 当前临时细线试验及截图目录位于 `C:\Users\liuchen\Documents\KnitScape\archives\knitscape-structure-trial-20261031-191950`。
+
+## 7. 实现与验收（2026-11-18 用户要求）
+
+以实现用户可用的功能为主。按优先级一次处理一个问题，先从实际入口复核问题，优先复用已有实现和验证。只为已经出现的问题或明确的工艺约束写代码。每项由实现者亲自验收，达成该项预期效果后再开始下一项。

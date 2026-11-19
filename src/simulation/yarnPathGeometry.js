@@ -3,6 +3,7 @@ import { Bimp } from "../lib/Bimp.js";
 import { Pattern } from "./Pattern.js";
 import { ProcessModel } from "./ProcessModel.js";
 import { YarnModel } from "./YarnModel.js";
+import { simulationViewportLayout } from "./simulationViewport.js";
 import {
   assertContinuousRowPaths,
   createPathLengthContext,
@@ -21,7 +22,6 @@ import {
 export const X_PADDING = 1;
 export const Y_PADDING = 0;
 
-const STITCH_RATIO = 5 / 3;
 const SPREAD = 0.88;
 const MODEL_PATH_DIGITS = 6;
 const IDENTITY_POINT = (point) => point;
@@ -141,18 +141,8 @@ export function buildYarnPathGeometry({
   }
 
   function layoutDisplayNodes(graph) {
-    stitchWidth = Math.min(
-      (canvasWidth * 0.9) / stitchPattern.width,
-      ((canvasHeight * 0.9) / stitchPattern.height) * STITCH_RATIO
-    );
-
-    const baseStitchHeight = stitchWidth / STITCH_RATIO;
-    const stitchHeight = baseStitchHeight * primaryLengthScaleY;
-    const yarnWidth = stitchWidth * primaryYarnDiameter;
-
-    offsetX = yarnWidth + (canvasWidth - stitchPattern.width * stitchWidth) / 2;
-    offsetY =
-      -yarnWidth + (canvasHeight - stitchPattern.height * stitchHeight) / 2;
+    ({ stitchWidth, offsetX, offsetY } = simulationViewportLayout({ canvasWidth,
+      canvasHeight, stitchPattern, primaryLengthScaleY, primaryYarnDiameter }));
 
     graph.contactNodes.forEach((node) => {
       const displayPoint = modelToCanvasPoint({

@@ -1,0 +1,4 @@
+{
+  "feedback": "目标纱长求解 · DESIGN_PREVIEW\n基础设计预览，尚无完整目标验证结果。\n仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。\ncm / 100针\nFeed × Yarn\t目标\t模型求解值\t求解状态\t是否应用\t原因 / 模型范围\nFeed 1 · Yarn 1\t—\t—\tNOT_SET\t未应用\t未设置目标\nFeed 2 · Yarn 1\t—\t—\tNOT_SET\t未应用\t未设置目标\nFeed 3 · Yarn 1\t—\t—\tNOT_SET\t未应用\t未设置目标\nFeed 4 · Yarn 1\t—\t—\tNOT_SET\t未应用\t未设置目标",
+  "input": ""
+}

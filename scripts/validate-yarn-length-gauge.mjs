@@ -391,6 +391,7 @@ assert.doesNotMatch(metricsSource, /geometryArcLengthToPhysical/);
 const simulationSource = [
   "src/simulation/yarnSimulation.js",
   "src/simulation/yarnPathGeometry.js",
+  "src/simulation/simulationViewport.js",
   "src/simulation/drawYarnSimulation.js",
 ]
   .map(read)
@@ -422,7 +423,10 @@ for (const file of [
 
 const runSimulationSource = read("src/components/runSimulation.js");
 assert.match(runSimulationSource, /yarnLengthMetrics/);
-assert.match(runSimulationSource, /machineGauge:\s*GLOBAL_STATE\.machineGauge/);
+const coordinatorSource = read("src/components/simulationCoordinator.js");
+assert.match(runSimulationSource, /ownedCoordinator\.compute\(GLOBAL_STATE,/);
+assert.match(coordinatorSource, /machineGauge:\s*state\.machineGauge/);
+assert.match(coordinatorSource, /computeYarnSimulation\(\{ \.\.\.common,/);
 
 const leftBarSource = read("src/views/yarnLengthReadout.js");
 for (const token of [

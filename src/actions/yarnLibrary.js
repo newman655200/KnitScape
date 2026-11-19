@@ -35,6 +35,14 @@ export function updateYarnAsset(id, name, category) {
   dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === current.id ? asset : yarn) });
 }
 
+export function updateYarnAssetColor(id, color) {
+  const asset = assetById(id);
+  if (typeof color !== "string" || !color.trim()) return false;
+  dispatch({ yarnLibrary: GLOBAL_STATE.yarnLibrary.map(yarn => yarn.id === asset.id
+    ? { ...yarn, color: color.trim(), updatedAt: new Date().toISOString() } : yarn) });
+  return true;
+}
+
 export function deleteYarnAsset(id) {
   const asset = assetById(id);
   const feeds = GLOBAL_STATE.singleJerseyCamProgram === null ? []

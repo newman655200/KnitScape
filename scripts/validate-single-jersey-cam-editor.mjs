@@ -725,16 +725,33 @@ try {
     "src/components/runSimulation.js",
     "utf8"
   );
+  const coordinatorSource = fs.readFileSync("src/components/simulationCoordinator.js", "utf8");
+  const hostSource = fs.readFileSync("src/components/simulationPreviewHost.js", "utf8");
   assert.match(
     runSimulationSource,
-    /createSingleJerseyExecutionInput\(\s*GLOBAL_STATE\.singleJerseyCamProgram,\s*GLOBAL_STATE\.needleArrangement,\s*baseSimulation\.width,\s*baseSimulation\.height\s*\)/s,
+    /import\s+\{\s*createSimulationCoordinator\s*\}\s+from\s+"\.\/simulationCoordinator\.js"/,
+    "the app must route simulation inputs through the shared coordinator."
+  );
+  assert.equal((runSimulationSource.match(/createSimulationCoordinator\(/g) || []).length, 1);
+  assert.match(runSimulationSource, /ownedCoordinator\.compute\(GLOBAL_STATE,/,
+    "the coordinator must receive current project inputs.");
+  assert.match(
+    coordinatorSource,
+    /createSingleJerseyExecutionInput\(\s*state\.singleJerseyCamProgram,\s*state\.needleArrangement,\s*state\.chart\.width,\s*state\.chart\.height\s*\)/s,
     "Cam Program may reach only the approved post-arrangement execution path."
   );
+  assert.equal((coordinatorSource.match(/createSingleJerseyExecutionInput\(/g) || []).length, 1);
+  assert.doesNotMatch(coordinatorSource + runSimulationSource + hostSource,
+    /resolveSingleJerseyOperations|createSingleJerseySimulationInput|tracks\s*\[/,
+    "scheduling and rendering must not duplicate Cam operation resolution or the adapter.");
   assert.doesNotMatch(
     runSimulationSource,
     /createSingleJerseyCamProgram|resizeSingleJerseyCamProgram|setSingleJerseyCamOperation|cycleSingleJerseyCamOperation|deleteSingleJerseyCamProgram/,
     "simulation must not own or mutate Cam Program editing actions."
   );
+  assert.doesNotMatch(coordinatorSource + hostSource,
+    /createSingleJerseyCamProgram|resizeSingleJerseyCamProgram|setSingleJerseyCamOperation|cycleSingleJerseyCamOperation|deleteSingleJerseyCamProgram/,
+    "the coordinator and renderer host must not own or mutate Cam Program editing actions.");
 
   const machineWorkspaceMatches = [
     ...stylesSource.matchAll(/#machine-workspace\s*\{([^}]*)\}/g),

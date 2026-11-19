@@ -1,0 +1,344 @@
+{
+  "files": 351,
+  "projectRecords": 48,
+  "invalid": [],
+  "errors": [],
+  "results": [
+    {
+      "source": "examples\\basketweave.json",
+      "paletteLength": 2,
+      "pixelCount": 4,
+      "shape": "1x4",
+      "bad": []
+    },
+    {
+      "source": "examples\\beetles.json",
+      "paletteLength": 2,
+      "pixelCount": 8,
+      "shape": "1x8",
+      "bad": []
+    },
+    {
+      "source": "examples\\birds.json",
+      "paletteLength": 3,
+      "pixelCount": 12,
+      "shape": "1x12",
+      "bad": []
+    },
+    {
+      "source": "examples\\ells.json",
+      "paletteLength": 3,
+      "pixelCount": 8,
+      "shape": "1x8",
+      "bad": []
+    },
+    {
+      "source": "examples\\hat mosaic.json",
+      "paletteLength": 2,
+      "pixelCount": 4,
+      "shape": "1x4",
+      "bad": []
+    },
+    {
+      "source": "examples\\hex quilt.json",
+      "paletteLength": 4,
+      "pixelCount": 24,
+      "shape": "1x24",
+      "bad": []
+    },
+    {
+      "source": "examples\\hourglass.json",
+      "paletteLength": 2,
+      "pixelCount": 8,
+      "shape": "1x8",
+      "bad": []
+    },
+    {
+      "source": "examples\\interblocks.json",
+      "paletteLength": 4,
+      "pixelCount": 24,
+      "shape": "1x24",
+      "bad": []
+    },
+    {
+      "source": "examples\\pseudoweave.json",
+      "paletteLength": 4,
+      "pixelCount": 18,
+      "shape": "1x18",
+      "bad": []
+    },
+    {
+      "source": "examples\\pseudoweave_wool.json",
+      "paletteLength": 3,
+      "pixelCount": 12,
+      "shape": "1x12",
+      "bad": []
+    },
+    {
+      "source": "examples\\pyramids (slip).json",
+      "paletteLength": 2,
+      "pixelCount": 4,
+      "shape": "1x4",
+      "bad": []
+    },
+    {
+      "source": "examples\\pyramids (tuck).json",
+      "paletteLength": 2,
+      "pixelCount": 4,
+      "shape": "1x4",
+      "bad": []
+    },
+    {
+      "source": "examples\\scrunched ovals.json",
+      "paletteLength": 2,
+      "pixelCount": 4,
+      "shape": "1x4",
+      "bad": []
+    },
+    {
+      "source": "examples\\squargets.json",
+      "paletteLength": 3,
+      "pixelCount": 28,
+      "shape": "1x28",
+      "bad": []
+    },
+    {
+      "source": "examples\\sunset dots.json",
+      "paletteLength": 3,
+      "pixelCount": 8,
+      "shape": "1x8",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\actual-browser-export.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\actual-browser-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\direct-PBR-browser-export.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\direct-PBR-browser-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\direct-PBR-with-repeat-browser-export.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\direct-PBR-with-repeat-browser-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\legacy-no-target.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\legacy-unset-pbr-multi.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p0-final-audit\\same-locators-pbr.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-1\\SOP-001-P1-1.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\legacy-after-restore-check.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\legacy-native-commit.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-before-replace-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-before-replace.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-explicit-enter.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-native-after-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-native-after.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-native-before-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-repeat-native-before.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-replace-checkpoint-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\pbr-replace-checkpoint.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\user-reexport-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\user-reexport.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\user-save-manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\p1-yarn-feed-audit-20261012\\user-save.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\first-export-repeat-uncommitted.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\first-export-repeat-uncommitted.manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\project-export.manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\SOP-001-N6W6040-main-yarn-with-cam.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\SOP-001-N6W6040-main-yarn.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\with-cam\\project-export.manifest.json",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\sop-001\\with-cam\\results.json#actualProject",
+      "paletteLength": 1,
+      "pixelCount": 40,
+      "shape": "1x40",
+      "bad": []
+    },
+    {
+      "source": "reports\\yarn-user-audit-2026-10-06\\test-project.knitscape:project.json",
+      "paletteLength": 1,
+      "pixelCount": 60,
+      "shape": "1x60",
+      "bad": []
+    }
+  ]
+}

@@ -5,9 +5,12 @@ import { YARN_CATEGORIES, queryYarnLibrary } from "../domain/yarnLibrary.js";
 import { addYarnAsset, updateYarnAsset, deleteYarnAsset,
   selectYarnForAssignment, getYarnPbr, importYarnPbr, clearYarnPbr,
   setYarnPbrPhysicalRepeatLength } from "../actions/yarnLibrary.js";
+import { updateYarnAssetColor } from "../actions/yarnLibrary.js";
+import { normalizeYarnPlies, resolveYarnMaterial } from "../domain/yarnMaterial.js";
 import { t } from "../i18n/index.js";
 
 let editingYarnId = null;
+let appearanceYarnId = null;
 
 function toggleYarnEditor(event, id) {
   if (event.currentTarget.open) editingYarnId = id;
@@ -61,6 +64,34 @@ function yarnPbrControls(id, language) {
     ${maps.length ? html`<ul class="yarn-pbr-maps">${maps.map(([key, map]) =>
       html`<li>${key}: <span title=${map.fileName}>${map.fileName}</span></li>`)}</ul>` : null}
   </div>`;
+}
+
+export function yarnAppearanceEditor() {
+  const { yarnLibrary, yarnPlies, yarnPalette, language, yarnLibraryError } = GLOBAL_STATE;
+  const asset = yarnLibrary.find(yarn => String(yarn.id) === String(appearanceYarnId)) ?? yarnLibrary[0];
+  if (!asset) return html`<p>${t("yarnLibrary.empty", language)}</p>`;
+  const material = resolveYarnMaterial({ yarnAsset: asset, legacyContext: normalizeYarnPlies(yarnPlies, yarnPalette)[0] });
+  return html`<section class="pbr-material-editor">
+    <h3>纱线材质</h3>
+    <label>Yarn <select aria-label="PBR Yarn" .value=${String(asset.id)}
+      @change=${event => { appearanceYarnId = event.currentTarget.value; dispatch({}); }}>
+      ${yarnLibrary.map(yarn => html`<option value=${String(yarn.id)} ?selected=${yarn.id === asset.id}>${yarn.name}</option>`)}
+    </select></label>
+    <label class="pbr-fallback-color">纯色 / 回退颜色
+      <span class="yarn-ply-swatch" style="--current:${material.color}"></span>
+      <input type="text" aria-label="纯色 / 回退颜色" .value=${material.color}
+        @change=${event => {
+          const input = event.currentTarget, color = input.value.trim();
+          if (!color || (globalThis.CSS?.supports && !CSS.supports("color", color))) {
+            input.setCustomValidity("请输入有效的 CSS 颜色"); input.reportValidity(); return;
+          }
+          input.setCustomValidity(""); updateYarnAssetColor(asset.id, color);
+        }} />
+    </label>
+    <small>有 BaseColor 贴图时贴图优先；此颜色同时用于 Classic 纯色显示。</small>
+    ${yarnPbrControls(asset.id, language)}
+    ${yarnLibraryError ? html`<p role="alert">${t(`yarnLibrary.${yarnLibraryError}`, language)}</p>` : null}
+  </section>`;
 }
 
 function changeQuery(field, value) {
@@ -158,8 +189,6 @@ export function yarnLibraryWorkspace() {
           <td class="yarn-asset-actions">
             <details ?open=${editingYarnId === asset.id} @toggle=${event => toggleYarnEditor(event, asset.id)}>
               <summary>${t("yarnLibrary.edit", language)}</summary>${yarnForm(language, asset)}
-              ${editingYarnId === asset.id && GLOBAL_STATE.workspaceMode === "yarns"
-                ? yarnPbrControls(asset.id, language) : null}
             </details>
             <button class="btn" type="button" @click=${() => {
               dispatch({ yarnLibraryError: deleteYarnAsset(asset.id) ? null : "inUse" });

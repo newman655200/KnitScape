@@ -183,6 +183,8 @@ const executionIntegrationSource = fs.readFileSync(
   "src/components/singleJerseyExecutionInput.js",
   "utf8"
 );
+const coordinatorSource = fs.readFileSync("src/components/simulationCoordinator.js", "utf8");
+const hostSource = fs.readFileSync("src/components/simulationPreviewHost.js", "utf8");
 assert.equal(
   simulationSource.includes("singleJerseyMachine"),
   false,
@@ -195,8 +197,22 @@ assert.match(
 );
 assert.match(
   simulationSource,
-  /createSingleJerseyExecutionInput/,
-  "runSimulation must consume Machine Domain output through the approved helper."
+  /import\s+\{\s*createSimulationCoordinator\s*\}\s+from\s+"\.\/simulationCoordinator\.js"/,
+  "runSimulation must consume Machine Domain output through the shared coordinator."
+);
+assert.equal((simulationSource.match(/createSimulationCoordinator\(/g) || []).length, 1,
+  "the app must create one computation coordinator.");
+assert.match(coordinatorSource,
+  /import\s+\{\s*createSingleJerseyExecutionInput\s*\}\s+from\s+"\.\/singleJerseyExecutionInput\.js"/,
+  "the coordinator must use the approved execution helper.");
+assert.equal((coordinatorSource.match(/createSingleJerseyExecutionInput\(/g) || []).length, 1,
+  "the coordinator must have a single Machine Domain integration call.");
+assert.doesNotMatch(coordinatorSource, /resolveSingleJerseyOperations|createSingleJerseySimulationInput|tracks\s*\[/,
+  "the coordinator must not bypass or duplicate Machine Domain operation resolution.");
+assert.doesNotMatch(
+  simulationSource + hostSource,
+  /createSingleJerseyExecutionInput|resolveSingleJerseyOperations|createSingleJerseySimulationInput|tracks\s*\[/,
+  "runner and renderer host must not create a second machine execution path."
 );
 
 console.log(

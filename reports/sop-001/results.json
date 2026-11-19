@@ -1,0 +1,270 @@
+{
+  "caseId": "SOP-001",
+  "name": "SOP-001 主纱验证版",
+  "generatedAt": "2026-10-15T21:59:53.1091511+08:00",
+  "level": 1,
+  "levelLabel": "DATA ENTRY ONLY",
+  "scope": "N6/W(6040) only; PARTIAL SOP REPRESENTATION",
+  "baseline": {
+    "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+    "tag": "baseline-trusted-yarn-length",
+    "branch": "main",
+    "trackedDiffEmpty": true
+  },
+  "confirmedSop": {
+    "machineDiameterInches": 32,
+    "gauge": 32,
+    "feedCycle": 8,
+    "totalNeedles": 3216,
+    "tensionCN": null,
+    "mainYarnTargetCmPer100Needles": 23,
+    "needleArrangement": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mainYarn": "N6/W(6040)",
+    "tensionStatus": "Tension awaiting confirmation",
+    "needleTypeCount": 4
+  },
+  "cam": {
+    "entered": false,
+    "tracks": null,
+    "missingCells": 32,
+    "searchScope": "Current project files excluding dependency/build/generated report and presentation media; img007.jpg and img009.jpg visually inspected",
+    "reason": "缺少可可靠读取的Cam逐格符号"
+  },
+  "actualProject": {
+    "needleArrangementInputs": [
+      "1234",
+      "",
+      "",
+      ""
+    ],
+    "feedCount": 0,
+    "chartHeight": 40,
+    "singleJerseyCamProgram": null,
+    "needleArrangement": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "mainYarnAsset": {
+      "id": "yarn-1792072401481",
+      "name": "N6/W(6040)",
+      "category": "OTHER",
+      "createdAt": "2026-10-15T13:53:21.481Z",
+      "updatedAt": "2026-10-15T13:56:16.322Z",
+      "pbr": {
+        "baseColor": {
+          "assetRef": "assets/yarn/yarn-1792072401481/baseColor",
+          "mimeType": "image/png",
+          "byteLength": 578155,
+          "fileName": "Albedo.png"
+        },
+        "normal": {
+          "assetRef": "assets/yarn/yarn-1792072401481/normal",
+          "mimeType": "image/png",
+          "byteLength": 656227,
+          "fileName": "Normal.png"
+        },
+        "roughness": {
+          "assetRef": "assets/yarn/yarn-1792072401481/roughness",
+          "mimeType": "image/png",
+          "byteLength": 759035,
+          "fileName": "Roughness.png"
+        },
+        "height": null,
+        "ambientOcclusion": {
+          "assetRef": "assets/yarn/yarn-1792072401481/ambientOcclusion",
+          "mimeType": "image/png",
+          "byteLength": 700119,
+          "fileName": "AO.png"
+        },
+        "previewDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAQCAYAAABQrvyxAAAC3klEQVR4AexTX0hTURjf3WTOnH+2Ya5wmS7Rhrmp8w8rTNLcnbMiNbAHX2LgS/UQ2ZvgSxHYS08VEhSEBkarTJBIhBhqmctpm9vd5u6aut3Nu3l3N3b13m3dCQMN68VAhB045zvn+31/znd+32EyDvlIFXDQBKYYSDGwzxf4by0Uj8eBfd5l2/3POImzTjfTug3usTBhGL6JYdh1k8mk/jo11euCYacVgpyTE580c9/1VthuV9M4SBCEkiBJZSAQaLfD9hterxf0eDy3cRxvp3GVyWR+MDs79+0XvOyDIGiatgfp5EoEQZV2aKmNJElwyTjfY4WsLovV8dJOx9XpdK0oiioxFAU9Pl+XxQLNm82mvmWbjTAsLEwZDIsDViv0uKhIJHE6nE/sFkurzWYGXS4HaDEaVYm8TACIIUuLP26FgxtvsA30fiiMH0V97s9MgFHPPcK5h4dCwkgkwmZQFID5/XlALMbK5GT6PB537+rK2iPEszrEiMUUTof1Drbuk/kDwVyHeaE8HI7cDQYCfIoi2RQV5eL4Bg/xeB+ajIY4HnB30QW+w/yI1m42vkd8yLUIHnyRlZ1VtrlJ6ImtrY4cHm+goOD4BIuVNuNdW9Gso0gn7LA9Q9bcb0liM5ugqLRoNMpiFhYWj9Sfa1TU1CsyLqra0r/o54vrFA2a8xdaNKUSifaMVPpcKBR+4HC54/n5+a9yBYIR+jxaUSFtqpZXsU+VlHHoZH0q9SVOswpkyypl7Gn9zxyBgNecw+cPDw4+HSuVlL/m8/OGG5taeFeudp6Q1yrSJRIJW325I732bAOnpPS0pqhYzDkmFGZIpVVjNDZ2UiTSCgSCcbFYPFRZU1dWLa/NawLVosxsntqPhbRSqXSUz+d/3PUHAACI93R3uxNyj3b7p2qHT7y/vz+WNN65T+oScoc9I7lPyMRM4H+bMplsUi6Xk0l8VwFJ5WGSqQIOmq0UAwfNwG8AAAD//3UzcAoAAAAGSURBVAMAoadiMO6QZ2IAAAAASUVORK5CYII=",
+        "physicalRepeatLengthMm": 22.987
+      }
+    },
+    "machineDiameterInchesStored": false,
+    "diameterCalibration": "DIAMETER_NOT_CALIBRATED",
+    "chartWidth": 30,
+    "totalNeedlesStored": false,
+    "defaultDiameterModelUnits": 0.24,
+    "machineGauge": 32,
+    "defaultYarnPlies": [
+      {
+        "name": "main",
+        "color": "rgba(190,190,190,1)",
+        "diameter": 0.24,
+        "lengthScaleY": 1,
+        "enabled": true,
+        "texture": null
+      },
+      {
+        "name": "companion",
+        "color": "rgba(80,140,220,1)",
+        "diameter": 0.14,
+        "lengthScaleY": 1,
+        "enabled": false,
+        "texture": null
+      }
+    ]
+  },
+  "physicalRepeat": {
+    "imageMetadataDpi": 96,
+    "widthPx": 2172,
+    "scanDpiUserProvided": 2400,
+    "heightIsYarnDiameter": false,
+    "roundTripVerified": true,
+    "storedMm": 22.987,
+    "uiAvailable": true,
+    "rendererReason": "No Cam / no Feed assignment / no machine simulation",
+    "intendedDisplayMm": 22.99,
+    "widthMm": 22.987,
+    "domainSupported": true,
+    "appliedToSopSimulation": false,
+    "heightPx": 724,
+    "rendererEffectiveRepeatMm": null,
+    "heightMm": 7.662333333333334,
+    "pngHasEmbeddedDpi": false,
+    "decoderDpiIsScanDpi": false
+  },
+  "pbr": {
+    "originalBytesPreserved": true,
+    "directory": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1",
+    "unsupportedFiles": [
+      "Metallic.png"
+    ],
+    "manualMapAssignments": [],
+    "allSameDimensions": true,
+    "recognizedMaps": {
+      "ambientOcclusion": "AO.png",
+      "baseColor": "Albedo.png",
+      "roughness": "Roughness.png",
+      "normal": "Normal.png"
+    }
+  },
+  "simulation": {
+    "close3dAvailable": false,
+    "ranSopMachineSimulation": false,
+    "front3dAvailable": false,
+    "back3dAvailable": false,
+    "previewValidity": "DESIGN_PREVIEW",
+    "side3dAvailable": false,
+    "colorObserved": "No final SOP material output; base design uses Legacy Yarn1 default rgba(190,190,190,1)",
+    "diameterObserved": "Legacy primaryPly default 0.24 model units",
+    "solverResults": [],
+    "mainYarnAssigned": false,
+    "physicalUvRuntimeVerified": false
+  },
+  "feeds": [
+    {
+      "feedNumber": 1,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 2,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 3,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 4,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 5,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 6,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 7,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    },
+    {
+      "feedNumber": 8,
+      "assignmentEntered": false,
+      "yarnId": null,
+      "targetEnteredCmPer100Needles": null,
+      "solvedCmPer100Needles": null,
+      "status": null,
+      "appliedToSimulation": null,
+      "errorCmPer100Needles": null,
+      "auditReason": "NOT_RUN: CAM_AND_FEED_MAP_NOT_PROVIDED",
+      "tensionCN": null
+    }
+  ],
+  "validation": {
+    "buildCommand": "npm run build",
+    "caseSimulationValidated": false,
+    "validatorsTotal": 36,
+    "exitCode": 0,
+    "command": "npm run validate",
+    "validatorsPassed": 36,
+    "buildExitCode": 0
+  },
+  "savedProject": "C:\\Users\\liuchen\\Desktop\\knitscape\\reports\\sop-001\\SOP-001-N6W6040-main-yarn.knitscape"
+}

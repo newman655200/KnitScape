@@ -5,11 +5,13 @@ import {
   YARN_PBR_MAP_KEYS,
 } from "../yarnTexture/yarnScanTexture";
 import { yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
-import { resolveYarnMaterial } from "../domain/yarnMaterial.js";
+export { resolveFeedYarnPlies } from "../domain/yarnMaterial.js";
 
 const imageCache = new Map();
 const retainedImageKeys = new Set();
 const tintedCache = new Map();
+const imageOwners = new Map();
+const legacyImageOwner = {};
 const IMAGE_CACHE_LIMIT = 24;
 const TINTED_CACHE_LIMIT = 24;
 
@@ -25,8 +27,19 @@ function rememberCacheRecord(cache, key, record, limit) {
   cache.set(key, record);
   const capacity = cache === imageCache ? Math.max(limit, retainedImageKeys.size) : limit;
   while (cache.size > capacity) {
+    cache.values().next().value.controller?.abort();
     cache.delete(cache.keys().next().value);
   }
+}
+
+function discardCacheRecord(cache, key) {
+  const record = cache.get(key);
+  if (!record) return;
+  cache.delete(key);
+  record.controller?.abort();
+  record.image = null;
+  if (record.canvas) record.canvas.width = record.canvas.height = 0;
+  record.canvas = null;
 }
 
 export function getYarnPbrMapSource(map) {
@@ -45,12 +58,14 @@ function queueImage(source) {
   const cached = cachedRecord(imageCache, dataUrl);
   if (cached) return cached;
 
-  const record = { image: null, promise: null };
+  const record = { image: null, promise: null, controller: new AbortController() };
   record.promise = (source?.assetRef
     ? yarnAssetRegistry.getObjectUrl(source.assetRef)
     : Promise.resolve(source))
-    .then(loadImageFromDataUrl)
+    .then(url => imageCache.get(dataUrl) === record && !record.controller.signal.aborted
+      ? loadImageFromDataUrl(url, { signal: record.controller.signal }) : null)
     .then((image) => {
+      if (imageCache.get(dataUrl) !== record || record.controller.signal.aborted) return null;
       record.image = image;
       return image;
     })
@@ -70,13 +85,18 @@ function queueTintedBrush(texture, color) {
   const cached = cachedRecord(tintedCache, key);
   if (cached) return cached;
 
-  const record = { canvas: null, promise: null };
+  const record = { canvas: null, promise: null, controller: new AbortController() };
   record.promise = createTintedTextureCanvas(
     texture.processedDataUrl,
     color,
-    texture.textureStrength
+    texture.textureStrength,
+    { signal: record.controller.signal }
   )
     .then((canvas) => {
+      if (tintedCache.get(key) !== record || record.controller.signal.aborted) {
+        canvas.width = canvas.height = 0;
+        return null;
+      }
       record.canvas = canvas;
       return canvas;
     })
@@ -121,40 +141,50 @@ export function collectYarnTextureSources(texture) {
     .filter(Boolean);
 }
 
-// Runtime material views share asset references; each Feed slot owns its scale.
-export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedIndices = null) {
-  const materials = new Map();
-  const library = new Map((yarnLibrary || []).map(yarn => [String(yarn.id), yarn]));
-  (feeds || []).forEach((feed, index) => {
-    if (usedFeedIndices && !usedFeedIndices.has(index)) return;
-    const yarns = Array.isArray(feed?.yarns) && feed.yarns.length ? feed.yarns : [null];
-    materials.set(index, yarns.map(yarn => {
-      const yarnId = yarn?.yarnId;
-      const asset = yarnId === null || yarnId === undefined || yarnId === ""
-        ? null : library.get(String(yarnId));
-      const material = resolveYarnMaterial({ yarnAsset: asset, legacyContext: primaryPly });
-      const hasAssetFields = Object.values(material.source).includes("ASSET");
-      // Preserve the historical no-field adapter identity for old projects.
-      return hasAssetFields ? { ...primaryPly, ...material, assetMaterial: true } : primaryPly;
-    }));
-  });
-  return materials;
-}
-
-export function retainYarnAssetTextureImages(materials) {
-  const retained = new Set(materials.flatMap(ply => collectYarnTextureSources(ply.texture))
-    .map(getYarnTextureSourceKey));
+function updateRetainedImageKeys() {
   retainedImageKeys.clear();
-  for (const key of retained) {
+  for (const owner of imageOwners.values()) for (const key of owner.images) {
     retainedImageKeys.add(key);
     cachedRecord(imageCache, key);
   }
+}
+
+function discardUnownedImages(previous) {
+  for (const key of previous?.images || []) {
+    if (!retainedImageKeys.has(key)) discardCacheRecord(imageCache, key);
+  }
+  for (const key of previous?.tinted || []) {
+    if (![...imageOwners.values()].some(owner => owner.tinted.has(key))) discardCacheRecord(tintedCache, key);
+  }
+}
+
+// Owners retain preview resources only. Registry binaries and object URLs
+// remain project-owned and are never released by a renderer mode change.
+export function retainYarnAssetTextureImages(materials, owner = legacyImageOwner) {
+  const previous = imageOwners.get(owner);
+  imageOwners.set(owner, {
+    images: new Set(materials.flatMap(ply => collectYarnTextureSources(ply.texture)).map(getYarnTextureSourceKey)),
+    tinted: new Set(materials.flatMap(ply => {
+      const texture = normalizeYarnTexture(ply.texture);
+      return texture?.enabled !== false && texture?.processedDataUrl && texture.useOriginalColor === false
+        ? [`${texture.processedDataUrl}|${ply.color}|${texture.textureStrength}`] : [];
+    })),
+  });
+  updateRetainedImageKeys();
+  discardUnownedImages(previous);
   for (const key of imageCache.keys()) {
-    if (key.startsWith("asset:") && !retained.has(key)) imageCache.delete(key);
+    if (key.startsWith("asset:") && !retainedImageKeys.has(key)) discardCacheRecord(imageCache, key);
   }
   while (imageCache.size > Math.max(IMAGE_CACHE_LIMIT, retainedImageKeys.size)) {
-    imageCache.delete(imageCache.keys().next().value);
+    discardCacheRecord(imageCache, imageCache.keys().next().value);
   }
+}
+
+export function releaseYarnTextureImages(owner) {
+  const previous = imageOwners.get(owner);
+  imageOwners.delete(owner);
+  updateRetainedImageKeys();
+  discardUnownedImages(previous);
 }
 
 export function prepareYarnTextureImages(yarnPlies) {

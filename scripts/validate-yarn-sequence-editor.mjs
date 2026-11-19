@@ -40,8 +40,12 @@ const stateSource = read("src/state.js");
 const viewSource = read("src/views/view.js");
 const yarnSequenceCanvasSource = read("src/components/yarnSequenceCanvas.js");
 const runSimulationSource = read("src/components/runSimulation.js");
+const coordinatorSource = read("src/components/simulationCoordinator.js");
+const previewHostSource = read("src/components/simulationPreviewHost.js");
 const yarnSimulationSource = [
   "src/simulation/yarnSimulation.js",
+  "src/simulation/computeYarnSimulation.js",
+  "src/simulation/yarnRenderItems.js",
   "src/simulation/yarnPathGeometry.js",
   "src/simulation/drawYarnSimulation.js",
 ]
@@ -170,7 +174,11 @@ expect(
 );
 
 expect(
-  runSimulationSource.includes("GLOBAL_STATE.yarnSequence,"),
+  /ownedCoordinator\.compute\(GLOBAL_STATE,/.test(runSimulationSource) &&
+    /yarnSequence:\s*state\.yarnSequence,/.test(coordinatorSource) &&
+    /computeYarnSimulation\(\{ \.\.\.common,/.test(coordinatorSource) &&
+    /resolveYarnRenderItems\(\{/.test(previewHostSource) &&
+    /yarnSequence:\s*state\.yarnSequence,/.test(previewHostSource),
   "right preview must pass the full yarnSequence object, not only pixels."
 );
 

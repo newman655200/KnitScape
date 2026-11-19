@@ -1,0 +1,37 @@
+{
+  "executedAt": "2026-10-07T03:11:20.233Z",
+  "browser": "Codex In-app Browser",
+  "cases": [
+    {
+      "testCase": "D",
+      "previewValidity": "DESIGN_PREVIEW"
+    },
+    {
+      "testCase": "A",
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "B",
+      "previewValidity": "INVALID"
+    },
+    {
+      "testCase": "C",
+      "previewValidity": "PARTIAL"
+    },
+    {
+      "testCase": "F",
+      "previewValidity": "VALIDATED"
+    },
+    {
+      "testCase": "E",
+      "previewValidity": "DESIGN_PREVIEW"
+    },
+    {
+      "testCase": "G",
+      "previewValidity": "PARTIAL"
+    }
+  ],
+  "readingDoesNotInvalidate": true,
+  "modalDismissalPreserved": true,
+  "consoleErrors": []
+}

@@ -1,0 +1,41 @@
+ M package.json
+ M scripts/validate-feed-yarn-pbr-renderer.mjs
+ M scripts/validate-single-jersey-cam-editor.mjs
+ M scripts/validate-single-jersey-execution-integration.mjs
+ M scripts/validate-workspace-mode.mjs
+ M scripts/validate-yarn-length-solver.mjs
+ M scripts/validate-yarn-simulation-characterization.mjs
+ M src/actions/importers.js
+ M src/actions/singleJerseyCamProgram.js
+ M src/actions/yarnLibrary.js
+ M src/codeGuide/generatedLines.json
+ M src/components/runSimulation.js
+ M src/events/simulationPointerInteraction.js
+ M src/i18n/translations.js
+ M src/simulation/drawYarnSimulation.js
+ M src/simulation/yarnLengthSolver.js
+ M src/simulation/yarnPathUvStrip.js
+ M src/simulation/yarnSimulation.js
+ M src/simulation/yarnTextureBrush.js
+ M src/state.js
+ M src/views/singleJerseyCamProgramEditor.js
+ M src/views/yarnLengthReadout.js
+ M styles.css
+?? docs/
+?? reports/
+?? scripts/browser-yarn-length-batch.mjs
+?? scripts/browser-yarn-length-feedback.mjs
+?? scripts/browser-yarn-length-input.mjs
+?? scripts/browser-yarn-length-structure.mjs
+?? scripts/validate-multi-yarn-renderer.mjs
+?? scripts/validate-yarn-length-batch-integration.mjs
+?? scripts/validate-yarn-length-failure-integration.mjs
+?? scripts/validate-yarn-length-input-integration.mjs
+?? scripts/validate-yarn-length-result-integration.mjs
+?? scripts/validate-yarn-length-structure-integration.mjs
+?? scripts/validate.mjs
+?? src/domain/feedYarnStructure.js
+?? src/domain/yarnLengthBatch.js
+?? src/domain/yarnLengthInput.js
+?? src/simulation/previewValidity.js
+?? src/views/yarnLengthSolverFeedback.js

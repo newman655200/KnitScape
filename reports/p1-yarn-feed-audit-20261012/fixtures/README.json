@@ -1,0 +1,14 @@
+{
+  "type": "Synthetic PNG fixtures for filename matching, independent material identity and byte round-trip; not physically calibrated material",
+  "sets": [
+    "A red",
+    "B blue"
+  ],
+  "maps": [
+    "BaseColor",
+    "Normal",
+    "Roughness",
+    "Height",
+    "AO"
+  ]
+}

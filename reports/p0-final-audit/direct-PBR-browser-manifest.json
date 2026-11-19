@@ -1,0 +1,245 @@
+{
+  "width": 48,
+  "height": 60,
+  "repeats": [
+    {
+      "bitmap": {
+        "pixels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "width": 4,
+        "height": 4
+      },
+      "pos": [
+        0,
+        0
+      ],
+      "area": [
+        48,
+        60
+      ]
+    }
+  ],
+  "yarnPalette": [
+    "rgba(190,190,190,1)"
+  ],
+  "yarnSequence": {
+    "pixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "width": 1,
+    "height": 60
+  },
+  "yarnPlies": [
+    {
+      "name": "main",
+      "color": "rgba(190,190,190,1)",
+      "diameter": 0.24,
+      "lengthScaleY": 1,
+      "enabled": true,
+      "texture": null
+    },
+    {
+      "name": "companion",
+      "color": "rgba(80,140,220,1)",
+      "diameter": 0.14,
+      "lengthScaleY": 1,
+      "enabled": false,
+      "texture": null
+    }
+  ],
+  "yarnLibrary": [
+    {
+      "id": 0,
+      "name": "Yarn 1",
+      "category": "T",
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "updatedAt": "2026-10-07T12:53:36.499Z",
+      "pbr": {
+        "baseColor": {
+          "assetRef": "assets/yarn/0/baseColor",
+          "mimeType": "image/jpeg",
+          "byteLength": 61694,
+          "fileName": "basecolor.jpg"
+        },
+        "normal": null,
+        "roughness": null,
+        "height": null,
+        "ambientOcclusion": null,
+        "previewDataUrl": "data:image/png;base64,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"
+      }
+    },
+    {
+      "id": "yarn-1791375202185",
+      "name": "Final B",
+      "category": "OTHER",
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "updatedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "singleJerseyCamProgram": {
+    "tracks": [
+      [
+        "K",
+        "K",
+        "K",
+        "K"
+      ],
+      [
+        "K",
+        "K",
+        "K",
+        "K"
+      ],
+      [
+        "K",
+        "K",
+        "K",
+        "K"
+      ],
+      [
+        "K",
+        "K",
+        "K",
+        "K"
+      ]
+    ],
+    "feeds": [
+      {
+        "yarns": [
+          {
+            "yarnId": 0,
+            "yarnLengthCmPer100Needles": 23,
+            "tensionCN": null,
+            "placement": "parallel"
+          }
+        ]
+      },
+      {
+        "yarns": [
+          {
+            "yarnId": 0,
+            "yarnLengthCmPer100Needles": 23,
+            "tensionCN": null,
+            "placement": "parallel"
+          },
+          {
+            "yarnId": "yarn-1791375202185",
+            "yarnLengthCmPer100Needles": 18,
+            "tensionCN": null,
+            "placement": "parallel"
+          }
+        ]
+      },
+      {
+        "yarns": [
+          {
+            "yarnId": 0,
+            "yarnLengthCmPer100Needles": 23,
+            "tensionCN": null,
+            "placement": "parallel"
+          }
+        ]
+      },
+      {
+        "yarns": [
+          {
+            "yarnId": 0,
+            "yarnLengthCmPer100Needles": 23,
+            "tensionCN": null,
+            "placement": "parallel"
+          }
+        ]
+      }
+    ]
+  },
+  "needleArrangement": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "needleArrangementInputs": [
+    "1234",
+    "",
+    "",
+    ""
+  ],
+  "machineGauge": 32,
+  "format": "knitscape",
+  "version": 2
+}

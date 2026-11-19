@@ -14,8 +14,15 @@ assert.ok(
 );
 
 const orchestrator = read("src/simulation/yarnSimulation.js");
-assert.match(orchestrator, /buildYarnPathGeometry/);
-assert.match(orchestrator, /drawYarnSimulation/);
+assert.match(orchestrator, /computeYarnSimulation/);
+const computation = read("src/simulation/computeYarnSimulation.js");
+assert.match(computation, /buildYarnPathGeometry/);
+assert.doesNotMatch(computation, /\b(?:document|window|devicePixelRatio|Image|WebGLRenderingContext)\b/);
+assert.doesNotMatch(computation, /(?:yarnTextureBrush|drawYarnSimulation|yarnUvWebglRenderer)/);
+assert.match(orchestrator, /createPbrPreviewRenderer/);
+const pbrPreview = read("src/simulation/pbrPreviewRenderer.js");
+assert.match(pbrPreview, /drawYarnSimulation/);
+assert.doesNotMatch(pbrPreview, /computeYarnSimulation|solveFeedYarnLengths|GLOBAL_STATE/);
 assert.doesNotMatch(orchestrator, /function layoutNodes/);
 assert.doesNotMatch(orchestrator, /function drawSegmentsToLayerUv/);
 assert.doesNotMatch(orchestrator, /function buildYarnLengthMetrics/);
@@ -32,12 +39,16 @@ for (const symbol of [
 
 const drawing = read("src/simulation/drawYarnSimulation.js");
 for (const symbol of [
-  "rowYarnPly",
   "drawSegmentsToLayerFallback",
   "drawSegmentsToLayerUv",
   "drawYarnSimulation",
 ]) {
   assert.match(drawing, new RegExp(symbol));
 }
+
+const items = read("src/simulation/yarnRenderItems.js");
+assert.match(items, /rowYarnPly/);
+assert.match(drawing, /resolveYarnRenderItems/);
+assert.doesNotMatch(drawing, /function rowYarnPly/);
 
 console.log("PASS: yarn simulation responsibilities are separated.");

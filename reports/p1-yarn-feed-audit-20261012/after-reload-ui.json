@@ -1,0 +1,41 @@
+{
+  "batchCount": "将修改 0 根纱线",
+  "checkedAssignments": 0,
+  "feeds": [
+    [
+      {
+        "name": "Yarn 1 ·\n          T-001",
+        "target": "23",
+        "yarnId": "yarn-1791811697830"
+      },
+      {
+        "name": "Yarn 2 ·\n          N-003",
+        "target": "27",
+        "yarnId": "yarn-1791811832008"
+      }
+    ],
+    [
+      {
+        "name": "Yarn 1 ·\n          T-001",
+        "target": "21",
+        "yarnId": "yarn-1791811697830"
+      }
+    ],
+    [
+      {
+        "name": "Yarn 1 ·\n          T-001",
+        "target": "23",
+        "yarnId": "yarn-1791811697830"
+      }
+    ],
+    [
+      {
+        "name": "Yarn 1 ·\n          T-001",
+        "target": "23",
+        "yarnId": "yarn-1791811697830"
+      }
+    ]
+  ],
+  "pendingNotice": false,
+  "validity": "VALIDATED"
+}

@@ -1,0 +1,97 @@
+- img "公司 logo"
+- heading "针织实验室（单面布）" [level=1]
+- generic: 语言
+- combobox "语言":
+  - option "简体中文" [selected]
+  - option "繁體中文"
+  - option "English"
+  - option "Tiếng Việt"
+- button "撤销":
+  - generic: 撤销
+- button "新建":
+  - generic: 新建
+- button "导入":
+  - generic: 导入
+- button "导出":
+  - generic: 导出
+- button "图库":
+  - generic: 图库
+- button "设置":
+  - generic: 设置
+- button "全屏":
+  - generic: 全屏
+- group "工作区入口":
+  - button "花型编辑"
+  - button "三角座 / 排针" [active] [pressed]
+  - button "纱线库"
+- heading "双纱参数" [level=3]
+- generic: 机号 G
+- spinbutton "机号 G": "32"
+- generic: 针距 0.794 mm
+- text: 当前纱长 24.79 cm / 100线圈
+- generic: 基础预览统计，非目标求解值
+- generic: 预览性能
+- combobox "预览性能":
+  - option "自动" [selected]
+  - option "质量"
+  - option "纯色"
+- generic: 第一支纱线
+- button "第一支纱线颜色":
+  - generic: 第一支纱线颜色
+- generic: 第一支纱线直径
+- slider "第一支纱线直径 0.24": "0.24"
+- generic: "0.24"
+- generic: 第一支纱线纱长
+- slider "第一支纱线纱长 1.00": "1"
+- generic: "1.00"
+- generic: 第二支纱线
+- button "第二支纱线颜色":
+  - generic: 第二支纱线颜色
+- checkbox "显示第二支纱线"
+- text: 显示第二支纱线
+- generic: 第二支纱线直径
+- slider "第二支纱线直径 0.14": "0.14"
+- generic: "0.14"
+- generic: 线圈形状跟随第一支纱线
+- heading "色纱" [level=3]
+- button "编辑色纱":
+  - generic: 编辑色纱
+- button "添加颜色":
+  - generic: 添加颜色
+- button "1":
+  - generic: "1"
+- button
+- generic: 编辑
+- button "打乱颜色":
+  - generic: 打乱颜色
+- button "随机颜色":
+  - generic: 随机颜色
+- main:
+  - heading "排针设置" [level=2]
+  - textbox "输入框1": "1234"
+  - textbox "输入框2"
+  - textbox "输入框3"
+  - textbox "输入框4"
+  - textbox "自动组合": "1234"
+  - button "确认排针"
+  - button "撤回排针"
+  - heading "Cam Program（三角座）" [level=2]
+  - paragraph: 尚未创建 Cam Program。创建后得到可调整尺寸的 4×4 全成圈（下）草稿；4×4 不是固定机器标准。
+  - button "创建 Cam Program"
+- heading "最终织物" [level=2]
+- region "目标纱长求解":
+  - status:
+    - strong: 目标纱长求解 · DESIGN_PREVIEW
+    - generic: 基础设计预览，尚无完整目标验证结果。
+    - generic: 仅模型几何求解，未经实机验证。未应用的求解值为候选值，不是当前模拟纱长。
+- checkbox "对比设计原稿"
+- text: 对比设计原稿
+- button "翻面":
+  - generic: 翻面
+- button "缩小":
+  - generic: 缩小
+- slider: "1"
+- button "放大":
+  - generic: 放大
+- button "适配":
+  - generic: 适配

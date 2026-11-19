@@ -1,0 +1,44 @@
+tag baseline-trusted-yarn-length
+
+Trusted feed yarn length workflow baseline
+7ababf2 feat: establish trusted feed yarn length workflow
+ package.json                                       |   7 +
+ scripts/browser-yarn-length-batch.mjs              | 185 +++++++++++++++
+ scripts/browser-yarn-length-feedback.mjs           |  93 ++++++++
+ scripts/browser-yarn-length-input.mjs              | 124 ++++++++++
+ scripts/browser-yarn-length-structure.mjs          |  85 +++++++
+ scripts/validate-feed-yarn-pbr-renderer.mjs        |  26 +--
+ scripts/validate-multi-yarn-renderer.mjs           | 259 +++++++++++++++++++++
+ scripts/validate-single-jersey-cam-editor.mjs      |  41 ++--
+ ...alidate-single-jersey-execution-integration.mjs |   7 +
+ scripts/validate-workspace-mode.mjs                |   5 +-
+ scripts/validate-yarn-length-batch-integration.mjs | 177 ++++++++++++++
+ .../validate-yarn-length-failure-integration.mjs   | 208 +++++++++++++++++
+ scripts/validate-yarn-length-input-integration.mjs | 197 ++++++++++++++++
+ .../validate-yarn-length-result-integration.mjs    | 192 +++++++++++++++
+ scripts/validate-yarn-length-solver.mjs            |   3 +-
+ .../validate-yarn-length-structure-integration.mjs | 145 ++++++++++++
+ .../validate-yarn-simulation-characterization.mjs  |   8 +-
+ scripts/validate.mjs                               |  21 ++
+ src/actions/importers.js                           |   2 +-
+ src/actions/singleJerseyCamProgram.js              |  75 +++---
+ src/actions/yarnLibrary.js                         |   1 +
+ src/codeGuide/generatedLines.json                  |  12 +-
+ src/components/runSimulation.js                    |  12 +
+ src/domain/feedYarnStructure.js                    |  12 +
+ src/domain/yarnLengthBatch.js                      |  48 ++++
+ src/domain/yarnLengthInput.js                      |  18 ++
+ src/events/simulationPointerInteraction.js         |   2 +
+ src/i18n/translations.js                           | 148 +++++++++++-
+ src/simulation/drawYarnSimulation.js               |  72 ++++--
+ src/simulation/previewValidity.js                  |  26 +++
+ src/simulation/yarnLengthSolver.js                 |  20 +-
+ src/simulation/yarnPathUvStrip.js                  |  11 +-
+ src/simulation/yarnSimulation.js                   | 103 +++++---
+ src/simulation/yarnTextureBrush.js                 |  20 +-
+ src/state.js                                       |  28 ++-
+ src/views/singleJerseyCamProgramEditor.js          | 180 ++++++++++++--
+ src/views/yarnLengthReadout.js                     |   1 +
+ src/views/yarnLengthSolverFeedback.js              |  66 ++++++
+ styles.css                                         |  27 +++
+ 39 files changed, 2497 insertions(+), 170 deletions(-)

@@ -1,0 +1,103 @@
+{
+  "protectedFiles": 434,
+  "retainedByteForByte": 423,
+  "changedOnlyWithinScope": [
+    "package.json",
+    "scripts/browser-yarn-length-batch.mjs",
+    "scripts/validate-single-jersey-cam-editor.mjs",
+    "scripts/validate-yarn-length-batch-integration.mjs",
+    "scripts/validate-yarn-length-input-integration.mjs",
+    "src/actions/singleJerseyCamProgram.js",
+    "src/domain/yarnLengthBatch.js",
+    "src/i18n/translations.js",
+    "src/state.js",
+    "src/views/singleJerseyCamProgramEditor.js",
+    "scripts/validate-workspace-mode.mjs"
+  ],
+  "unexpectedChanges": [],
+  "sourceAndTestFiles": 16,
+  "insertions": 341,
+  "deletions": 44,
+  "stats": [
+    {
+      "file": "package.json",
+      "insertions": 1,
+      "deletions": 0
+    },
+    {
+      "file": "src/state.js",
+      "insertions": 20,
+      "deletions": 4
+    },
+    {
+      "file": "src/domain/feedYarnStructure.js",
+      "insertions": 12,
+      "deletions": 0
+    },
+    {
+      "file": "src/domain/yarnLengthBatch.js",
+      "insertions": 12,
+      "deletions": 4
+    },
+    {
+      "file": "src/actions/importers.js",
+      "insertions": 1,
+      "deletions": 1
+    },
+    {
+      "file": "src/actions/singleJerseyCamProgram.js",
+      "insertions": 6,
+      "deletions": 4
+    },
+    {
+      "file": "src/actions/yarnLibrary.js",
+      "insertions": 1,
+      "deletions": 0
+    },
+    {
+      "file": "src/views/singleJerseyCamProgramEditor.js",
+      "insertions": 26,
+      "deletions": 11
+    },
+    {
+      "file": "src/i18n/translations.js",
+      "insertions": 4,
+      "deletions": 0
+    },
+    {
+      "file": "scripts/validate-yarn-length-structure-integration.mjs",
+      "insertions": 145,
+      "deletions": 0
+    },
+    {
+      "file": "scripts/browser-yarn-length-structure.mjs",
+      "insertions": 85,
+      "deletions": 0
+    },
+    {
+      "file": "scripts/validate-yarn-length-batch-integration.mjs",
+      "insertions": 12,
+      "deletions": 9
+    },
+    {
+      "file": "scripts/validate-yarn-length-input-integration.mjs",
+      "insertions": 4,
+      "deletions": 4
+    },
+    {
+      "file": "scripts/validate-single-jersey-cam-editor.mjs",
+      "insertions": 6,
+      "deletions": 4
+    },
+    {
+      "file": "scripts/validate-workspace-mode.mjs",
+      "insertions": 4,
+      "deletions": 1
+    },
+    {
+      "file": "scripts/browser-yarn-length-batch.mjs",
+      "insertions": 2,
+      "deletions": 2
+    }
+  ]
+}

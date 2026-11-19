@@ -30,6 +30,7 @@ uniform sampler2D u_metallicMap;
 uniform vec4 u_tint;
 uniform float u_textureStrength;
 uniform float u_fuzzStrength;
+uniform vec2 u_textureVRange;
 uniform bool u_hasBaseColorMap;
 uniform bool u_hasNormalMap;
 uniform bool u_hasRoughnessMap;
@@ -40,23 +41,24 @@ uniform bool u_hasMetallicMap;
 varying vec2 v_uv;
 
 void main() {
+  vec2 sampleUv = vec2(v_uv.x, mix(u_textureVRange.x, u_textureVRange.y, v_uv.y));
   vec4 base = u_tint;
   if (u_hasBaseColorMap) {
-    base = mix(u_tint, texture2D(u_baseColorMap, v_uv), u_textureStrength);
+    base = mix(u_tint, texture2D(u_baseColorMap, sampleUv), u_textureStrength);
   }
 
   float relief = 0.0;
   if (u_hasHeightMap) {
-    relief += texture2D(u_heightMap, v_uv).r - 0.5;
+    relief += texture2D(u_heightMap, sampleUv).r - 0.5;
   }
   if (u_hasNormalMap) {
-    relief += texture2D(u_normalMap, v_uv).g - 0.5;
+    relief += texture2D(u_normalMap, sampleUv).g - 0.5;
   }
 
-  float roughness = u_hasRoughnessMap ? texture2D(u_roughnessMap, v_uv).r : 0.55;
-  float ao = u_hasAmbientOcclusionMap ? texture2D(u_ambientOcclusionMap, v_uv).r : 1.0;
-  float metallic = u_hasMetallicMap ? texture2D(u_metallicMap, v_uv).r : 0.0;
-  float edge = smoothstep(0.0, 0.22, v_uv.y) * smoothstep(1.0, 0.78, v_uv.y);
+  float roughness = u_hasRoughnessMap ? texture2D(u_roughnessMap, sampleUv).r : 0.55;
+  float ao = u_hasAmbientOcclusionMap ? texture2D(u_ambientOcclusionMap, sampleUv).r : 1.0;
+  float metallic = u_hasMetallicMap ? texture2D(u_metallicMap, sampleUv).r : 0.0;
+  float edge = smoothstep(0.0, 0.22, v_uv.y) * (1.0 - smoothstep(0.78, 1.0, v_uv.y));
   float highlight = max(0.0, relief * (1.0 - roughness));
   float alpha = base.a * mix(edge, 1.0, 1.0 - u_fuzzStrength * 0.35);
 
@@ -69,6 +71,48 @@ void main() {
 
 const rendererCache = new WeakMap();
 const TEXTURE_CACHE_LIMIT = 24;
+
+function releaseOwnedContext(gl) {
+  // Only the factory owns this offscreen Canvas and its WebGL context.
+  gl.canvas.width = 1;
+  gl.canvas.height = 1;
+  gl.getExtension?.("WEBGL_lose_context")?.loseContext?.();
+}
+
+// Scan padding is a display concern, not a measurement of yarn diameter.
+export function findYarnTextureVRange({ width, height, data }) {
+  if (!(width > 0 && height > 0) || data.length !== width * height * 4) return [0, 1];
+  const rows = new Float64Array(height);
+  const columns = new Uint8Array(width);
+  let total = 0;
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const alpha = data[(y * width + x) * 4 + 3];
+    rows[y] += alpha;
+    total += alpha;
+    if (alpha >= 8) columns[x] = 1;
+  }
+  if (!total || columns.reduce((sum, value) => sum + value, 0) < width * 0.9) return [0, 1];
+  const significant = rows.reduce((max, value) => Math.max(max, value), 0) * 0.01;
+  let bands = 0, inBand = false;
+  for (const mass of rows) {
+    const active = mass >= significant;
+    if (active && !inBand) bands++;
+    inBand = active;
+  }
+  if (bands !== 1) return [0, 1];
+
+  // Keep 99.9% of alpha mass, then pad both sides for soft edges and fuzz.
+  const tail = total * 0.0005;
+  let start = 0, end = height, mass = 0;
+  while (start < end && mass + rows[start] <= tail) mass += rows[start++];
+  mass = 0;
+  while (end > start && mass + rows[end - 1] <= tail) mass += rows[--end];
+  const margin = Math.max(2, Math.ceil((end - start) * 0.1));
+  start = Math.max(0, start - margin);
+  end = Math.min(height, end + margin);
+  if (start === 0 || end === height || end - start >= height * 0.5) return [0, 1];
+  return [start / height, end / height];
+}
 
 function compileShader(gl, type, source) {
   const shader = gl.createShader(type);
@@ -147,9 +191,12 @@ export function materialMaps(material) {
 export class YarnUvWebglRenderer {
   constructor(gl, targetContext = null) {
     this.gl = gl;
+    this.ownsContext = false;
     this.targetContext = targetContext;
     this.program = createProgram(gl);
     this.textureCache = new Map();
+    this.buffers = new Set();
+    this.disposed = false;
     this.fallbackTexture = this.createSolidTexture([255, 255, 255, 255]);
     this.locations = {
       position: gl.getAttribLocation(this.program, "a_position"),
@@ -171,6 +218,7 @@ export class YarnUvWebglRenderer {
         "u_textureStrength"
       ),
       fuzzStrength: gl.getUniformLocation(this.program, "u_fuzzStrength"),
+      textureVRange: gl.getUniformLocation(this.program, "u_textureVRange"),
       hasBaseColorMap: gl.getUniformLocation(
         this.program,
         "u_hasBaseColorMap"
@@ -189,7 +237,8 @@ export class YarnUvWebglRenderer {
 
     gl.useProgram(this.program);
     gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // Straight shader RGB becomes premultiplied framebuffer RGB exactly once.
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
 
   createSolidTexture(pixel) {
@@ -266,7 +315,9 @@ export class YarnUvWebglRenderer {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    // Data-map channels and straight Albedo RGB must not be scaled by alpha.
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     gl.texImage2D(
       gl.TEXTURE_2D,
       0,
@@ -282,6 +333,26 @@ export class YarnUvWebglRenderer {
     return texture;
   }
 
+  textureVRange(source) {
+    const record = this.textureCache.get(getYarnTextureSourceKey(source));
+    if (!record) return [0, 1];
+    if (record.vRange) return record.vRange;
+    const image = getReadyYarnTextureImage(source);
+    if (!image) return [0, 1];
+    record.vRange = [0, 1];
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth || image.width;
+      canvas.height = image.naturalHeight || image.height;
+      const context = canvas.getContext("2d");
+      context.drawImage(image, 0, 0);
+      record.vRange = findYarnTextureVRange(context.getImageData(0, 0, canvas.width, canvas.height));
+    } catch {
+      // Unreadable pixels keep the original full-image sampling.
+    }
+    return record.vRange;
+  }
+
   clear(width, height) {
     const gl = this.gl;
     gl.canvas.width = width;
@@ -294,6 +365,7 @@ export class YarnUvWebglRenderer {
   bindArrayBuffer(location, data, size) {
     const gl = this.gl;
     const buffer = gl.createBuffer();
+    this.buffers.add(buffer);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(location);
@@ -321,6 +393,7 @@ export class YarnUvWebglRenderer {
     );
     const uvBuffer = this.bindArrayBuffer(this.locations.uv, strip.uvs, 2);
     const indexBuffer = gl.createBuffer();
+    this.buffers.add(indexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, strip.indices, gl.STATIC_DRAW);
 
@@ -351,6 +424,8 @@ export class YarnUvWebglRenderer {
       ambientOcclusion: this.textureFromDataUrl(maps.ambientOcclusion),
       metallic: this.textureFromDataUrl(maps.metallic),
     };
+    const vRange = this.textureVRange(maps.baseColor);
+    gl.uniform2f(this.locations.textureVRange, vRange[0], vRange[1]);
 
     this.bindTexture(0, this.locations.baseColorMap, textures.baseColor);
     this.bindTexture(1, this.locations.normalMap, textures.normal);
@@ -378,6 +453,9 @@ export class YarnUvWebglRenderer {
     gl.deleteBuffer(positionBuffer);
     gl.deleteBuffer(uvBuffer);
     gl.deleteBuffer(indexBuffer);
+    this.buffers.delete(positionBuffer);
+    this.buffers.delete(uvBuffer);
+    this.buffers.delete(indexBuffer);
     return true;
   }
 
@@ -387,12 +465,29 @@ export class YarnUvWebglRenderer {
   }
 
   dispose() {
+    if (this.disposed) return;
+    this.disposed = true;
     const gl = this.gl;
     this.textureCache.forEach((record) => gl.deleteTexture(record.texture));
     this.textureCache.clear();
+    this.buffers.forEach(buffer => gl.deleteBuffer(buffer));
+    this.buffers.clear();
+    this.activeTextureKeys?.clear();
     gl.deleteTexture(this.fallbackTexture);
     gl.deleteProgram(this.program);
+    if (this.targetCanvas && rendererCache.get(this.targetCanvas) === this) {
+      rendererCache.delete(this.targetCanvas);
+    }
+    this.targetContext = null;
+    this.targetCanvas = null;
+    if (this.ownsContext) releaseOwnedContext(gl);
+    this.gl = null;
   }
+}
+
+export function disposeWebglYarnRenderer(canvas) {
+  rendererCache.get(canvas)?.dispose();
+  rendererCache.delete(canvas);
 }
 
 export function retainWebglYarnTextures(canvas, sources) {
@@ -405,19 +500,23 @@ export function getWebglYarnRenderer(canvas) {
   if (cached) return cached;
 
   const targetContext = canvas.getContext?.("2d");
+  if (!targetContext) return null;
   const webglCanvas = document.createElement("canvas");
   const gl = webglCanvas.getContext("webgl", {
     alpha: true,
     antialias: true,
     premultipliedAlpha: true,
   });
-  if (!gl || !targetContext) return null;
+  if (!gl) return null;
 
   try {
     const renderer = new YarnUvWebglRenderer(gl, targetContext);
+    renderer.ownsContext = true;
+    renderer.targetCanvas = canvas;
     rendererCache.set(canvas, renderer);
     return renderer;
   } catch (error) {
+    releaseOwnedContext(gl);
     console.warn("WebGL yarn texture renderer unavailable.", error);
     return null;
   }

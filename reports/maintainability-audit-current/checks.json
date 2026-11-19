@@ -1,0 +1,23 @@
+[
+  {
+    "name": "validate",
+    "command": "npm.cmd run validate",
+    "exit": 1,
+    "error": null,
+    "elapsedMs": 141504
+  },
+  {
+    "name": "build",
+    "command": "npm.cmd run build",
+    "exit": 0,
+    "error": null,
+    "elapsedMs": 3666
+  },
+  {
+    "name": "diff-check",
+    "command": "git diff --check",
+    "exit": 0,
+    "error": null,
+    "elapsedMs": 46
+  }
+]

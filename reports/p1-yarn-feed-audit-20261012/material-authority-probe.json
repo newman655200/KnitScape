@@ -1,0 +1,123 @@
+{
+  "audit": "P1 Yarn/Feed material authority",
+  "status": "PASS",
+  "baseline": {
+    "branch": "main",
+    "head": "7ababf264d495f6b96d4d66652c529424938ac4d"
+  },
+  "evidenceType": "node-test-fixture-calling-production-functions",
+  "limitations": {
+    "realBrowser": false,
+    "fullSimulationEntryExecuted": false,
+    "browserCanvasRasterization": false,
+    "realImageDecode": false,
+    "gpuUpload": false,
+    "webglShaderExecution": false,
+    "importMetaPatternLibraryStubbed": true
+  },
+  "productionFunctions": [
+    "normalizeYarnLibrary",
+    "resolveFeedYarnPlies",
+    "drawYarnSimulation",
+    "prepareYarnTextureImages",
+    "drawYarnTexturePath",
+    "materialMaps",
+    "getReadyYarnTextureImage"
+  ],
+  "probes": {
+    "materialAuthority": {
+      "pass": true,
+      "inputAssetsHadDistinctColorAndDiameter": true,
+      "normalizedAssetHasColorOrDiameter": false,
+      "allAssignmentsUseLegacyPrimaryColorAndDiameter": true,
+      "noPbrReturnsPrimaryObject": true,
+      "partialPbrReplacesWholeTextureRatherThanFillingLegacyMaps": true,
+      "materials": [
+        {
+          "yarnId": "A",
+          "color": "#ff0000",
+          "diameter": 0.24,
+          "scanSource": "",
+          "physicalRepeatLengthMm": 8,
+          "mapSources": {
+            "baseColor": "asset:fixture-own-A",
+            "normal": "",
+            "roughness": "",
+            "height": "",
+            "ambientOcclusion": ""
+          }
+        },
+        {
+          "yarnId": "B",
+          "color": "#ff0000",
+          "diameter": 0.24,
+          "scanSource": "fixture-legacy-scan",
+          "physicalRepeatLengthMm": 12,
+          "mapSources": {
+            "baseColor": "fixture-legacy-base",
+            "normal": "",
+            "roughness": "",
+            "height": "",
+            "ambientOcclusion": ""
+          }
+        },
+        {
+          "yarnId": "C",
+          "color": "#ff0000",
+          "diameter": 0.24,
+          "scanSource": "",
+          "physicalRepeatLengthMm": 15,
+          "mapSources": {
+            "baseColor": "",
+            "normal": "asset:fixture-own-C-normal",
+            "roughness": "",
+            "height": "",
+            "ambientOcclusion": ""
+          }
+        }
+      ]
+    },
+    "strandCount": {
+      "pass": true,
+      "assignmentCount": 3,
+      "enabledLegacySecondCount": 1,
+      "actualSolidStrandCount": 4,
+      "rawStrokeCountIncludingShadows": 8,
+      "strands": [
+        {
+          "color": "#ff0000",
+          "width": 0.24
+        },
+        {
+          "color": "#ff0000",
+          "width": 0.24
+        },
+        {
+          "color": "#ff0000",
+          "width": 0.24
+        },
+        {
+          "color": "#0000ff",
+          "width": 0.14
+        }
+      ]
+    },
+    "legacySourcePriority": {
+      "pass": true,
+      "canvasSelectedSource": "fixture-legacy-scan",
+      "webglSelectedSource": "fixture-legacy-base",
+      "prioritiesDiffer": true
+    },
+    "legacyColdTint": {
+      "pass": true,
+      "useOriginalColor": false,
+      "canvasTintedPatternReady": true,
+      "webglRawImageReady": false
+    }
+  },
+  "fixtureImageSources": [
+    "fixture-legacy-base",
+    "fixture-legacy-scan",
+    "fixture-cold-tint-scan"
+  ]
+}

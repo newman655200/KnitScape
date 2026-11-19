@@ -3,6 +3,8 @@ import {
   beginTexturePreviewInteraction,
   endTexturePreviewInteraction,
 } from "../actions/texturePerformance";
+const interactions = new Set();
+export function endSimulationTouchInteractions() { for (const end of [...interactions]) end(); }
 
 function pan(e, sim) {
   const startPos = { x: e.clientX, y: e.clientY };
@@ -26,15 +28,19 @@ function pan(e, sim) {
     sim.removeEventListener("touchcancel", end);
     sim.removeEventListener("touchend", end);
     endTexturePreviewInteraction();
+    interactions.delete(end);
   }
 
   sim.addEventListener("touchmove", move);
+  interactions.add(end);
   sim.addEventListener("touchcancel", end);
   sim.addEventListener("touchend", end);
 }
 
 export function simulationTouchInteraction(simContainer) {
-  simContainer.addEventListener("touchstart", (e) => {
+  const start = (e) => {
     pan(e.touches[0], simContainer);
-  });
+  };
+  simContainer.addEventListener("touchstart", start);
+  return () => { endSimulationTouchInteractions(); simContainer.removeEventListener("touchstart", start); };
 }

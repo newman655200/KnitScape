@@ -1,0 +1,15 @@
+{
+  "protectedCount": 1334,
+  "changedExisting": [],
+  "addedOutsideAuditDirectory": [],
+  "branch": "main",
+  "headUnchanged": true,
+  "indexUnchanged": true,
+  "refsUnchanged": true,
+  "trackedDiffUnchanged": true,
+  "diffCheckExit": 0,
+  "diffCheckStdout": "",
+  "status": " M AGENTS.md\n M KnitScape_当前功能与算法.md\n M NEXT_TASK.md\n M README.md\n M package.json\n M scripts/validate-single-jersey-execution-integration.mjs\n M scripts/validate-texture-cache-lifecycle.mjs\n M scripts/validate-two-ply-yarn.mjs\n M src/components/runSimulation.js\n M src/domain/yarnLibrary.js\n M src/i18n/translations.js\n M src/simulation/drawYarnSimulation.js\n M src/simulation/yarnPathGeometry.js\n M src/simulation/yarnSimulation.js\n M src/simulation/yarnTextureBrush.js\n M src/simulation/yarnUvWebglRenderer.js\n M src/yarnTexture/yarnScanTexture.js\n?? PBR/\n?? ai-manufacturing-strategy-deck/\n?? docs/\n?? img009.jpg\n?? reports/\n?? scripts/validate-yarn-material-authority.mjs\n?? src/domain/yarnMaterial.js\n?? 面料放大.jpg\n",
+  "buildException": "npm run build regenerated ignored dist/, explicitly allowed by this audit; ignored node_modules/dist/.git are not in protected Git-visible file list.",
+  "passed": true
+}

@@ -1,0 +1,439 @@
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__importers.js" b/src/actions/importers.js
+index 121f3c6..bf4e46d 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__importers.js"
++++ b/src/actions/importers.js
+@@ -7,7 +7,7 @@ import {
+   DEFAULT_STITCH_SYMBOL_INDEX,
+ } from "../constants";
+ import { normalizeYarnPly } from "../yarnTexture/yarnScanTexture";
+-import { normalizeYarnSequence } from "./yarnSequenceRows";
++import { assertValidYarnSequence, normalizeYarnSequence } from "./yarnSequenceRows";
+ import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
+ import { normalizeSingleJerseyCamProgram } from "./singleJerseyCamProgram.js";
+ import { resolveSingleJerseyOperations } from "../domain/singleJerseyMachine.js";
+@@ -96,11 +96,15 @@ export function loadJSON(patternJSON, assetRegistry = null) {
+     validatePattern(project);
+     const { yarnSequence, yarnPalette, yarnPlies, repeats, width, height } = project;
+     const chart = Bimp.empty(width, height, DEFAULT_STITCH_SYMBOL_INDEX);
++    const nextPalette = Array.isArray(yarnPalette) && yarnPalette.length
++      ? yarnPalette : [DEFAULT_YARN_COLOR];
++    // Validate raw references before normalization or Bimp can coerce/crop them.
++    assertValidYarnSequence(yarnSequence, nextPalette.length);
+     action = {
+       ...yarnProjectFields(project),
+       workspaceMode: "pattern",
+-      yarnPalette: Array.isArray(yarnPalette) && yarnPalette.length
+-        ? yarnPalette : [DEFAULT_YARN_COLOR],
++      yarnPalette: nextPalette,
++      activeYarn: 0,
+       yarnPlies: cloneYarnPlies(yarnPlies),
+       width, height,
+       yarnSequence: normalizeYarnSequence(yarnSequence, { height: chart.height, fillYarn: 0 }),
+@@ -152,6 +156,7 @@ export function newPattern() {
+   dispatch({
+     yarnSequence: normalizeYarnSequence(undefined, { height: chart.height, fillYarn: 0 }),
+     yarnPalette: [DEFAULT_YARN_COLOR],
++    activeYarn: 0,
+     yarnPlies: cloneYarnPlies(),
+     chart,
+     repeats: [{ bitmap: Bimp.empty(4, 4, DEFAULT_STITCH_SYMBOL_INDEX), area: [30, 40], pos: [0, 0] }],
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__exporters.js" b/src/actions/exporters.js
+index 43e67f4..0a51cb2 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__exporters.js"
++++ b/src/actions/exporters.js
+@@ -2,6 +2,7 @@ import { createProjectPackage } from "./projectPackage.js";
+ import { t } from "../i18n/index.js";
+ import { GLOBAL_STATE, dispatch } from "../state";
+ import { download, makeBMP } from "../utils";
++import { assertValidYarnSequence } from "./yarnSequenceRows";
+ 
+ export function downloadSVG() {
+   const svg = document.getElementById("simulation");
+@@ -133,6 +134,7 @@ export function downloadKniterate() {
+ }
+ 
+ export function getProjectData() {
++  assertValidYarnSequence(GLOBAL_STATE.yarnSequence, GLOBAL_STATE.yarnPalette.length);
+   return structuredClone({
+     width: GLOBAL_STATE.chart.width,
+     height: GLOBAL_STATE.chart.height,
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__yarnSequenceRows.js" b/src/actions/yarnSequenceRows.js
+index 1234fbd..173c555 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__yarnSequenceRows.js"
++++ b/src/actions/yarnSequenceRows.js
+@@ -1,5 +1,21 @@
+ import { Bimp } from "../lib/Bimp.js";
+ 
++export function isValidYarnPaletteIndex(index, paletteLength) {
++  return Number.isInteger(index) && index >= 0 && index < paletteLength;
++}
++
++export function assertValidYarnPaletteIndex(index, paletteLength) {
++  if (!isValidYarnPaletteIndex(index, paletteLength)) {
++    throw new RangeError(`Yarn sequence references invalid palette index ${String(index)} (palette length ${paletteLength}).`);
++  }
++}
++
++export function assertValidYarnSequence(yarnSequence, paletteLength) {
++  const pixels = Array.isArray(yarnSequence) || yarnSequence instanceof Uint8ClampedArray
++    ? yarnSequence : yarnSequence?.pixels || [];
++  for (const pixel of pixels) assertValidYarnPaletteIndex(pixel, paletteLength);
++}
++
+ function normalizedYarnIndex(value) {
+   const index = Math.floor(Number(value));
+   return Number.isFinite(index) && index >= 0 ? index : 0;
+@@ -52,8 +68,11 @@ export function yarnIndexForSequenceRow(yarnSequence, row) {
+ export function resizeYarnSequenceToChartHeight(
+   yarnSequence,
+   chartHeight,
+-  activeYarn = 0
++  activeYarn,
++  paletteLength
+ ) {
++  assertValidYarnPaletteIndex(activeYarn, paletteLength);
++  assertValidYarnSequence(yarnSequence, paletteLength);
+   const nextHeight = normalizedHeight(chartHeight);
+   const normalizedSequence = normalizeYarnSequence(yarnSequence, {
+     height: Math.min(nextHeight, normalizedHeight(yarnSequence?.height)),
+@@ -61,7 +80,7 @@ export function resizeYarnSequenceToChartHeight(
+   const width = 1;
+   const previousPixels = Array.from(normalizedSequence.pixels);
+   const previousHeight = normalizedSequence.height;
+-  const fillColor = normalizedYarnIndex(activeYarn);
++  const fillColor = activeYarn;
+   const pixels = [];
+ 
+   for (let y = 0; y < nextHeight; y++) {
+@@ -75,10 +94,11 @@ export function resizeYarnSequenceToChartHeight(
+   return new Bimp(width, nextHeight, pixels);
+ }
+ 
+-export function resizeYarnSequenceRows(yarnSequence, requestedHeight, activeYarn) {
++export function resizeYarnSequenceRows(yarnSequence, requestedHeight, activeYarn, paletteLength) {
+   return resizeYarnSequenceToChartHeight(
+     yarnSequence,
+     requestedHeight,
+-    activeYarn
++    activeYarn,
++    paletteLength
+   );
+ }
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__repeatDimensions.js" b/src/actions/repeatDimensions.js
+index 8a059e7..d00871b 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__actions__repeatDimensions.js"
++++ b/src/actions/repeatDimensions.js
+@@ -41,7 +41,8 @@ export function chartResizeForRepeat(repeatIndex, area) {
+     yarnSequence: resizeYarnSequenceToChartHeight(
+       GLOBAL_STATE.yarnSequence,
+       area[1],
+-      GLOBAL_STATE.activeYarn
++      GLOBAL_STATE.activeYarn,
++      GLOBAL_STATE.yarnPalette.length
+     ),
+   };
+ }
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__events__colorSequencePointerInteraction.js" b/src/events/colorSequencePointerInteraction.js
+index 98b70d6..8cfcebf 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__events__colorSequencePointerInteraction.js"
++++ b/src/events/colorSequencePointerInteraction.js
+@@ -4,6 +4,7 @@ import {
+   endTexturePreviewInteraction,
+ } from "../actions/texturePerformance";
+ import { colorSequencePosAtCoords } from "../utils";
++import { isValidYarnPaletteIndex } from "../actions/yarnSequenceRows";
+ 
+ function brushColor(e, colorCanvas) {
+   let pos = colorSequencePosAtCoords(e, colorCanvas);
+@@ -15,6 +16,7 @@ function brushColor(e, colorCanvas) {
+   });
+ 
+   function move(e) {
++    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
+     let newPos = colorSequencePosAtCoords(e, colorCanvas);
+     if (newPos.x == pos.x && newPos.y == pos.y) return;
+ 
+@@ -44,6 +46,7 @@ function brushColor(e, colorCanvas) {
+ 
+ export function colorSequencePointerInteraction(colorCanvas) {
+   colorCanvas.addEventListener("pointerdown", (e) => {
++    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
+     dispatch({ transforming: true });
+     beginTexturePreviewInteraction();
+ 
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__events__colorSequenceTouchInteraction.js" b/src/events/colorSequenceTouchInteraction.js
+index 9cbde8d..e081946 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__events__colorSequenceTouchInteraction.js"
++++ b/src/events/colorSequenceTouchInteraction.js
+@@ -4,6 +4,7 @@ import {
+   endTexturePreviewInteraction,
+ } from "../actions/texturePerformance";
+ import { colorSequencePosAtCoords } from "../utils";
++import { isValidYarnPaletteIndex } from "../actions/yarnSequenceRows";
+ 
+ function brushColor(e, colorCanvas) {
+   let pos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
+@@ -15,6 +16,7 @@ function brushColor(e, colorCanvas) {
+   });
+ 
+   function move(e) {
++    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
+     let newPos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
+     if (newPos.x == pos.x && newPos.y == pos.y) return;
+ 
+@@ -45,6 +47,7 @@ function brushColor(e, colorCanvas) {
+ 
+ export function colorSequenceTouchInteraction(canvas) {
+   canvas.addEventListener("touchstart", (e) => {
++    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
+     dispatch({ transforming: true });
+     beginTexturePreviewInteraction();
+ 
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__views__yarnPicker.js" b/src/views/yarnPicker.js
+index f1b9028..ec68272 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__views__yarnPicker.js"
++++ b/src/views/yarnPicker.js
+@@ -21,6 +21,8 @@ function deleteColor(index) {
+ 
+   dispatch({
+     yarnPalette: newPalette,
++    activeYarn: GLOBAL_STATE.activeYarn === index ? 0
++      : GLOBAL_STATE.activeYarn > index ? GLOBAL_STATE.activeYarn - 1 : GLOBAL_STATE.activeYarn,
+     yarnSequence: new Bimp(
+       GLOBAL_STATE.yarnSequence.width,
+       GLOBAL_STATE.yarnSequence.height,
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\scripts__validate-yarn-sequence-editor.mjs" b/scripts/validate-yarn-sequence-editor.mjs
+index 0552555..7338e8a 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\scripts__validate-yarn-sequence-editor.mjs"
++++ b/scripts/validate-yarn-sequence-editor.mjs
+@@ -222,7 +222,7 @@ if (exists(helperPath)) {
+     typeof helpers.resizeYarnSequenceToChartHeight === "function"
+   ) {
+     const base = new Bimp(1, 2, [0, 1]);
+-    const grown = helpers.resizeYarnSequenceToChartHeight(base, 5, 2);
++    const grown = helpers.resizeYarnSequenceToChartHeight(base, 5, 2, 3);
+     expect(grown.width === 1, "sequence width must remain one yarn selector column.");
+     expect(grown.height === 5, "sequence height must grow to chart.height.");
+     expect(
+@@ -230,7 +230,7 @@ if (exists(helperPath)) {
+       "added chart-height rows must be filled with the current active yarn."
+     );
+ 
+-    const reduced = helpers.resizeYarnSequenceToChartHeight(grown, 1, 0);
++    const reduced = helpers.resizeYarnSequenceToChartHeight(grown, 1, 0, 3);
+     expect(reduced.height === 1, "sequence height must shrink to chart.height.");
+     expect(
+       Array.from(reduced.pixels).join(",") === "0",
+@@ -344,6 +344,7 @@ try {
+ 
+   stateModule.loadWorkspace({
+     activeYarn: 2,
++    yarnPalette: ["first", "second", "third"],
+     chart: Bimp.empty(48, 60, 0),
+     yarnSequence: new Bimp(1, 60, Array(60).fill(0)),
+     repeats: [
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\scripts__validate-project-load-lifecycle.mjs" b/scripts/validate-project-load-lifecycle.mjs
+index 2350ff2..b80c24a 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\scripts__validate-project-load-lifecycle.mjs"
++++ b/scripts/validate-project-load-lifecycle.mjs
+@@ -1,4 +1,5 @@
+ import assert from "node:assert/strict";
++import { readFileSync } from "node:fs";
+ import { createServer } from "vite";
+ 
+ // Exercise the real actions, StateMonitor, serialization and asset registry.
+@@ -39,7 +40,7 @@ try {
+   const stateModule = await server.ssrLoadModule("/src/state.js");
+   const { loadJSON, loadProjectFile, loadLibraryPattern, newPattern } =
+     await server.ssrLoadModule("/src/actions/importers.js");
+-  const { getProjectData } = await server.ssrLoadModule("/src/actions/exporters.js");
++  const { getProjectData, downloadProject } = await server.ssrLoadModule("/src/actions/exporters.js");
+   const { createProjectPackage, readProjectPackage } =
+     await server.ssrLoadModule("/src/actions/projectPackage.js");
+   const { yarnAssetRegistry } = await server.ssrLoadModule("/src/yarnTexture/yarnAssetRegistry.js");
+@@ -208,6 +209,160 @@ try {
+       assert.equal(opened.project.yarnLibrary[0].name, "Round trip");
+     } finally { opened.registry.clear(); }
+   });
++  // Palette/sequence integrity: run the real lifecycle, event listeners and resize actions.
++  const { Bimp } = await server.ssrLoadModule("/src/lib/Bimp.js");
++  const { chartResizeForRepeat } = await server.ssrLoadModule("/src/actions/repeatDimensions.js");
++  const { colorSequencePointerInteraction } = await server.ssrLoadModule("/src/events/colorSequencePointerInteraction.js");
++  const { colorSequenceTouchInteraction } = await server.ssrLoadModule("/src/events/colorSequenceTouchInteraction.js");
++  window.clearTimeout = clearTimeout;
++  window.setTimeout = setTimeout;
++  const palette = ["#112233", "#445566", "#778899"];
++  const validSequence = () => assert.ok(Array.from(state().yarnSequence.pixels)
++    .every(p => Number.isInteger(p) && p >= 0 && p < state().yarnPalette.length));
++  function oldSelection() {
++    loadJSON(project("Old palette"));
++    stateModule.dispatch({ yarnPalette: palette, activeYarn: 2 });
++  }
++  function gesture(kind) {
++    const listeners = new Map();
++    const canvas = { getBoundingClientRect: () => ({ x: 0, y: 0 }),
++      addEventListener: (name, fn) => listeners.set(name, fn),
++      removeEventListener: name => listeners.delete(name) };
++    const touch = kind === "touch";
++    (touch ? colorSequenceTouchInteraction : colorSequencePointerInteraction)(canvas);
++    const event = row => {
++      const coords = { clientX: 1, clientY: (state().yarnSequence.height - row - 0.5) * state().scale };
++      return touch ? { touches: [coords] } : coords;
++    };
++    return { start: row => listeners.get(touch ? "touchstart" : "pointerdown")(event(row)),
++      move: row => listeners.get(touch ? "touchmove" : "pointermove")?.(event(row)),
++      end: () => listeners.get(touch ? "touchend" : "pointerup")?.() };
++  }
++  for (const boundary of ["New", "Full Load", "Pattern-only Load"]) {
++    await check(`integrity: ${boundary} resets selection before paint and resize`, () => {
++      oldSelection();
++      if (boundary === "New") newPattern();
++      else if (boundary === "Full Load") loadJSON(project("New palette"));
++      else loadJSON({ width: 2, height: 3, repeats: [], yarnPalette: ["#abcdef"] });
++      assert.equal(state().activeYarn, 0);
++      const paint = gesture("pointer");
++      paint.start(0); paint.move(2); paint.end();
++      validSequence();
++      const height = state().chart.height;
++      stateModule.dispatch(chartResizeForRepeat(0, [state().chart.width, height + 2]));
++      validSequence();
++      assert.deepEqual(Array.from(state().yarnSequence.pixels).slice(height), [0, 0]);
++    });
++  }
++  for (const kind of ["pointer", "touch"]) {
++    await check(`integrity: ${kind} valid brush and line preserve slot 2`, () => {
++      oldSelection();
++      const paint = gesture(kind);
++      paint.start(0); paint.move(2); paint.end();
++      assert.deepEqual(Array.from(state().yarnSequence.pixels), [2, 2, 2]);
++    });
++    for (const bad of [2, -1, 0.5, NaN, Infinity, "0"]) {
++      await check(`integrity: ${kind} rejects selection ${String(bad)}`, () => {
++        loadJSON(project("One color"));
++        stateModule.dispatch({ activeYarn: bad });
++        const before = state().yarnSequence;
++        const paint = gesture(kind);
++        paint.start(0); paint.move(2); paint.end();
++        assert.equal(state().yarnSequence, before, "invalid selection must perform no sequence write");
++        assert.equal(state().transforming, false);
++      });
++    }
++    await check(`integrity: ${kind} rechecks selection during drag`, () => {
++      oldSelection();
++      const paint = gesture(kind);
++      paint.start(0);
++      stateModule.dispatch({ yarnPalette: [palette[0]], activeYarn: 2, yarnSequence: Bimp.empty(1, 3, 0) });
++      const before = state().yarnSequence;
++      paint.move(2); paint.end();
++      assert.equal(state().yarnSequence, before);
++    });
++  }
++  await check("integrity: resize rejects stale selection and damaged existing rows", () => {
++    loadJSON(project("Resize"));
++    stateModule.dispatch({ activeYarn: 2 });
++    assert.throws(() => chartResizeForRepeat(0, [2, 5]), /palette index.*2.*1/i);
++    stateModule.dispatch({ activeYarn: 0, yarnSequence: new Bimp(1, 3, [0, 0, 2]) });
++    assert.throws(() => chartResizeForRepeat(0, [2, 1]), /palette index.*2.*1/i);
++  });
++  for (const bad of [2, -1, 0.5, NaN, Infinity, "0", null]) {
++    await check(`integrity: importer rejects raw reference ${String(bad)} before normalization`, () => {
++      loadJSON(project("Valid"));
++      const before = state();
++      const damaged = project("Invalid");
++      damaged.yarnSequence.pixels[0] = bad;
++      assert.throws(() => loadJSON(damaged), /Yarn sequence references invalid palette index.*palette length 1/);
++      assert.equal(state(), before);
++    });
++  }
++  await check("integrity: import rejects bad references even in cropped rows/columns", () => {
++    for (const yarnSequence of [{ width: 1, height: 4, pixels: [0, 0, 0, 2] },
++      { width: 2, height: 3, pixels: [0, 2, 0, 0, 0, 0] }, [0, 2]]) {
++      assert.throws(() => loadJSON({ ...project("Invalid"), yarnSequence }), /invalid palette index.*2.*1/);
++    }
++  });
++  await check("integrity: exporter rejects invalid references and never serializes selection", () => {
++    loadJSON(project("Export"));
++    stateModule.dispatch({ yarnSequence: new Bimp(1, 3, [0, 2, 0]) });
++    assert.throws(() => getProjectData(), /Yarn sequence references invalid palette index.*2.*1/);
++    stateModule.dispatch({ yarnSequence: Bimp.empty(1, 3, 0), activeYarn: 2 });
++    assert.equal(Object.hasOwn(getProjectData(), "activeYarn"), false);
++  });
++  await check("integrity: failed download uses existing error handling and preserves state", async () => {
++    loadJSON(project("Invalid export"));
++    stateModule.dispatch({ yarnSequence: new Bimp(1, 3, [0, 2, 0]) });
++    const before = state().yarnSequence;
++    const beforeAlerts = alerts;
++    assert.equal(await downloadProject(), false);
++    assert.equal(alerts, beforeAlerts + 1);
++    assert.equal(state().projectExporting, false);
++    assert.equal(state().yarnSequence, before);
++  });
++  await check("integrity: same-size palette load also resets old selection", () => {
++    oldSelection();
++    loadJSON({ ...project("Different slots"), yarnPalette: [...palette].reverse() });
++    assert.equal(state().activeYarn, 0);
++  });
++  await check("integrity: legacy missing, array, short and wide sequences retain valid normalization", () => {
++    for (const [yarnSequence, expected] of [
++      [undefined, [0, 0, 0]], [[2, 1], [2, 1, 0]],
++      [{ width: 1, height: 1, pixels: [2] }, [2, 0, 0]],
++      [{ width: 2, height: 3, pixels: [0, 2, 1, 2, 2, 1] }, [0, 1, 2]],
++    ]) {
++      loadJSON({ width: 2, height: 3, repeats: [], yarnPalette: palette, yarnSequence });
++      assert.deepEqual(Array.from(state().yarnSequence.pixels), expected);
++      assert.equal(state().activeYarn, 0);
++      validSequence();
++    }
++  });
++  // Execute the unchanged UI action body with real state/Bimp; avoid loading the browser color-picker library.
++  const deleteBody = readFileSync("src/views/yarnPicker.js", "utf8")
++    .match(/function deleteColor\(index\) \{[\s\S]*?\n\}/)[0];
++  const deleteColor = index => new Function("GLOBAL_STATE", "dispatch", "Bimp", "alert", "t",
++    `${deleteBody}; deleteColor(${index});`)(state(), stateModule.dispatch, Bimp, () => {}, () => "");
++  for (const [deleted, selected, nextSelected, expected] of [
++    [1, 2, 1, [0, 1, 1, 0]], [2, 2, 0, [0, 0, 0, 1]],
++    [2, 1, 1, [0, 0, 0, 1]], [0, 2, 1, [0, 1, 1, 0]],
++  ]) {
++    await check(`integrity: delete slot ${deleted} rebinds selection ${selected}`, () => {
++      oldSelection();
++      stateModule.dispatch({ activeYarn: selected, yarnSequence: new Bimp(1, 4, [0, 2, 2, 1]) });
++      deleteColor(deleted);
++      assert.deepEqual(Array.from(state().yarnSequence.pixels), expected);
++      assert.equal(state().activeYarn, nextSelected);
++      validSequence();
++    });
++  }
++  await check("integrity: cannot delete the final palette slot", () => {
++    loadJSON(project("Last slot"));
++    const before = state();
++    deleteColor(0);
++    assert.equal(state(), before);
++  });
+   yarnAssetRegistry.clear();
+ } finally { await server.close(); }
+ 
+diff --git "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__codeGuide__generatedLines.json" b/src/codeGuide/generatedLines.json
+index fdfbb11..5c11587 100644
+--- "a/C:\\Users\\liuchen\\AppData\\Local\\Temp\\knitscape-yarn-integrity-20261018\\src__codeGuide__generatedLines.json"
++++ b/src/codeGuide/generatedLines.json
+@@ -29,13 +29,13 @@
+   "yarn.texture-clear": 345,
+   "yarn.performance": 358,
+   "stitch.symbol": 40,
+-  "palette.edit": 62,
+-  "palette.add": 69,
+-  "palette.label": 86,
+-  "palette.delete": 99,
+-  "palette.color": 94,
+-  "palette.shuffle": 137,
+-  "palette.randomize": 147,
++  "palette.edit": 64,
++  "palette.add": 71,
++  "palette.label": 88,
++  "palette.delete": 101,
++  "palette.color": 96,
++  "palette.shuffle": 139,
++  "palette.randomize": 149,
+   "repeat.width": 16,
+   "repeat.height": 31,
+   "repeat.tool": 47,

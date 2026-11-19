@@ -4,6 +4,7 @@ import { createServer } from "vite";
 // State, Machine Domain, solver, simulation and Canvas path dispatch are real.
 // Only drawing surfaces/timers and an explicit solver fault are test fixtures.
 globalThis.devicePixelRatio = 1;
+globalThis.solverCallsForTest = 0;
 globalThis.Path2D = class { constructor(data = "") { this.data = data; } };
 const timers = new Map();
 let nextTimer = 0;
@@ -30,7 +31,7 @@ const server = await createServer({ appType: "custom", logLevel: "silent", serve
     );
     if (!id.endsWith("/yarnLengthSolver.js")) return;
     return source.replace("export function solveFeedYarnLengths(", "function realSolveFeedYarnLengths(") +
-      '\nexport function solveFeedYarnLengths(options) { if (globalThis.solverFaultForTest) throw globalThis.solverFaultForTest; return realSolveFeedYarnLengths({ ...options, ...globalThis.solverOptionsForTest }); }';
+      '\nexport function solveFeedYarnLengths(options) { globalThis.solverCallsForTest++; if (globalThis.solverFaultForTest) throw globalThis.solverFaultForTest; return realSolveFeedYarnLengths({ ...options, ...globalThis.solverOptionsForTest }); }';
   } }] });
 globalThis.document = {
   createTreeWalker() { return {}; },
@@ -194,13 +195,27 @@ try {
   assert.ok(templateText(yarnLengthSolverFeedback()).includes("求解路径未能应用到当前预览"));
   delete globalThis.pathNotAppliedForTest;
   // Application must be re-evaluated even when the solver result cache is reused.
+  const resultsBeforeZoom = current.yarnLengthSolverResults;
+  const solvesBeforeRefresh = globalThis.solverCallsForTest;
   state.dispatch({ simScale: 1.1 });
+  assert.equal(current.yarnLengthSolverResults, resultsBeforeZoom,
+    "Zoom consumes the current snapshot; it must not trigger calculation or recover an injected application failure.");
+  assert.equal(current.previewValidity, "INVALID");
+  // A fresh coordinator generation re-applies the unchanged numerical inputs;
+  // unlike zoom, this is a computation trigger while still retaining the Solver cache.
+  const generationBeforeRefresh = current.projectGeneration;
+  state.dispatch({}, { replaceProject: true }); flushTimers();
+  assert.equal(current.projectGeneration, generationBeforeRefresh + 1,
+    "Only the state owner advances the project generation for the cache-application probe.");
   assert.equal(current.previewValidity, "PARTIAL");
+  assert.equal(globalThis.solverCallsForTest, solvesBeforeRefresh,
+    "Application recovery must use cached Solver results without re-solving unchanged inputs.");
   current.yarnLengthSolverResults.filter(result => result.yarnIndex === 0).forEach(result => assertApplied(result, 23));
   runner.stopSimulation();
   readings.forEach(reading => console.log(JSON.stringify(reading)));
   console.log("PASS: A–G, base path fallback, solver diagnostics, failure and recovery through real runSimulation.");
 } finally {
+  delete globalThis.solverCallsForTest;
   delete globalThis.solverFaultForTest;
   delete globalThis.solverOptionsForTest;
   delete globalThis.pathNotAppliedForTest;

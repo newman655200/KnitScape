@@ -1,0 +1,17 @@
+{
+  "implementation": "COMPLETE",
+  "acceptance": "BLOCKED_BROWSER_DOWNLOAD_REOPEN",
+  "validate": "41/41 PASS",
+  "build": "PASS",
+  "diffCheck": "PASS",
+  "targetedValidators": "PASS",
+  "browserInputCases": 20,
+  "browserSopResults": 16,
+  "dependenciesChanged": false,
+  "newSourceModules": 0,
+  "newValidators": 1,
+  "fixtureSha256": "4082211c588918157944aa33182ef8f3c7db5004b219d80b0f3fd23c3ddfd677",
+  "browserBlock": "Saved user permission setting or managed policy denied http://127.0.0.1:5192 after explicit user authorization; no bypass attempted.",
+  "branch": "main",
+  "head": "7ababf264d495f6b96d4d66652c529424938ac4d"
+}

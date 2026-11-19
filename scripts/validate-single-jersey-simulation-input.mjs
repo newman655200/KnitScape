@@ -99,6 +99,8 @@ const executionIntegrationSource = fs.readFileSync(
   "src/components/singleJerseyExecutionInput.js",
   "utf8"
 );
+const coordinatorSource = fs.readFileSync("src/components/simulationCoordinator.js", "utf8");
+const hostSource = fs.readFileSync("src/components/simulationPreviewHost.js", "utf8");
 
 assert.match(adapterSource, /import\s+\{\s*Bimp\s*\}\s+from\s+"\.\.\/lib\/Bimp\.js"/);
 assert.equal((adapterSource.match(/^\s*import\s/gm) || []).length, 1);
@@ -138,9 +140,19 @@ assert.match(
 );
 assert.match(
   runSimulationSource,
-  /createSingleJerseyExecutionInput/,
-  "the post-arrangement preview must consume adapter output through the approved helper."
+  /import\s+\{\s*createSimulationCoordinator\s*\}\s+from\s+"\.\/simulationCoordinator\.js"/,
+  "the post-arrangement preview must consume the shared coordinator's adapter output."
 );
+assert.equal((runSimulationSource.match(/createSimulationCoordinator\(/g) || []).length, 1);
+assert.match(coordinatorSource,
+  /import\s+\{\s*createSingleJerseyExecutionInput\s*\}\s+from\s+"\.\/singleJerseyExecutionInput\.js"/,
+  "the coordinator must consume adapter output through the approved execution helper.");
+assert.equal((coordinatorSource.match(/createSingleJerseyExecutionInput\(/g) || []).length, 1);
+assert.doesNotMatch(coordinatorSource + runSimulationSource + hostSource,
+  /resolveSingleJerseyOperations|createSingleJerseySimulationInput|tracks\s*\[/,
+  "none of the scheduling or rendering layers may duplicate Domain or adapter logic.");
+assert.match(executionIntegrationSource, /return createSingleJerseySimulationInput\(machineOperations\)/,
+  "the approved helper must pass Machine Domain output directly to the adapter.");
 assert.equal(
   fs.existsSync("src/simulation/needleExecution.js"),
   false,

@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "scope": "Actual production browser download: copied from Downloads; no SSR reconstruction of this package.",
+  "byteLength": 63845,
+  "manifestKeys": [
+    "width",
+    "height",
+    "repeats",
+    "yarnPalette",
+    "yarnSequence",
+    "yarnPlies",
+    "yarnLibrary",
+    "singleJerseyCamProgram",
+    "needleArrangement",
+    "needleArrangementInputs",
+    "machineGauge",
+    "format",
+    "version"
+  ],
+  "forbiddenAbsent": [
+    "yarnLengthSolverResults",
+    "previewValidity",
+    "feedYarnStructureRevision",
+    "selectedStructureRevision",
+    "batchSelection"
+  ],
+  "entryNames": [
+    "project.json",
+    "assets/yarn/0/baseColor"
+  ],
+  "feeds": [
+    {
+      "yarns": [
+        {
+          "yarnId": 0,
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": null,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": 0,
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": null,
+          "placement": "parallel"
+        },
+        {
+          "yarnId": "yarn-1791375202185",
+          "yarnLengthCmPer100Needles": 18,
+          "tensionCN": null,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": 0,
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": null,
+          "placement": "parallel"
+        }
+      ]
+    },
+    {
+      "yarns": [
+        {
+          "yarnId": 0,
+          "yarnLengthCmPer100Needles": 23,
+          "tensionCN": null,
+          "placement": "parallel"
+        }
+      ]
+    }
+  ],
+  "physicalRepeatLengthMm": 10
+}

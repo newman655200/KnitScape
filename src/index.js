@@ -2,7 +2,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
-import { StateMonitor } from "./state";
+import { StateMonitor, GLOBAL_STATE } from "./state";
 
 import { fitChart } from "./actions/zoomFit";
 
@@ -33,13 +33,14 @@ import { simulationTouchInteraction } from "./events/simulationTouchInteraction"
 import { drawSymbolPicker } from "./components/drawSymbolPicker";
 // import { drawRepeatLibrary } from "./components/drawRepeatLibrary";
 import { resizeCanvases } from "./components/resizeCanvases";
-import { runSimulation } from "./components/runSimulation";
+import { runSimulation, flushSimulationPreviews, getCurrentSimulationSnapshots } from "./components/runSimulation";
 import { closeModals } from "./events/closeModals";
 import { generateChart } from "./components/generateChart";
 import { isMobile } from "./utils";
 import { isCodeGuideMode } from "./codeGuide/mode";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
 import { createAppRenderer } from "./components/renderApp";
+import { createSpatialWorkbenchHost } from "./components/spatialWorkbenchHost.js";
 
 let symbolCanvas,
   gridCanvas,
@@ -50,8 +51,13 @@ let symbolCanvas,
   simContainer,
   repeatLibrary;
 
+const spatialWorkbench = createSpatialWorkbenchHost({ getContext: () => {
+  const snapshots = getCurrentSimulationSnapshots();
+  return { ...GLOBAL_STATE, machineSnapshot: snapshots.machine,
+    machineSnapshotPending: snapshots.pendingMachine, machineSnapshotError: snapshots.machineExecutionError };
+} });
 const appRenderer = createAppRenderer({
-  renderView: () => render(view(), document.body),
+  renderView: () => { render(view(), document.body); flushSimulationPreviews(); spatialWorkbench.sync(); },
 });
 
 function initKeyboard() {

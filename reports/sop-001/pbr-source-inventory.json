@@ -1,0 +1,57 @@
+[
+  {
+    "fileName": "Albedo.png",
+    "fullPath": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1\\Albedo.png",
+    "byteLength": 578155,
+    "width": 2172,
+    "height": 724,
+    "format": "Png",
+    "horizontalDpi": 96.0,
+    "verticalDpi": 96.0,
+    "sha256": "E7EDD170D0E181905C1B1E27AABC2062EC5621D48AB28AFC1EE1C49284AADD55"
+  },
+  {
+    "fileName": "AO.png",
+    "fullPath": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1\\AO.png",
+    "byteLength": 700119,
+    "width": 2172,
+    "height": 724,
+    "format": "Png",
+    "horizontalDpi": 96.0,
+    "verticalDpi": 96.0,
+    "sha256": "918A016D9CB4D65CD9D19C0BF561A51D1DD94C3AE44D8F0E625A44EF6B1A216B"
+  },
+  {
+    "fileName": "Metallic.png",
+    "fullPath": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1\\Metallic.png",
+    "byteLength": 137923,
+    "width": 2172,
+    "height": 724,
+    "format": "Png",
+    "horizontalDpi": 96.0,
+    "verticalDpi": 96.0,
+    "sha256": "5207BF2486FB8FB0B85F31DEDA2B018771EA94F96F3BDC9EDABD31C738EA1A68"
+  },
+  {
+    "fileName": "Normal.png",
+    "fullPath": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1\\Normal.png",
+    "byteLength": 656227,
+    "width": 2172,
+    "height": 724,
+    "format": "Png",
+    "horizontalDpi": 96.0,
+    "verticalDpi": 96.0,
+    "sha256": "0E0040BE7030AA28F340905C6BA12C18820D5489E72F10E2756F3DE6E20021C2"
+  },
+  {
+    "fileName": "Roughness.png",
+    "fullPath": "C:\\Users\\liuchen\\Desktop\\knitscape\\PBR\\Yarn1\\Roughness.png",
+    "byteLength": 759035,
+    "width": 2172,
+    "height": 724,
+    "format": "Png",
+    "horizontalDpi": 96.0,
+    "verticalDpi": 96.0,
+    "sha256": "BBBFC014D3BF0684C94166EACBFAD8DDAC626B9CB28D64D67C0D72B55AA04C0C"
+  }
+]

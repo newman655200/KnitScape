@@ -1,0 +1,19 @@
+{
+  "shortStatus": [
+    "?? docs/",
+    "?? reports/"
+  ],
+  "untrackedCount": 560,
+  "groups": [
+    {
+      "root": "docs",
+      "count": 1
+    },
+    {
+      "root": "reports",
+      "count": 559
+    }
+  ],
+  "trackedUnstaged": 0,
+  "staged": 0
+}

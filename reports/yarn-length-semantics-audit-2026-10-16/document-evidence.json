@@ -1,0 +1,210 @@
+{
+  "projects": [
+    {
+      "path": "C:\\Users\\liuchen\\Desktop\\knitscape\\reports\\sop-001\\SOP-001-N6W6040-main-yarn-with-cam.knitscape",
+      "sha256": "0d84dd7a3b7d408345015963279e5ea6548d501cbf84887d019a5f538b99eed8",
+      "assets": [
+        {
+          "id": 0,
+          "name": "Yarn 1",
+          "diameter": null
+        },
+        {
+          "id": "yarn-1792072401481",
+          "name": "N6/W(6040)",
+          "diameter": null
+        }
+      ],
+      "feeds": [
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\liuchen\\Desktop\\knitscape\\reports\\p1-1\\SOP-001-P1-1.knitscape",
+      "sha256": "036426e762dc08e508f1b478c0e2d29759facd51d90b6a71fe81abf9608402ea",
+      "assets": [
+        {
+          "id": 0,
+          "name": "Yarn 1",
+          "diameter": null
+        },
+        {
+          "id": "yarn-1792072401481",
+          "name": "N6/W(6040)",
+          "diameter": null
+        }
+      ],
+      "feeds": [
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        },
+        {
+          "yarns": [
+            {
+              "yarnId": "yarn-1792072401481",
+              "yarnLengthCmPer100Needles": 23,
+              "tensionCN": null,
+              "placement": "parallel"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "processSheet": {
+    "path": "C:\\Users\\liuchen\\Desktop\\工艺.jpg",
+    "sha256": "f6293d52bd0f08e77f929ceab916773d7d8aca1893a9a013eb9a754a326e796b",
+    "humanReadNote": "纱长测试标准为织机100针的长度",
+    "bothYarnRowsOrganizationNumbers": "1.2.3.4.5.6.7.8",
+    "bothYarnRowsMouthCount": 96,
+    "interpretation": "The note establishes a 100 machine-needle basis; it does not specify load, unloading, yarn route, or feed equivalence."
+  },
+  "history": "7ababf2 feat: establish trusted feed yarn length workflow\n3c1304a fix: finalize accurate yarn length measurement\ne9653a7 perf: optimize yarn length solver evaluation\n1374173 perf: cache yarn length simulation results\n6620d3f feat: apply yarn length solver to final fabric preview\n",
+  "historyScope": "Read-only current-line measurement commits; not an interpretation of factory measurement procedure."
+}

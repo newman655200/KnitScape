@@ -197,7 +197,7 @@ try {
     assert.ok(Number.isFinite(result.solvedLengthCmPer100Needles) && result.solvedLengthCmPer100Needles > 0);
     for (const data of result.solvedPathByLink.values()) assert.doesNotMatch(data, /NaN|Infinity/);
   }
-  assert.ok(observation.shaders.some(s => /texture2D\(u_metallicMap, v_uv\)/.test(s)), 'Metallic must actually be sampled');
+  assert.ok(observation.shaders.some(s => /texture2D\(u_metallicMap, sampleUv\)/.test(s)), 'Metallic must use the shared texture coordinates');
 
   state.dispatch({ chart, width: 4, height: 8, machineGauge: 32, yarnSequence: sequence, yarnPlies: [legacy],
     yarnLibrary: [A, B], needleArrangement: [1], singleJerseyCamProgram: { tracks: [['K']], feeds: [feed('A')] },

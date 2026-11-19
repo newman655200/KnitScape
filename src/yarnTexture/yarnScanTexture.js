@@ -164,11 +164,24 @@ export function readFileAsDataUrl(file) {
   });
 }
 
-export function loadImageFromDataUrl(dataUrl) {
+export function loadImageFromDataUrl(dataUrl, { signal } = {}) {
   return new Promise((resolve, reject) => {
+    const abortError = () => signal?.reason || new DOMException("Image loading aborted.", "AbortError");
+    if (signal?.aborted) { reject(abortError()); return; }
     const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("Unable to load yarn scan image."));
+    const cleanup = () => {
+      signal?.removeEventListener("abort", abort);
+      image.onload = null;
+      image.onerror = null;
+    };
+    const abort = () => {
+      cleanup();
+      image.removeAttribute?.("src");
+      reject(abortError());
+    };
+    image.onload = () => { cleanup(); resolve(image); };
+    image.onerror = () => { cleanup(); reject(new Error("Unable to load yarn scan image.")); };
+    signal?.addEventListener("abort", abort, { once: true });
     image.src = dataUrl;
   });
 }
@@ -426,9 +439,11 @@ export async function processYarnScanFile(file, options = {}) {
 export async function createTintedTextureCanvas(
   dataUrl,
   color,
-  strength = DEFAULT_YARN_SCAN_TEXTURE.textureStrength
+  strength = DEFAULT_YARN_SCAN_TEXTURE.textureStrength,
+  { signal } = {}
 ) {
-  const image = await loadImageFromDataUrl(dataUrl);
+  const image = await loadImageFromDataUrl(dataUrl, { signal });
+  if (signal?.aborted) throw signal.reason || new DOMException("Image loading aborted.", "AbortError");
   const canvas = makeCanvas(
     image.naturalWidth || image.width,
     image.naturalHeight || image.height

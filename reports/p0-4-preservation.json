@@ -1,0 +1,13 @@
+{
+  "total": 138,
+  "unchanged": 131,
+  "changed": [
+    "package.json",
+    "scripts/validate-single-jersey-cam-editor.mjs",
+    "src/actions/singleJerseyCamProgram.js",
+    "src/i18n/translations.js",
+    "src/views/singleJerseyCamProgramEditor.js",
+    "styles.css",
+    "scripts/validate-yarn-length-input-integration.mjs"
+  ]
+}

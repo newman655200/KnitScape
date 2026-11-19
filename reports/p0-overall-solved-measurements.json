@@ -1,0 +1,94 @@
+[
+  {
+    "target": 23,
+    "previewValidity": "VALIDATED",
+    "results": [
+      {
+        "feedIndex": 0,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.99985537891976,
+        "errorCmPer100Needles": 0.00014462108023835185,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 1,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.999856051617197,
+        "errorCmPer100Needles": 0.00014394838280168187,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 2,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.999856042155812,
+        "errorCmPer100Needles": 0.0001439578441862821,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 3,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.99985636579647,
+        "errorCmPer100Needles": 0.00014363420352733413,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      }
+    ]
+  },
+  {
+    "target": 27,
+    "previewValidity": "VALIDATED",
+    "results": [
+      {
+        "feedIndex": 0,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999994326440053,
+        "errorCmPer100Needles": 5.6735599464374785E-06,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 1,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999992639583088,
+        "errorCmPer100Needles": 7.3604169134000584E-06,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 2,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999993319385176,
+        "errorCmPer100Needles": 6.68061482610227E-06,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 3,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.99999467898935,
+        "errorCmPer100Needles": 5.321010651506696E-06,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      }
+    ]
+  }
+]

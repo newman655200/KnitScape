@@ -24,3 +24,9 @@ export function endTexturePreviewInteraction() {
     setTexturePreviewInteractionActive(false);
   }, INTERACTION_IDLE_MS);
 }
+
+export function cancelTexturePreviewInteraction() {
+  window.clearTimeout(interactionTimer);
+  interactionTimer = null;
+  if (GLOBAL_STATE.texturePreviewInteractionActive) dispatch({ texturePreviewInteractionActive: false });
+}

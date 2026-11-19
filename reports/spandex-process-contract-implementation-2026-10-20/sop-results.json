@@ -1,0 +1,1212 @@
+{
+  "sourceFile": "reports/sop-001/SOP-001-N6W6040-main-yarn-with-cam.knitscape",
+  "sourceSha256": "0d84dd7a3b7d408345015963279e5ea6548d501cbf84887d019a5f538b99eed8",
+  "historicalFile": "reports/spandex-length-semantics-2026-10-20/results.json",
+  "directControl": {
+    "previewValidity": "VALIDATED",
+    "rows": [
+      {
+        "feed": 1,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999920925128244,
+        "error": 0.00007907487175497606,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.93737809524991
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999922023878796,
+        "error": 0.00007797612120281627,
+        "loopHeight": 0.42705078125000007,
+        "tolerance": 0.00079375,
+        "M3": 23.064753859880685
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999921149748275,
+        "error": 0.00007885025172395642,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.937378117635376
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.00029654221584,
+        "error": 0.0002965422158406028,
+        "loopHeight": 0.40824584960937504,
+        "tolerance": 0.00079375,
+        "M3": 22.625946066611146
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99980858669455,
+        "error": 0.00019141330545220824,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.06123233200739
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99998733916666,
+        "error": 0.000012660833340660815,
+        "loopHeight": 0.42187347412109377,
+        "tolerance": 0.00079375,
+        "M3": 22.94406349612882
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999808732605086,
+        "error": 0.00019126739491341025,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.061228510360838
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999733873071612,
+        "error": 0.0002661269283865763,
+        "loopHeight": 0.470611572265625,
+        "tolerance": 0.00079375,
+        "M3": 24.077277996023067
+      }
+    ]
+  },
+  "nominal": {
+    "previewValidity": "VALIDATED",
+    "rows": [
+      {
+        "feed": 1,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999920925128244,
+        "error": 0.00007907487175497606,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.93737809524991
+      },
+      {
+        "feed": 1,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.000753567866827,
+        "error": 0.0007535678668249091,
+        "loopHeight": 0.583917236328125,
+        "tolerance": 0.00079375,
+        "M3": 23.94798529180066
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999922023878796,
+        "error": 0.00007797612120281627,
+        "loopHeight": 0.42705078125000007,
+        "tolerance": 0.00079375,
+        "M3": 23.064753859880685
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.999598555905525,
+        "error": 0.00040144409447691483,
+        "loopHeight": 0.4707901000976562,
+        "tolerance": 0.00079375,
+        "M3": 24.081417359063632
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999921149748275,
+        "error": 0.00007885025172395642,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.937378117635376
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.000755007335762,
+        "error": 0.000755007335762059,
+        "loopHeight": 0.583917236328125,
+        "tolerance": 0.00079375,
+        "M3": 23.947987616300423
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.00029654221584,
+        "error": 0.0002965422158406028,
+        "loopHeight": 0.40824584960937504,
+        "tolerance": 0.00079375,
+        "M3": 22.625946066611146
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.000680854420885,
+        "error": 0.000680854420885808,
+        "loopHeight": 0.450140380859375,
+        "tolerance": 0.00079375,
+        "M3": 23.602061084127
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99980858669455,
+        "error": 0.00019141330545220824,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.06123233200739
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.999916116492383,
+        "error": 0.00008388350761734387,
+        "loopHeight": 0.5893325805664061,
+        "tolerance": 0.00079375,
+        "M3": 24.051664192275073
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99998733916666,
+        "error": 0.000012660833340660815,
+        "loopHeight": 0.42187347412109377,
+        "tolerance": 0.00079375,
+        "M3": 22.94406349612882
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.9999440391594,
+        "error": 0.0000559608406005907,
+        "loopHeight": 0.4642440795898437,
+        "tolerance": 0.00079375,
+        "M3": 23.92956157069609
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999808732605086,
+        "error": 0.00019126739491341025,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.061228510360838
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.9999151482471,
+        "error": 0.00008485175290005032,
+        "loopHeight": 0.5893325805664061,
+        "tolerance": 0.00079375,
+        "M3": 24.051665451013104
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999733873071612,
+        "error": 0.0002661269283865763,
+        "loopHeight": 0.470611572265625,
+        "tolerance": 0.00079375,
+        "M3": 24.077277996023067
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.00000471206136,
+        "error": 0.000004712061359093411,
+        "loopHeight": 0.5175643920898437,
+        "tolerance": 0.00079375,
+        "M3": 25.16408312477409
+      }
+    ]
+  },
+  "perFeed": {
+    "previewValidity": "VALIDATED",
+    "rows": [
+      {
+        "feed": 1,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999920925128244,
+        "error": 0.00007907487175497606,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.93737809524991
+      },
+      {
+        "feed": 1,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 2.8,
+          "effectiveTargetLengthCmPer100Needles": 22.4,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,2.8]"
+        },
+        "target": 22.4,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.40027288122348,
+        "error": 0.00027288122347741246,
+        "loopHeight": 0.5000091552734376,
+        "tolerance": 0.00079375,
+        "M3": 22.33232861829477
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999922023878796,
+        "error": 0.00007797612120281627,
+        "loopHeight": 0.42705078125000007,
+        "tolerance": 0.00079375,
+        "M3": 23.064753859880685
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.999598555905525,
+        "error": 0.00040144409447691483,
+        "loopHeight": 0.4707901000976562,
+        "tolerance": 0.00079375,
+        "M3": 24.081417359063632
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999921149748275,
+        "error": 0.00007885025172395642,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.937378117635376
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 8,
+          "draftRatio": 3.2,
+          "effectiveTargetLengthCmPer100Needles": 25.6,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,8,3.2]"
+        },
+        "target": 25.6,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 25.59971754431332,
+        "error": 0.00028245568667614404,
+        "loopHeight": 0.6685989379882813,
+        "tolerance": 0.00079375,
+        "M3": 25.564157870350403
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.00029654221584,
+        "error": 0.0002965422158406028,
+        "loopHeight": 0.40824584960937504,
+        "tolerance": 0.00079375,
+        "M3": 22.625946066611146
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 10,
+          "draftRatio": 2.4,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,10,2.4]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.000680854420885,
+        "error": 0.000680854420885808,
+        "loopHeight": 0.450140380859375,
+        "tolerance": 0.00079375,
+        "M3": 23.602061084127
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99980858669455,
+        "error": 0.00019141330545220824,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.06123233200739
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 12,
+          "draftRatio": 2,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,12,2]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.999916116492383,
+        "error": 0.00008388350761734387,
+        "loopHeight": 0.5893325805664061,
+        "tolerance": 0.00079375,
+        "M3": 24.051664192275073
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99998733916666,
+        "error": 0.000012660833340660815,
+        "loopHeight": 0.42187347412109377,
+        "tolerance": 0.00079375,
+        "M3": 22.94406349612882
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 6,
+          "draftRatio": 4,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,6,4]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.9999440391594,
+        "error": 0.0000559608406005907,
+        "loopHeight": 0.4642440795898437,
+        "tolerance": 0.00079375,
+        "M3": 23.92956157069609
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999808732605086,
+        "error": 0.00019126739491341025,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.061228510360838
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 4,
+          "draftRatio": 6,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,4,6]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.9999151482471,
+        "error": 0.00008485175290005032,
+        "loopHeight": 0.5893325805664061,
+        "tolerance": 0.00079375,
+        "M3": 24.051665451013104
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999733873071612,
+        "error": 0.0002661269283865763,
+        "loopHeight": 0.470611572265625,
+        "tolerance": 0.00079375,
+        "M3": 24.077277996023067
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "relaxedWithDraft",
+          "directTargetLengthCmPer100Needles": null,
+          "relaxedLengthCmPer100Needles": 3,
+          "draftRatio": 8,
+          "effectiveTargetLengthCmPer100Needles": 24,
+          "status": "READY",
+          "inputSignature": "[\"relaxedWithDraft\",null,3,8]"
+        },
+        "target": 24,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 24.00000471206136,
+        "error": 0.000004712061359093411,
+        "loopHeight": 0.5175643920898437,
+        "tolerance": 0.00079375,
+        "M3": 25.16408312477409
+      }
+    ]
+  },
+  "oldDiagnostic": {
+    "previewValidity": "PARTIAL",
+    "rows": [
+      {
+        "feed": 1,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999920925128244,
+        "error": 0.00007907487175497606,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.93737809524991
+      },
+      {
+        "feed": 1,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 12.988409255414988,
+        "error": 4.988409255414987,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 24.255723033020086
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999922023878796,
+        "error": 0.00007797612120281627,
+        "loopHeight": 0.42705078125000007,
+        "tolerance": 0.00079375,
+        "M3": 23.064753859880685
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 13.479988811705505,
+        "error": 5.479988811705504,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 27.065709703853738
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999921149748275,
+        "error": 0.00007885025172395642,
+        "loopHeight": 0.53131103515625,
+        "tolerance": 0.00079375,
+        "M3": 22.937378117635376
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 12.988409255414988,
+        "error": 4.988409255414987,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 24.255723033020065
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 23.00029654221584,
+        "error": 0.0002965422158406028,
+        "loopHeight": 0.40824584960937504,
+        "tolerance": 0.00079375,
+        "M3": 22.625946066611146
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 13.56170204478534,
+        "error": 5.561702044785341,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 27.065709703853724
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99980858669455,
+        "error": 0.00019141330545220824,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.06123233200739
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 12.839089069009082,
+        "error": 4.8390890690090815,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 24.255723033020075
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.99998733916666,
+        "error": 0.000012660833340660815,
+        "loopHeight": 0.42187347412109377,
+        "tolerance": 0.00079375,
+        "M3": 22.94406349612882
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 13.399320537567458,
+        "error": 5.399320537567459,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 27.065709703853738
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999808732605086,
+        "error": 0.00019126739491341025,
+        "loopHeight": 0.537738037109375,
+        "tolerance": 0.00079375,
+        "M3": 23.061228510360838
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 12.839089069009082,
+        "error": 4.839089069009083,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 24.255723033020065
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 0,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 23,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 23,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",23,null,null]"
+        },
+        "target": 23,
+        "status": "CONVERGED",
+        "applied": true,
+        "M1": 22.999733873071612,
+        "error": 0.0002661269283865763,
+        "loopHeight": 0.470611572265625,
+        "tolerance": 0.00079375,
+        "M3": 24.077277996023067
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 1,
+        "input": {
+          "lengthInputMode": "directTarget",
+          "directTargetLengthCmPer100Needles": 8,
+          "relaxedLengthCmPer100Needles": null,
+          "draftRatio": null,
+          "effectiveTargetLengthCmPer100Needles": 8,
+          "status": "READY",
+          "inputSignature": "[\"directTarget\",8,null,null]"
+        },
+        "target": 8,
+        "status": "UNREACHABLE_TARGET",
+        "applied": false,
+        "M1": 13.208564709238436,
+        "error": 5.208564709238436,
+        "loopHeight": 0.05,
+        "tolerance": 0.00079375,
+        "M3": 27.065709703853738
+      }
+    ]
+  },
+  "numericDrift": 0,
+  "solverToleranceCmPer100Needles": 0.00079375,
+  "projectFormat": {
+    "version": 3,
+    "requiredCapabilities": [
+      "relaxed-yarn-length-with-draft-v1"
+    ]
+  },
+  "processMeasurementContract": "ESTABLISHED_FOR_SOP001",
+  "spandexPhysicalModel": "NOT_IMPLEMENTED",
+  "realMachineValidation": "PARTIAL"
+}

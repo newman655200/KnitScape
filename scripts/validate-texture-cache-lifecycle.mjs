@@ -34,10 +34,44 @@ const server = await createServer({
 });
 
 try {
-  const { YarnUvWebglRenderer, materialMaps, retainWebglYarnTextures } = await server.ssrLoadModule(
+  const { YarnUvWebglRenderer, materialMaps, retainWebglYarnTextures, findYarnTextureVRange } = await server.ssrLoadModule(
     "/src/simulation/yarnUvWebglRenderer.js"
   );
   const brush = await server.ssrLoadModule("/src/simulation/yarnTextureBrush.js");
+  const blendCalls = [];
+  const blendGl = new Proxy({
+    getShaderParameter: () => true, getProgramParameter: () => true,
+    blendFunc: (...args) => blendCalls.push(args),
+    blendFuncSeparate: (...args) => blendCalls.push(args),
+  }, { get: (target, key) => key in target ? target[key]
+    : /^[A-Z_0-9]+$/.test(key) ? key : () => ({}) });
+  const blendRenderer = new YarnUvWebglRenderer(blendGl);
+  assert.deepEqual(blendCalls, [["SRC_ALPHA", "ONE_MINUS_SRC_ALPHA", "ONE", "ONE_MINUS_SRC_ALPHA"]],
+    "Straight shader RGB needs source-over alpha, not alpha squared.");
+  blendRenderer.dispose();
+  assert.equal(typeof findYarnTextureVRange, "function");
+  function alphaImage(width, height, alpha) {
+    const data = new Uint8ClampedArray(width * height * 4);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      data[(y * width + x) * 4 + 3] = alpha(x, y);
+    }
+    return { width, height, data };
+  }
+  for (const fixture of [alphaImage(16, 100, () => 255), alphaImage(16, 100, () => 64),
+    alphaImage(16, 100, () => 0), alphaImage(16, 100, (_, y) => y >= 10 && y < 90 ? 255 : 0),
+    alphaImage(16, 100, (x, y) => x < 4 && y >= 20 && y < 30 ? 255 : 0),
+    alphaImage(16, 100, (_, y) => (y >= 20 && y < 25) || (y >= 30 && y < 35) ? 255 : 0)]) {
+    assert.deepEqual(findYarnTextureVRange(fixture), [0, 1],
+      "Opaque, empty, wide, local and multiple-band images must keep full V.");
+  }
+  const narrow = alphaImage(16, 100, (_, y) => y >= 20 && y < 30 ? 255 : 0);
+  assert.deepEqual(findYarnTextureVRange(narrow), [.18, .32],
+    "A horizontal scan keeps pixel margins and its asymmetric vertical position.");
+  narrow.data[3] = 1;
+  // An isolated low-alpha speck must not dictate scan width.
+  assert.deepEqual(findYarnTextureVRange(narrow), [.18, .32]);
+  assert.deepEqual(findYarnTextureVRange({ width: 0, height: 0, data: [] }), [0, 1]);
+  assert.deepEqual(findYarnTextureVRange({ width: 2, height: 2, data: [] }), [0, 1]);
   const deletedTextures = [];
   const renderer = Object.create(YarnUvWebglRenderer.prototype);
   renderer.gl = {
@@ -104,10 +138,13 @@ try {
     return new Blob(["fixture"], { type: "image/png" });
   });
   const uploadedImages = [];
+  const unpackPremultiply = [];
   let nextTexture = 0;
   renderer.gl = {
     createTexture: () => `texture-${++nextTexture}`,
-    bindTexture() {}, texParameteri() {}, pixelStorei() {},
+    bindTexture() {}, texParameteri() {},
+    UNPACK_PREMULTIPLY_ALPHA_WEBGL: "premultiply",
+    pixelStorei(name, value) { if (name === "premultiply") unpackPremultiply.push(value); },
     texImage2D(...args) { uploadedImages.push(args.at(-1)); },
     deleteTexture(texture) { deletedTextures.push(texture); },
   };
@@ -124,6 +161,8 @@ try {
   assert.equal(blobLoads, 1);
   assert.equal(imageLoads, 1);
   assert.equal(uploadedImages.length, 1);
+  assert.deepEqual(unpackPremultiply, [false],
+    "Color and data maps must upload without alpha changing their RGB channels.");
   assert.equal(uploadedImages[0].width, 4, "NPOT widths must be resampled for WebGL1 repeating textures.");
   assert.equal(uploadedImages[0].height, 8);
   assert.equal(sampledCanvases.length, 1);
@@ -160,6 +199,35 @@ try {
   renderer.retainTextures([]);
   assert.equal(renderer.textureCache.size, 0, "Clearing the active materials still releases the complete working set.");
   for (const activeSource of activeSources) yarnAssetRegistry.release(activeSource.assetRef);
+
+  let pixelReads = 0;
+  document.createElement = () => {
+    let image;
+    return { width: 0, height: 0, getContext: () => ({
+      drawImage(source) { image = source; },
+      getImageData() {
+        pixelReads++;
+        return image.source === "narrow-v-url" ? narrow : alphaImage(16, 100, () => 255);
+      },
+    }) };
+  };
+  const vSources = ["narrow-v-url", "opaque-v-url"];
+  for (const url of vSources) {
+    await brush.prepareYarnTextureImages([{ texture: { processedDataUrl: url } }]);
+    const image = brush.getReadyYarnTextureImage(url);
+    image.naturalWidth = 16;
+    image.naturalHeight = 100;
+    renderer.textureFromDataUrl(url);
+  }
+  assert.deepEqual(renderer.textureVRange("narrow-v-url"), [.18, .32]);
+  assert.deepEqual(renderer.textureVRange("narrow-v-url"), [.18, .32]);
+  assert.equal(pixelReads, 1, "Repeated draws must reuse the texture record's derived V range.");
+  assert.deepEqual(renderer.textureVRange("opaque-v-url"), [0, 1], "Another material must not inherit scan bounds.");
+  renderer.retainTextures([]);
+  renderer.textureFromDataUrl("narrow-v-url");
+  assert.deepEqual(renderer.textureVRange("narrow-v-url"), [.18, .32]);
+  assert.equal(pixelReads, 3, "Evicting a texture must evict its derived V range too.");
+  renderer.retainTextures([]);
 
   assert.equal(typeof retainWebglYarnTextures, "function");
   let contextRequests = 0;

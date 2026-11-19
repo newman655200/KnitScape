@@ -1,0 +1,198 @@
+{
+  "canvases": [
+    {
+      "height": 120,
+      "id": "yarn-sequence-canvas",
+      "style": "width: 2.4px; height: 96px;",
+      "width": 3
+    },
+    {
+      "height": 120,
+      "id": "yarn-color-canvas",
+      "style": "width: 72px; height: 96px;",
+      "width": 90
+    },
+    {
+      "height": 120,
+      "id": "symbol-canvas",
+      "style": "width: 72px; height: 96px;",
+      "width": 90
+    },
+    {
+      "height": 120,
+      "id": "grid",
+      "style": "width: 72px; height: 96px;",
+      "width": 90
+    },
+    {
+      "height": 12,
+      "id": "repeat-0",
+      "style": "width: 9.6px; height: 9.6px;",
+      "width": 12
+    },
+    {
+      "height": 12,
+      "id": "repeat-0-grid",
+      "style": "width: 9.6px; height: 9.6px;",
+      "width": 12
+    },
+    {
+      "height": 12,
+      "id": "repeat-0-outline",
+      "style": "width: 9.6px; height: 9.6px;",
+      "width": 12
+    },
+    {
+      "height": 708,
+      "id": "back",
+      "style": "width: 212.1px; height: 566.4px;",
+      "width": 265
+    },
+    {
+      "height": 708,
+      "id": "mid",
+      "style": "width: 212.1px; height: 566.4px;",
+      "width": 265
+    },
+    {
+      "height": 708,
+      "id": "front",
+      "style": "width: 212.1px; height: 566.4px;",
+      "width": 265
+    },
+    {
+      "height": 445,
+      "id": "back-arranged",
+      "style": "width: 212.1px; height: 356.688px;",
+      "width": 265
+    },
+    {
+      "height": 445,
+      "id": "mid-arranged",
+      "style": "width: 212.1px; height: 356.688px;",
+      "width": 265
+    },
+    {
+      "height": 445,
+      "id": "front-arranged",
+      "style": "width: 212.1px; height: 356.688px;",
+      "width": 265
+    }
+  ],
+  "containers": [
+    {
+      "height": 599.2000122070312,
+      "id": "sim-container",
+      "width": 212.1000061035156
+    },
+    {
+      "height": 566.4000244140625,
+      "id": "sim-before-container",
+      "width": 212.1000061035156
+    },
+    {
+      "height": 356.6875,
+      "id": "sim-after-container",
+      "width": 212.1000061035156
+    }
+  ],
+  "solverRows": [
+    {
+      "cells": [
+        "Feed 1 · Yarn 1",
+        "23.0000",
+        "22.9999",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.9884–50.9635"
+      ],
+      "feedIndex": 0,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 2 · Yarn 1",
+        "23.0000",
+        "22.9999",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            13.4800–58.8804"
+      ],
+      "feedIndex": 1,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 3 · Yarn 1",
+        "23.0000",
+        "22.9999",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.9884–50.9635"
+      ],
+      "feedIndex": 2,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 4 · Yarn 1",
+        "23.0000",
+        "23.0003",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            13.5617–60.9953"
+      ],
+      "feedIndex": 3,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 5 · Yarn 1",
+        "23.0000",
+        "22.9998",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.8391–51.5622"
+      ],
+      "feedIndex": 4,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 6 · Yarn 1",
+        "23.0000",
+        "23.0000",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            13.3993–60.5586"
+      ],
+      "feedIndex": 5,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 7 · Yarn 1",
+        "23.0000",
+        "22.9998",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            12.8391–51.5622"
+      ],
+      "feedIndex": 6,
+      "yarnIndex": 0
+    },
+    {
+      "cells": [
+        "Feed 8 · Yarn 1",
+        "23.0000",
+        "22.9997",
+        "CONVERGED",
+        "已应用",
+        "—\n          \n            模型可解范围（非实际工艺范围）:\n            13.2086–55.6584"
+      ],
+      "feedIndex": 7,
+      "yarnIndex": 0
+    }
+  ],
+  "validity": "VALIDATED"
+}

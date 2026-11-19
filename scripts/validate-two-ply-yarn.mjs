@@ -56,11 +56,18 @@ assert.match(
 );
 
 const runSimulationSource = fs.readFileSync("src/components/runSimulation.js", "utf8");
+const coordinatorSource = read("src/components/simulationCoordinator.js");
 assert.match(
   runSimulationSource,
-  /GLOBAL_STATE\.yarnPlies/,
+  /ownedCoordinator\.compute\(GLOBAL_STATE,/,
+  "single-face simulation must pass current state to its computation owner."
+);
+assert.match(
+  coordinatorSource,
+  /yarnPlies:\s*state\.yarnPlies,/,
   "single-face simulation must receive yarnPlies."
 );
+assert.match(coordinatorSource, /computeYarnSimulation\(\{ \.\.\.common,/);
 assert.match(
   runSimulationSource,
   /"yarnPlies"/,
@@ -79,6 +86,10 @@ assert.match(
 
 const simulationSource = [
   "src/simulation/yarnSimulation.js",
+  "src/simulation/computeYarnSimulation.js",
+  "src/simulation/yarnRenderItems.js",
+  "src/simulation/pbrPreviewRenderer.js",
+  "src/domain/yarnMaterial.js",
   "src/simulation/yarnPathGeometry.js",
   "src/simulation/drawYarnSimulation.js",
 ]

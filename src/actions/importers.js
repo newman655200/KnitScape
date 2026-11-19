@@ -125,7 +125,7 @@ export function loadJSON(patternJSON, assetRegistry = null) {
   projectLoadRequest++;
   if (hasProjectAssets(patternJSON)) cancelYarnPbrImports();
   if (staged) yarnAssetRegistry.replaceWith(staged);
-  dispatch(action, { replaceFeedYarnStructure: Object.hasOwn(action, "singleJerseyCamProgram") });
+  dispatch(action, { replaceFeedYarnStructure: Object.hasOwn(action, "singleJerseyCamProgram"), replaceProject: true });
   fitChart();
   return true;
 }
@@ -167,7 +167,7 @@ export function newPattern() {
     editingRepeat: 0,
     selectedChartCell: null,
     selectedRepeatCell: null,
-  });
+  }, { replaceProject: true });
   fitChart();
 }
 

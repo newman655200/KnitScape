@@ -1,0 +1,17 @@
+{
+  "branch": "main",
+  "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+  "tag": "baseline-trusted-yarn-length",
+  "protectedFiles": 1035,
+  "protectedMismatches": [],
+  "trackedChanges": [],
+  "stagedChanges": [],
+  "diffCheckExit": 0,
+  "diffStat": [],
+  "status": [
+    "?? ai-manufacturing-strategy-deck/",
+    "?? docs/",
+    "?? reports/"
+  ],
+  "pass": true
+}

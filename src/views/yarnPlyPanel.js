@@ -352,7 +352,7 @@ function yarnScanTextureControls(index, ply) {
   </div>`;
 }
 
-function texturePerformanceControls() {
+export function texturePerformanceControls() {
   const language = GLOBAL_STATE.language;
 
   return html`<label class="form-control yarn-performance-control" data-code-guide-key="yarn.performance">
@@ -389,7 +389,6 @@ export function yarnPlyPanel() {
   return html`<section id="yarn-ply-panel" class="yarn-ply-panel">
     <h3>${t("left.yarnPlyPanel", language)}</h3>
     ${yarnLengthReadout()}
-    ${texturePerformanceControls()}
     ${GLOBAL_STATE.yarnPlies.map((ply, index) => {
       const isFirst = index == 0;
       const labels = YARN_PLY_LABELS[index] || YARN_PLY_LABELS[0];

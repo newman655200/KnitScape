@@ -218,7 +218,9 @@ if (
 }
 if (
   !/e\.button\s*!={1,2}\s*0/.test(simulationPointerSource) ||
-  !simulationPointerSource.includes("pan(e, simContainer)")
+  !simulationPointerSource.includes('simContainer.addEventListener("pointerdown", pointerdown)') ||
+  !/const start = \{ x: e\.clientX, y: e\.clientY \}, pan = view\(\)\.pan/.test(simulationPointerSource) ||
+  !/update\(\{ pan: \{ x: pan\.x \+ event\.clientX - start\.x, y: pan\.y \+ event\.clientY - start\.y \} \}\)/.test(simulationPointerSource)
 ) {
   failures.push("simulation pointer interaction must use the left button for flat preview panning.");
 }

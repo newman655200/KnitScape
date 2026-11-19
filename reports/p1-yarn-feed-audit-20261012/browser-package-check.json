@@ -1,0 +1,289 @@
+{
+  "status": "PASS",
+  "evidenceType": "actual-browser-download-and-reexport",
+  "browserUIFeedsEqual": true,
+  "batchSelectionClearedAfterPageRestart": true,
+  "pendingCleared": true,
+  "runtimeFieldsExcluded": true,
+  "originalPbrMapsVerified": 20,
+  "manifestEqual": true,
+  "differingFactKeys": [],
+  "packages": [
+    {
+      "file": "user-save.knitscape",
+      "bytes": 7341,
+      "entryNames": [
+        "project.json",
+        "assets/yarn/yarn-1791811697830/baseColor",
+        "assets/yarn/yarn-1791811697830/normal",
+        "assets/yarn/yarn-1791811697830/roughness",
+        "assets/yarn/yarn-1791811697830/height",
+        "assets/yarn/yarn-1791811697830/ambientOcclusion",
+        "assets/yarn/yarn-1791811832008/baseColor",
+        "assets/yarn/yarn-1791811832008/normal",
+        "assets/yarn/yarn-1791811832008/roughness",
+        "assets/yarn/yarn-1791811832008/height",
+        "assets/yarn/yarn-1791811832008/ambientOcclusion"
+      ],
+      "feedTargets": [
+        [
+          23,
+          27
+        ],
+        [
+          21
+        ],
+        [
+          23
+        ],
+        [
+          23
+        ]
+      ],
+      "assets": [
+        {
+          "id": "yarn-1791811697830",
+          "name": "T-001",
+          "category": "T",
+          "physicalRepeatLengthMm": 10,
+          "images": [
+            {
+              "slot": "baseColor",
+              "filename": "A_BaseColor.png",
+              "bytes": 165,
+              "sha256": "07025e0a88a29eb503e3cfce52cbb938d5a3bfc5c722db9b90937ce55a3849e5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "normal",
+              "filename": "A_Normal.png",
+              "bytes": 161,
+              "sha256": "8cf2d87c5790a604a8782f9ccb13d8c08239b91a9ca77dddee5448aa2cdc294a",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "roughness",
+              "filename": "A_Roughness.png",
+              "bytes": 163,
+              "sha256": "15d1b842e27c46b859ee9a529d10de3fe1dd44b576888ab8c70baed78dc48426",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "height",
+              "filename": "A_Height.png",
+              "bytes": 175,
+              "sha256": "7663af566e25e712e4fda525598f90875b00af8aa071f6f2fb4aa72b391797d5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "ambientOcclusion",
+              "filename": "A_AO.png",
+              "bytes": 163,
+              "sha256": "fd17863f510aeb79655e2208b8fdb157383392c6555cf50241a6a39fae524218",
+              "exactOriginalBytes": true
+            }
+          ]
+        },
+        {
+          "id": "yarn-1791811832008",
+          "name": "N-003",
+          "category": "N",
+          "physicalRepeatLengthMm": 12,
+          "images": [
+            {
+              "slot": "baseColor",
+              "filename": "B_BaseColor.png",
+              "bytes": 165,
+              "sha256": "fd8c78de9a20cc66ee157c14cf28c6299dc3117986b5bcf96bea9e0de83eb9da",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "normal",
+              "filename": "B_Normal.png",
+              "bytes": 161,
+              "sha256": "8cf2d87c5790a604a8782f9ccb13d8c08239b91a9ca77dddee5448aa2cdc294a",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "roughness",
+              "filename": "B_Roughness.png",
+              "bytes": 163,
+              "sha256": "15d1b842e27c46b859ee9a529d10de3fe1dd44b576888ab8c70baed78dc48426",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "height",
+              "filename": "B_Height.png",
+              "bytes": 175,
+              "sha256": "7663af566e25e712e4fda525598f90875b00af8aa071f6f2fb4aa72b391797d5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "ambientOcclusion",
+              "filename": "B_AO.png",
+              "bytes": 163,
+              "sha256": "fd17863f510aeb79655e2208b8fdb157383392c6555cf50241a6a39fae524218",
+              "exactOriginalBytes": true
+            }
+          ]
+        }
+      ],
+      "legacyPlies": [
+        {
+          "name": "main",
+          "color": "rgba(190,190,190,1)",
+          "diameter": 0.24,
+          "lengthScaleY": 1,
+          "enabled": true,
+          "texture": null
+        },
+        {
+          "name": "companion",
+          "color": "rgba(80,140,220,1)",
+          "diameter": 0.14,
+          "lengthScaleY": 1,
+          "enabled": false,
+          "texture": null
+        }
+      ]
+    },
+    {
+      "file": "user-reexport.knitscape",
+      "bytes": 7341,
+      "entryNames": [
+        "project.json",
+        "assets/yarn/yarn-1791811697830/baseColor",
+        "assets/yarn/yarn-1791811697830/normal",
+        "assets/yarn/yarn-1791811697830/roughness",
+        "assets/yarn/yarn-1791811697830/height",
+        "assets/yarn/yarn-1791811697830/ambientOcclusion",
+        "assets/yarn/yarn-1791811832008/baseColor",
+        "assets/yarn/yarn-1791811832008/normal",
+        "assets/yarn/yarn-1791811832008/roughness",
+        "assets/yarn/yarn-1791811832008/height",
+        "assets/yarn/yarn-1791811832008/ambientOcclusion"
+      ],
+      "feedTargets": [
+        [
+          23,
+          27
+        ],
+        [
+          21
+        ],
+        [
+          23
+        ],
+        [
+          23
+        ]
+      ],
+      "assets": [
+        {
+          "id": "yarn-1791811697830",
+          "name": "T-001",
+          "category": "T",
+          "physicalRepeatLengthMm": 10,
+          "images": [
+            {
+              "slot": "baseColor",
+              "filename": "A_BaseColor.png",
+              "bytes": 165,
+              "sha256": "07025e0a88a29eb503e3cfce52cbb938d5a3bfc5c722db9b90937ce55a3849e5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "normal",
+              "filename": "A_Normal.png",
+              "bytes": 161,
+              "sha256": "8cf2d87c5790a604a8782f9ccb13d8c08239b91a9ca77dddee5448aa2cdc294a",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "roughness",
+              "filename": "A_Roughness.png",
+              "bytes": 163,
+              "sha256": "15d1b842e27c46b859ee9a529d10de3fe1dd44b576888ab8c70baed78dc48426",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "height",
+              "filename": "A_Height.png",
+              "bytes": 175,
+              "sha256": "7663af566e25e712e4fda525598f90875b00af8aa071f6f2fb4aa72b391797d5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "ambientOcclusion",
+              "filename": "A_AO.png",
+              "bytes": 163,
+              "sha256": "fd17863f510aeb79655e2208b8fdb157383392c6555cf50241a6a39fae524218",
+              "exactOriginalBytes": true
+            }
+          ]
+        },
+        {
+          "id": "yarn-1791811832008",
+          "name": "N-003",
+          "category": "N",
+          "physicalRepeatLengthMm": 12,
+          "images": [
+            {
+              "slot": "baseColor",
+              "filename": "B_BaseColor.png",
+              "bytes": 165,
+              "sha256": "fd8c78de9a20cc66ee157c14cf28c6299dc3117986b5bcf96bea9e0de83eb9da",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "normal",
+              "filename": "B_Normal.png",
+              "bytes": 161,
+              "sha256": "8cf2d87c5790a604a8782f9ccb13d8c08239b91a9ca77dddee5448aa2cdc294a",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "roughness",
+              "filename": "B_Roughness.png",
+              "bytes": 163,
+              "sha256": "15d1b842e27c46b859ee9a529d10de3fe1dd44b576888ab8c70baed78dc48426",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "height",
+              "filename": "B_Height.png",
+              "bytes": 175,
+              "sha256": "7663af566e25e712e4fda525598f90875b00af8aa071f6f2fb4aa72b391797d5",
+              "exactOriginalBytes": true
+            },
+            {
+              "slot": "ambientOcclusion",
+              "filename": "B_AO.png",
+              "bytes": 163,
+              "sha256": "fd17863f510aeb79655e2208b8fdb157383392c6555cf50241a6a39fae524218",
+              "exactOriginalBytes": true
+            }
+          ]
+        }
+      ],
+      "legacyPlies": [
+        {
+          "name": "main",
+          "color": "rgba(190,190,190,1)",
+          "diameter": 0.24,
+          "lengthScaleY": 1,
+          "enabled": true,
+          "texture": null
+        },
+        {
+          "name": "companion",
+          "color": "rgba(80,140,220,1)",
+          "diameter": 0.14,
+          "lengthScaleY": 1,
+          "enabled": false,
+          "texture": null
+        }
+      ]
+    }
+  ]
+}

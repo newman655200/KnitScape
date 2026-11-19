@@ -1,0 +1,34 @@
+ M AGENTS.md
+ M "KnitScape_\345\275\223\345\211\215\345\212\237\350\203\275\344\270\216\347\256\227\346\263\225.md"
+ M NEXT_TASK.md
+ M README.md
+ M package.json
+ M scripts/validate-single-jersey-execution-integration.mjs
+ M scripts/validate-texture-cache-lifecycle.mjs
+ M scripts/validate-two-ply-yarn.mjs
+ M scripts/validate-yarn-length-gauge.mjs
+ M src/actions/importers.js
+ M src/codeGuide/codeGuideDefinitions.json
+ M src/codeGuide/generatedLines.json
+ M src/components/runSimulation.js
+ M src/constants.js
+ M src/domain/yarnLibrary.js
+ M src/i18n/translations.js
+ M src/simulation/drawYarnSimulation.js
+ M src/simulation/yarnLengthMetrics.js
+ M src/simulation/yarnLengthSolver.js
+ M src/simulation/yarnPathGeometry.js
+ M src/simulation/yarnSimulation.js
+ M src/simulation/yarnTextureBrush.js
+ M src/simulation/yarnUvWebglRenderer.js
+ M src/state.js
+ M src/views/yarnLengthReadout.js
+ M src/yarnTexture/yarnScanTexture.js
+?? docs/
+?? reports/
+?? scripts/validate-gauge-authority.mjs
+?? scripts/validate-project-load-lifecycle.mjs
+?? scripts/validate-yarn-material-authority.mjs
+?? src/domain/machineGauge.js
+?? src/domain/yarnMaterial.js
+?? "\351\235\242\346\226\231\346\224\276\345\244\247.jpg"

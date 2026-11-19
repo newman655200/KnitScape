@@ -15,6 +15,7 @@ import { chartEditorToolbar } from "./chartEditorToolbar";
 import { needleArrangementBar } from "./needleArrangementBar";
 import { singleJerseyCamProgramEditor } from "./singleJerseyCamProgramEditor";
 import { yarnLibraryWorkspace } from "./yarnLibrary.js";
+import { pbrWorkbench } from "./pbrWorkbench.js";
 
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
@@ -43,7 +44,7 @@ export function view() {
     ${when(GLOBAL_STATE.showLibrary, libraryModal)}
     ${when(GLOBAL_STATE.showSettings, settingsModal)} ${taskbar()}
 
-    <div id="site" class=${GLOBAL_STATE.workspaceMode === "yarns" ? "yarn-library-active" : ""}>
+    <div id="site" class="${GLOBAL_STATE.workspaceMode === "yarns" ? "yarn-library-active" : ""} ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "pbr-workbench-active" : ""}">
       <div id="chart-pane">
         <div id="chart-layout">
           ${leftBar()}
@@ -86,6 +87,7 @@ export function view() {
         aria-hidden=${GLOBAL_STATE.workspaceMode !== "yarns"}>
         ${yarnLibraryWorkspace()}
       </main>
+      ${pbrWorkbench()}
     </div>
     ${when(GLOBAL_STATE.debug, debugPane)}
     ${codeGuideOverlay()}

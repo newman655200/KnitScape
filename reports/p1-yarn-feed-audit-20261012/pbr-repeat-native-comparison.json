@@ -1,0 +1,18 @@
+[
+  {
+    "phase": "before",
+    "repeat": 10,
+    "maps": [
+      "baseColor",
+      "normal",
+      "roughness",
+      "height",
+      "ambientOcclusion"
+    ]
+  },
+  {
+    "phase": "after",
+    "repeat": null,
+    "maps": "baseColor"
+  }
+]

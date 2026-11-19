@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "exactFiles": 39,
+  "modified": 23,
+  "added": 16,
+  "deleted": 0,
+  "binary": 0,
+  "reports": 0,
+  "optionalDocs": 0,
+  "sourceMatchesFinalAudit": true,
+  "protectedFiles": 564,
+  "changedWorkingFiles": 0,
+  "schemaFileChanges": [],
+  "persistenceWhitelist": "Existing getProjectData/PROJECT_FIELDS unchanged; runtime fields excluded",
+  "generatedAssetNote": "Only explicitly approved text code-guide line mapping, no built/binary assets"
+}

@@ -24,6 +24,9 @@ let GLOBAL_STATE = {
   activeTool: null,
   activeSymbol: DEFAULT_STITCH_SYMBOL_INDEX,
   workspaceMode: "pattern",
+  workbenchMode: "classic2d",
+  projectGeneration: 0,
+  pbrView: { scale: 1, pan: { x: 0, y: 0 }, flipped: false, visibleYarnId: null },
 
   chartBackground: "#ffffff",
   symbolPalette: {},
@@ -118,10 +121,13 @@ let GLOBAL_STATE = {
 };
 
 function loadWorkspace(workspace) {
-  GLOBAL_STATE = { ...GLOBAL_STATE, ...prepareAction(workspace, {
+  const prepared = prepareAction(workspace, {
     replaceFeedYarnStructure: Object.hasOwn(workspace, "singleJerseyCamProgram"),
-  }) };
+    replaceProject: true,
+  });
+  GLOBAL_STATE = { ...GLOBAL_STATE, ...prepared };
   GLOBAL_STATE.updateSim = true;
+  StateMonitor.syncState(GLOBAL_STATE, Object.keys(prepared));
 }
 
 function shouldSnapshot(action) {
@@ -175,9 +181,9 @@ function undo() {
   StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
-function prepareAction(action, { replaceFeedYarnStructure = false } = {}) {
+function prepareAction(action, { replaceFeedYarnStructure = false, replaceProject = false } = {}) {
   // Only this layer writes the revision, atomically with the validated mutation.
-  const { feedYarnStructureRevision: _incomingRevision, ...prepared } = action;
+  const { feedYarnStructureRevision: _incomingRevision, projectGeneration: _incomingGeneration, ...prepared } = action;
   if (Object.hasOwn(prepared, "machineGauge")) {
     validateMachineGauge(prepared.machineGauge);
   }
@@ -185,6 +191,7 @@ function prepareAction(action, { replaceFeedYarnStructure = false } = {}) {
     (replaceFeedYarnStructure || hasFeedYarnStructureChanged(GLOBAL_STATE.singleJerseyCamProgram, prepared.singleJerseyCamProgram))) {
     prepared.feedYarnStructureRevision = GLOBAL_STATE.feedYarnStructureRevision + 1;
   }
+  if (replaceProject) prepared.projectGeneration = GLOBAL_STATE.projectGeneration + 1;
   return prepared;
 }
 

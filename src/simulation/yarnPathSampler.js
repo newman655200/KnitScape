@@ -97,7 +97,7 @@ function readPoint(tokens, index, current, relative) {
   };
 }
 
-function flattenPathData(pathData, curveSteps = 24) {
+function flattenPathData(pathData, curveSteps = 24, endpointFrames) {
   const tokens = tokenizePathData(pathData);
   const points = [];
   let index = 0;
@@ -180,8 +180,26 @@ function flattenPathData(pathData, curveSteps = 24) {
       for (let step = 1; step <= curveSteps; step += 1) {
         const t = step / curveSteps;
         const point = cubicPoint(start, controlA.point, controlB.point, end.point, t);
+        const edgeIndex = points.length - 1;
+        const previous = points.at(-1);
         pushPoint(points, { ...point, u: totalLength + (step === curveSteps
           ? length : partialCubicLength(start, controlA.point, controlB.point, t, point)) });
+        // Attach directions to retained edges, never across an M jump or a
+        // deduplicated endpoint. The sampler still selects its original edge.
+        if (endpointFrames && previous && points.length === edgeIndex + 2) {
+          const frames = {};
+          if (previous.x === start.x && previous.y === start.y && previous.u === totalLength) {
+            const control = [controlA.point, controlB.point, end.point]
+              .find(candidate => pointDistance(start, candidate) > EPSILON);
+            if (control) frames.start = segmentTangent(start, control);
+          }
+          if (step === curveSteps) {
+            const control = [controlB.point, controlA.point, start]
+              .find(candidate => pointDistance(candidate, end.point) > EPSILON);
+            if (control) frames.end = segmentTangent(control, end.point);
+          }
+          if (frames.start || frames.end) endpointFrames.set(edgeIndex, frames);
+        }
       }
       totalLength += length;
       current = end.point;
@@ -199,7 +217,8 @@ export function samplePathData(
   pathData,
   { spacing = 3, curveSteps = 24, maxPoints = Infinity } = {}
 ) {
-  const points = flattenPathData(pathData, curveSteps);
+  const endpointFrames = new Map();
+  const points = flattenPathData(pathData, curveSteps, endpointFrames);
   if (!points.length) return [];
   if (points.length === 1) return [withFrame(points[0], 0)];
 
@@ -221,7 +240,7 @@ export function samplePathData(
     index === steps ? totalLength : index * totalLength / steps);
 
   let segmentIndex = 0;
-  return distances.map((u) => {
+  return distances.map((u, index) => {
     while (
       segmentIndex < segmentLengths.length - 1 &&
       cumulative[segmentIndex + 1] < u
@@ -239,6 +258,9 @@ export function samplePathData(
       y: lerp(start.y, end.y, t),
     };
 
-    return withFrame(point, u, segmentTangent(start, end));
+    const frames = endpointFrames.get(segmentIndex);
+    const endpointTangent = index === 0 && t === 0 ? frames?.start
+      : index === distances.length - 1 && t === 1 ? frames?.end : null;
+    return withFrame(point, u, endpointTangent || segmentTangent(start, end));
   });
 }

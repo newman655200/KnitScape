@@ -62,8 +62,16 @@ export function taskbar() {
         ${buttonIcon("fullscreen", t("taskbar.fullscreen", language))}
       </button>
     </div>
+    <div class="workbench-mode-controls" role="group" aria-label="工作区">
+      <button type="button" class="btn ${GLOBAL_STATE.workbenchMode === "classic2d" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workbenchMode === "classic2d"}
+        @click=${() => dispatch({ workbenchMode: "classic2d" })}>Classic 2D</button>
+      <button type="button" class="btn ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workbenchMode === "pbr25d"}
+        @click=${() => dispatch({ workbenchMode: "pbr25d" })}>PBR + 2.5D</button>
+    </div>
     <div
-      class="fabric-mode-controls"
+      class="fabric-mode-controls ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "workspace-hidden" : ""}"
       role="group"
       aria-label=${t("workspace.navigation", language)}>
       <button

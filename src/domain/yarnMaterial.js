@@ -43,3 +43,73 @@ export function resolveYarnMaterial({ yarnAsset, legacyContext = {} } = {}) {
   }
   return { color, diameter, diameterSource, diameterUnit, pbr, texture, source };
 }
+
+const YARN_RATIO = 0.24;
+
+export function normalizeYarnPlies(yarnPlies, palette) {
+  const fallbackColor = palette?.[0] || "rgba(190,190,190,1)";
+  const source =
+    Array.isArray(yarnPlies) && yarnPlies.length
+      ? yarnPlies
+      : [
+          {
+            color: fallbackColor,
+            diameter: YARN_RATIO,
+            enabled: true,
+            texture: null,
+          },
+        ];
+
+  const normalized = source
+    .filter((ply) => ply?.enabled !== false)
+    .map((ply) => ({
+      color: ply.color || fallbackColor,
+      diameter:
+        Number.isFinite(Number(ply.diameter)) && Number(ply.diameter) > 0
+          ? Number(ply.diameter)
+          : YARN_RATIO,
+      texture: normalizeYarnTexture(ply.texture),
+    }));
+
+  return normalized.length
+    ? normalized
+    : [
+        {
+          color: fallbackColor,
+          diameter: YARN_RATIO,
+          texture: null,
+        },
+      ];
+}
+
+// Runtime material views share asset references; each Feed slot owns its scale.
+export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedIndices = null) {
+  const materials = new Map();
+  const library = new Map((yarnLibrary || []).map(yarn => [String(yarn.id), yarn]));
+  (feeds || []).forEach((feed, index) => {
+    if (usedFeedIndices && !usedFeedIndices.has(index)) return;
+    const yarns = Array.isArray(feed?.yarns) && feed.yarns.length ? feed.yarns : [null];
+    materials.set(index, yarns.map(yarn => {
+      const yarnId = yarn?.yarnId;
+      const asset = yarnId === null || yarnId === undefined || yarnId === ""
+        ? null : library.get(String(yarnId));
+      const material = resolveYarnMaterial({ yarnAsset: asset, legacyContext: primaryPly });
+      const hasAssetFields = Object.values(material.source).includes("ASSET");
+      // Preserve the historical no-field adapter identity for old projects.
+      return hasAssetFields ? { ...primaryPly, ...material, assetMaterial: true } : primaryPly;
+    }));
+  });
+  return materials;
+}
+
+// Numerical material dependencies only. Appearance and asset identity remain
+// available to the shared drawing resolver without invalidating solved paths.
+export function yarnMaterialGeometryKey({ yarnPlies, yarnPalette, yarnLibrary, singleJerseyCamProgram }) {
+  const primary = normalizeYarnPlies(yarnPlies, yarnPalette)[0];
+  const materials = resolveFeedYarnPlies(singleJerseyCamProgram?.feeds, yarnLibrary, primary);
+  return JSON.stringify({
+    lengthScaleY: Math.min(1.1, Math.max(0.9, Number(yarnPlies?.[0]?.lengthScaleY) || 1)),
+    diameters: materials.size ? [...materials.values()].map(plies => plies.map(ply => ply.diameter)) : [primary.diameter],
+  });
+}
+

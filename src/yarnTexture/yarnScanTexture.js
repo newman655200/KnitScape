@@ -17,6 +17,7 @@ export const DEFAULT_YARN_SCAN_TEXTURE = Object.freeze({
     roughness: null,
     height: null,
     ambientOcclusion: null,
+    metallic: null,
   }),
 });
 
@@ -92,6 +93,7 @@ export function normalizePbrTextureMaps(pbr = {}) {
     roughness: normalizePbrTextureMap(source.roughness),
     height: normalizePbrTextureMap(source.height),
     ambientOcclusion: normalizePbrTextureMap(source.ambientOcclusion),
+    metallic: normalizePbrTextureMap(source.metallic),
     ...physicalRepeatMetadata(source),
   };
 }
@@ -181,6 +183,7 @@ export function identifyPbrMap(fileName) {
     roughness: "roughness",
     height: "height|displacement",
     ambientOcclusion: "ao|ambient[ _-]*occlusion",
+    metallic: "metallic|metalness",
   };
   return Object.keys(aliases).find(key =>
     new RegExp(`(^|[^a-z])(${aliases[key]})([^a-z]|$)`).test(name)) ?? null;
@@ -214,7 +217,7 @@ export function normalizeYarnPbr(pbr) {
     }
     return [key, map];
   }));
-  if (!Object.values(maps).some(Boolean)) return null;
+  if (!Object.values(maps).some(Boolean) && !physicalRepeatMetadata(pbr).physicalRepeatLengthMm) return null;
   const previewDataUrl = pbr.previewDataUrl || "";
   if (previewDataUrl && !isImageDataUrl(previewDataUrl)) throw new TypeError("Invalid PBR preview.");
   return { ...maps, previewDataUrl, ...physicalRepeatMetadata(pbr) };

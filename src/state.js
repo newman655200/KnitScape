@@ -14,6 +14,7 @@ import { getInitialLanguage } from "./i18n/index.js";
 import { createYarnAsset } from "./domain/yarnLibrary.js";
 import { PREVIEW_VALIDITY } from "./simulation/previewValidity.js";
 import { hasFeedYarnStructureChanged } from "./domain/feedYarnStructure.js";
+import { validateMachineGauge } from "./domain/machineGauge.js";
 
 let GLOBAL_STATE = {
   language: getInitialLanguage(),
@@ -177,6 +178,9 @@ function undo() {
 function prepareAction(action, { replaceFeedYarnStructure = false } = {}) {
   // Only this layer writes the revision, atomically with the validated mutation.
   const { feedYarnStructureRevision: _incomingRevision, ...prepared } = action;
+  if (Object.hasOwn(prepared, "machineGauge")) {
+    validateMachineGauge(prepared.machineGauge);
+  }
   if (Object.hasOwn(prepared, "singleJerseyCamProgram") &&
     (replaceFeedYarnStructure || hasFeedYarnStructureChanged(GLOBAL_STATE.singleJerseyCamProgram, prepared.singleJerseyCamProgram))) {
     prepared.feedYarnStructureRevision = GLOBAL_STATE.feedYarnStructureRevision + 1;

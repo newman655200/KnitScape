@@ -303,11 +303,43 @@ for (const heading of [
   "核心数据结构",
   "已实现算法",
   "技术栈与开发方式",
-  "当前验证结果",
   "当前明确未实现",
   "理论与使用边界",
 ]) {
   assert.match(technicalDoc, new RegExp(`## \\d+\\. ${heading}`));
+}
+// Section titles are prose; the software/process validation boundary is the contract.
+function assertValidationBoundary(document) {
+  assert.match(document, /P0-C0 Correctness Preparation/, "must identify the current preparation stage");
+  const baselineSection = document.split(/^## .*$/m).find(
+    (section) => section.includes("SolverResult") && section.includes("PreviewValidity")
+  );
+  assert.ok(baselineSection, "must document the P0 software baseline together");
+  for (const protection of [
+    "合法/非法输入保护", "明确Clear", "UNREACHABLE_TARGET",
+    "Feed×Yarn独立目标", "批量目标原子预检", "feedYarnStructureRevision",
+  ]) {
+    assert.ok(baselineSection.includes(protection), `P0 baseline must document ${protection}`);
+  }
+  assert.match(baselineSection, /UNKNOWN\s*\/\s*PENDING PROCESS CONFIRMATION/);
+  assert.match(baselineSection, /没有证明真实工厂23\/8与当前Solver测量定义一致/);
+  assert.match(baselineSection, /没有完成真实机台精度标定/);
+  assert.match(baselineSection, /当前VALIDATED仅是模型窗口数值目标成功并应用/);
+  assert.match(baselineSection, /\]\(docs\/PROCESS_VALIDATION\.md\)/);
+}
+assertValidationBoundary(technicalDoc);
+assertValidationBoundary(technicalDoc.replace(/^## 7\..*$/m, "## 软件验证说明"));
+for (const contractText of [
+  "P0-C0 Correctness Preparation", "SolverResult", "PreviewValidity",
+  "合法/非法输入保护", "明确Clear", "UNREACHABLE_TARGET",
+  "Feed×Yarn独立目标", "批量目标原子预检", "feedYarnStructureRevision",
+  "UNKNOWN / PENDING PROCESS CONFIRMATION",
+  "没有证明真实工厂23/8与当前Solver测量定义一致",
+  "没有完成真实机台精度标定", "当前VALIDATED仅是模型窗口数值目标成功并应用",
+  "docs/PROCESS_VALIDATION.md",
+]) {
+  assert.throws(() => assertValidationBoundary(technicalDoc.replaceAll(contractText, "")),
+    assert.AssertionError, `removing ${contractText} must fail the document contract`);
 }
 assert.doesNotMatch(technicalDoc, /Step 16[A-E]|PBR 导出方向|yarnLengthSimulationRequestId/);
 

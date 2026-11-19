@@ -72,7 +72,7 @@ try {
   assert.ok(!deletedTextures.includes(renderer.fallbackTexture));
 
   assert.equal(typeof materialMaps, "function", "Draw layers need the Renderer map sources.");
-  const slots = ["baseColor", "normal", "roughness", "height", "ambientOcclusion"];
+  const slots = ["baseColor", "normal", "roughness", "height", "ambientOcclusion", "metallic"];
   const pbr = Object.fromEntries(slots.map(slot => [slot, { assetRef: `${slot}-ref` }]));
   const sources = materialMaps({ texture: { pbr } });
   for (const slot of slots) assert.equal(sources[slot].assetRef, `${slot}-ref`);

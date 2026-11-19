@@ -41,6 +41,42 @@ const server = await createServer({ appType: "custom", logLevel: "silent", serve
 globalThis.document = documentFixture;
 
 try {
+  const { getYarnLengthFeedbackRows } = await server.ssrLoadModule("/src/views/yarnLengthSolverFeedback.js");
+  const relaxedAssignment = { yarnId: 0, lengthInputMode: "relaxedWithDraft",
+    relaxedLengthCmPer100Needles: 8, draftRatio: 3 };
+  const feedbackState = assignment => ({
+    singleJerseyCamProgram: { feeds: [{ yarns: [assignment] }] }, yarnLengthSolverResults: [],
+  });
+  const relaxedRow = getYarnLengthFeedbackRows(feedbackState(relaxedAssignment))[0];
+  assert.equal(relaxedRow.target, 24, "Feedback must use the Domain-derived weaving reference.");
+  assert.equal(relaxedRow.lengthInput.lengthInputMode, "relaxedWithDraft");
+  assert.equal(relaxedRow.lengthInput.relaxedLengthCmPer100Needles, 8);
+  assert.equal(relaxedRow.lengthInput.draftRatio, 3);
+  const currentResult = { feedIndex: 0, yarnIndex: 0, targetLengthCmPer100Needles: 24,
+    status: "CONVERGED", lengthInput: relaxedRow.lengthInput };
+  const currentFeedback = feedbackState(relaxedAssignment);
+  currentFeedback.yarnLengthSolverResults = [currentResult];
+  assert.equal(getYarnLengthFeedbackRows(currentFeedback)[0].result, currentResult);
+  currentFeedback.singleJerseyCamProgram.feeds[0].yarns[0] = {
+    ...relaxedAssignment, relaxedLengthCmPer100Needles: 10, draftRatio: 2.4 };
+  const equalTargetRow = getYarnLengthFeedbackRows(currentFeedback)[0];
+  assert.equal(equalTargetRow.target, 24);
+  assert.equal(equalTargetRow.result, null, "Equal effective targets cannot preserve stale process-source feedback.");
+  assert.equal(equalTargetRow.lengthInput.relaxedLengthCmPer100Needles, 10);
+  assert.equal(equalTargetRow.lengthInput.draftRatio, 2.4);
+  const incompleteRow = getYarnLengthFeedbackRows(feedbackState({
+    ...relaxedAssignment, draftRatio: null, yarnLengthCmPer100Needles: 24 }))[0];
+  assert.equal(incompleteRow.target, null, "Incomplete relaxed input must never fall back to a direct target.");
+  assert.equal(incompleteRow.lengthInput.status, "INCOMPLETE");
+  const legacyResult = { feedIndex: 0, yarnIndex: 0, targetLengthCmPer100Needles: 24, status: "CONVERGED" };
+  const legacyFeedback = feedbackState({ yarnId: 0, yarnLengthCmPer100Needles: 24 });
+  legacyFeedback.yarnLengthSolverResults = [legacyResult];
+  assert.equal(getYarnLengthFeedbackRows(legacyFeedback)[0].result, legacyResult,
+    "Existing direct results without source metadata remain compatible.");
+  currentFeedback.yarnLengthSolverResults = [legacyResult];
+  assert.equal(getYarnLengthFeedbackRows(currentFeedback)[0].result, null,
+    "Relaxed input results always require matching source metadata.");
+
   const [state, actions, runner, { Bimp }, { getProjectData }] = await Promise.all([
     server.ssrLoadModule("/src/state.js"),
     server.ssrLoadModule("/src/actions/singleJerseyCamProgram.js"),

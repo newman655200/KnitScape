@@ -21,6 +21,8 @@ function deleteColor(index) {
 
   dispatch({
     yarnPalette: newPalette,
+    activeYarn: GLOBAL_STATE.activeYarn === index ? 0
+      : GLOBAL_STATE.activeYarn > index ? GLOBAL_STATE.activeYarn - 1 : GLOBAL_STATE.activeYarn,
     yarnSequence: new Bimp(
       GLOBAL_STATE.yarnSequence.width,
       GLOBAL_STATE.yarnSequence.height,

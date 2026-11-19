@@ -84,7 +84,8 @@ try {
       const targeted = targets.some(target => target.feedIndex === feedIndex && target.yarnIndex === yarnIndex);
       const next = nextCam.feeds[feedIndex].yarns[yarnIndex];
       if (!targeted) assert.equal(next, yarn, "Untargeted assignment is unchanged, including all fields");
-      else assert.deepEqual(next, { ...yarn, yarnLengthCmPer100Needles: Number(value) });
+      else assert.deepEqual(next, { ...yarn, [yarn.lengthInputMode === "relaxedWithDraft"
+        ? "relaxedLengthCmPer100Needles" : "yarnLengthCmPer100Needles"]: Number(value) });
     }));
     flush();
     return result;
@@ -171,6 +172,48 @@ try {
   assert.deepEqual(Array.from(chart.pixels), Array(48 * 60).fill(0));
   assert.equal(Object.hasOwn(getProjectData(), "yarnLengthSolverResults"), false);
   assert.equal(Object.hasOwn(getProjectData(), "previewValidity"), false);
+
+  // P0-C2: batch length means the selected assignments' common active mode.
+  prepare(true);
+  for (const [feed, slot, draft] of [[0, 1, 3], [1, 0, 2.8]]) {
+    actions.setSingleJerseyFeedYarnLengthInputMode(feed, slot, "relaxedWithDraft");
+    actions.setSingleJerseyFeedYarnLength(feed, slot, 7);
+    actions.setSingleJerseyFeedYarnDraftRatio(feed, slot, draft);
+  }
+  flush();
+  reject([locator(0), locator(0, 1)], 8, "MIXED_LENGTH_INPUT_MODES");
+  const relaxedRevision = current().feedYarnStructureRevision;
+  commit([locator(0, 1), locator(1)], 8);
+  assert.equal(current().feedYarnStructureRevision, relaxedRevision);
+  assert.equal(current().singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles, 23);
+  assert.equal(current().singleJerseyCamProgram.feeds[0].yarns[1].draftRatio, 3);
+  assert.equal(current().singleJerseyCamProgram.feeds[1].yarns[0].draftRatio, 2.8);
+  assert.equal(Object.hasOwn(current().singleJerseyCamProgram.feeds[0].yarns[1], "yarnLengthCmPer100Needles"), false);
+  reject([locator(0, 1), locator(1)], Number.MAX_VALUE, "INVALID_EFFECTIVE_YARN_LENGTH");
+  actions.setSingleJerseyFeedYarnDraftRatio(0, 1, 0.5);
+  actions.setSingleJerseyFeedYarnDraftRatio(1, 0, 2);
+  assert.equal(reject([locator(0, 1), locator(1)], 1e308, "INVALID_EFFECTIVE_YARN_LENGTH").failedTargetIndex, 1,
+    "A finite first product must not commit when the final target overflows");
+  actions.setSingleJerseyFeedYarnDraftRatio(0, 1, 3);
+  actions.setSingleJerseyFeedYarnDraftRatio(1, 0, 0.5);
+  assert.equal(reject([locator(0, 1), locator(1)], Number.MIN_VALUE, "INVALID_EFFECTIVE_YARN_LENGTH").failedTargetIndex, 1,
+    "A positive first product must not commit when the final target underflows to zero");
+  actions.setSingleJerseyFeedYarnDraftRatio(1, 0, 2.8);
+  for (const value of [-1, 0, "", " ", "invalid", NaN, Infinity, null]) {
+    reject([locator(0, 1), locator(1)], value, "INVALID_YARN_LENGTH");
+  }
+  const capturedMode = selection([{ ...locator(0, 1), lengthInputMode: "relaxedWithDraft" }]);
+  actions.setSingleJerseyFeedYarnLengthInputMode(0, 1, "directTarget");
+  assert.equal(current().feedYarnStructureRevision, relaxedRevision);
+  reject(capturedMode.targets, 23, "STALE_LENGTH_INPUT_MODE", capturedMode);
+  // A fresh direct-mode selection can set a target after an explicit switch.
+  commit([locator(0, 1)], 23);
+  actions.setSingleJerseyFeedYarnLengthInputMode(0, 1, "relaxedWithDraft");
+  commit([locator(0, 1), locator(1)], 8);
+  assert.equal(Object.hasOwn(current().singleJerseyCamProgram.feeds[0].yarns[1], "draftRatio"), false,
+    "Batch relaxed length does not invent or copy a draft ratio");
+  readings.push({ testCase: "P0-C2", mixedModesRejected: true, sameModeAtomic: true,
+    selectedModeChangeRejected: true, parameterRevisionUnchanged: true });
   runner.stopSimulation();
   readings.forEach(reading => console.log(JSON.stringify(reading)));
   console.log("PASS: P0-4 A–H, one atomic commit, final-target failure injection, sibling isolation and unchanged rejected results.");

@@ -1,6 +1,7 @@
 import {
   courseToFeedIndex,
   modelLengthToMm,
+  normalizeMachineGauge,
   targetModelLengthPer100Needles,
 } from "./yarnLengthMetrics.js";
 
@@ -114,6 +115,7 @@ export function solveFeedYarnLengths({
   maxIterations = 48,
   monotonicSamples = 8,
 }) {
+  gauge = normalizeMachineGauge(gauge);
   validateInputs({
     feeds,
     buildGeometry,

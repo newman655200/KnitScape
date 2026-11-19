@@ -1,4 +1,4 @@
-import { simulate } from "../simulation/yarnSimulation";
+import { simulate, yarnMaterialGeometryKey } from "../simulation/yarnSimulation";
 import { PREVIEW_VALIDITY } from "../simulation/previewValidity.js";
 import { retainYarnAssetTextureImages } from "../simulation/yarnTextureBrush.js";
 import { retainWebglYarnTextures } from "../simulation/yarnUvWebglRenderer.js";
@@ -203,6 +203,7 @@ export function stopSimulation() {
 export function runSimulation() {
   return ({ state }) => {
     let queueSim = false;
+    let materialGeometryKey = yarnMaterialGeometryKey(state);
 
     function run() {
       queueSim = false;
@@ -235,8 +236,6 @@ export function runSimulation() {
       stopSims = [baseSimulationResult.stopSim];
       dispatch({
         yarnLengthMetrics: baseSimulationResult.yarnLengthMetrics,
-        yarnLengthSolverResults: [],
-        previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW,
       });
 
       clearSimulationCanvases(AFTER_SIMULATION_TARGET.canvasIDs);
@@ -259,6 +258,7 @@ export function runSimulation() {
 
       setMachineExecutionError(null);
       if (machineSimulationInput === null) {
+        dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
         releaseAfterYarnTextures();
         return;
       }
@@ -303,8 +303,16 @@ export function runSimulation() {
 
         if (found) {
           stopSimulation();
-          // Old results cannot validate newly edited facts during the debounce.
-          dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
+          const nextKey = yarnMaterialGeometryKey(state);
+          const onlyMaterialChanges = !["repeats", "yarnSequence", "machineGauge",
+            "chart", "needleArrangement", "singleJerseyCamProgram"].some(key => changes.includes(key));
+          const geometryChanged = nextKey !== materialGeometryKey;
+          materialGeometryKey = nextKey;
+          // Only changed geometry/targets invalidate length. Rendering controls,
+          // maps, color and physical UV keep their last validated geometry result.
+          if (!onlyMaterialChanges || geometryChanged) {
+            dispatch({ yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
+          }
           debouncedRun();
         }
 

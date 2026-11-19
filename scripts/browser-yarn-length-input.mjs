@@ -5,6 +5,8 @@ export function createYarnLengthInputBrowserTest(tab, capture = async () => {}) 
   const check = (condition, message) => { if (!condition) throw new Error(message); };
   const readings = [];
   const inputFor = (feed, yarn = 0) => tab.playwright.locator(`input[data-feed-index="${feed}"][data-yarn-index="${yarn}"]`);
+  const ratioFor = (feed, yarn = 0) => tab.playwright.locator(`input[data-draft-feed-index="${feed}"][data-draft-yarn-index="${yarn}"]`);
+  const modeFor = (feed, yarn = 0) => tab.playwright.locator(`select[data-length-mode-feed="${feed}"][data-length-mode-yarn="${yarn}"]`);
   const blur = () => tab.playwright.getByRole("heading", { name: "Cam Program（三角座）", exact: true }).click();
   async function commit(feed, yarn, value) {
     await inputFor(feed, yarn).fill("");
@@ -20,11 +22,25 @@ export function createYarnLengthInputBrowserTest(tab, capture = async () => {}) 
         solved: row.querySelector(".solver-length").textContent.trim(),
         status: row.querySelector(".solver-status").textContent.trim(),
         applied: row.querySelector(".solver-applied").textContent.trim(),
+        mode: row.querySelector(".solver-input-mode")?.textContent.trim(),
+        relaxed: row.querySelector(".solver-relaxed-length")?.textContent.trim(),
+        draftRatio: row.querySelector(".solver-draft-ratio")?.textContent.trim(),
       })),
       inputs: Array.from(document.querySelectorAll("input[data-feed-index]")).map(input => ({
         feed: Number(input.dataset.feedIndex), yarn: Number(input.dataset.yarnIndex),
         value: input.value, valid: input.validity.valid,
         notice: input.closest(".cam-feed-yarn-slot").querySelector(".cam-yarn-length-feedback").textContent.trim(),
+      })),
+      draftInputs: Array.from(document.querySelectorAll("input[data-draft-feed-index]")).map(input => ({
+        feed: Number(input.dataset.draftFeedIndex), yarn: Number(input.dataset.draftYarnIndex),
+        value: input.value, valid: input.validity.valid,
+        notice: input.closest(".cam-feed-yarn-slot").querySelector(".cam-yarn-length-feedback").textContent.trim(),
+      })),
+      modes: Array.from(document.querySelectorAll("select[data-length-mode-feed]")).map(input => ({
+        feed: Number(input.dataset.lengthModeFeed), yarn: Number(input.dataset.lengthModeYarn), value: input.value,
+      })),
+      derived: Array.from(document.querySelectorAll("[data-derived-feed]")).map(output => ({
+        feed: Number(output.dataset.derivedFeed), yarn: Number(output.dataset.derivedYarn), text: output.textContent.trim(),
       })),
     }));
   }
@@ -119,6 +135,83 @@ export function createYarnLengthInputBrowserTest(tab, capture = async () => {}) 
         "F: same Feed two targets");
       await this.rejectCase("F-pair-reject", "-1");
       return readings.at(-1);
+    },
+    async relaxed(feed = 0, yarn = 0) {
+      await modeFor(feed, yarn).selectOption("relaxedWithDraft");
+      const switched = await observe("relaxed-mode-incomplete", "PARTIAL");
+      const selected = readings => readings.find(item => item.feed === feed && item.yarn === yarn);
+      check(selected(switched.inputs).value === "" && selected(switched.draftInputs).value === "",
+        "Mode switch must not copy direct target or guess a ratio");
+      check(selected(switched.rows).status === "长度输入未完成", "Incomplete mode must be visible");
+      await commit(feed, yarn, 8);
+      const missingRatio = await observe("relaxed-length-without-ratio", "PARTIAL");
+      check(selected(missingRatio.rows).target === "—" && selected(missingRatio.rows).status === "长度输入未完成",
+        "Relaxed length alone is not a target");
+      await ratioFor(feed, yarn).fill("");
+      await ratioFor(feed, yarn).pressSequentially("3.0");
+      await ratioFor(feed, yarn).press("Enter");
+      const ready = await observe("relaxed-8-times-3", "VALIDATED");
+      check(selected(ready.derived).text === "8 × 3.0 = 24", "Read-only reference must show its source facts");
+      check(selected(ready.rows).target === "24.0000" && selected(ready.rows).relaxed === "8.0000" &&
+        selected(ready.rows).draftRatio === "3.0000" && selected(ready.rows).status === "CONVERGED",
+        "Feedback must publish relaxed sources and the converged effective target");
+      return ready;
+    },
+    async rejectRelaxedFact(field, value, enter = false, feed = 0, yarn = 0) {
+      const selected = reading => (field === "draftRatio" ? reading.draftInputs : reading.inputs)
+        .find(item => item.feed === feed && item.yarn === yarn);
+      const before = await read();
+      const control = field === "draftRatio" ? ratioFor(feed, yarn) : inputFor(feed, yarn);
+      if (value === "") {
+        await control.press("End");
+        for (let index = 0; index < selected(before).value.length; index++) await control.press("Backspace");
+      } else {
+        await control.fill("");
+        await control.pressSequentially(String(value));
+      }
+      const draft = await read();
+      check(!selected(draft).valid && JSON.stringify(draft.rows) === JSON.stringify(before.rows),
+        `${field}: invalid draft must preserve results`);
+      if (enter) await control.press("Enter");
+      else await blur();
+      const rejected = await observe(`relaxed-reject-${field}-${value || "empty"}`, before.validity);
+      check(selected(rejected).value === selected(before).value && selected(rejected).notice.includes("未保存"),
+        `${field}: invalid edit must restore the previous fact`);
+      check(JSON.stringify(rejected.rows) === JSON.stringify(before.rows), `${field}: invalid edit must preserve feedback`);
+      return rejected;
+    },
+    async equalProduct(feed = 0, yarn = 0) {
+      await commit(feed, yarn, 10);
+      await ratioFor(feed, yarn).fill("");
+      await ratioFor(feed, yarn).pressSequentially("2.4");
+      await blur();
+      const updated = await observe("relaxed-equal-product-source-update", "VALIDATED");
+      const row = updated.rows.find(row => row.feed === feed && row.yarn === yarn);
+      check(row.target === "24.0000" && row.relaxed === "10.0000" && row.draftRatio === "2.4000",
+        "Equal products must refresh process-source feedback");
+      return updated;
+    },
+    async clearRelaxedFacts(feed = 0, yarn = 0) {
+      const slot = `第 ${feed + 1} 路第 ${yarn + 1} 根纱线`;
+      await tab.playwright.getByRole("button", { name: `清除${slot}的牵伸倍率`, exact: true }).click();
+      const ratioCleared = await observe("relaxed-ratio-clear", "PARTIAL");
+      check(ratioCleared.inputs.find(item => item.feed === feed && item.yarn === yarn).value !== "" &&
+        ratioCleared.draftInputs.find(item => item.feed === feed && item.yarn === yarn).value === "",
+        "Ratio Clear must preserve the relaxed length");
+      await tab.playwright.getByRole("button", { name: `清除${slot}的放松实测长度`, exact: true }).click();
+      const lengthCleared = await observe("relaxed-length-clear", "PARTIAL");
+      check(lengthCleared.inputs.find(item => item.feed === feed && item.yarn === yarn).value === "",
+        "Explicit relaxed Clear must clear only its field");
+      return lengthCleared;
+    },
+    async returnToDirect(feed = 0, yarn = 0) {
+      await modeFor(feed, yarn).selectOption("directTarget");
+      const direct = await observe("return-to-direct-unset", "VALIDATED");
+      check(direct.inputs.find(item => item.feed === feed && item.yarn === yarn).value === "" &&
+        !direct.draftInputs.some(item => item.feed === feed && item.yarn === yarn) &&
+        direct.rows.find(item => item.feed === feed && item.yarn === yarn).status === "NOT_SET",
+        "Switching to direct must not persist the derived target");
+      return direct;
     },
   };
 }

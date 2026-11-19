@@ -5,6 +5,11 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "validate:spandex-process-contract": "node scripts/validate-spandex-process-contract.mjs",
+    "validate:gauge-authority": "node scripts/validate-gauge-authority.mjs",
+    "validate:project-load-lifecycle": "node scripts/validate-project-load-lifecycle.mjs",
+    "validate:yarn-material-authority": "node scripts/validate-yarn-material-authority.mjs",
+    "validate:renderer-material-boundary": "node scripts/validate-renderer-material-boundary.mjs",
     "validate": "node scripts/validate.mjs",
     "dev": "vite",
     "host": "vite --host",

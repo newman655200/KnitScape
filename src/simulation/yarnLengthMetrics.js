@@ -1,20 +1,10 @@
-export const DEFAULT_MACHINE_GAUGE = 32;
-export const MIN_MACHINE_GAUGE = 1;
-export const MAX_MACHINE_GAUGE = 120;
-
-export function normalizeMachineGauge(
-  value,
-  fallback = DEFAULT_MACHINE_GAUGE
-) {
-  const numeric = Number(value);
-  const fallbackGauge = Number.isFinite(Number(fallback))
-    ? Number(fallback)
-    : DEFAULT_MACHINE_GAUGE;
-
-  if (!Number.isFinite(numeric) || numeric <= 0) return fallbackGauge;
-
-  return Math.max(MIN_MACHINE_GAUGE, Math.min(MAX_MACHINE_GAUGE, numeric));
-}
+import { normalizeMachineGauge } from "../domain/machineGauge.js";
+export {
+  DEFAULT_MACHINE_GAUGE,
+  MIN_MACHINE_GAUGE,
+  MAX_MACHINE_GAUGE,
+  normalizeMachineGauge,
+} from "../domain/machineGauge.js";
 
 export function gaugeToNeedlePitchMm(gauge) {
   return 25.4 / normalizeMachineGauge(gauge);

@@ -1,0 +1,5038 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Shanghai",
+  "baseline": {
+    "branch": "main",
+    "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+    "status": "M AGENTS.md\n M \"KnitScape_\\345\\275\\223\\345\\211\\215\\345\\212\\237\\350\\203\\275\\344\\270\\216\\347\\256\\227\\346\\263\\225.md\"\n M NEXT_TASK.md\n M README.md\n M package.json\n M scripts/validate-code-guide.mjs\n M scripts/validate-row-length-loop-model.mjs\n M scripts/validate-single-jersey-execution-integration.mjs\n M scripts/validate-texture-cache-lifecycle.mjs\n M scripts/validate-two-ply-yarn.mjs\n M scripts/validate-yarn-length-gauge.mjs\n M scripts/validate-yarn-sequence-editor.mjs\n M src/actions/exporters.js\n M src/actions/importers.js\n M src/actions/repeatDimensions.js\n M src/actions/yarnSequenceRows.js\n M src/codeGuide/codeGuideDefinitions.json\n M src/codeGuide/codeGuideMap.js\n M src/codeGuide/generatedLines.json\n M src/components/runSimulation.js\n M src/constants.js\n M src/domain/yarnLibrary.js\n M src/events/colorSequencePointerInteraction.js\n M src/events/colorSequenceTouchInteraction.js\n M src/i18n/translations.js\n M src/simulation/drawYarnSimulation.js\n M src/simulation/yarnLengthMetrics.js\n M src/simulation/yarnLengthSolver.js\n M src/simulation/yarnPathGeometry.js\n M src/simulation/yarnSimulation.js\n M src/simulation/yarnTextureBrush.js\n M src/simulation/yarnUvWebglRenderer.js\n M src/state.js\n M src/views/yarnLengthReadout.js\n M src/views/yarnPicker.js\n M src/yarnTexture/yarnScanTexture.js\n M vite.config.js\n?? docs/\n?? reports/\n?? scripts/validate-gauge-authority.mjs\n?? scripts/validate-project-load-lifecycle.mjs\n?? scripts/validate-renderer-material-boundary.mjs\n?? scripts/validate-yarn-material-authority.mjs\n?? src/domain/machineGauge.js\n?? src/domain/yarnMaterial.js\n?? \"\\351\\235\\242\\346\\226\\231\\346\\224\\276\\345\\244\\247.jpg\"",
+    "log": "7ababf2 feat: establish trusted feed yarn length workflow",
+    "note": "Existing uncommitted work is part of this working-tree baseline; not a clean HEAD checkout",
+    "taskStart": {
+      "branch": "main",
+      "head": "7ababf264d495f6b96d4d66652c529424938ac4d",
+      "status": [
+        " M AGENTS.md",
+        " M \"KnitScape_\\345\\275\\223\\345\\211\\215\\345\\212\\237\\350\\203\\275\\344\\270\\216\\347\\256\\227\\346\\263\\225.md\"",
+        " M NEXT_TASK.md",
+        " M README.md",
+        " M package.json",
+        " M scripts/validate-code-guide.mjs",
+        " M scripts/validate-row-length-loop-model.mjs",
+        " M scripts/validate-single-jersey-execution-integration.mjs",
+        " M scripts/validate-texture-cache-lifecycle.mjs",
+        " M scripts/validate-two-ply-yarn.mjs",
+        " M scripts/validate-yarn-length-gauge.mjs",
+        " M scripts/validate-yarn-sequence-editor.mjs",
+        " M src/actions/exporters.js",
+        " M src/actions/importers.js",
+        " M src/actions/repeatDimensions.js",
+        " M src/actions/yarnSequenceRows.js",
+        " M src/codeGuide/codeGuideDefinitions.json",
+        " M src/codeGuide/codeGuideMap.js",
+        " M src/codeGuide/generatedLines.json",
+        " M src/components/runSimulation.js",
+        " M src/constants.js",
+        " M src/domain/yarnLibrary.js",
+        " M src/events/colorSequencePointerInteraction.js",
+        " M src/events/colorSequenceTouchInteraction.js",
+        " M src/i18n/translations.js",
+        " M src/simulation/drawYarnSimulation.js",
+        " M src/simulation/yarnLengthMetrics.js",
+        " M src/simulation/yarnLengthSolver.js",
+        " M src/simulation/yarnPathGeometry.js",
+        " M src/simulation/yarnSimulation.js",
+        " M src/simulation/yarnTextureBrush.js",
+        " M src/simulation/yarnUvWebglRenderer.js",
+        " M src/state.js",
+        " M src/views/yarnLengthReadout.js",
+        " M src/views/yarnPicker.js",
+        " M src/yarnTexture/yarnScanTexture.js",
+        " M vite.config.js",
+        "?? docs/",
+        "?? reports/",
+        "?? scripts/validate-gauge-authority.mjs",
+        "?? scripts/validate-project-load-lifecycle.mjs",
+        "?? scripts/validate-renderer-material-boundary.mjs",
+        "?? scripts/validate-yarn-material-authority.mjs",
+        "?? src/domain/machineGauge.js",
+        "?? src/domain/yarnMaterial.js",
+        "?? \"\\351\\235\\242\\346\\226\\231\\346\\224\\276\\345\\244\\247.jpg\""
+      ],
+      "log": "7ababf2 feat: establish trusted feed yarn length workflow"
+    }
+  },
+  "sources": {
+    "processConfirmation": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+    "fixture": "reports/sop-001/SOP-001-N6W6040-main-yarn-with-cam.knitscape",
+    "fixtureSha256": "0d84dd7a3b7d408345015963279e5ea6548d501cbf84887d019a5f538b99eed8",
+    "historical": "reports/yarn-length-observability-2026-10-18/results.json",
+    "softwareSha256": {
+      "package-lock.json": "517424793ae4e8b0bb913eeb77bb76f0fb0251c4e1a2aae70b36ce02d6f35f5f",
+      "package.json": "bf40be9fa2b79d919ce4b43f72d604981878b0bed6bc9317fcedcf17fb987974",
+      "src/actions/exporters.js": "5e6ffd497ae3bc37f3ebb8dcf54a21be8d51d7b7eca8edeb3c22c772d97ddfe5",
+      "src/actions/importers.js": "5cc0baacc7edb9af95a6216ce8f63ad3485b558691b2ee6abaa962ff23ca7a8c",
+      "src/actions/projectPackage.js": "d622b9ccada92e6fd4a8c9526afe8ada46b8bbe86cf419275bf10ed30fa671d1",
+      "src/actions/repeatDimensions.js": "1a93f8a06981b40f0abd92dba76c95f1a2dd7b1b0afc8ba3c4f43d844b701d71",
+      "src/actions/repeatEditingTools.js": "e3a71485b932811b029a4d43807be5ab922f47d260571725d9aa63199ec5f65a",
+      "src/actions/selectedCell.js": "48a0971349b2e90d77ef3d3db49e8df7802f8c2054d39857e06b1b8dcc0de79b",
+      "src/actions/singleJerseyCamProgram.js": "d9ddea8c1f508768785c7a32f65452f01f5b57e23f643301529b395945c471c6",
+      "src/actions/texturePerformance.js": "d677ac2a103ec2314df12666c4495e735209f08ab089d2564efbe36105691f49",
+      "src/actions/yarnLibrary.js": "90639617ca6fab63a8bc79fc2eb8e84aefb05d21cf14bf17fc4ccb0d41b01789",
+      "src/actions/yarnPaletteEditing.js": "cca4e068759337467a9ec2fe1dc729f8f6dc3e01123ec85fc505ee46d97fea02",
+      "src/actions/yarnSequenceRows.js": "b4994fabac569efbd1e79d432952ad22634bd9b1f567b9bac3ac2fcc94d65118",
+      "src/actions/zoomFit.js": "d0d1a38bb2a9d1eaa52748b66b6d4077f487e403beffd861bc606af1b847ae92",
+      "src/adapters/singleJerseySimulationInput.js": "15d2439672681767b208ac11d1cf20c64a1620040abe7e0b1c7b944ec46a5d2f",
+      "src/assets/company-logo.jpg": "4418d8c11db8cf3167a4bb67f6e6e99454b6c060049d3b9ce438e93c8d201ab9",
+      "src/assets/symbols/knit.svg": "9d4a80404ac5dc4c664cef37484116afdba383707c63fa5b0f5e57a771c147df",
+      "src/assets/symbols/purl.svg": "6e5c9b8fb3d12d9083ff64c2599c55409c30313c8c239c3254b9121aaf3ceae6",
+      "src/assets/symbols/slip.svg": "a4eaf85021f58ec6c666f8f523c3df786b78611fe2708379b3372f501adde769",
+      "src/assets/symbols/tuck.svg": "d60a8e834c7a42f8534b25c55fc859269f36e4777a48963878357cdc418618ca",
+      "src/codeGuide/codeGuideDefinitions.json": "cf108e33823c70b1a0a9b49ccd0c12cbad507dcfee823fc73442c591d2fbcbd4",
+      "src/codeGuide/codeGuideEvents.js": "2eb73ac6b6b7656650c6c7588c7a37173a552dc743acd0f5d29f36023c479dd6",
+      "src/codeGuide/codeGuideMap.js": "567d6c48fc3da10242daf6e93247a425734a6e2ca3637dbe08530e041bdc6f49",
+      "src/codeGuide/codeGuideOverlay.js": "30412c2a0593b4873583447a1a2f5738ab3cc92db2c904102cd9315bbcbc030f",
+      "src/codeGuide/codeGuideState.js": "06bc5b5340ba748ac2e1853517eac35c3d7c7d2fcc057ddb9ae72a3146e47f08",
+      "src/codeGuide/generatedLines.json": "ec6f8d5ecd82fca3fdb907582eadc4c368c75b653f99828f59c1a46df03bb786",
+      "src/codeGuide/mode.js": "c541690744d17802a6158cc63ce70c1e668ccf9e5a7e97f524e74554dd787251",
+      "src/components/drawGrid.js": "ee5248b146530113da140ff886f3bcda2e9ee0d31af6588421d295d9086eda05",
+      "src/components/drawRepeatLibrary.js": "2b9db91fb912c60e5f02e05560bdab8014e153064be4370bfd05be568068dd76",
+      "src/components/drawRepeats.js": "af44e4aded4e5697ebc078f0f43ee7ce618cbb2ab999f8c9580bbc502da3b730",
+      "src/components/drawSymbolPicker.js": "edbc1979d153904c4bda5cad296c8cc373eda92b1100503336e6fae8fd52208f",
+      "src/components/drawSymbols.js": "3cea20aaf51189a5df77aca625d497b6d717474d29b7ce9ad3b4933d0f61d39c",
+      "src/components/drawYarnColors.js": "c995f75148406c77353c00dd3d18abacfd50a56f47a68256b4fa576f289a8c6d",
+      "src/components/generateChart.js": "6259099cfdfa5c23e4bf1ab97169ef0993de59457f1468866c35b2eb50c6fdbf",
+      "src/components/renderApp.js": "cda24282cab23714a798b11bc7f87e231a5cf09498a19f9d1e101c20e53973ab",
+      "src/components/resizeCanvases.js": "a5a725dc3ed53169905fc020c3d3b62aea918e52409b60451d84c159c24dff90",
+      "src/components/runSimulation.js": "90902ffe5c07f7592763e030a9b39766348331a98cb1ee0907d701cd01532a2b",
+      "src/components/singleJerseyExecutionInput.js": "14d788f7ee6fb9eeb7532924bd0d502debd01284f5dc5a5078aaa3ab25ec9c0a",
+      "src/components/yarnSequenceCanvas.js": "286b6053647a4f6fb6e9b16cab3ffd3da49a31a8e4ffe31c6c4aa4872fb7acfb",
+      "src/constants.js": "c325512f1666f7730ade0521879adc40cf87f34a5d86e76bace3d1d49bad9019",
+      "src/domain/feedYarnStructure.js": "34f3cf522db46fb28d8543a4f502b12ac397b59177bad81a44c097312c481b62",
+      "src/domain/machineGauge.js": "e6659afe671d0df6b968cd5ae668d32b682cfe6fab4b82ae2a958b643e131111",
+      "src/domain/singleJerseyMachine.js": "01715b38c291bf698b46291ad75cbd9be6ec9f3fb9bf55c4e30eeb008b6cca9f",
+      "src/domain/yarnLengthBatch.js": "d7f2d5f4ae79863899b78f1640e850f0481f800057109562796d5eb1f19e6254",
+      "src/domain/yarnLengthInput.js": "12bdbd204a9de0dd2defa30cce0d911d8c29b0aa61d711aa9cacf50780422b14",
+      "src/domain/yarnLibrary.js": "5e7e3b42f823c26e7a831c864fe6dc45877eab6bb2e111a1855d84f1e9afaca6",
+      "src/domain/yarnMaterial.js": "9bf62f8a9272f4b98d73073eb2a6d96bdbc191ca43f82a88da058f6dc8a43b8c",
+      "src/events/closeModals.js": "d806585c9741f38b51dbb761b8f2b97e2f7dfe253e738bfe14bea827ccb22059",
+      "src/events/colorSequencePointerInteraction.js": "f33832cf184db2bc2431d83c5e2c88baacc2326c17f7d8124db34e2f8ee007ec",
+      "src/events/colorSequenceTouchInteraction.js": "2d40dd42670ea37285825c637359df70b973c20f7353f6ff473e71d6f52796c8",
+      "src/events/desktopPointerPanZoom.js": "42abb02bb3881bf4eb031a6837fb45a94d3441c589614e046c2c721184742a69",
+      "src/events/desktopTouchPanZoom.js": "a5d16497b7a220a419d07dc9ef10bf030319c0b8634888e89427c068545546c8",
+      "src/events/keypressEvents.js": "383cc0db62f584ef917d7f6e3fdf5fd9c6569dd758535ad5a06f97f1f017b453",
+      "src/events/repeatLibraryDragInteraction.js": "9a9046d4f42483e1c6251af79c62b1b12bc47694c463ae76d2475ccf6d2b6bbc",
+      "src/events/repeatPointerInteraction.js": "22e5327867db80840dab3ab8497d04541f2a3e1b30b984a51525e34b23f5a00c",
+      "src/events/repeatTouchInteraction.js": "3de81658ea8fd2cad38b16b2a48320d2b6e4b022b747934f1407349146af9791",
+      "src/events/simulationPointerInteraction.js": "17709721b6536273b38350b76019bdc0fea30a06af1e10f5ba4ee583fba7a917",
+      "src/events/simulationTouchInteraction.js": "ebb1d93628869d7ee2ce80433bc6311bf19158bbe5eb0b6d8114ccda34784fe9",
+      "src/i18n/index.js": "3314bf66a388d0ee5e9e94452c506fb8e35fa24faa35bb5693321b63f1ebe776",
+      "src/i18n/languages.js": "a14985579b5e3295897563058d6c4d730b5076a5e0cec6929afa72b538e9c864",
+      "src/i18n/translations.js": "dad5514f6b3c38b8ac064d83a80d4d358b1938b03abd79ce6d3c20ac03c85bde",
+      "src/index.js": "7b1b6a26cf50d496f9f7c39eb81271e33e5e8c25ea8227828d90bbab9da6e71c",
+      "src/lib/Bimp.js": "459c8a52bf50b4ddd916ae24c144a70b64c6bc3578ae59d4484a3c0127f41b82",
+      "src/lib/bmp.js": "8215145dabc4dba1cd7365bd1593823a21e3f3cf713bc38640b6b7b6d8800e02",
+      "src/lib/buildChartFromRepeats.js": "1c0403351912ed339cd5bb77946d588e4f9ad29caf58b547b372bbd2da54ada3",
+      "src/punchcard.js": "172eb92038c07544a84f9d181e19f33eb27d2a7e5142b53797900e140b8e5cdd",
+      "src/simulation/Pattern.js": "a16fc5cae1ec3d2133ff9995b718b38b2cfd521ef22e0ac373731aad6404ba6d",
+      "src/simulation/ProcessModel.js": "62494327d7ebec7017a4559181437b91d4632bfcf64e4fcc8e15334156ab2bcf",
+      "src/simulation/YarnModel.js": "64474bad5ca799f70fe9bc4ad26a2f79fde1990bbfb08729615a85a5b144b799",
+      "src/simulation/drawYarnSimulation.js": "3623e81c51a607dc70a049b1a9232fc113d37c58ab4c46f2f352dba33bf5913c",
+      "src/simulation/needleArrangementOverlay.js": "61d58149ef3427e0e1a15f0091d0e8df2be3479c8ea3856be433ee72d964f98c",
+      "src/simulation/previewValidity.js": "f936e47e94c9470e4618eb8f654bd37a94090526b6d1b7d19cf9aa49b2722bdd",
+      "src/simulation/rowLengthLoopModel.js": "f80ea64fbcae60bf00cd6ae4fbe078def210f5ca704d87173739645885df8062",
+      "src/simulation/yarnLengthMetrics.js": "76d0460a87cd5ed11f81cab964385938de20ffed6b5a956985ae75b90ab7ff32",
+      "src/simulation/yarnLengthSolver.js": "42dd8ec2d6adeccbe43569a25adcb43120b9050d135c4aed2e5c78690c9d69b9",
+      "src/simulation/yarnPathGeometry.js": "ef8fb1f711e9cf53527b0a116bead2e7cead2be79f90aaf22118e7f7473ea8a4",
+      "src/simulation/yarnPathSampler.js": "c2d5b7aa81141b9e11f3298923460ffbc05fed5681abb2999b14609231097599",
+      "src/simulation/yarnPathUvStrip.js": "0fe7bb733c68524962e2226245ac4dcf8b72e80df971c58d91c7fc0790fed3ee",
+      "src/simulation/yarnSimulation.js": "490704141b556a79d65549a4542a9534d5a551f320fbf8eaade3425c13aceb62",
+      "src/simulation/yarnTextureBrush.js": "2b62eff1e116405589c5e96dc9016b74ae13703a4e738e959e6278e19aacf3b2",
+      "src/simulation/yarnUvWebglRenderer.js": "39ef16d6d5d9770e43c377608cafc54768d1e95bfe789c512c5c398f7fadb7aa",
+      "src/state.js": "16438975ae2a3adb5913639c41cd12ca62dfdd4e09307a79fa8810bc296bb495",
+      "src/utils.js": "1729906d62063bcfa1495a50c74ebee34999be34779d7375a1de71aa0924a789",
+      "src/views/chartEditorToolbar.js": "2c04624879db5877073352e8d91a471b56aaed8ff4ae1c7724e1e64d9bb0d6a8",
+      "src/views/chartTools.js": "20da14f8035b8628cdd2150e8f4fdc2da484cf367bf04be665a568801f43e3b4",
+      "src/views/debugPane.js": "8bdc4e0ed3afd63bc19f8fdc953aab3bd6a5379d587eb34a3c95288a504ded64",
+      "src/views/downloadModal.js": "c053b7227d4363a1977daaca61e82e1bcc39e626e398a7522c9b3208cfa4f164",
+      "src/views/leftBar.js": "453d35d9c3798fe2feb4f37f03b9e418ce073317ab2f4dfe9563c3f5757a04b9",
+      "src/views/libraryModal.js": "14d2448a0f07c2227cff3121c790020e7ef60c03e1df84520694dccd6e48ea2a",
+      "src/views/needleArrangementBar.js": "67e6feb69783e683cb34d3a69a73d5f2580580efce4f278e27a3312ed6eeee4e",
+      "src/views/repeatCanvas.js": "59a9d1372373441f988aa2802bfe374e091316d8e513b59700154b2ec2a3e907",
+      "src/views/repeatTools.js": "2d5221792551e025abce1cee2432d9d228794fec4326e5d7bdde2468eeb3a77d",
+      "src/views/settingsModal.js": "06d81428026c9fb688ac7b1c9007e984b5fa5132a79a0f666982c0d0c30d1be7",
+      "src/views/singleJerseyCamProgramEditor.js": "817e47671ae6508a4e0d42a02890c4275da55d196a35c6ed5deb6d991c29e04f",
+      "src/views/taskbar.js": "eb5144aea1a6b41176403ae494da8c6248afe3493e1e7ea8f57364328a2f427b",
+      "src/views/uiButton.js": "1a5a351ee1b6388024f610a785b5e355a608f7366095aaa6e8b1fa7321ac5c5c",
+      "src/views/view.js": "ae5c60fc9d5c39f996f9f320fee1e088a65caccffa75c63dc82ae9abefd2297c",
+      "src/views/yarnLengthReadout.js": "dbd1b48d9c222e74070dbf6b0cc6f27c31b5fc4421f950e0b94c75f012412063",
+      "src/views/yarnLengthSolverFeedback.js": "0dbae0382ebefd20c39cf4de931c35da3089ba7dc807cf72bf233bd3fb292dd7",
+      "src/views/yarnLibrary.js": "c6c13dce2846d0f2ba103582b7a048f8d23c7e55813d07916ff22a1270a9796b",
+      "src/views/yarnPicker.js": "457a099c92da682a0da6c0b4e360b92243c291e527160eb14c4cdda59fad4c4b",
+      "src/views/yarnPlyPanel.js": "21825c643e7b7974bd13c6b78ef86ce4f48b254f10b50c54cfeb30691d00640a",
+      "src/yarnTexture/yarnAssetRegistry.js": "de0bb891f631ec4b7dfeab43b59b53e1deafea00663d26fb462edf84f0d5cce7",
+      "src/yarnTexture/yarnScanTexture.js": "60cc0b2b93d2a39047ec6f6b8a00a1aa2468b18c8865b2f8ea8fa85d8ade5bb9"
+    }
+  },
+  "machine": {
+    "equipment": {
+      "value": "润山单面大圆机",
+      "unit": "machine identity",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_FACT",
+      "measurementPrinciple": "Production confirmation",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "SOP-001"
+    },
+    "cylinderDiameter": {
+      "value": 32,
+      "unit": "inch",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_FACT",
+      "measurementPrinciple": "Production confirmation",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Machine"
+    },
+    "gauge": {
+      "value": 32,
+      "unit": "needles/inch",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_FACT",
+      "measurementPrinciple": "Production confirmation",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Machine"
+    },
+    "totalNeedles": {
+      "value": 3216,
+      "unit": "needles",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_FACT",
+      "measurementPrinciple": "Production confirmation",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Machine"
+    },
+    "feedCount": 96,
+    "camSeatCount": 96,
+    "yarnFeedingPositionCount": 96,
+    "oneToOneCorrespondence": true
+  },
+  "processCycle": {
+    "processFeedCount": 8,
+    "machineFeedCount": 96,
+    "processRepeatCount": 12,
+    "minimumCompleteCycle": true,
+    "mainYarnFeeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spandexFeeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "topologyContract": "Same Feed assignments share K/T/M actions; not necessarily coincident 3D centerlines",
+    "operationsByFeed": [
+      {
+        "feed": 1,
+        "actions": "KKKT"
+      },
+      {
+        "feed": 2,
+        "actions": "KKKT"
+      },
+      {
+        "feed": 3,
+        "actions": "KKTK"
+      },
+      {
+        "feed": 4,
+        "actions": "KKTK"
+      },
+      {
+        "feed": 5,
+        "actions": "KTKK"
+      },
+      {
+        "feed": 6,
+        "actions": "KTKK"
+      },
+      {
+        "feed": 7,
+        "actions": "TKKK"
+      },
+      {
+        "feed": 8,
+        "actions": "TKKK"
+      }
+    ],
+    "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+    "evidenceClass": "PROCESS_FACT",
+    "note97": "PROCESS NOTE ONLY: 97 = 12*8+1; no software logic added"
+  },
+  "mainYarn": {
+    "name": "N6/W(6040)",
+    "relaxedMeasuredLength": {
+      "value": 23,
+      "unit": "cm/100 machine needles",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_MEASURED",
+      "measurementPrinciple": "Yarn extracted from the same fabric over a 100-needle span; measured relaxed, not taut",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Extracted, relaxed yarn"
+    },
+    "tension": {
+      "value": 5,
+      "unit": "cN",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_MEASURED",
+      "measurementPrinciple": "Production-confirmed tension measurement record",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Recorded measurement state; no force model",
+      "activeInGeometry": false
+    },
+    "solverDiagnostics": [
+      {
+        "feed": 1,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.999920925128244,
+        "error": 0.00007907487175497606,
+        "loopHeight": 0.53131103515625,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 569,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 22.93737809524991
+        },
+        "M1": 22.999920925128244,
+        "M2": 24.792732967754105,
+        "M3": 22.93737809524991,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            8,
+            16,
+            24
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.999922023878796,
+        "error": 0.00007797612120281627,
+        "loopHeight": 0.42705078125000007,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.064753859880685
+        },
+        "M1": 22.999922023878796,
+        "M2": 24.792732967754105,
+        "M3": 23.064753859880685,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            9,
+            17,
+            25
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.999921149748275,
+        "error": 0.00007885025172395642,
+        "loopHeight": 0.53131103515625,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 22.937378117635376
+        },
+        "M1": 22.999921149748275,
+        "M2": 24.792732967754105,
+        "M3": 22.937378117635376,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            10,
+            18,
+            26
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 23.00029654221584,
+        "error": 0.0002965422158406028,
+        "loopHeight": 0.40824584960937504,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 22.625946066611146
+        },
+        "M1": 23.00029654221584,
+        "M2": 24.792732967754105,
+        "M3": 22.625946066611146,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            11,
+            19,
+            27
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.99980858669455,
+        "error": 0.00019141330545220824,
+        "loopHeight": 0.537738037109375,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.06123233200739
+        },
+        "M1": 22.99980858669455,
+        "M2": 24.792732967754105,
+        "M3": 23.06123233200739,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            12,
+            20,
+            28
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.99998733916666,
+        "error": 0.000012660833340660815,
+        "loopHeight": 0.42187347412109377,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 22.94406349612882
+        },
+        "M1": 22.99998733916666,
+        "M2": 24.792732967754105,
+        "M3": 22.94406349612882,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            13,
+            21,
+            29
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.999808732605086,
+        "error": 0.00019126739491341025,
+        "loopHeight": 0.537738037109375,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.061228510360838
+        },
+        "M1": 22.999808732605086,
+        "M2": 24.792732967754105,
+        "M3": 23.061228510360838,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            14,
+            22,
+            30
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 0,
+        "yarnId": "yarn-1792072401481",
+        "target": 23,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 22.999733873071612,
+        "error": 0.0002661269283865763,
+        "loopHeight": 0.470611572265625,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 24.077277996023067
+        },
+        "M1": 22.999733873071612,
+        "M2": 24.792732967754105,
+        "M3": 24.077277996023067,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            15,
+            23,
+            31
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      }
+    ]
+  },
+  "spandex": {
+    "name": "20D裸氨纶",
+    "relaxedMeasuredLength": {
+      "value": 8,
+      "unit": "cm/100 machine needles",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_MEASURED",
+      "measurementPrinciple": "Yarn extracted from the same fabric over a 100-needle span; measured relaxed, not taut",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Extracted, relaxed yarn"
+    },
+    "draftRatio": {
+      "value": 3,
+      "unit": "dimensionless ratio",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_CONFIRMED_PARAMETER",
+      "measurementPrinciple": "knitting-state length / relaxed length; production department definition",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Current SOP weaving use"
+    },
+    "normalDraftRange": [
+      2.8,
+      3.2
+    ],
+    "limitDraftRatio": 3.6,
+    "feeder": "专用弹力送纱装置",
+    "derivedKnittingLength": {
+      "value": 24,
+      "unit": "cm/100 machine needles",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_DERIVED_VALUE",
+      "measurementPrinciple": "8 * 3.0",
+      "confidence": "Arithmetic from confirmed definition; geometry equivalence not validated",
+      "applicableState": "Knitting-state reference; not directly measured"
+    },
+    "tension": {
+      "value": 4,
+      "unit": "cN",
+      "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+      "evidenceClass": "PROCESS_MEASURED",
+      "measurementPrinciple": "Production-confirmed tension measurement record",
+      "confidence": "Production department confirmed for SOP-001",
+      "applicableState": "Recorded measurement state; no force model",
+      "activeInGeometry": false
+    },
+    "qcTolerance": 0.02,
+    "solverDiagnostics": [
+      {
+        "feed": 1,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 24.000753567866827,
+        "error": 0.0007535678668249091,
+        "loopHeight": 0.583917236328125,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 569,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.94798529180066
+        },
+        "M1": 24.000753567866827,
+        "M2": 24.792732967754105,
+        "M3": 23.94798529180066,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            8,
+            16,
+            24
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 2,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 23.999598555905525,
+        "error": 0.00040144409447691483,
+        "loopHeight": 0.4707901000976562,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 169.82663069865202,
+          "maxModelLengthPer100Needles": 741.8007207293217,
+          "minLengthCmPer100Needles": 13.479988811705505,
+          "maxLengthCmPer100Needles": 58.88043220788991
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 24.081417359063632
+        },
+        "M1": 23.999598555905525,
+        "M2": 24.792732967754105,
+        "M3": 24.081417359063632,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            9,
+            17,
+            25
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 3,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 24.000755007335762,
+        "error": 0.000755007335762059,
+        "loopHeight": 0.583917236328125,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 163.63350243042504,
+          "maxModelLengthPer100Needles": 642.0593292285096,
+          "minLengthCmPer100Needles": 12.988409255414988,
+          "maxLengthCmPer100Needles": 50.963459257512945
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.947987616300423
+        },
+        "M1": 24.000755007335762,
+        "M2": 24.792732967754105,
+        "M3": 23.947987616300423,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            10,
+            18,
+            26
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 4,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 24.000680854420885,
+        "error": 0.000680854420885808,
+        "loopHeight": 0.450140380859375,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 170.85608875320116,
+          "maxModelLengthPer100Needles": 768.4444629894394,
+          "minLengthCmPer100Needles": 13.56170204478534,
+          "maxLengthCmPer100Needles": 60.995279249786755
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 570,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.602061084127
+        },
+        "M1": 24.000680854420885,
+        "M2": 24.792732967754105,
+        "M3": 23.602061084127,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            11,
+            19,
+            27
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 5,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 23.999916116492383,
+        "error": 0.00008388350761734387,
+        "loopHeight": 0.5893325805664061,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.75230323161048,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 24.051664192275073
+        },
+        "M1": 23.999916116492383,
+        "M2": 24.792732967754105,
+        "M3": 24.051664192275073,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            12,
+            20,
+            28
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 6,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 23.9999440391594,
+        "error": 0.0000559608406005907,
+        "loopHeight": 0.4642440795898437,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 168.81033748116485,
+          "maxModelLengthPer100Needles": 762.942718142801,
+          "minLengthCmPer100Needles": 13.399320537567458,
+          "maxLengthCmPer100Needles": 60.55857825258482
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 23.92956157069609
+        },
+        "M1": 23.9999440391594,
+        "M2": 24.792732967754105,
+        "M3": 23.92956157069609,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            13,
+            21,
+            29
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 7,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 23.9999151482471,
+        "error": 0.00008485175290005032,
+        "loopHeight": 0.5893325805664061,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 161.7523032316105,
+          "maxModelLengthPer100Needles": 649.6025489301603,
+          "minLengthCmPer100Needles": 12.839089069009082,
+          "maxLengthCmPer100Needles": 51.56220232133147
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 24.051665451013104
+        },
+        "M1": 23.9999151482471,
+        "M2": 24.792732967754105,
+        "M3": 24.051665451013104,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            14,
+            22,
+            30
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      },
+      {
+        "feed": 8,
+        "yarnIndex": 1,
+        "yarnId": "audit-low",
+        "target": 24,
+        "status": "CONVERGED",
+        "converged": true,
+        "solvedLength": 24.00000471206136,
+        "error": 0.000004712061359093411,
+        "loopHeight": 0.5175643920898437,
+        "reachableRange": {
+          "minLoopHeight": 0.05,
+          "maxLoopHeight": 2,
+          "minModelLengthPer100Needles": 166.40711444709842,
+          "maxModelLengthPer100Needles": 701.2081588714873,
+          "minLengthCmPer100Needles": 13.208564709238436,
+          "maxLengthCmPer100Needles": 55.6583976104243
+        },
+        "appliedCandidate": {
+          "applied": true,
+          "pathCount": 560,
+          "finalPathEqualityChecked": true,
+          "candidateM3": 25.16408312477409
+        },
+        "M1": 24.00000471206136,
+        "M2": 24.792732967754105,
+        "M3": 25.16408312477409,
+        "M3PathState": "APPLIED_SOLVED_PATH",
+        "M3Window": {
+          "firstNeedle": 4,
+          "needleCount": 16,
+          "rows": [
+            15,
+            23,
+            31
+          ],
+          "allVisible": false,
+          "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+        },
+        "M3Denominator": 48,
+        "tolerance": 0.00079375
+      }
+    ]
+  },
+  "qc": {
+    "evidenceClass": "PROCESS_FACT",
+    "source": "User-provided production confirmation, 2026-10-20; task attachment df694446-3ebe-4997-b778-faac116ac107/已粘贴的文本.txt",
+    "relativeTolerance": 0.02,
+    "role": "Formal sampling acceptance",
+    "ranges": {
+      "mainRelaxed": [
+        22.54,
+        23.46
+      ],
+      "spandexRelaxed": [
+        7.84,
+        8.16
+      ],
+      "spandexKnittingAtFixedDraft3": [
+        23.52,
+        24.48
+      ]
+    },
+    "rangeEvidenceClass": "DERIVED_FROM_QC_RANGE",
+    "principle": "measured reference * (1 +/- 0.02), then * 3 for spandex knitting reference",
+    "unit": "cm/100 machine needles",
+    "usedAsSolverThreshold": false
+  },
+  "softwareMeasurementContract": {
+    "evidenceClass": "SOFTWARE_DERIVED",
+    "source": "Existing simulate / yarnPathGeometry / yarnLengthSolver and independent-auditor.mjs",
+    "confidence": "Reproducible software diagnostics; not calibrated factory acceptance",
+    "applicableState": "30x40 SOP fixture geometry",
+    "M1": "Existing periodic 30-needle window, all same-Feed courses including top boundary, mean cm/100 needles",
+    "M2": {
+      "value": 24.792732967754105,
+      "unit": "cm/100 loops (legacy label)",
+      "evidenceClass": "SOFTWARE_DERIVED",
+      "source": "simulate(Pattern).yarnLengthMetrics",
+      "measurementPrinciple": "Existing pre-arrangement finite preview metric",
+      "confidence": "Software diagnostic only",
+      "applicableState": "Whole Pattern preview, not per Feed or per Yarn",
+      "denominator": 1200
+    },
+    "M3": "Independent integration of final paths: needles [4,20), 3 interior same-Feed courses, denominator 48 needle passages",
+    "loopHeightUnit": "model needle pitch",
+    "reachableRangeUnit": "cm/100 machine needles",
+    "loopHeightBounds": [
+      0.05,
+      2
+    ],
+    "solverToleranceModel": 0.01,
+    "solverToleranceCm100": 0.00079375,
+    "diameter": {
+      "value": 0.24,
+      "unit": "MODEL_NEEDLE_PITCH",
+      "source": "LEGACY_PRIMARY",
+      "measurementPrinciple": "Existing legacy primary model offset",
+      "confidence": "UNVALIDATED_MODEL_PARAMETER",
+      "applicableState": "Model geometry only",
+      "realDiameter": "UNKNOWN"
+    }
+  },
+  "fixtureContract": {
+    "width": 30,
+    "height": 40,
+    "sourceSavedAssignment": "Main yarn only; original tension=null",
+    "diagnosticAssignment": "Production-confirmed spandex presence on 1-8 added only to in-memory clone; current generic slot behavior",
+    "tensionHandling": "Confirmed 5/4 cN recorded here only; existing null simulation fields preserved",
+    "geometryPlacement": "Existing parallel compatibility value; no new physical placement assumption"
+  },
+  "runs": [
+    {
+      "id": "C-main23",
+      "target": null,
+      "ratio": null,
+      "classification": "SAVED_MAIN_YARN_CONTROL",
+      "previewValidity": "VALIDATED",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    },
+    {
+      "id": "A-old8",
+      "target": 8,
+      "ratio": null,
+      "classification": "OLD_SEMANTIC_DIAGNOSTIC",
+      "previewValidity": "PARTIAL",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 1,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 12.988409255414988,
+          "error": 4.988409255414987,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 569,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 12.91374995761939
+          },
+          "M1": 12.988409255414988,
+          "M2": 24.792732967754105,
+          "M3": 24.255723033020086,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 13.479988811705505,
+          "error": 5.479988811705504,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 570,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 13.44044233937202
+          },
+          "M1": 13.479988811705505,
+          "M2": 24.792732967754105,
+          "M3": 27.065709703853738,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 12.988409255414988,
+          "error": 4.988409255414987,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 570,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 12.91374995761939
+          },
+          "M1": 12.988409255414988,
+          "M2": 24.792732967754105,
+          "M3": 24.255723033020065,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 13.56170204478534,
+          "error": 5.561702044785341,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 570,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 13.44044233937202
+          },
+          "M1": 13.56170204478534,
+          "M2": 24.792732967754105,
+          "M3": 27.065709703853724,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 12.839089069009082,
+          "error": 4.8390890690090815,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 560,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 12.91374995761939
+          },
+          "M1": 12.839089069009082,
+          "M2": 24.792732967754105,
+          "M3": 24.255723033020075,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 13.399320537567458,
+          "error": 5.399320537567459,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 560,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 13.440442339372018
+          },
+          "M1": 13.399320537567458,
+          "M2": 24.792732967754105,
+          "M3": 27.065709703853738,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 12.839089069009082,
+          "error": 4.839089069009083,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 560,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 12.91374995761939
+          },
+          "M1": 12.839089069009082,
+          "M2": 24.792732967754105,
+          "M3": 24.255723033020065,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 8,
+          "status": "UNREACHABLE_TARGET",
+          "converged": false,
+          "solvedLength": 13.208564709238436,
+          "error": 5.208564709238436,
+          "loopHeight": 0.05,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": false,
+            "pathCount": 560,
+            "finalPathEqualityChecked": false,
+            "candidateM3": 13.440442339372018
+          },
+          "M1": 13.208564709238436,
+          "M2": 24.792732967754105,
+          "M3": 27.065709703853738,
+          "M3PathState": "BASE_FALLBACK_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    },
+    {
+      "id": "draft-2.8",
+      "target": 22.4,
+      "ratio": 2.8,
+      "classification": "NORMAL_PROCESS_RANGE_DIAGNOSTIC",
+      "previewValidity": "VALIDATED",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 1,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.40027288122348,
+          "error": 0.00027288122347741246,
+          "loopHeight": 0.5000091552734376,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.33232861829477
+          },
+          "M1": 22.40027288122348,
+          "M2": 24.792732967754105,
+          "M3": 22.33232861829477,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.399529908955508,
+          "error": 0.00047009104449063693,
+          "loopHeight": 0.40092620849609373,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.454802986232806
+          },
+          "M1": 22.399529908955508,
+          "M2": 24.792732967754105,
+          "M3": 22.454802986232806,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.400273954804803,
+          "error": 0.0002739548048045037,
+          "loopHeight": 0.5000091552734376,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.332328737221975
+          },
+          "M1": 22.400273954804803,
+          "M2": 24.792732967754105,
+          "M3": 22.332328737221975,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.40043919833899,
+          "error": 0.0004391983389896481,
+          "loopHeight": 0.38325195312500004,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.04068450927757
+          },
+          "M1": 22.40043919833899,
+          "M2": 24.792732967754105,
+          "M3": 22.04068450927757,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.39922455837965,
+          "error": 0.0007754416203480119,
+          "loopHeight": 0.5069122314453125,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.46603241654741
+          },
+          "M1": 22.39922455837965,
+          "M2": 24.792732967754105,
+          "M3": 22.46603241654741,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.399514847841225,
+          "error": 0.00048515215877291233,
+          "loopHeight": 0.39652252197265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.35173925468027
+          },
+          "M1": 22.399514847841225,
+          "M2": 24.792732967754105,
+          "M3": 22.35173925468027,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.399226325835052,
+          "error": 0.0007736741649489431,
+          "loopHeight": 0.5069122314453125,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.466035178135616
+          },
+          "M1": 22.399226325835052,
+          "M2": 24.792732967754105,
+          "M3": 22.466035178135616,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 22.4,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.399998427253283,
+          "error": 0.000001572746716433926,
+          "loopHeight": 0.44258270263671873,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.42634993354902
+          },
+          "M1": 22.399998427253283,
+          "M2": 24.792732967754105,
+          "M3": 23.42634993354902,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    },
+    {
+      "id": "draft-3.0",
+      "target": 24,
+      "ratio": 3,
+      "classification": "NORMAL_PROCESS_RANGE_DIAGNOSTIC",
+      "previewValidity": "VALIDATED",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 1,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 24.000753567866827,
+          "error": 0.0007535678668249091,
+          "loopHeight": 0.583917236328125,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.94798529180066
+          },
+          "M1": 24.000753567866827,
+          "M2": 24.792732967754105,
+          "M3": 23.94798529180066,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.999598555905525,
+          "error": 0.00040144409447691483,
+          "loopHeight": 0.4707901000976562,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.081417359063632
+          },
+          "M1": 23.999598555905525,
+          "M2": 24.792732967754105,
+          "M3": 24.081417359063632,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 24.000755007335762,
+          "error": 0.000755007335762059,
+          "loopHeight": 0.583917236328125,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.947987616300423
+          },
+          "M1": 24.000755007335762,
+          "M2": 24.792732967754105,
+          "M3": 23.947987616300423,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 24.000680854420885,
+          "error": 0.000680854420885808,
+          "loopHeight": 0.450140380859375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.602061084127
+          },
+          "M1": 24.000680854420885,
+          "M2": 24.792732967754105,
+          "M3": 23.602061084127,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.999916116492383,
+          "error": 0.00008388350761734387,
+          "loopHeight": 0.5893325805664061,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.051664192275073
+          },
+          "M1": 23.999916116492383,
+          "M2": 24.792732967754105,
+          "M3": 24.051664192275073,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.9999440391594,
+          "error": 0.0000559608406005907,
+          "loopHeight": 0.4642440795898437,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.92956157069609
+          },
+          "M1": 23.9999440391594,
+          "M2": 24.792732967754105,
+          "M3": 23.92956157069609,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.9999151482471,
+          "error": 0.00008485175290005032,
+          "loopHeight": 0.5893325805664061,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.051665451013104
+          },
+          "M1": 23.9999151482471,
+          "M2": 24.792732967754105,
+          "M3": 24.051665451013104,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 24,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 24.00000471206136,
+          "error": 0.000004712061359093411,
+          "loopHeight": 0.5175643920898437,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.16408312477409
+          },
+          "M1": 24.00000471206136,
+          "M2": 24.792732967754105,
+          "M3": 25.16408312477409,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    },
+    {
+      "id": "draft-3.2",
+      "target": 25.6,
+      "ratio": 3.2,
+      "classification": "NORMAL_PROCESS_RANGE_DIAGNOSTIC",
+      "previewValidity": "VALIDATED",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 1,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.599720837182126,
+          "error": 0.00027916281786950493,
+          "loopHeight": 0.6685989379882813,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.564164444482515
+          },
+          "M1": 25.599720837182126,
+          "M2": 24.792732967754105,
+          "M3": 25.564164444482515,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.599689867756176,
+          "error": 0.0003101322438207887,
+          "loopHeight": 0.5412490844726562,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.711079208260802
+          },
+          "M1": 25.599689867756176,
+          "M2": 24.792732967754105,
+          "M3": 25.711079208260802,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.59971754431332,
+          "error": 0.00028245568667614404,
+          "loopHeight": 0.6685989379882813,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.564157870350403
+          },
+          "M1": 25.59971754431332,
+          "M2": 24.792732967754105,
+          "M3": 25.564157870350403,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.59994773882179,
+          "error": 0.00005226117820580356,
+          "loopHeight": 0.5175048828125,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.162713050126115
+          },
+          "M1": 25.59994773882179,
+          "M2": 24.792732967754105,
+          "M3": 25.162713050126115,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.600743997986587,
+          "error": 0.0007439979865905854,
+          "loopHeight": 0.6723480224609377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.635533384954897
+          },
+          "M1": 25.600743997986587,
+          "M2": 24.792732967754105,
+          "M3": 25.635533384954897,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.60057511174377,
+          "error": 0.0005751117437727871,
+          "loopHeight": 0.5323226928710937,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.505000537398363
+          },
+          "M1": 25.60057511174377,
+          "M2": 24.792732967754105,
+          "M3": 25.505000537398363,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.60074142699445,
+          "error": 0.0007414269944524675,
+          "loopHeight": 0.6723480224609377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 25.6355333849549
+          },
+          "M1": 25.60074142699445,
+          "M2": 24.792732967754105,
+          "M3": 25.6355333849549,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 25.6,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 25.599889490856178,
+          "error": 0.00011050914381925735,
+          "loopHeight": 0.5930221557617188,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 26.9049391759439
+          },
+          "M1": 25.599889490856178,
+          "M2": 24.792732967754105,
+          "M3": 26.9049391759439,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    },
+    {
+      "id": "draft-3.6",
+      "target": 28.8,
+      "ratio": 3.6,
+      "classification": "PRODUCTION_LIMIT_DIAGNOSTIC",
+      "previewValidity": "VALIDATED",
+      "diagnostics": [
+        {
+          "feed": 1,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999920925128244,
+          "error": 0.00007907487175497606,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.93737809524991
+          },
+          "M1": 22.999920925128244,
+          "M2": 24.792732967754105,
+          "M3": 22.93737809524991,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 1,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.800185684394535,
+          "error": 0.00018568439453588325,
+          "loopHeight": 0.8389739990234375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 569,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.80295566952276
+          },
+          "M1": 28.800185684394535,
+          "M2": 24.792732967754105,
+          "M3": 28.80295566952276,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              8,
+              16,
+              24
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999922023878796,
+          "error": 0.00007797612120281627,
+          "loopHeight": 0.42705078125000007,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.064753859880685
+          },
+          "M1": 22.999922023878796,
+          "M2": 24.792732967754105,
+          "M3": 23.064753859880685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 2,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.800468050602866,
+          "error": 0.00046805060286338564,
+          "loopHeight": 0.683000183105469,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.977248275937
+          },
+          "M1": 28.800468050602866,
+          "M2": 24.792732967754105,
+          "M3": 28.977248275937,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              9,
+              17,
+              25
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999921149748275,
+          "error": 0.00007885025172395642,
+          "loopHeight": 0.53131103515625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.937378117635376
+          },
+          "M1": 22.999921149748275,
+          "M2": 24.792732967754105,
+          "M3": 22.937378117635376,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 3,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.800185684394524,
+          "error": 0.00018568439452234741,
+          "loopHeight": 0.8389739990234375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.802955669522746
+          },
+          "M1": 28.800185684394524,
+          "M2": 24.792732967754105,
+          "M3": 28.802955669522746,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              10,
+              18,
+              26
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 23.00029654221584,
+          "error": 0.0002965422158406028,
+          "loopHeight": 0.40824584960937504,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.625946066611146
+          },
+          "M1": 23.00029654221584,
+          "M2": 24.792732967754105,
+          "M3": 22.625946066611146,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 4,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.800395389608145,
+          "error": 0.000395389608142942,
+          "loopHeight": 0.6530075073242189,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 570,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.28656959599685
+          },
+          "M1": 28.800395389608145,
+          "M2": 24.792732967754105,
+          "M3": 28.28656959599685,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              11,
+              19,
+              27
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99980858669455,
+          "error": 0.00019141330545220824,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.06123233200739
+          },
+          "M1": 22.99980858669455,
+          "M2": 24.792732967754105,
+          "M3": 23.06123233200739,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 5,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.799965971520862,
+          "error": 0.000034028479136551934,
+          "loopHeight": 0.8386764526367188,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.79729467647894
+          },
+          "M1": 28.799965971520862,
+          "M2": 24.792732967754105,
+          "M3": 28.79729467647894,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              12,
+              20,
+              28
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.99998733916666,
+          "error": 0.000012660833340660815,
+          "loopHeight": 0.42187347412109377,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 22.94406349612882
+          },
+          "M1": 22.99998733916666,
+          "M2": 24.792732967754105,
+          "M3": 22.94406349612882,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 6,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.800050946605012,
+          "error": 0.00005094660501114845,
+          "loopHeight": 0.6687179565429688,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.64834247934533
+          },
+          "M1": 28.800050946605012,
+          "M2": 24.792732967754105,
+          "M3": 28.64834247934533,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              13,
+              21,
+              29
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999808732605086,
+          "error": 0.00019126739491341025,
+          "loopHeight": 0.537738037109375,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 23.061228510360838
+          },
+          "M1": 22.999808732605086,
+          "M2": 24.792732967754105,
+          "M3": 23.061228510360838,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 7,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.799963442421483,
+          "error": 0.00003655757851586117,
+          "loopHeight": 0.8386764526367188,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 28.797291195538858
+          },
+          "M1": 28.799963442421483,
+          "M2": 24.792732967754105,
+          "M3": 28.797291195538858,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              14,
+              22,
+              30
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 0,
+          "yarnId": "yarn-1792072401481",
+          "target": 23,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 22.999733873071612,
+          "error": 0.0002661269283865763,
+          "loopHeight": 0.470611572265625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 24.077277996023067
+          },
+          "M1": 22.999733873071612,
+          "M2": 24.792732967754105,
+          "M3": 24.077277996023067,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        },
+        {
+          "feed": 8,
+          "yarnIndex": 1,
+          "yarnId": "audit-low",
+          "target": 28.8,
+          "status": "CONVERGED",
+          "converged": true,
+          "solvedLength": 28.799608573337213,
+          "error": 0.0003914266627900176,
+          "loopHeight": 0.7444732666015625,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "appliedCandidate": {
+            "applied": true,
+            "pathCount": 560,
+            "finalPathEqualityChecked": true,
+            "candidateM3": 30.39332946506706
+          },
+          "M1": 28.799608573337213,
+          "M2": 24.792732967754105,
+          "M3": 30.39332946506706,
+          "M3PathState": "APPLIED_SOLVED_PATH",
+          "M3Window": {
+            "firstNeedle": 4,
+            "needleCount": 16,
+            "rows": [
+              15,
+              23,
+              31
+            ],
+            "allVisible": false,
+            "ownership": "Whole outgoing link belongs to its source needle, including any wrap/period crossing."
+          },
+          "M3Denominator": 48,
+          "tolerance": 0.00079375
+        }
+      ]
+    }
+  ],
+  "comparison23vs24": [
+    {
+      "feed": 1,
+      "deltaM1": 1.0008326427385832,
+      "deltaM3": 1.010607196550751,
+      "deltaLoopHeight": 0.05260620117187498,
+      "relativeLoopHeightChange": 0.09901206203331414
+    },
+    {
+      "feed": 2,
+      "deltaM1": 0.9996765320267293,
+      "deltaM3": 1.0166634991829469,
+      "deltaLoopHeight": 0.04373931884765614,
+      "relativeLoopHeightChange": 0.10242182140407019
+    },
+    {
+      "feed": 3,
+      "deltaM1": 1.0008338575874873,
+      "deltaM3": 1.0106094986650476,
+      "deltaLoopHeight": 0.05260620117187498,
+      "relativeLoopHeightChange": 0.09901206203331414
+    },
+    {
+      "feed": 4,
+      "deltaM1": 1.0003843122050462,
+      "deltaM3": 0.9761150175158555,
+      "deltaLoopHeight": 0.04189453124999998,
+      "relativeLoopHeightChange": 0.10262083812998024
+    },
+    {
+      "feed": 5,
+      "deltaM1": 1.000107529797834,
+      "deltaM3": 0.9904318602676838,
+      "deltaLoopHeight": 0.05159454345703118,
+      "relativeLoopHeightChange": 0.09594735707070123
+    },
+    {
+      "feed": 6,
+      "deltaM1": 0.9999566999927403,
+      "deltaM3": 0.9854980745672712,
+      "deltaLoopHeight": 0.04237060546874993,
+      "relativeLoopHeightChange": 0.10043439103874063
+    },
+    {
+      "feed": 7,
+      "deltaM1": 1.0001064156420156,
+      "deltaM3": 0.9904369406522662,
+      "deltaLoopHeight": 0.05159454345703118,
+      "relativeLoopHeightChange": 0.09594735707070123
+    },
+    {
+      "feed": 8,
+      "deltaM1": 1.0002708389897492,
+      "deltaM3": 1.086805128751024,
+      "deltaLoopHeight": 0.04695281982421873,
+      "relativeLoopHeightChange": 0.09976979443615841
+    }
+  ],
+  "conclusions": {
+    "semanticMismatchSupported": true,
+    "normalRangeAllConverged": true,
+    "nextStageModel": "PARTIALLY_SUPPORTED",
+    "reason": "Separate relaxed and knitting-state references; current M1/M3 window mismatch and uncalibrated physics remain",
+    "numericDrift": "NO: exact historical 23/8 per-Feed comparison; all main23 slots unchanged across scenarios",
+    "processMeasurementContract": "ESTABLISHED_FOR_SOP001",
+    "realMachineValidation": "PARTIAL",
+    "spandexPhysicalModel": "NOT_IMPLEMENTED",
+    "diagnostic": "PASS"
+  },
+  "preservation": {
+    "checkedFiles": 1299,
+    "beforeSha256": "f91a7e2ce4e1e1e5e46e67c68c9cbf4687457b9bed3a8a0bb053073aa3c9ead2",
+    "afterSha256": "f91a7e2ce4e1e1e5e46e67c68c9cbf4687457b9bed3a8a0bb053073aa3c9ead2",
+    "changedOutsideDiagnosticDirectory": [],
+    "scope": "Tracked and nonignored files; excludes ignored build/cache files",
+    "srcChanged": false,
+    "solverChanged": false,
+    "geometryMathChanged": false,
+    "projectFormatChanged": false,
+    "dependencyChanged": false,
+    "packageJsonChanged": false,
+    "taskStartComparison": {
+      "checkedFiles": 1296,
+      "changedExisting": [
+        "docs/YARN_LENGTH_CONTRACT.md"
+      ],
+      "sourceFilesExactHashMatch": true,
+      "historicalResultFilesExactHashMatch": true,
+      "newTaskFiles": [
+        "reports/spandex-length-semantics-2026-10-20/diagnostic.mjs",
+        "reports/spandex-length-semantics-2026-10-20/results.json",
+        "reports/spandex-length-semantics-2026-10-20/REPORT.md"
+      ],
+      "scope": "1296 files captured at task start; initial PowerShell manifest skipped three Git-quoted non-ASCII paths. Those paths were not edited. Diagnostic independently hashes all nonignored files during replay."
+    }
+  },
+  "verification": {
+    "diagnostic": "PASS; six scenarios, 88 Feed/Yarn records; historical equality and applied-path assertions",
+    "checkedOn": "2026-10-20",
+    "checks": [
+      {
+        "command": "baseline validate",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "40/40 validators passed.",
+        "logSha256": "d7255a7461e2c17cdff6b793aef7a0c09796609dfdca2e6a2bdd472179e385b0"
+      },
+      {
+        "command": "baseline build",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "built in",
+        "logSha256": "5519d2b4a6fdf2559340f80606ee390106672ae9e4de527449f3cd7035a0d6ad"
+      },
+      {
+        "command": "diagnostic",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "SPANDEx_LENGTH_SEMANTICS_DIAGNOSTIC = PASS",
+        "logSha256": "880a5c0a2aa6758b89a45b1927770ad12584e52eb54ff41f13420b65dd066081"
+      },
+      {
+        "command": "SOP comparison (temporary output capture)",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "SOP001_COMPARISON_HARNESS = PASS; MATCH",
+        "logSha256": "c588039cd528ee6c9d295adae9089f85f41239e937dd2cfd19c3b2cb0fc2d1de"
+      },
+      {
+        "command": "npm run validate:yarn-length-gauge",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "PASS: yarn length",
+        "logSha256": "bbdd5ee4b596760d9fa0443cd9bb195f8c160a5cabfcea4415c125f18235d6c5"
+      },
+      {
+        "command": "npm run validate:yarn-length-solver",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "PASS: Yarn Length Solver",
+        "logSha256": "183e8b7f0f020fdc387b81e4e06fb6f90269b65047dd6e2a66bf0a4003fd2f9e"
+      },
+      {
+        "command": "npm run validate:yarn-material-authority",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "PASS: material authority",
+        "logSha256": "6bf3abd96378689b1809f1eab48bfa035ccc22df3db9c16b6cc131a0e6c3553a"
+      },
+      {
+        "command": "npm run validate",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "40/40 validators passed.",
+        "logSha256": "d7255a7461e2c17cdff6b793aef7a0c09796609dfdca2e6a2bdd472179e385b0"
+      },
+      {
+        "command": "npm run build",
+        "exitCode": 0,
+        "status": "PASS",
+        "evidence": "built in",
+        "logSha256": "cb2cd28ab29b55aec8308c211ae3a751cb91977e9e3f34dd8651a131de80fbaa"
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "status": "PASS",
+        "note": "Before and after task; LF/CRLF warnings only"
+      }
+    ],
+    "sopComparison": {
+      "harnessStatus": "PASS",
+      "numericStatus": "MATCH",
+      "preservation": {
+        "evidenceClass": "FACT",
+        "checkedFileCount": 1298,
+        "beforeSha256": "152dcd9616adc7fcd50c462df1316153ebb4289985efef92291f128382fa5d24",
+        "afterSha256": "152dcd9616adc7fcd50c462df1316153ebb4289985efef92291f128382fa5d24",
+        "changedOutsideReportDirectory": [],
+        "srcChanged": false,
+        "packageJsonChanged": false,
+        "packageLockChanged": false,
+        "originalFixtureChanged": false,
+        "projectFormatChanged": false,
+        "algorithmsChanged": false,
+        "headUnchanged": true,
+        "branchUnchanged": true,
+        "scope": "Git-listed tracked and nonignored untracked files, excluding this output directory; ignored build/dependency caches excluded"
+      },
+      "note": "Ran existing comparison unchanged; only its two output writes redirected to system temp; historical reports untouched"
+    }
+  }
+}

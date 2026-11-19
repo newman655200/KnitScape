@@ -41,7 +41,8 @@ export function chartResizeForRepeat(repeatIndex, area) {
     yarnSequence: resizeYarnSequenceToChartHeight(
       GLOBAL_STATE.yarnSequence,
       area[1],
-      GLOBAL_STATE.activeYarn
+      GLOBAL_STATE.activeYarn,
+      GLOBAL_STATE.yarnPalette.length
     ),
   };
 }

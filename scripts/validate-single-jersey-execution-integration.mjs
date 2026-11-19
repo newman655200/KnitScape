@@ -205,7 +205,8 @@ const virtualModules = new Map([
     "../simulation/yarnSimulation",
     {
       id: "\0single-jersey-simulate-stub",
-      code: `export const simulate = (...args) =>
+      code: `export const yarnMaterialGeometryKey = () => "fixed-machine-routing-fixture";
+        export const simulate = (...args) =>
         globalThis.__singleJerseySimulateStub(...args);`,
     },
   ],
@@ -569,7 +570,7 @@ assert.match(
 );
 assert.match(
   runSimulationSource,
-  /if\s*\(machineSimulationInput\s*===\s*null\)\s*(?:return;|\{[^}]*return;)/
+  /if\s*\(machineSimulationInput\s*===\s*null\)\s*(?:return;|\{(?:[^{}]|\{[^{}]*\})*return;)/
 );
 assert.ok(
   runSimulationSource.indexOf(

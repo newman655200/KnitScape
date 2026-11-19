@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import assert from "node:assert/strict";
 
 const root = process.cwd();
 const REQUIRED_KEYS = [
@@ -153,6 +154,9 @@ if (definitions && generatedLines) {
     }
 
     if (typeof entry.file === "string" && entry.file.trim()) {
+      if (!/^src\//.test(entry.file) || entry.file.includes("\\") || entry.file.split("/").includes("..")) {
+        failures.push(`${key}.file must be a repo-relative source path`);
+      }
       const sourcePath = path.join(root, entry.file);
       if (!fs.existsSync(sourcePath)) {
         failures.push(`${key}.file does not exist: ${entry.file}`);
@@ -698,19 +702,34 @@ if (requiredFiles.every((relativePath) => fs.existsSync(path.join(root, relative
     }
 
     const sampleEntry = { file: "src/views/taskbar.js", line: 11 };
-    if (
-      typeof map.absoluteCodeGuidePath === "function" &&
-      map.absoluteCodeGuidePath(sampleEntry) !==
-        "C:/Users/liuchen/Desktop/GitHub/knitscape/src/views/taskbar.js"
-    ) {
-      failures.push("absoluteCodeGuidePath() must return the exact absolute sample path");
+    assert.equal(map.PROJECT_ROOT, root.replace(/\\/g, "/"),
+      "Vite must supply this checkout's root, not a developer's hardcoded path");
+    assert.equal(map.absoluteCodeGuidePath(sampleEntry),
+      `${root.replace(/\\/g, "/")}/src/views/taskbar.js`);
+    const defaultHref = new URL(map.createVSCodeHref(sampleEntry));
+    assert.equal(defaultHref.protocol, "vscode:");
+    assert.equal(defaultHref.host, "file");
+    assert.equal(decodeURIComponent(defaultHref.pathname),
+      `/${root.replace(/\\/g, "/")}/src/views/taskbar.js:11`);
+    for (const [fixtureRoot, expectedPath, expectedHref] of [
+      ["C:/TEST/knitscape", "C:/TEST/knitscape/src/views/taskbar.js",
+        "vscode://file/C:/TEST/knitscape/src/views/taskbar.js:11"],
+      ["C:\\TEST\\knitscape\\", "C:/TEST/knitscape/src/views/taskbar.js",
+        "vscode://file/C:/TEST/knitscape/src/views/taskbar.js:11"],
+      ["/tmp/knitscape/", "/tmp/knitscape/src/views/taskbar.js",
+        "vscode://file//tmp/knitscape/src/views/taskbar.js:11"],
+      ["C:/TEST/knit space#1", "C:/TEST/knit space#1/src/views/taskbar.js",
+        "vscode://file/C:/TEST/knit%20space%231/src/views/taskbar.js:11"],
+    ]) {
+      assert.equal(map.absoluteCodeGuidePath(sampleEntry, fixtureRoot), expectedPath);
+      assert.equal(map.createVSCodeHref(sampleEntry, fixtureRoot), expectedHref);
     }
-    if (
-      typeof map.createVSCodeHref === "function" &&
-      map.createVSCodeHref(sampleEntry) !==
-        "vscode://file/C:/Users/liuchen/Desktop/GitHub/knitscape/src/views/taskbar.js:11"
-    ) {
-      failures.push("createVSCodeHref() must return the exact sample VS Code href");
+    assert.deepEqual(Object.keys(map.CODE_GUIDE_MAP).sort(), [...REQUIRED_KEYS].sort());
+    for (const key of REQUIRED_KEYS) {
+      const entry = map.getCodeGuideEntry(key);
+      assert.deepEqual(entry, { ...definitions[key], line: generatedLines[key] });
+      assert.equal(map.createVSCodeHref(entry, "C:/TEST/knitscape"),
+        `vscode://file/C:/TEST/knitscape/${entry.file}:${generatedLines[key]}`);
     }
   } catch (error) {
     failures.push(`unable to execute code guide modules: ${error.message}`);

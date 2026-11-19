@@ -17,6 +17,14 @@ export function normalizeYarnLibrary(assets = [], feeds = []) {
     const normalized = createYarnAsset(asset?.id, asset?.name, asset?.category);
     normalized.createdAt = asset.createdAt ?? normalized.createdAt;
     normalized.updatedAt = asset.updatedAt ?? normalized.createdAt;
+    if (asset.color != null) {
+      if (typeof asset.color !== "string" || !asset.color.trim()) throw new TypeError("Yarn color must be a nonempty string.");
+      normalized.color = asset.color.trim();
+    }
+    if (asset.diameter != null) {
+      if (!Number.isFinite(asset.diameter) || asset.diameter <= 0) throw new TypeError("Yarn diameter must be positive.");
+      normalized.diameter = asset.diameter;
+    }
     const pbr = normalizeYarnPbr(asset.pbr);
     if (pbr) normalized.pbr = pbr;
     if (![normalized.createdAt, normalized.updatedAt].every(value =>

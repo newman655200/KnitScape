@@ -24,6 +24,7 @@ import {
 import { drawYarnSimulation } from "./drawYarnSimulation.js";
 import { solveFeedYarnLengths, ERROR } from "./yarnLengthSolver.js";
 import { derivePreviewValidity } from "./previewValidity.js";
+import { resolveYarnLengthInput } from "../domain/yarnLengthInput.js";
 
 const YARN_RATIO = 0.24;
 const dpi = devicePixelRatio;
@@ -65,6 +66,17 @@ function normalizeYarnPlies(yarnPlies, palette) {
       ];
 }
 
+// The runner uses the same resolved geometry inputs as simulate. Material-only
+// changes must not erase a valid length result while a redraw is debounced.
+export function yarnMaterialGeometryKey({ yarnPlies, yarnPalette, yarnLibrary, singleJerseyCamProgram }) {
+  const primary = normalizeYarnPlies(yarnPlies, yarnPalette)[0];
+  const materials = resolveFeedYarnPlies(singleJerseyCamProgram?.feeds, yarnLibrary, primary);
+  return JSON.stringify({
+    lengthScaleY: Math.min(1.1, Math.max(0.9, Number(yarnPlies?.[0]?.lengthScaleY) || 1)),
+    diameters: materials.size ? [...materials.values()].map(plies => plies.map(ply => ply.diameter)) : [primary.diameter],
+  });
+}
+
 function shouldRenderTextures({
   texturePerformanceMode = TEXTURE_PERFORMANCE_MODES.AUTO,
   texturePreviewInteractionActive = false,
@@ -103,6 +115,7 @@ export function simulate(
     yarnLibrary = null,
   } = {}
 ) {
+  machineGauge = normalizeMachineGauge(machineGauge);
   let stopped = false;
   const normalizedYarnSequence = normalizeYarnSequence(yarnSequence);
   const activeYarnPlies = normalizeYarnPlies(yarnPlies, palette);
@@ -139,35 +152,46 @@ export function simulate(
   }
 
   const [backCanvas, midCanvas, frontCanvas] = getCanvases(canvasIDs);
+  const allFeedYarnPlies = feeds === null ? new Map()
+    : resolveFeedYarnPlies(feeds, yarnLibrary, activeYarnPlies[0]);
+  const strandCount = Math.max(1, ...[...allFeedYarnPlies.values()].map(plies => plies.length));
+  const diameterProfiles = Array.from({ length: strandCount }, (_, yarnIndex) =>
+    Array.from(allFeedYarnPlies.values(), plies => (plies[yarnIndex] ?? plies[0]).diameter));
   const geometryOptions = {
     pattern,
     stitchPattern,
     canvasWidth,
     canvasHeight,
     primaryLengthScaleY,
-    primaryYarnDiameter: activeYarnPlies[0].diameter,
+    primaryYarnDiameter: diameterProfiles[0][0] ?? activeYarnPlies[0].diameter,
     machineGauge,
   };
-  const geometry = buildYarnPathGeometry({
-    ...geometryOptions,
-    yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
+  const geometryByProfile = new Map();
+  const strandGeometries = diameterProfiles.map(profile => {
+    const key = JSON.stringify(profile);
+    if (!geometryByProfile.has(key)) geometryByProfile.set(key, buildYarnPathGeometry({
+      ...geometryOptions,
+      yarnDiameterForCourse: profile.length ? row => profile[courseToFeedIndex(row, profile.length)] : null,
+      yarnGraph: new YarnModel(new ProcessModel(stitchPattern).cn),
+    }));
+    return geometryByProfile.get(key);
   });
-  const solverLengths = (Array.isArray(feeds) ? feeds : []).map((feed) =>
-    (Array.isArray(feed?.yarns) ? feed.yarns : []).map((yarn) => {
-      const length = yarn?.yarnLengthCmPer100Needles;
-      return (typeof length === "number" || typeof length === "string") &&
-        Number.isFinite(Number(length)) && Number(length) > 0
-        ? Number(length)
-        : null;
-    })
+  const geometry = strandGeometries[0];
+  const lengthInputs = (Array.isArray(feeds) ? feeds : []).map(feed =>
+    (Array.isArray(feed?.yarns) ? feed.yarns : []).map(resolveYarnLengthInput)
   );
+  const solverLengths = lengthInputs.map(inputs => inputs.map(input => input.effectiveTargetLengthCmPer100Needles));
   const usedFeedIndices = new Set(geometry.yarnPathLinks.map(link =>
     courseToFeedIndex(link.row, feeds?.length || 1)));
-  const requiredTargets = solverLengths.flatMap((lengths, feedIndex) =>
+  const hasEffectiveTargets = solverLengths.some((lengths, feedIndex) =>
+    usedFeedIndices.has(feedIndex) && lengths.some(length => length !== null));
+  // Incomplete slots keep mixed previews PARTIAL, but cannot create a solve requirement alone.
+  const requiredTargets = hasEffectiveTargets ? solverLengths.flatMap((lengths, feedIndex) =>
     usedFeedIndices.has(feedIndex) ? lengths.flatMap((length, yarnIndex) =>
-      length === null ? [] : [{ feedIndex, yarnIndex, targetLengthCmPer100Needles: length }]
+      length === null && lengthInputs[feedIndex][yarnIndex].lengthInputMode !== "relaxedWithDraft"
+        ? [] : [{ feedIndex, yarnIndex, targetLengthCmPer100Needles: length }]
     ) : []
-  );
+  ) : [];
   // One bounded entry; display size, zoom, color and textures do not affect solving.
   const solverInputKey = solverLengths.some((lengths) =>
     lengths.some((length) => length !== null)
@@ -176,10 +200,12 @@ export function simulate(
         width: pattern.width,
         height: pattern.height,
         pixels: Array.from(pattern.pixels),
-        gauge: normalizeMachineGauge(machineGauge),
+        gauge: machineGauge,
         primaryLengthScaleY,
-        primaryYarnDiameter: activeYarnPlies[0].diameter,
+        primaryYarnDiameter: geometryOptions.primaryYarnDiameter,
+        diameterProfiles,
         solverLengths,
+        lengthInputs,
       })
     : null;
   const cacheHit =
@@ -188,10 +214,9 @@ export function simulate(
     ? structuredClone(solverResultCache.results)
     : [];
   const solverGeometryByHeight = new Map();
-  let evaluateModelLength = null;
+  const evaluators = new Map();
   (Array.isArray(feeds) ? feeds : []).forEach((feed, feedIndex) => {
     if (cacheHit) return;
-    const yarns = Array.isArray(feed?.yarns) ? feed.yarns : [];
     const yarnIndices = solverLengths[feedIndex].flatMap((length, index) =>
       length !== null ? [index] : []
     );
@@ -201,47 +226,63 @@ export function simulate(
       return;
     }
     const feedLinks = geometry.yarnPathLinks.filter((link) => belongsToFeed(link.row));
-    // Equal targets on the same course topology share computation, not slot state.
+    // Equal targets share computation only with the same diameter profile.
     const uniqueTargets = new Map();
+    const targetKey = index => JSON.stringify([solverLengths[feedIndex][index], diameterProfiles[index]]);
     yarnIndices.forEach(index => {
-      const length = solverLengths[feedIndex][index];
-      if (!uniqueTargets.has(length)) uniqueTargets.set(length, index);
+      const key = targetKey(index);
+      if (!uniqueTargets.has(key)) uniqueTargets.set(key, index);
     });
     const uniqueIndices = [...uniqueTargets.values()];
     try {
-      const results = solveFeedYarnLengths({
-        feeds: [{ yarns: uniqueIndices.map((index) => yarns[index]) }],
-        gauge: machineGauge,
-        buildGeometry: (loopHeight) => {
-          if (!solverGeometryByHeight.has(loopHeight)) {
-            evaluateModelLength ??= geometry.createModelLengthEvaluator();
-            solverGeometryByHeight.set(loopHeight, evaluateModelLength(loopHeight));
-          }
-          const candidate = solverGeometryByHeight.get(loopHeight);
-          // A view of this Feed's courses; keep original rows and link indices.
-          return {
-            yarnPathLinks: feedLinks,
-            get modelPathByLink() { return candidate.modelPathByLink; },
-            measuredModelLengthPer100NeedlesByCourse: new Map(
-              [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
-                ([course]) => belongsToFeed(course)
-              )
-            ),
-          };
-        },
+      const groups = new Map();
+      uniqueIndices.forEach(index => {
+        const key = JSON.stringify(diameterProfiles[index]);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(index);
       });
-      const resultsByLength = new Map(results.map(result =>
-        [solverLengths[feedIndex][uniqueIndices[result.yarnIndex]], result]));
+      const resultsByLength = new Map();
+      for (const indices of groups.values()) {
+        const index = indices[0];
+        const results = solveFeedYarnLengths({
+          feeds: [{ yarns: indices.map(index => ({
+            yarnLengthCmPer100Needles: solverLengths[feedIndex][index],
+          })) }],
+          gauge: machineGauge,
+          buildGeometry: (loopHeight) => {
+            const strandGeometry = strandGeometries[index];
+            const key = JSON.stringify([diameterProfiles[index], loopHeight]);
+            if (!solverGeometryByHeight.has(key)) {
+              if (!evaluators.has(strandGeometry)) evaluators.set(strandGeometry, strandGeometry.createModelLengthEvaluator());
+              solverGeometryByHeight.set(key, evaluators.get(strandGeometry)(loopHeight));
+            }
+            const candidate = solverGeometryByHeight.get(key);
+            // A view of this Feed's courses; keep original rows and link indices.
+            return {
+              yarnPathLinks: feedLinks,
+              get modelPathByLink() { return candidate.modelPathByLink; },
+              measuredModelLengthPer100NeedlesByCourse: new Map(
+                [...candidate.measuredModelLengthPer100NeedlesByCourse].filter(
+                  ([course]) => belongsToFeed(course)
+                )
+              ),
+            };
+          },
+        });
+        results.forEach((result, resultIndex) => resultsByLength.set(targetKey(indices[resultIndex]), result));
+      }
       yarnIndices.forEach(yarnIndex => {
-        const result = structuredClone(resultsByLength.get(solverLengths[feedIndex][yarnIndex]));
+        const result = structuredClone(resultsByLength.get(targetKey(yarnIndex)));
         result.feedIndex = feedIndex;
         result.yarnIndex = yarnIndex;
+        result.lengthInput = lengthInputs[feedIndex][yarnIndex];
         yarnLengthSolverResults.push(result);
       });
     } catch (error) {
       // Solver failures keep base paths and expose diagnostics for every slot.
       yarnIndices.forEach(yarnIndex => yarnLengthSolverResults.push({
         feedIndex, yarnIndex,
+        lengthInput: lengthInputs[feedIndex][yarnIndex],
         targetLengthCmPer100Needles: solverLengths[feedIndex][yarnIndex],
         solvedLengthCmPer100Needles: null,
         errorCmPer100Needles: null,
@@ -271,17 +312,17 @@ export function simulate(
   ])];
   if (yarnLibrary !== null) retainYarnAssetTextureImages([...textureMaterials, ...activeYarnPlies]);
   const renderUvTextures = renderTextures && textureMaterials.some(hasUvTextureMap);
-  const strandCount = Math.max(1, ...[...feedYarnPlies.values()].map(plies => plies.length));
   const yarnStrands = Array.from({ length: strandCount }, (_, yarnIndex) => {
+    const strandGeometry = strandGeometries[yarnIndex];
     const solvedModelPaths = new Map();
     yarnLengthSolverResults.forEach(result => {
       if (result.yarnIndex !== yarnIndex || !result.converged) return;
       result.solvedPathByLink.forEach((path, index) => solvedModelPaths.set(index, path));
     });
-    const resolvedPathByLink = geometry.resolveModelPathsForDisplay(solvedModelPaths);
-    const modelPathByLink = new Map(geometry.modelPathByLink);
+    const resolvedPathByLink = strandGeometry.resolveModelPathsForDisplay(solvedModelPaths);
+    const modelPathByLink = new Map(strandGeometry.modelPathByLink);
     // A failed Yarn keeps its own base paths; other slots retain their solves.
-    if (resolvedPathByLink !== geometry.resolvedPathByLink) {
+    if (resolvedPathByLink !== strandGeometry.resolvedPathByLink) {
       solvedModelPaths.forEach((path, index) => modelPathByLink.set(index, path));
       yarnLengthSolverResults.forEach(result => {
         if (result.yarnIndex === yarnIndex && result.converged && result.solvedPathByLink.size) {

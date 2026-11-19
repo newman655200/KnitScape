@@ -26,6 +26,7 @@ uniform sampler2D u_normalMap;
 uniform sampler2D u_roughnessMap;
 uniform sampler2D u_heightMap;
 uniform sampler2D u_ambientOcclusionMap;
+uniform sampler2D u_metallicMap;
 uniform vec4 u_tint;
 uniform float u_textureStrength;
 uniform float u_fuzzStrength;
@@ -34,6 +35,7 @@ uniform bool u_hasNormalMap;
 uniform bool u_hasRoughnessMap;
 uniform bool u_hasHeightMap;
 uniform bool u_hasAmbientOcclusionMap;
+uniform bool u_hasMetallicMap;
 
 varying vec2 v_uv;
 
@@ -53,11 +55,15 @@ void main() {
 
   float roughness = u_hasRoughnessMap ? texture2D(u_roughnessMap, v_uv).r : 0.55;
   float ao = u_hasAmbientOcclusionMap ? texture2D(u_ambientOcclusionMap, v_uv).r : 1.0;
+  float metallic = u_hasMetallicMap ? texture2D(u_metallicMap, v_uv).r : 0.0;
   float edge = smoothstep(0.0, 0.22, v_uv.y) * smoothstep(1.0, 0.78, v_uv.y);
   float highlight = max(0.0, relief * (1.0 - roughness));
   float alpha = base.a * mix(edge, 1.0, 1.0 - u_fuzzStrength * 0.35);
 
-  gl_FragColor = vec4((base.rgb + highlight * 0.22) * ao, alpha);
+  // Only color the existing highlight; no new lighting/BRDF model. Black
+  // nonmetallic maps preserve the previous formula exactly.
+  vec3 highlightColor = mix(vec3(1.0), base.rgb, metallic);
+  gl_FragColor = vec4((base.rgb + highlightColor * highlight * 0.22) * ao, alpha);
 }
 `;
 
@@ -134,6 +140,7 @@ export function materialMaps(material) {
     roughness: getYarnPbrMapSource(pbr.roughness),
     height: getYarnPbrMapSource(pbr.height),
     ambientOcclusion: getYarnPbrMapSource(pbr.ambientOcclusion),
+    metallic: getYarnPbrMapSource(pbr.metallic),
   };
 }
 
@@ -152,6 +159,8 @@ export class YarnUvWebglRenderer {
       normalMap: gl.getUniformLocation(this.program, "u_normalMap"),
       roughnessMap: gl.getUniformLocation(this.program, "u_roughnessMap"),
       heightMap: gl.getUniformLocation(this.program, "u_heightMap"),
+      metallicMap: gl.getUniformLocation(this.program, "u_metallicMap"),
+      hasMetallicMap: gl.getUniformLocation(this.program, "u_hasMetallicMap"),
       ambientOcclusionMap: gl.getUniformLocation(
         this.program,
         "u_ambientOcclusionMap"
@@ -340,12 +349,15 @@ export class YarnUvWebglRenderer {
       roughness: this.textureFromDataUrl(maps.roughness),
       height: this.textureFromDataUrl(maps.height),
       ambientOcclusion: this.textureFromDataUrl(maps.ambientOcclusion),
+      metallic: this.textureFromDataUrl(maps.metallic),
     };
 
     this.bindTexture(0, this.locations.baseColorMap, textures.baseColor);
     this.bindTexture(1, this.locations.normalMap, textures.normal);
     this.bindTexture(2, this.locations.roughnessMap, textures.roughness);
     this.bindTexture(3, this.locations.heightMap, textures.height);
+    this.bindTexture(5, this.locations.metallicMap, textures.metallic);
+    gl.uniform1i(this.locations.hasMetallicMap, textures.metallic ? 1 : 0);
     this.bindTexture(
       4,
       this.locations.ambientOcclusionMap,

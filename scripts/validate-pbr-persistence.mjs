@@ -163,6 +163,64 @@ try {
     }
     return writer.close();
   };
+  const capability = "relaxed-yarn-length-with-draft-v1";
+  const relaxedProject = { ...project, yarnLengthSolverResults: [{ targetCmPer100Needles: 24 }],
+    previewValidity: "VALIDATED", feedYarnStructureRevision: 41,
+    singleJerseyCamProgram: { tracks: [["K"]], feeds: [{ yarns: [{
+      yarnId: "absent", lengthInputMode: "relaxedWithDraft",
+      relaxedLengthCmPer100Needles: 8, draftRatio: 3, yarnLengthCmPer100Needles: 24,
+      effectiveTargetLength: 24, derivedKnittingLength: 24,
+      solverResult: { targetCmPer100Needles: 24 }, tensionCN: 4, placement: "parallel",
+    }] }] } };
+  const relaxedPacked = await createProjectPackage(relaxedProject, assetRegistry);
+  const relaxedZip = new ZipReader(new BlobReader(relaxedPacked), { useWebWorkers: false });
+  const relaxedManifest = JSON.parse(await (await relaxedZip.getEntries())
+    .find(entry => entry.filename === "project.json").getData(new TextWriter()));
+  await relaxedZip.close();
+  assert.equal(relaxedManifest.version, 3, "new length facts require the existing package's new version.");
+  assert.deepEqual(relaxedManifest.requiredCapabilities, [capability]);
+  assert.deepEqual(relaxedManifest.singleJerseyCamProgram.feeds[0].yarns[0], {
+    yarnId: "absent", lengthInputMode: "relaxedWithDraft",
+    relaxedLengthCmPer100Needles: 8, draftRatio: 3, tensionCN: 4, placement: "parallel",
+  }, "only active process facts cross the export boundary, never the derived 24.");
+  assert.equal(relaxedProject.singleJerseyCamProgram.feeds[0].yarns[0].yarnLengthCmPer100Needles, 24,
+    "serialization must not mutate the caller's live state.");
+  for (const key of ["yarnLengthSolverResults", "previewValidity", "feedYarnStructureRevision"]) {
+    assert.equal(Object.hasOwn(relaxedManifest, key), false, `${key} is runtime-only even for direct package calls.`);
+  }
+  const relaxedOpened = await readProjectPackage(relaxedPacked);
+  assert.deepEqual(relaxedOpened.project.singleJerseyCamProgram, relaxedManifest.singleJerseyCamProgram);
+  assert.equal(relaxedOpened.project.yarnLibrary[0].pbr.physicalRepeatLengthMm, 12);
+  relaxedOpened.registry.clear();
+  const unfinished = structuredClone(relaxedProject);
+  delete unfinished.singleJerseyCamProgram.feeds[0].yarns[0].relaxedLengthCmPer100Needles;
+  delete unfinished.singleJerseyCamProgram.feeds[0].yarns[0].draftRatio;
+  const unfinishedOpened = await readProjectPackage(await createProjectPackage(unfinished, assetRegistry));
+  assert.equal(unfinishedOpened.project.version, 3, "incomplete new-mode facts still require the capability.");
+  assert.equal(unfinishedOpened.project.singleJerseyCamProgram.feeds[0].yarns[0].lengthInputMode,
+    "relaxedWithDraft");
+  unfinishedOpened.registry.clear();
+  for (const patch of [
+    { version: 4 }, { version: 1 }, { format: "future-format" },
+    { requiredCapabilities: ["future-length-v2"] }, { requiredCapabilities: capability },
+    { requiredCapabilities: [] }, { version: 2 },
+  ]) {
+    await assert.rejects(readProjectPackage(await makeArchive({ ...relaxedManifest, ...patch })),
+      /version|capabilit|format/i, "a new mode cannot silently bypass its capability/version contract.");
+  }
+  for (const field of ["relaxedLengthCmPer100Needles", "draftRatio"]) {
+    for (const value of [0, -1, "", null, "not-a-number"]) {
+      const invalid = structuredClone(relaxedManifest);
+      invalid.singleJerseyCamProgram.feeds[0].yarns[0][field] = value;
+      await assert.rejects(readProjectPackage(await makeArchive(invalid)), /length|draft|positive/i);
+    }
+  }
+  const unknownMode = structuredClone(relaxedManifest);
+  unknownMode.singleJerseyCamProgram.feeds[0].yarns[0].lengthInputMode = "futureMode";
+  await assert.rejects(readProjectPackage(await makeArchive(unknownMode)), /mode/i);
+  await assert.rejects(readProjectPackage(await makeArchive({
+    ...manifest, requiredCapabilities: ["future-length-v2"],
+  })), /capabilit/i, "v2 cannot bypass unknown capability rejection.");
   const broken = structuredClone(manifest);
   const oldManifest = structuredClone(manifest);
   delete oldManifest.yarnLibrary[0].pbr.physicalRepeatLengthMm;
@@ -261,5 +319,6 @@ try {
     stressRegistry.clear(); stressOpened.registry.clear();
   }
   console.log("PASS: .knitscape metadata/binary round-trip, range-based lazy reads, legacy migration and invalid-package checks.");
+  console.log("PASS: length-mode v3 capability, active-fact-only export, incomplete drafts and invalid input/version rejection.");
   console.log("PASS: binary Registry reads lazily, deduplicates requests, retries and releases resources.");
 } finally { await server.close(); }

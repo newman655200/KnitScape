@@ -1,16 +1,14 @@
 import { html } from "lit-html";
 import { GLOBAL_STATE, dispatch } from "../state";
-import {
-  gaugeToNeedlePitchMm,
-  normalizeMachineGauge,
-} from "../simulation/yarnLengthMetrics";
+import { gaugeToNeedlePitchMm } from "../simulation/yarnLengthMetrics";
+import { MIN_MACHINE_GAUGE, MAX_MACHINE_GAUGE, validateMachineGauge } from "../domain/machineGauge.js";
 import { t } from "../i18n";
 
 export function yarnLengthReadout() {
   const language = GLOBAL_STATE.language;
   const metrics = GLOBAL_STATE.yarnLengthMetrics;
-  const gauge = normalizeMachineGauge(GLOBAL_STATE.machineGauge);
-  const needlePitchMm = metrics?.needlePitchMm ?? gaugeToNeedlePitchMm(gauge);
+  const gauge = GLOBAL_STATE.machineGauge;
+  const needlePitchMm = gaugeToNeedlePitchMm(gauge);
   const cmPer100 = metrics?.cmPer100Loops;
 
   return html`<section class="yarn-length-readout">
@@ -20,14 +18,24 @@ export function yarnLengthReadout() {
       <span>${t("machine.gauge", language)}</span>
       <input
         type="number"
-        min="1"
-        max="120"
-        step="1"
+        min=${MIN_MACHINE_GAUGE}
+        max=${MAX_MACHINE_GAUGE}
+        step="any"
         .value=${String(gauge)}
-        @change=${(event) =>
-          dispatch({
-            machineGauge: normalizeMachineGauge(event.target.value),
-          })} />
+        @input=${(event) => event.target.setCustomValidity("")}
+        @change=${(event) => {
+          const input = event.target;
+          input.setCustomValidity("");
+          let value;
+          try {
+            value = validateMachineGauge(Number(input.value));
+          } catch (error) {
+            input.setCustomValidity(error.message);
+            input.reportValidity();
+            return;
+          }
+          dispatch({ machineGauge: value });
+        }} />
     </label>
     <div
       class="machine-needle-pitch"

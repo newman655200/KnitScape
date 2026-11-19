@@ -117,6 +117,11 @@ export function assignYarnToFeed(feedIndex, yarnIndex, id = GLOBAL_STATE.pending
   next[yarnIndex] = { ...(next[yarnIndex] ?? {
     yarnLengthCmPer100Needles: 0, tensionCN: null, placement: "parallel",
   }), yarnId: asset.id };
+  if (next[yarnIndex].lengthInputMode === "relaxedWithDraft") {
+    // Measurements and draft belong to the previous Feed × Yarn relationship.
+    delete next[yarnIndex].relaxedLengthCmPer100Needles;
+    delete next[yarnIndex].draftRatio;
+  }
   setSingleJerseyFeedYarns(feedIndex, next);
 }
 

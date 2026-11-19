@@ -1,4 +1,5 @@
 import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
+import { normalizeYarnLengthFields } from "../domain/yarnLengthInput.js";
 import { YARN_PBR_MAP_KEYS } from "../yarnTexture/yarnScanTexture.js";
 import { YarnAssetRegistry, yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
 
@@ -9,6 +10,53 @@ const MAX_MANIFEST_BYTES = 16 * 1024 ** 2;
 const PROJECT_FIELDS = ["width", "height", "repeats", "yarnPalette", "yarnSequence",
   "yarnPlies", "yarnLibrary", "singleJerseyCamProgram", "needleArrangement",
   "needleArrangementInputs", "machineGauge"];
+const RELAXED_LENGTH_CAPABILITY = "relaxed-yarn-length-with-draft-v1";
+
+function projectYarns(project) {
+  return (project.singleJerseyCamProgram?.feeds ?? []).flatMap(feed => feed?.yarns ?? []);
+}
+
+export function assertProjectCompatibility(project, { packageRequired = false } = {}) {
+  if (!project || typeof project !== "object" || Array.isArray(project)) {
+    throw new TypeError("Invalid project JSON.");
+  }
+  if (packageRequired || Object.hasOwn(project, "format") || Object.hasOwn(project, "version")) {
+    if (project.format !== "knitscape" || ![2, 3].includes(project.version)) {
+      throw new TypeError("Unsupported project format or version.");
+    }
+  }
+  const capabilities = project.requiredCapabilities ?? [];
+  if ((Object.hasOwn(project, "requiredCapabilities") && !Array.isArray(project.requiredCapabilities)) ||
+    capabilities.some(capability => capability !== RELAXED_LENGTH_CAPABILITY)) {
+    throw new TypeError("Unsupported project capability.");
+  }
+  const yarns = projectYarns(project);
+  const needsRelaxedLength = yarns.some(yarn => yarn?.lengthInputMode === "relaxedWithDraft");
+  if ((needsRelaxedLength || project.version === 3 || capabilities.length) &&
+    (project.version !== 3 || !capabilities.includes(RELAXED_LENGTH_CAPABILITY))) {
+    throw new TypeError("Project requires version 3 and the relaxed yarn length capability.");
+  }
+  yarns.forEach(normalizeYarnLengthFields);
+}
+
+export function prepareProjectForSave(project) {
+  // Use the same fact whitelist for JSON and direct package callers.
+  const captured = structuredClone(Object.fromEntries(PROJECT_FIELDS
+    .filter(key => Object.hasOwn(project, key)).map(key => [key, project[key]])));
+  const cam = captured.singleJerseyCamProgram;
+  if (cam) captured.singleJerseyCamProgram = {
+    tracks: cam.tracks,
+    ...(cam.feeds ? { feeds: cam.feeds.map(feed => ({ yarns: feed.yarns.map(yarn => ({
+      yarnId: yarn.yarnId, ...normalizeYarnLengthFields(yarn),
+      tensionCN: yarn.tensionCN, placement: yarn.placement,
+    })) })) } : {}),
+  };
+  if (projectYarns(captured).some(yarn => yarn.lengthInputMode === "relaxedWithDraft")) {
+    Object.assign(captured, { format: "knitscape", version: 3,
+      requiredCapabilities: [RELAXED_LENGTH_CAPABILITY] });
+  }
+  return captured;
+}
 
 function assetPath(id, slot) {
   const segment = encodeURIComponent(String(id)).replace(/\./g, "%2E");
@@ -65,9 +113,9 @@ function validateProjectFields(project) {
 
 export async function createProjectPackage(project, registry = yarnAssetRegistry) {
   const snapshot = registry.fork();
-  const captured = structuredClone(project);
   let writer;
   try {
+    const captured = prepareProjectForSave(project);
     validateProjectFields(captured);
     const pending = [];
     captured.yarnLibrary = mapAssets(migrateYarnLibraryAssets(captured.yarnLibrary, snapshot),
@@ -78,7 +126,7 @@ export async function createProjectPackage(project, registry = yarnAssetRegistry
         return { ...map, assetRef: path };
       });
     if (pending.length + 1 > MAX_PROJECT_ENTRIES) throw new RangeError("Too many project assets.");
-    const manifest = JSON.stringify({ ...captured, format: "knitscape", version: 2 });
+    const manifest = JSON.stringify({ ...captured, format: "knitscape", version: captured.version ?? 2 });
     const manifestBlob = new Blob([manifest], { type: "application/json" });
     if (manifestBlob.size > MAX_MANIFEST_BYTES ||
       pending.reduce((size, item) => size + item.map.byteLength, manifestBlob.size) > MAX_PROJECT_BYTES) {
@@ -135,9 +183,7 @@ export async function readProjectPackage(blob) {
     const manifest = files.get("project.json");
     if (!manifest) throw new TypeError("Project is missing project.json.");
     const project = JSON.parse(await manifest.getData(new TextWriter(), { checkSignature: true }));
-    if (project.format !== "knitscape" || project.version !== 2) {
-      throw new TypeError("Unsupported project package version.");
-    }
+    assertProjectCompatibility(project, { packageRequired: true });
     validateProjectFields(project);
     project.yarnLibrary = mapAssets(project.yarnLibrary, (map, id, slot) => {
       if (!map.assetRef || map.assetRef !== assetPath(id, slot)) {

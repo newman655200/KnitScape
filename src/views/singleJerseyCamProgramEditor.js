@@ -11,6 +11,9 @@ import {
   setSingleJerseyFeedYarnLength,
   setSingleJerseyFeedYarnLengths,
   clearSingleJerseyFeedYarnLength,
+  setSingleJerseyFeedYarnLengthInputMode,
+  setSingleJerseyFeedYarnDraftRatio,
+  clearSingleJerseyFeedYarnDraftRatio,
 } from "../actions/singleJerseyCamProgram.js";
 import knitIconUrl from "../assets/symbols/knit.svg";
 import slipIconUrl from "../assets/symbols/slip.svg";
@@ -21,6 +24,7 @@ import { assignYarnToFeed, removeFeedYarnSlot } from "../actions/yarnLibrary.js"
 import { yarnAssignmentNotice } from "./yarnLibrary.js";
 import { validateYarnLengthInput } from "../domain/yarnLengthInput.js";
 import { validateYarnLengthBatchSelection } from "../domain/yarnLengthBatch.js";
+import { getYarnLengthFeedbackRows } from "./yarnLengthSolverFeedback.js";
 
 const OPERATION_ORDER = ["K", "M", "T"];
 const OPERATION_ICON_URLS = {
@@ -60,14 +64,16 @@ function openYarnLibrary() {
 
 function commitYarnLength(event) {
   const input = event.currentTarget;
-  const result = setSingleJerseyFeedYarnLength(
-    Number(input.dataset.feedIndex),
-    Number(input.dataset.yarnIndex),
+  const isDraftRatio = input.dataset.lengthField === "draftRatio";
+  const result = (isDraftRatio ? setSingleJerseyFeedYarnDraftRatio : setSingleJerseyFeedYarnLength)(
+    Number(isDraftRatio ? input.dataset.draftFeedIndex : input.dataset.feedIndex),
+    Number(isDraftRatio ? input.dataset.draftYarnIndex : input.dataset.yarnIndex),
     input.value
   );
   if (!result.ok) input.value = displayYarnLength(result.previousValue);
   input.setCustomValidity("");
-  setYarnLengthNotice(input, result.ok ? "" : t("camProgram.invalidYarnLength", GLOBAL_STATE.language));
+  setYarnLengthNotice(input, result.ok ? "" : t(input.dataset.lengthField === "directTarget"
+    ? "camProgram.invalidYarnLength" : "camProgram.invalidLengthFact", GLOBAL_STATE.language));
   return result;
 }
 
@@ -78,16 +84,21 @@ function setYarnLengthNotice(input, message) {
 function validateYarnLengthDraft(event) {
   const input = event.currentTarget;
   const validation = validateYarnLengthInput(input.value);
-  input.setCustomValidity(validation.ok ? "" : t("camProgram.invalidYarnLength", GLOBAL_STATE.language));
+  input.setCustomValidity(validation.ok ? "" : t(input.dataset.lengthField === "directTarget"
+    ? "camProgram.invalidYarnLength" : "camProgram.invalidLengthFact", GLOBAL_STATE.language));
   setYarnLengthNotice(input, "");
 }
 
-function clearYarnLength(event, feedIndex, yarnIndex) {
-  const result = clearSingleJerseyFeedYarnLength(feedIndex, yarnIndex);
-  const input = event.currentTarget.closest(".cam-feed-yarn-slot").querySelector("input[data-yarn-index]");
+function clearYarnLength(event, feedIndex, yarnIndex, field = "directTarget") {
+  const isDraftRatio = field === "draftRatio";
+  const result = (isDraftRatio ? clearSingleJerseyFeedYarnDraftRatio : clearSingleJerseyFeedYarnLength)(feedIndex, yarnIndex);
+  const input = event.currentTarget.closest(".cam-feed-yarn-slot")
+    .querySelector(isDraftRatio ? "input[data-draft-yarn-index]" : "input[data-yarn-index]");
   input.value = "";
   input.setCustomValidity("");
-  setYarnLengthNotice(input, t("camProgram.yarnLengthCleared", GLOBAL_STATE.language));
+  setYarnLengthNotice(input, t(isDraftRatio ? "camProgram.draftRatioCleared"
+    : field === "relaxedWithDraft" ? "camProgram.relaxedLengthCleared"
+    : "camProgram.yarnLengthCleared", GLOBAL_STATE.language));
   return result;
 }
 
@@ -115,12 +126,19 @@ function candidateFeedIndices(feedCount) {
   return getSingleJerseyFeedIndices(batchFeedScope, feedCount, [...selectedFeedFilters]);
 }
 
+function batchFailureKey(reason) {
+  return reason === "INVALID_YARN_LENGTH" ? "camProgram.batchInvalidValue"
+    : reason === "STALE_ASSIGNMENT_STRUCTURE" ? "camProgram.batchStructureChanged"
+    : reason === "MIXED_LENGTH_INPUT_MODES" ? "camProgram.batchMixedLengthModes"
+    : reason === "STALE_LENGTH_INPUT_MODE" ? "camProgram.batchLengthModeChanged"
+    : reason === "NO_TARGETS" ? "camProgram.batchNoTargets" : "camProgram.batchTargetsChanged";
+}
+
 function batchMessage() {
   const targets = [...selectedBatchTargets.values()];
   if (targets.length) {
     const checked = validateYarnLengthBatchSelection(GLOBAL_STATE.singleJerseyCamProgram, batchSelection(), GLOBAL_STATE.feedYarnStructureRevision);
-    if (!checked.ok) return t(checked.reason === "STALE_ASSIGNMENT_STRUCTURE"
-      ? "camProgram.batchStructureChanged" : "camProgram.batchTargetsChanged", GLOBAL_STATE.language);
+    if (!checked.ok) return t(batchFailureKey(checked.reason), GLOBAL_STATE.language);
   }
   return batchFeedback || (targets.length ? "" : t("camProgram.batchNoTargets", GLOBAL_STATE.language));
 }
@@ -183,20 +201,22 @@ function applyBatchYarnLength(event) {
   const form = event.currentTarget;
   const result = setSingleJerseyFeedYarnLengths(batchSelection(), form.elements.yarnLength.value);
   batchFeedback = result.ok ? t("camProgram.batchUpdated", GLOBAL_STATE.language, { count: result.updatedCount })
-    : t(result.reason === "INVALID_YARN_LENGTH" ? "camProgram.batchInvalidValue"
-      : result.reason === "STALE_ASSIGNMENT_STRUCTURE" ? "camProgram.batchStructureChanged"
-      : result.reason === "NO_TARGETS" ? "camProgram.batchNoTargets" : "camProgram.batchTargetsChanged", GLOBAL_STATE.language);
+    : t(batchFailureKey(result.reason), GLOBAL_STATE.language);
   if (result.ok || result.reason !== "INVALID_YARN_LENGTH") clearBatchSelection();
   refreshBatchControls(form);
   return result;
 }
 
-function feedYarnLengthEditor(feed, feedIndex, language) {
+function feedYarnLengthEditor(feed, feedIndex, language, feedbackRows) {
   const yarns = Array.isArray(feed?.yarns) && feed.yarns.length
     ? feed.yarns
     : [{ yarnId: 0, yarnLengthCmPer100Needles: 0 }];
   return html`<div class="cam-feed-yarn-lengths">
-    ${yarns.map((yarn, yarnIndex) => html`<div class="cam-feed-yarn-slot">
+    ${yarns.map((yarn, yarnIndex) => {
+      const row = feedbackRows.find(row => row.feedIndex === feedIndex && row.yarnIndex === yarnIndex);
+      const input = row.lengthInput;
+      const relaxed = input.lengthInputMode === "relaxedWithDraft";
+      return html`<div class="cam-feed-yarn-slot">
       <label>
         <input type="checkbox" name="selected-yarn"
           data-batch-feed=${feedIndex} data-batch-yarn=${yarnIndex} data-batch-yarn-id=${yarn.yarnId}
@@ -204,7 +224,8 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
           ?disabled=${!candidateFeedIndices(GLOBAL_STATE.singleJerseyCamProgram.tracks[0].length).includes(feedIndex)}
           aria-label=${t("camProgram.batchSelectAssignment", language, { feed: feedIndex + 1, yarn: yarnIndex + 1,
             name: GLOBAL_STATE.yarnLibrary.find(asset => String(asset.id) === String(yarn.yarnId))?.name ?? String(yarn.yarnId) })}
-          @change=${event => selectBatchYarn(event, { feedIndex, yarnIndex, yarnId: yarn.yarnId })} />
+          @change=${event => selectBatchYarn(event, { feedIndex, yarnIndex, yarnId: yarn.yarnId,
+            lengthInputMode: input.lengthInputMode })} />
         <span>${t("camProgram.batchSelect", language)}</span>
       </label>
       <div class="cam-feed-yarn-assignment">
@@ -220,25 +241,60 @@ function feedYarnLengthEditor(feed, feedIndex, language) {
           aria-label=${t("yarnLibrary.removeSlot", language, { number: yarnIndex + 1 })}
           @click=${() => removeFeedYarnSlot(feedIndex, yarnIndex)}>×</button>
       </div>
+      <label class="cam-yarn-length-mode">
+        <span>${t("camProgram.lengthInputMode", language)}</span>
+        <select data-length-mode-feed=${feedIndex} data-length-mode-yarn=${yarnIndex}
+          .value=${live(input.lengthInputMode)}
+          @change=${event => setSingleJerseyFeedYarnLengthInputMode(feedIndex, yarnIndex, event.currentTarget.value)}>
+          <option value="directTarget">${t("camProgram.lengthMode.directTarget", language)}</option>
+          <option value="relaxedWithDraft">${t("camProgram.lengthMode.relaxedWithDraft", language)}</option>
+        </select>
+      </label>
       <label>
-      <span>${yarns.length === 1
-        ? t("camProgram.yarnLength", language)
-        : t("camProgram.yarn", language, { number: yarnIndex + 1 })}</span>
+      <span>${t(relaxed ? "camProgram.relaxedLength" : "camProgram.directTargetLength", language)}</span>
       <input
         type="text"
         inputmode="decimal"
         data-feed-index=${feedIndex}
         data-yarn-index=${yarnIndex}
-        .value=${displayYarnLength(yarn.yarnLengthCmPer100Needles)}
+        data-length-field=${input.lengthInputMode}
+        .value=${displayYarnLength(relaxed ? input.relaxedLengthCmPer100Needles : input.directTargetLengthCmPer100Needles)}
         @input=${validateYarnLengthDraft}
         @change=${commitYarnLength}
         @keydown=${finishYarnLengthOnEnter} />
       </label>
       <button type="button" class="btn cam-yarn-length-clear"
-        aria-label=${t("camProgram.clearYarnLengthForYarn", language, { feed: feedIndex + 1, yarn: yarnIndex + 1 })}
-        @click=${event => clearYarnLength(event, feedIndex, yarnIndex)}>${t("camProgram.clearYarnLength", language)}</button>
+        aria-label=${t(relaxed ? "camProgram.clearRelaxedLengthForYarn" : "camProgram.clearYarnLengthForYarn",
+          language, { feed: feedIndex + 1, yarn: yarnIndex + 1 })}
+        @click=${event => clearYarnLength(event, feedIndex, yarnIndex, input.lengthInputMode)}>
+        ${t(relaxed ? "camProgram.clearRelaxedLength" : "camProgram.clearYarnLength", language)}</button>
+      ${relaxed ? html`
+        <label>
+          <span>${t("camProgram.draftRatio", language)}（${t("camProgram.draftRatioUnit", language)}）</span>
+          <input type="text" inputmode="decimal" data-length-field="draftRatio"
+            data-draft-feed-index=${feedIndex} data-draft-yarn-index=${yarnIndex}
+            .value=${displayYarnLength(input.draftRatio)}
+            @input=${validateYarnLengthDraft} @change=${commitYarnLength} @keydown=${finishYarnLengthOnEnter} />
+        </label>
+        <button type="button" class="btn cam-yarn-draft-clear"
+          aria-label=${t("camProgram.clearDraftRatioForYarn", language, { feed: feedIndex + 1, yarn: yarnIndex + 1 })}
+          @click=${event => clearYarnLength(event, feedIndex, yarnIndex, "draftRatio")}>
+          ${t("camProgram.clearDraftRatio", language)}</button>
+        <div class="cam-yarn-derived-length">
+          <span>${t("camProgram.weavingReferenceLength", language)}</span>
+          <output data-derived-feed=${feedIndex} data-derived-yarn=${yarnIndex}>
+            ${input.status === "READY"
+              ? `${input.relaxedLengthCmPer100Needles} × ${Number.isInteger(input.draftRatio) ? input.draftRatio.toFixed(1) : input.draftRatio} = ${input.effectiveTargetLengthCmPer100Needles}`
+              : t("camProgram.lengthInputIncomplete", language)}
+          </output>
+        </div>` : ""}
+      <small class="cam-yarn-solver-status" role="status">
+        ${input.status === "INCOMPLETE" ? t("camProgram.lengthInputIncomplete", language)
+          : input.status === "NOT_SET" ? t("yarnSolver.notSet", language)
+          : row.result?.status ?? t("yarnSolver.noCurrentStatus", language)}
+      </small>
       <small class="cam-yarn-length-feedback" role="status" aria-live="polite"></small>
-    </div>`)}
+    </div>`; })}
     <span class="cam-yarn-length-unit">
       ${t("camProgram.yarnLengthUnit", language)}
     </span>
@@ -301,6 +357,7 @@ function operationLegend(language) {
 
 function camProgramGrid(camProgram, language) {
   const feedCount = camProgram.tracks[0].length;
+  const feedbackRows = getYarnLengthFeedbackRows(GLOBAL_STATE);
 
   return html`<div class="cam-program-grid-scroller">
     <table class="cam-program-grid">
@@ -322,7 +379,7 @@ function camProgramGrid(camProgram, language) {
                   })} />
                 <span>${t("camProgram.feed", language, { number: feed + 1 })}</span>
               </label>
-              ${feedYarnLengthEditor(camProgram.feeds?.[feed], feed, language)}
+              ${feedYarnLengthEditor(camProgram.feeds?.[feed], feed, language, feedbackRows)}
             </th>`
           )}
         </tr>

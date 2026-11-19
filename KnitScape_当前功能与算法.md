@@ -1,10 +1,13 @@
 # KnitScape 当前功能与算法
 
-更新时间：2026-10-01  
-当前代码基线：`2a1efc16d94cdab548b0ea96e9c64c462cd7c3f5`  
+核对日期：2026-10-17（Asia/Shanghai）
+
+当前 main HEAD：`7ababf264d495f6b96d4d66652c529424938ac4d`
 当前主线：`main`
 
-> 本文只描述 `2a1efc1` 当前源码。旧 V2 / L0–L6 路线不属于本项目当前主线。
+**FACT**：`2a1efc1`是历史主线起点，当前HEAD包含它；工作区另有已有未提交材料解析修改。以下当前行为以源码为准，历史实验另标报告来源。旧路线不属于当前主线。
+
+**SUBJECTIVE / DESIGN DECISION**：当前交接阶段为 `P0-C0 Correctness Preparation`。证据分类、物理数据来源六项原则和工艺七问见 [PROCESS_VALIDATION](docs/PROCESS_VALIDATION.md)；当前路线以 [ROADMAP](docs/ROADMAP.md) 为准。未知物性与测量方法不得猜默认值。
 
 ## 1. 项目当前定位
 
@@ -226,27 +229,22 @@ Pattern/Repeat 数据继续保存在 `chart` 与 `repeats`；机器配置不改�
 
 开发必须从 `main` 继续，并遵守 `AGENTS.md`。
 
-## 7. 当前验证结果
+## 7. 软件基线与验证边界
 
-当前仓库包含针对 Single Jersey Machine、Simulation Input、Workspace、排针、Cam Editor、纹理与纱长等验证脚本。
+**FACT**：P0已建立SolverResult、PreviewValidity、合法/非法输入保护、明确Clear、UNREACHABLE_TARGET、Feed×Yarn独立目标、批量目标原子预检及feedYarnStructureRevision保护。当前仓库有相应regression validators。
 
-清理时已确认：
+历史 [P0 Final Audit](reports/p0-final-audit/FINAL_REPORT.md) 为CONDITIONAL PASS，[baseline报告](reports/p0-baseline-20261007-210704/BASELINE_REPORT.md) 指向当前HEAD，记录36/36；后续 [geometry gap审计](reports/real-sop-geometry-gap-audit-2026-10-16/REPORT.md) 记录37/37及build通过。本轮文档工作没有重跑npm或浏览器，不把历史结果称为本轮PASS。
 
-- `validate:single-jersey-machine`：PASS；
-- `validate:single-jersey-simulation-input`：PASS；
-- 多项无需第三方依赖的静态/领域验证可直接运行。
-
-完整 Vite 构建仍应在安装依赖后运行 `npm run build`。
+**UNKNOWN / PENDING PROCESS CONFIRMATION**：这些软件验证没有证明真实工厂23/8与当前Solver测量定义一致，没有完成真实机台精度标定。当前VALIDATED仅是模型窗口数值目标成功并应用。[四类验证](docs/PROCESS_VALIDATION.md)
 
 ## 8. 当前明确未实现
 
-- 机器设置完整 JSON 持久化；
 - 双面机 / 罗纹 / 双罗纹机器 Domain；
 - PLC 或设备控制；
 - 真实三维材料力学、碰撞和织造动力学；
 - 经过实物标定的生产级送纱量模型。
 
-当前最优先缺口是 JSON 未保存 `needleArrangementInputs`、`needleArrangement` 与 `singleJerseyCamProgram`。
+**FACT**：机器配置持久化已有实现，不能继续列为未开发。当前优先缺口是测量契约与工艺确认；当前模型内部窗口与完整repeat存在差异，不能跳到生产级校准。
 
 ## 9. 理论与使用边界
 
@@ -301,7 +299,7 @@ singleJerseyCamProgram ┘
 
 ## 12. JSON 当前边界
 
-当前 `downloadJSON()` 只保存：
+**FACT**：当前实际导出为 `getProjectData()` → `createProjectPackage()` → `.knitscape` 项目包，支持读取包或JSON。导出白名单保存：
 
 ```text
 width
@@ -310,19 +308,23 @@ repeats
 yarnPalette
 yarnSequence
 yarnPlies
+yarnLibrary
+singleJerseyCamProgram
+needleArrangement
+needleArrangementInputs
+machineGauge
 ```
 
-当前尚未保存：
+不保存运行时派生/交互数据：
 
 ```text
-needleArrangementInputs
-needleArrangement
-singleJerseyCamProgram
+yarnLengthSolverResults
+previewValidity
+feedYarnStructureRevision
+batch selection / pending / draft
 ```
 
-因此“导出 → 关闭 → 再导入”后，机器设置不能完整恢复。
-
-这是当前最优先的功能缺口。
+源码证据：[exporters](src/actions/exporters.js)、[package](src/actions/projectPackage.js)、[importers](src/actions/importers.js)。SOP with-cam报告已有真实保存/重导入证据；旧Pattern-only JSON会保留当前Machine/Library，不能把旧兼容入口误读成完整项目替换。
 
 ## 13. 当前明确不采用的旧方向
 
@@ -353,14 +355,25 @@ singleJerseyCamProgram
 
 ## 15. 后续顺序
 
-当前建议顺序：
+**SUBJECTIVE / DESIGN DECISION**：替代旧“持久化P0→差异P1→机器参数P2”顺序，当前统一路线：
 
 ```text
-P0 机器设置 JSON 持久化
-→ P1 设计结果 / 机器结果差异检查
-→ P2 Feed / Needle / Cam 更完整的机器参数
-→ P3 工艺参数、送纱与校准
-→ P4 设备接口 / PLC（最后）
+P0软件基线 → P0-C0 Correctness Preparation
+→ PROCESS CONFIRMATION GATE → P0-C1 Canonical Yarn Length
+→ Correctness Gate → Architecture Consolidation → Material Authority
+→ YarnTopology/YarnPath → xyz Centerline → Yarn Mesh
+→ Physical UV/PBR → Real Fabric Calibration
+→ Conditional Relaxation/Contact → Fuzz/High Fidelity
 ```
 
-详细 P0 规格见 `NEXT_TASK.md`。
+详细允许项、禁令及答案分支见 [NEXT_TASK](NEXT_TASK.md) / [ROADMAP](docs/ROADMAP.md)。本轮不进入下一阶段开发。
+
+## 16. 当前纱长、材质与真实SOP
+
+**FACT**：SOP资料为Single Jersey、32英寸、32G、3216针、1234、4×8 Cam、N6/W(6040)23cm/100针、20D LOW 8cm/100针、张力记录5/4cN。保存项目是30×40主纱版，没有20D assignment，张力仍null；张力字段可记录但不作用于geometry。[SOP证据与七问](docs/PROCESS_VALIDATION.md)
+
+**FACT**：当前Solver测量横向周期化窗口、平均同Feed全部有限course，含顶边。原30×40主纱Feed8软件值22.999733873，内部完整4针循环独立诊断约24.077277996cm/100针；23.7016属于32×40 comparison。二者不是同一数学口径，full-repeat也不是已确认生产authority。[完整定义](docs/YARN_LENGTH_CONTRACT.md)
+
+**FACT**：当前工作区有Asset可选color/diameter、统一resolveYarnMaterial、逐纱diameter profile及Metallic通路；旧报告“Asset没有字段/Metallic不支持”描述的是较早快照。本轮不续做或验收该未提交功能。[ownership](docs/DOMAIN_AUTHORITY.md)、[Legacy条件](docs/LEGACY_MAP.md)
+
+**FACT / UNKNOWN**：PBR原图有五张2172×724 PNG，无内嵌pHYs；2400DPI来自用户扫描说明。仅在原图未重采样且DPI为真实采集DPI时，横向纹理physicalRepeat=2172/2400×25.4=22.987mm。真实yarn diameter仍UNKNOWN，不能由图高、透明区域、20D或肉眼推出。

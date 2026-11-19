@@ -1,6 +1,6 @@
 import { dispatch, GLOBAL_STATE } from "../state.js";
 import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
-import { validateYarnLengthInput } from "../domain/yarnLengthInput.js";
+import { normalizeYarnLengthFields, resolveYarnLengthInput, validateYarnLengthInput } from "../domain/yarnLengthInput.js";
 import { preflightYarnLengthBatch } from "../domain/yarnLengthBatch.js";
 import { PREVIEW_VALIDITY } from "../simulation/previewValidity.js";
 
@@ -41,16 +41,11 @@ function validateFeedYarnIndex(camProgram, feedIndex, yarnIndex) {
 }
 
 function normalizeFeedYarn(yarn) {
-  const rawYarnLength = yarn?.yarnLengthCmPer100Needles;
-  const yarnLength = validateYarnLengthInput(rawYarnLength, { allowUnset: true });
+  const lengthFields = normalizeYarnLengthFields(yarn);
   const tension = yarn?.tensionCN == null ? null : Number(yarn.tensionCN);
 
   if (yarn?.yarnId == null || yarn.yarnId === "") {
     throw new TypeError("yarnId is required.");
-  }
-  // Legacy unset values stay readable, but a missing project field was already invalid.
-  if (rawYarnLength === undefined || !yarnLength.ok) {
-    throw new TypeError("yarnLengthCmPer100Needles must be a non-negative number.");
   }
   if (tension !== null && (!Number.isFinite(tension) || tension < 0)) {
     throw new TypeError("tensionCN must be null or a non-negative number.");
@@ -58,7 +53,7 @@ function normalizeFeedYarn(yarn) {
 
   return {
     yarnId: yarn.yarnId,
-    yarnLengthCmPer100Needles: yarnLength.value,
+    ...lengthFields,
     tensionCN: tension,
     placement: yarn.placement ?? "parallel",
   };
@@ -182,7 +177,8 @@ export function setSingleJerseyFeedYarns(feedIndex, yarns) {
       : { yarns: feed.yarns.map((yarn) => ({ ...yarn })) }
   );
   dispatch({ singleJerseyCamProgram: { ...camProgram, feeds },
-    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, feeds) },
+    yarnLibrary: normalizeYarnLibrary(GLOBAL_STATE.yarnLibrary, feeds),
+    yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW },
     { replaceFeedYarnStructure: true });
 }
 
@@ -204,22 +200,32 @@ export function getSingleJerseyFeedIndices(
   );
 }
 
-function commitFeedYarnLength(feedIndex, yarnIndex, validation) {
+function commitFeedYarnFields(camProgram, feedIndex, yarnIndex, nextYarn) {
+  const feeds = camProgram.feeds.map((feed, currentFeedIndex) => currentFeedIndex !== feedIndex ? feed : {
+    ...feed,
+    yarns: feed.yarns.map((yarn, currentYarnIndex) => currentYarnIndex === yarnIndex ? nextYarn : yarn),
+  });
+  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds },
+    yarnLengthSolverResults: [], previewValidity: PREVIEW_VALIDITY.DESIGN_PREVIEW });
+}
+
+function commitFeedYarnLength(feedIndex, yarnIndex, validation, draft = false) {
   const camProgram = currentCamProgram();
   validateFeedYarnIndex(camProgram, feedIndex, yarnIndex);
-  const previousValue = camProgram.feeds[feedIndex].yarns[yarnIndex].yarnLengthCmPer100Needles;
+  const yarn = camProgram.feeds[feedIndex].yarns[yarnIndex];
+  const relaxedMode = resolveYarnLengthInput(yarn).lengthInputMode === "relaxedWithDraft";
+  const field = draft ? "draftRatio" : relaxedMode ? "relaxedLengthCmPer100Needles" : "yarnLengthCmPer100Needles";
+  const previousValue = yarn[field];
+  if (draft && !relaxedMode) return { ok: false, reason: "INVALID_LENGTH_INPUT_MODE", previousValue };
   if (!validation.ok) return { ...validation, previousValue };
-  const yarnLengthCmPer100Needles = validation.value;
-  const feeds = camProgram.feeds.map((feed, currentFeedIndex) => ({
-    yarns: feed.yarns.map((yarn, currentYarnIndex) => ({
-      ...yarn,
-      yarnLengthCmPer100Needles:
-        currentFeedIndex === feedIndex && currentYarnIndex === yarnIndex
-          ? yarnLengthCmPer100Needles
-          : yarn.yarnLengthCmPer100Needles,
-    })),
-  }));
-  dispatch({ singleJerseyCamProgram: { ...camProgram, feeds } });
+  const nextYarn = { ...yarn, [field]: validation.value };
+  if (relaxedMode && validation.operation === "CLEAR") delete nextYarn[field];
+  const resolved = resolveYarnLengthInput(nextYarn);
+  if (relaxedMode && resolved.relaxedLengthCmPer100Needles !== null && resolved.draftRatio !== null &&
+    resolved.effectiveTargetLengthCmPer100Needles === null) {
+    return { ok: false, reason: "INVALID_EFFECTIVE_YARN_LENGTH", previousValue };
+  }
+  commitFeedYarnFields(camProgram, feedIndex, yarnIndex, nextYarn);
   return { ...validation, previousValue };
 }
 
@@ -231,6 +237,30 @@ export function clearSingleJerseyFeedYarnLength(feedIndex, yarnIndex) {
   return commitFeedYarnLength(feedIndex, yarnIndex, validateYarnLengthInput(0, { allowUnset: true }));
 }
 
+export function setSingleJerseyFeedYarnDraftRatio(feedIndex, yarnIndex, value) {
+  const validation = validateYarnLengthInput(value);
+  return commitFeedYarnLength(feedIndex, yarnIndex,
+    validation.ok ? validation : { ok: false, reason: "INVALID_DRAFT_RATIO" }, true);
+}
+
+export function clearSingleJerseyFeedYarnDraftRatio(feedIndex, yarnIndex) {
+  return commitFeedYarnLength(feedIndex, yarnIndex, { ok: true, operation: "CLEAR", value: 0 }, true);
+}
+
+export function setSingleJerseyFeedYarnLengthInputMode(feedIndex, yarnIndex, mode) {
+  const camProgram = currentCamProgram();
+  validateFeedYarnIndex(camProgram, feedIndex, yarnIndex);
+  const yarn = camProgram.feeds[feedIndex].yarns[yarnIndex];
+  const previousValue = resolveYarnLengthInput(yarn).lengthInputMode;
+  if (!["directTarget", "relaxedWithDraft"].includes(mode)) {
+    return { ok: false, reason: "INVALID_LENGTH_INPUT_MODE", previousValue };
+  }
+  if (mode === previousValue) return { ok: true, operation: "UNCHANGED", value: mode, previousValue };
+  const { yarnLengthCmPer100Needles, relaxedLengthCmPer100Needles, draftRatio, ...remaining } = yarn;
+  commitFeedYarnFields(camProgram, feedIndex, yarnIndex, { ...remaining, lengthInputMode: mode });
+  return { ok: true, operation: "SET", value: mode, previousValue };
+}
+
 export function setSingleJerseyFeedYarnLengths(selection, value) {
   const camProgram = GLOBAL_STATE.singleJerseyCamProgram;
   const preflight = preflightYarnLengthBatch(camProgram, selection, value, GLOBAL_STATE.feedYarnStructureRevision);
@@ -240,10 +270,12 @@ export function setSingleJerseyFeedYarnLengths(selection, value) {
     if (!selected.has(feedIndex)) selected.set(feedIndex, new Set());
     selected.get(feedIndex).add(yarnIndex);
   });
+  const lengthField = preflight.lengthInputMode === "relaxedWithDraft"
+    ? "relaxedLengthCmPer100Needles" : "yarnLengthCmPer100Needles";
   const feeds = camProgram.feeds.map((feed, feedIndex) => !selected.has(feedIndex) ? feed : {
     ...feed,
     yarns: feed.yarns.map((yarn, yarnIndex) => !selected.get(feedIndex).has(yarnIndex) ? yarn : {
-      ...yarn, yarnLengthCmPer100Needles: preflight.value,
+      ...yarn, [lengthField]: preflight.value,
     }),
   });
   // Clear derived validation in the same commit, including consumers before runner.

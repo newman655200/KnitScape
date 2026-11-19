@@ -1,0 +1,2334 @@
+{
+  "environment": {
+    "node": "v20.17.0",
+    "current": "C:\\Users\\liuchen\\Desktop\\knitscape",
+    "baseline": "C:\\Users\\liuchen\\.codex\\worktrees\\p0-c2-old-baseline\\knitscape",
+    "lockHashes": [
+      "517424793ae4e8b0bb913eeb77bb76f0fb0251c4e1a2aae70b36ce02d6f35f5f",
+      "517424793ae4e8b0bb913eeb77bb76f0fb0251c4e1a2aae70b36ce02d6f35f5f"
+    ],
+    "settings": {
+      "width": 30,
+      "height": 40,
+      "gauge": 32,
+      "canvas": [
+        640,
+        480
+      ],
+      "dpr": 1,
+      "scale": 1,
+      "face": "front",
+      "backend": "Canvas stub capture; browser recorded separately"
+    },
+    "detectorReused": "geometry-topology-crosscheck.mjs::intersections (unchanged)",
+    "fixtureSha256": "4082211c588918157944aa33182ef8f3c7db5004b219d80b0f3fd23c3ddfd677"
+  },
+  "summaries": [
+    {
+      "label": "current",
+      "scene": "A",
+      "inputHash": "e7eac9e3e810698a8c0ef71b494d51e22eb48cff4b47b132238a41eee56ea2d9",
+      "previewValidity": "INVALID",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "fe00bdb249f113ce7246368a7b3332801338aa7ce25526d82c796cdb8041c6d2",
+        "resolved": "21c55188625f4e06ddbd6e2276a1366b1728f089cf13811306c7c897fcbc9089",
+        "strips": "639029001ec540365625df81f0a1a130192b42e6da14201601c86ff11fee8ff9",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "41480a081965dd3f00b463162cb710d272c69493c6ad22b8f6598901afec91a0",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.618305954738821,
+                  "y": 20.06144203913394
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.590176264444987,
+                      "y": 20.04897901746962
+                    },
+                    {
+                      "x": 5.626803080240886,
+                      "y": 20.06520673963759
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.615153206719293,
+                      "y": 20.079317728678387
+                    },
+                    {
+                      "x": 5.620304319593641,
+                      "y": 20.050111558702255
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.618306062869426,
+                  "y": 15.261442447908683
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.59017605251736,
+                      "y": 15.24897935655382
+                    },
+                    {
+                      "x": 9.626803080240885,
+                      "y": 15.265207078721788
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.61515341864692,
+                      "y": 15.279318067762587
+                    },
+                    {
+                      "x": 9.620304531521267,
+                      "y": 15.250111050075954
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [
+              {
+                "point": {
+                  "x": 23.521413184835556,
+                  "y": 14.264357945594906
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 23.518957488781453,
+                      "y": 14.263453705978668
+                    },
+                    {
+                      "x": 23.52363477789275,
+                      "y": 14.265175983499116
+                    }
+                  ],
+                  [
+                    {
+                      "x": 23.522853791414732,
+                      "y": 14.261762316069179
+                    },
+                    {
+                      "x": 23.520428188062414,
+                      "y": 14.266132674895795
+                    }
+                  ]
+                ]
+              }
+            ],
+            "resolved": [
+              {
+                "point": {
+                  "x": 25.539190947659844,
+                  "y": 15.357691112757484
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.536735625299766,
+                      "y": 15.35678700806041
+                    },
+                    {
+                      "x": 25.54141291949273,
+                      "y": 15.358509292562932
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.540631590819036,
+                      "y": 15.355095418182215
+                    },
+                    {
+                      "x": 25.538205986749503,
+                      "y": 15.359465776854913
+                    }
+                  ]
+                ]
+              }
+            ],
+            "placed": [
+              {
+                "point": {
+                  "x": 25.69982416603897,
+                  "y": 15.314269929508807
+                },
+                "sampleSegments": [
+                  24,
+                  20
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.663781060112846,
+                      "y": 15.286397298177084
+                    },
+                    {
+                      "x": 25.70024193657769,
+                      "y": 15.314592997233072
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.708384195963543,
+                      "y": 15.298632303873697
+                    },
+                    {
+                      "x": 25.69443851047092,
+                      "y": 15.324108547634548
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "results": [],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    },
+    {
+      "label": "current",
+      "scene": "A-direct",
+      "inputHash": "7fcb559657411391eca51cee7be872b02889fa31684a55a3155ff54cb1146606",
+      "previewValidity": "DESIGN_PREVIEW",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "fe00bdb249f113ce7246368a7b3332801338aa7ce25526d82c796cdb8041c6d2",
+        "resolved": "21c55188625f4e06ddbd6e2276a1366b1728f089cf13811306c7c897fcbc9089",
+        "strips": "639029001ec540365625df81f0a1a130192b42e6da14201601c86ff11fee8ff9",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "41480a081965dd3f00b463162cb710d272c69493c6ad22b8f6598901afec91a0",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.618305954738821,
+                  "y": 20.06144203913394
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.590176264444987,
+                      "y": 20.04897901746962
+                    },
+                    {
+                      "x": 5.626803080240886,
+                      "y": 20.06520673963759
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.615153206719293,
+                      "y": 20.079317728678387
+                    },
+                    {
+                      "x": 5.620304319593641,
+                      "y": 20.050111558702255
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.618306062869426,
+                  "y": 15.261442447908683
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.59017605251736,
+                      "y": 15.24897935655382
+                    },
+                    {
+                      "x": 9.626803080240885,
+                      "y": 15.265207078721788
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.61515341864692,
+                      "y": 15.279318067762587
+                    },
+                    {
+                      "x": 9.620304531521267,
+                      "y": 15.250111050075954
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [
+              {
+                "point": {
+                  "x": 23.521413184835556,
+                  "y": 14.264357945594906
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 23.518957488781453,
+                      "y": 14.263453705978668
+                    },
+                    {
+                      "x": 23.52363477789275,
+                      "y": 14.265175983499116
+                    }
+                  ],
+                  [
+                    {
+                      "x": 23.522853791414732,
+                      "y": 14.261762316069179
+                    },
+                    {
+                      "x": 23.520428188062414,
+                      "y": 14.266132674895795
+                    }
+                  ]
+                ]
+              }
+            ],
+            "resolved": [
+              {
+                "point": {
+                  "x": 25.539190947659844,
+                  "y": 15.357691112757484
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.536735625299766,
+                      "y": 15.35678700806041
+                    },
+                    {
+                      "x": 25.54141291949273,
+                      "y": 15.358509292562932
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.540631590819036,
+                      "y": 15.355095418182215
+                    },
+                    {
+                      "x": 25.538205986749503,
+                      "y": 15.359465776854913
+                    }
+                  ]
+                ]
+              }
+            ],
+            "placed": [
+              {
+                "point": {
+                  "x": 25.69982416603897,
+                  "y": 15.314269929508807
+                },
+                "sampleSegments": [
+                  24,
+                  20
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.663781060112846,
+                      "y": 15.286397298177084
+                    },
+                    {
+                      "x": 25.70024193657769,
+                      "y": 15.314592997233072
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.708384195963543,
+                      "y": 15.298632303873697
+                    },
+                    {
+                      "x": 25.69443851047092,
+                      "y": 15.324108547634548
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "results": [],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    },
+    {
+      "label": "current",
+      "scene": "B",
+      "inputHash": "01c9207a9efb28b9f2aa0825be35721471224eadc344485585adf1054490f88e",
+      "previewValidity": "PARTIAL",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "8f6026b0478889fa12f54c13313d1ef97c3dc1f355d3ba87c371cbbdae51b702",
+        "resolved": "64a10be4adc6c4490112685021c33c23c4876e59af9581c7ca7c8dcf0be4eaba",
+        "strips": "88cfefc8a36a5d66218862bfad866a0e5041a4daa5dbd6585cf5810b9d94748d",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "267e3217dbbfc8b665dc00cefc0265da869c725bad3705e9b4f7cc3d36b4beca",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.629352082608025,
+                  "y": 18.250567737267794
+                },
+                "sampleSegments": [
+                  23,
+                  28
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.621552573310004,
+                      "y": 18.246151394314236
+                    },
+                    {
+                      "x": 5.658290015326606,
+                      "y": 18.26695336235894
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.626586066351996,
+                      "y": 18.26422882080078
+                    },
+                    {
+                      "x": 5.632461971706814,
+                      "y": 18.23520829942491
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.629352145412351,
+                  "y": 14.38468820468201
+                },
+                "sampleSegments": [
+                  23,
+                  28
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.621552361382378,
+                      "y": 14.380271911621094
+                    },
+                    {
+                      "x": 9.658290015326607,
+                      "y": 14.401073031955296
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.626586490207249,
+                      "y": 14.398348490397135
+                    },
+                    {
+                      "x": 9.632461971706814,
+                      "y": 14.369327969021267
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": []
+          }
+        }
+      ],
+      "results": [
+        {
+          "feedIndex": 0,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999920925128244,
+          "errorCmPer100Needles": 0.00007907487175497606,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7627833087023,
+          "solvedLoopHeight": 0.53131103515625,
+          "error": 0.000996218856755604,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 1,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999922023878796,
+          "errorCmPer100Needles": 0.00007797612120281627,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76279715122894,
+          "solvedLoopHeight": 0.42705078125000007,
+          "error": 0.0009823763301142208,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 2,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999921149748275,
+          "errorCmPer100Needles": 0.00007885025172395642,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76278613856095,
+          "solvedLoopHeight": 0.53131103515625,
+          "error": 0.000993388998097089,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 3,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 23.00029654221584,
+          "errorCmPer100Needles": 0.0002965422158406028,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.767515492483,
+          "solvedLoopHeight": 0.40824584960937504,
+          "error": 0.0037359649239760984,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 4,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.99980858669455,
+          "errorCmPer100Needles": 0.00019141330545220824,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76136802134863,
+          "solvedLoopHeight": 0.537738037109375,
+          "error": 0.0024115062104215212,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 5,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.99998733916666,
+          "errorCmPer100Needles": 0.000012660833340660815,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7636200209973,
+          "solvedLoopHeight": 0.42187347412109377,
+          "error": 0.00015950656177210476,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 6,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999808732605086,
+          "errorCmPer100Needles": 0.00019126739491341025,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76136985959164,
+          "solvedLoopHeight": 0.537738037109375,
+          "error": 0.002409667967413043,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 7,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999733873071612,
+          "errorCmPer100Needles": 0.0002661269283865763,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7604267473589,
+          "solvedLoopHeight": 0.470611572265625,
+          "error": 0.003352780200145844,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        }
+      ],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    },
+    {
+      "label": "current",
+      "scene": "C",
+      "inputHash": "94f78b9d28919b20a557e118c64a31421ed057db2d682fe7ccd51f239e0278fc",
+      "previewValidity": "VALIDATED",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "4c6480177a286e0d028f23fecbc5bd5047090155b33ab90ff0f15c85b26e8104",
+        "resolved": "4d90bb8d2396d4b9ecb2a2bb19188e7822c65a6e5d8f6c7f4e2e2c4375d40928",
+        "strips": "05bbe2ed72ba2ac01ec28396ac3912b2646cc54e1ee1afa87f0d2d68ae85d703",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "fc13813c32056c28e2222acc26872d9650c8fa90c1935fc043757b60e32046ff",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.629352082608025,
+                  "y": 18.250567737267794
+                },
+                "sampleSegments": [
+                  23,
+                  28
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.621552573310004,
+                      "y": 18.246151394314236
+                    },
+                    {
+                      "x": 5.658290015326606,
+                      "y": 18.26695336235894
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.626586066351996,
+                      "y": 18.26422882080078
+                    },
+                    {
+                      "x": 5.632461971706814,
+                      "y": 18.23520829942491
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.629352145412351,
+                  "y": 14.38468820468201
+                },
+                "sampleSegments": [
+                  23,
+                  28
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.621552361382378,
+                      "y": 14.380271911621094
+                    },
+                    {
+                      "x": 9.658290015326607,
+                      "y": 14.401073031955296
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.626586490207249,
+                      "y": 14.398348490397135
+                    },
+                    {
+                      "x": 9.632461971706814,
+                      "y": 14.369327969021267
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": []
+          }
+        }
+      ],
+      "results": [
+        {
+          "feedIndex": 0,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999920925128244,
+          "errorCmPer100Needles": 0.00007907487175497606,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7627833087023,
+          "solvedLoopHeight": 0.53131103515625,
+          "error": 0.000996218856755604,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 0,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 24.000753567866827,
+          "errorCmPer100Needles": 0.0007535678668249091,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.3716984928104,
+          "solvedLoopHeight": 0.583917236328125,
+          "error": 0.009493768400943736,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 1,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999922023878796,
+          "errorCmPer100Needles": 0.00007797612120281627,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76279715122894,
+          "solvedLoopHeight": 0.42705078125000007,
+          "error": 0.0009823763301142208,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 1,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 23.999598555905525,
+          "errorCmPer100Needles": 0.00040144409447691483,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.3571471610145,
+          "solvedLoopHeight": 0.4707901000976562,
+          "error": 0.005057563394984754,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 169.82663069865202,
+            "maxModelLengthPer100Needles": 741.8007207293217,
+            "minLengthCmPer100Needles": 13.479988811705505,
+            "maxLengthCmPer100Needles": 58.88043220788991
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 2,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999921149748275,
+          "errorCmPer100Needles": 0.00007885025172395642,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76278613856095,
+          "solvedLoopHeight": 0.53131103515625,
+          "error": 0.000993388998097089,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 2,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 24.000755007335762,
+          "errorCmPer100Needles": 0.000755007335762059,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.37171662785215,
+          "solvedLoopHeight": 0.583917236328125,
+          "error": 0.00951190344267161,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 163.63350243042504,
+            "maxModelLengthPer100Needles": 642.0593292285096,
+            "minLengthCmPer100Needles": 12.988409255414988,
+            "maxLengthCmPer100Needles": 50.963459257512945
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 3,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 23.00029654221584,
+          "errorCmPer100Needles": 0.0002965422158406028,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.767515492483,
+          "solvedLoopHeight": 0.40824584960937504,
+          "error": 0.0037359649239760984,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 3,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 24.000680854420885,
+          "errorCmPer100Needles": 0.000680854420885808,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.37078241790095,
+          "solvedLoopHeight": 0.450140380859375,
+          "error": 0.008577693491474747,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 170.85608875320116,
+            "maxModelLengthPer100Needles": 768.4444629894394,
+            "minLengthCmPer100Needles": 13.56170204478534,
+            "maxLengthCmPer100Needles": 60.995279249786755
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 4,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.99980858669455,
+          "errorCmPer100Needles": 0.00019141330545220824,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76136802134863,
+          "solvedLoopHeight": 0.537738037109375,
+          "error": 0.0024115062104215212,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 4,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 23.999916116492383,
+          "errorCmPer100Needles": 0.00008388350761734387,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.3611479243135,
+          "solvedLoopHeight": 0.5893325805664061,
+          "error": 0.001056800095966537,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.75230323161048,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 5,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.99998733916666,
+          "errorCmPer100Needles": 0.000012660833340660815,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7636200209973,
+          "solvedLoopHeight": 0.42187347412109377,
+          "error": 0.00015950656177210476,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 5,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 23.9999440391594,
+          "errorCmPer100Needles": 0.0000559608406005907,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.3614997059452,
+          "solvedLoopHeight": 0.4642440795898437,
+          "error": 0.0007050184642594104,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 168.81033748116485,
+            "maxModelLengthPer100Needles": 762.942718142801,
+            "minLengthCmPer100Needles": 13.399320537567458,
+            "maxLengthCmPer100Needles": 60.55857825258482
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 6,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999808732605086,
+          "errorCmPer100Needles": 0.00019126739491341025,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.76136985959164,
+          "solvedLoopHeight": 0.537738037109375,
+          "error": 0.002409667967413043,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 6,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 23.9999151482471,
+          "errorCmPer100Needles": 0.00008485175290005032,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.36113572594775,
+          "solvedLoopHeight": 0.5893325805664061,
+          "error": 0.0010689984617329173,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 161.7523032316105,
+            "maxModelLengthPer100Needles": 649.6025489301603,
+            "minLengthCmPer100Needles": 12.839089069009082,
+            "maxLengthCmPer100Needles": 51.56220232133147
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 7,
+          "yarnIndex": 0,
+          "targetLengthCmPer100Needles": 23,
+          "solvedLengthCmPer100Needles": 22.999733873071612,
+          "errorCmPer100Needles": 0.0002661269283865763,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 289.76377952755905,
+          "solvedModelLengthPer100Needles": 289.7604267473589,
+          "solvedLoopHeight": 0.470611572265625,
+          "error": 0.003352780200145844,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "lengthInput": {
+            "lengthInputMode": "directTarget",
+            "directTargetLengthCmPer100Needles": 23,
+            "relaxedLengthCmPer100Needles": null,
+            "draftRatio": null,
+            "effectiveTargetLengthCmPer100Needles": 23,
+            "status": "READY",
+            "inputSignature": "[\"directTarget\",23,null,null]"
+          },
+          "appliedToSimulation": true
+        },
+        {
+          "feedIndex": 7,
+          "yarnIndex": 1,
+          "targetLengthCmPer100Needles": 24,
+          "solvedLengthCmPer100Needles": 24.00000471206136,
+          "errorCmPer100Needles": 0.000004712061359093411,
+          "toleranceCmPer100Needles": 0.00079375,
+          "targetModelLengthPer100Needles": 302.3622047244095,
+          "solvedModelLengthPer100Needles": 302.36226408896204,
+          "solvedLoopHeight": 0.5175643920898437,
+          "error": 0.000059364552555507544,
+          "converged": true,
+          "status": "CONVERGED",
+          "failureReason": null,
+          "reachableRange": {
+            "minLoopHeight": 0.05,
+            "maxLoopHeight": 2,
+            "minModelLengthPer100Needles": 166.40711444709842,
+            "maxModelLengthPer100Needles": 701.2081588714873,
+            "minLengthCmPer100Needles": 13.208564709238436,
+            "maxLengthCmPer100Needles": 55.6583976104243
+          },
+          "lengthInput": {
+            "lengthInputMode": "relaxedWithDraft",
+            "directTargetLengthCmPer100Needles": null,
+            "relaxedLengthCmPer100Needles": 8,
+            "draftRatio": 3,
+            "effectiveTargetLengthCmPer100Needles": 24,
+            "status": "READY",
+            "inputSignature": "[\"relaxedWithDraft\",null,8,3]"
+          },
+          "appliedToSimulation": true
+        }
+      ],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    },
+    {
+      "label": "old",
+      "scene": "A",
+      "inputHash": "e7eac9e3e810698a8c0ef71b494d51e22eb48cff4b47b132238a41eee56ea2d9",
+      "previewValidity": "DESIGN_PREVIEW",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "fe00bdb249f113ce7246368a7b3332801338aa7ce25526d82c796cdb8041c6d2",
+        "resolved": "21c55188625f4e06ddbd6e2276a1366b1728f089cf13811306c7c897fcbc9089",
+        "strips": "639029001ec540365625df81f0a1a130192b42e6da14201601c86ff11fee8ff9",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "41480a081965dd3f00b463162cb710d272c69493c6ad22b8f6598901afec91a0",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.618305954738821,
+                  "y": 20.06144203913394
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.590176264444987,
+                      "y": 20.04897901746962
+                    },
+                    {
+                      "x": 5.626803080240886,
+                      "y": 20.06520673963759
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.615153206719293,
+                      "y": 20.079317728678387
+                    },
+                    {
+                      "x": 5.620304319593641,
+                      "y": 20.050111558702255
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.618306062869426,
+                  "y": 15.261442447908683
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.59017605251736,
+                      "y": 15.24897935655382
+                    },
+                    {
+                      "x": 9.626803080240885,
+                      "y": 15.265207078721788
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.61515341864692,
+                      "y": 15.279318067762587
+                    },
+                    {
+                      "x": 9.620304531521267,
+                      "y": 15.250111050075954
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [
+              {
+                "point": {
+                  "x": 23.521413184835556,
+                  "y": 14.264357945594906
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 23.518957488781453,
+                      "y": 14.263453705978668
+                    },
+                    {
+                      "x": 23.52363477789275,
+                      "y": 14.265175983499116
+                    }
+                  ],
+                  [
+                    {
+                      "x": 23.522853791414732,
+                      "y": 14.261762316069179
+                    },
+                    {
+                      "x": 23.520428188062414,
+                      "y": 14.266132674895795
+                    }
+                  ]
+                ]
+              }
+            ],
+            "resolved": [
+              {
+                "point": {
+                  "x": 25.539190947659844,
+                  "y": 15.357691112757484
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.536735625299766,
+                      "y": 15.35678700806041
+                    },
+                    {
+                      "x": 25.54141291949273,
+                      "y": 15.358509292562932
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.540631590819036,
+                      "y": 15.355095418182215
+                    },
+                    {
+                      "x": 25.538205986749503,
+                      "y": 15.359465776854913
+                    }
+                  ]
+                ]
+              }
+            ],
+            "placed": [
+              {
+                "point": {
+                  "x": 25.69982416603897,
+                  "y": 15.314269929508807
+                },
+                "sampleSegments": [
+                  24,
+                  20
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.663781060112846,
+                      "y": 15.286397298177084
+                    },
+                    {
+                      "x": 25.70024193657769,
+                      "y": 15.314592997233072
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.708384195963543,
+                      "y": 15.298632303873697
+                    },
+                    {
+                      "x": 25.69443851047092,
+                      "y": 15.324108547634548
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "results": [],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    },
+    {
+      "label": "old",
+      "scene": "A-direct",
+      "inputHash": "7fcb559657411391eca51cee7be872b02889fa31684a55a3155ff54cb1146606",
+      "previewValidity": "DESIGN_PREVIEW",
+      "stitchWidth": 18,
+      "canvas": [
+        640,
+        480
+      ],
+      "strands": 2,
+      "hashes": {
+        "raw": "fe00bdb249f113ce7246368a7b3332801338aa7ce25526d82c796cdb8041c6d2",
+        "resolved": "21c55188625f4e06ddbd6e2276a1366b1728f089cf13811306c7c897fcbc9089",
+        "strips": "639029001ec540365625df81f0a1a130192b42e6da14201601c86ff11fee8ff9",
+        "topology": "f7e493cbf527646979f0593227270b65c8c5739fd29dcbdadf166ba154f04468",
+        "order": "41480a081965dd3f00b463162cb710d272c69493c6ad22b8f6598901afec91a0",
+        "resolvedDiameters": "c322f6b3fec9aabb410d22681cbb016e5c956e1080679ea03acc91ed3e9239a3"
+      },
+      "drawCount": 9038,
+      "witnesses": [
+        {
+          "pair": [
+            917,
+            919
+          ],
+          "links": [
+            {
+              "source": 582,
+              "target": 583,
+              "linkType": "FHLH",
+              "row": 8,
+              "index": 917,
+              "layer": "back"
+            },
+            {
+              "source": 519,
+              "target": 648,
+              "linkType": "LLFH",
+              "row": 8,
+              "index": 919,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 5.618305954738821,
+                  "y": 20.06144203913394
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 5.590176264444987,
+                      "y": 20.04897901746962
+                    },
+                    {
+                      "x": 5.626803080240886,
+                      "y": 20.06520673963759
+                    }
+                  ],
+                  [
+                    {
+                      "x": 5.615153206719293,
+                      "y": 20.079317728678387
+                    },
+                    {
+                      "x": 5.620304319593641,
+                      "y": 20.050111558702255
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1835,
+            1837
+          ],
+          "links": [
+            {
+              "source": 1102,
+              "target": 1103,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1835,
+              "layer": "back"
+            },
+            {
+              "source": 1039,
+              "target": 1168,
+              "linkType": "LLFH",
+              "row": 16,
+              "index": 1837,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [],
+            "resolved": [],
+            "placed": [
+              {
+                "point": {
+                  "x": 9.618306062869426,
+                  "y": 15.261442447908683
+                },
+                "sampleSegments": [
+                  22,
+                  30
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 9.59017605251736,
+                      "y": 15.24897935655382
+                    },
+                    {
+                      "x": 9.626803080240885,
+                      "y": 15.265207078721788
+                    }
+                  ],
+                  [
+                    {
+                      "x": 9.61515341864692,
+                      "y": 15.279318067762587
+                    },
+                    {
+                      "x": 9.620304531521267,
+                      "y": 15.250111050075954
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "pair": [
+            1891,
+            1949
+          ],
+          "links": [
+            {
+              "source": 1134,
+              "target": 1135,
+              "linkType": "FHLH",
+              "row": 16,
+              "index": 1891,
+              "layer": "back"
+            },
+            {
+              "source": 1200,
+              "target": 1135,
+              "linkType": "LHFL",
+              "row": 17,
+              "index": 1949,
+              "layer": "back"
+            }
+          ],
+          "stages": {
+            "raw": [
+              {
+                "point": {
+                  "x": 23.521413184835556,
+                  "y": 14.264357945594906
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 23.518957488781453,
+                      "y": 14.263453705978668
+                    },
+                    {
+                      "x": 23.52363477789275,
+                      "y": 14.265175983499116
+                    }
+                  ],
+                  [
+                    {
+                      "x": 23.522853791414732,
+                      "y": 14.261762316069179
+                    },
+                    {
+                      "x": 23.520428188062414,
+                      "y": 14.266132674895795
+                    }
+                  ]
+                ]
+              }
+            ],
+            "resolved": [
+              {
+                "point": {
+                  "x": 25.539190947659844,
+                  "y": 15.357691112757484
+                },
+                "sampleSegments": [
+                  130,
+                  143
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.536735625299766,
+                      "y": 15.35678700806041
+                    },
+                    {
+                      "x": 25.54141291949273,
+                      "y": 15.358509292562932
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.540631590819036,
+                      "y": 15.355095418182215
+                    },
+                    {
+                      "x": 25.538205986749503,
+                      "y": 15.359465776854913
+                    }
+                  ]
+                ]
+              }
+            ],
+            "placed": [
+              {
+                "point": {
+                  "x": 25.69982416603897,
+                  "y": 15.314269929508807
+                },
+                "sampleSegments": [
+                  24,
+                  20
+                ],
+                "chords": [
+                  [
+                    {
+                      "x": 25.663781060112846,
+                      "y": 15.286397298177084
+                    },
+                    {
+                      "x": 25.70024193657769,
+                      "y": 15.314592997233072
+                    }
+                  ],
+                  [
+                    {
+                      "x": 25.708384195963543,
+                      "y": 15.298632303873697
+                    },
+                    {
+                      "x": 25.69443851047092,
+                      "y": 15.324108547634548
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "results": [],
+      "depth": {
+        "metricZ": null,
+        "layers": "categorical front/mid/back; not metric depth"
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "scene": "A",
+      "inputIdentical": true,
+      "stagesEqual": {
+        "raw": true,
+        "resolved": true,
+        "strips": true,
+        "topology": true,
+        "order": true,
+        "resolvedDiameters": true
+      },
+      "oldValidity": "DESIGN_PREVIEW",
+      "currentValidity": "INVALID"
+    },
+    {
+      "scene": "A-direct",
+      "inputIdentical": true,
+      "stagesEqual": {
+        "raw": true,
+        "resolved": true,
+        "strips": true,
+        "topology": true,
+        "order": true,
+        "resolvedDiameters": true
+      },
+      "oldValidity": "DESIGN_PREVIEW",
+      "currentValidity": "DESIGN_PREVIEW"
+    }
+  ]
+}

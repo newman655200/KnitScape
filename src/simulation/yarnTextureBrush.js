@@ -5,6 +5,7 @@ import {
   YARN_PBR_MAP_KEYS,
 } from "../yarnTexture/yarnScanTexture";
 import { yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
+import { resolveYarnMaterial } from "../domain/yarnMaterial.js";
 
 const imageCache = new Map();
 const retainedImageKeys = new Set();
@@ -113,6 +114,7 @@ export function collectYarnTextureSources(texture) {
     texture?.pbr?.roughness,
     texture?.pbr?.height,
     texture?.pbr?.ambientOcclusion,
+    texture?.pbr?.metallic,
   ]
     .map(getYarnPbrMapSource)
     .concat(texture.processedDataUrl || [])
@@ -128,12 +130,12 @@ export function resolveFeedYarnPlies(feeds, yarnLibrary, primaryPly, usedFeedInd
     const yarns = Array.isArray(feed?.yarns) && feed.yarns.length ? feed.yarns : [null];
     materials.set(index, yarns.map(yarn => {
       const yarnId = yarn?.yarnId;
-      const pbr = yarnId === null || yarnId === undefined || yarnId === ""
-        ? null : library.get(String(yarnId))?.pbr;
-      const hasMaps = pbr && YARN_PBR_MAP_KEYS.some(key => pbr[key]?.assetRef);
-      return hasMaps
-        ? { ...primaryPly, texture: normalizeYarnTexture({ pbr, textureStrength: 1 }) }
-        : primaryPly;
+      const asset = yarnId === null || yarnId === undefined || yarnId === ""
+        ? null : library.get(String(yarnId));
+      const material = resolveYarnMaterial({ yarnAsset: asset, legacyContext: primaryPly });
+      const hasAssetFields = Object.values(material.source).includes("ASSET");
+      // Preserve the historical no-field adapter identity for old projects.
+      return hasAssetFields ? { ...primaryPly, ...material, assetMaterial: true } : primaryPly;
     }));
   });
   return materials;

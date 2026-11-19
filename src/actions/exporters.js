@@ -1,7 +1,8 @@
-import { createProjectPackage } from "./projectPackage.js";
+import { createProjectPackage, prepareProjectForSave } from "./projectPackage.js";
 import { t } from "../i18n/index.js";
 import { GLOBAL_STATE, dispatch } from "../state";
 import { download, makeBMP } from "../utils";
+import { assertValidYarnSequence } from "./yarnSequenceRows";
 
 export function downloadSVG() {
   const svg = document.getElementById("simulation");
@@ -133,7 +134,8 @@ export function downloadKniterate() {
 }
 
 export function getProjectData() {
-  return structuredClone({
+  assertValidYarnSequence(GLOBAL_STATE.yarnSequence, GLOBAL_STATE.yarnPalette.length);
+  return prepareProjectForSave({
     width: GLOBAL_STATE.chart.width,
     height: GLOBAL_STATE.chart.height,
     repeats: GLOBAL_STATE.repeats.map(({ bitmap, pos, area }) =>

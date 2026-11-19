@@ -1866,6 +1866,22 @@ button.btn.chart-stitch-button.current {
 }
 
 .cam-feed-yarn-slot { display: grid; gap: 0.2rem; }
+.cam-feed-yarn-lengths .cam-yarn-length-mode { flex-direction: column; }
+.cam-yarn-length-mode select {
+  box-sizing: border-box;
+  width: 11rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.15rem;
+  color: var(--ink);
+  background: var(--input-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  font: inherit;
+}
+.cam-yarn-derived-length { display: grid; gap: 0.15rem; white-space: normal; }
+.cam-yarn-derived-length output { font-variant-numeric: tabular-nums; }
+.cam-yarn-solver-status { white-space: normal; }
 .cam-feed-yarn-assignment { display: flex; align-items: center; justify-content: center; gap: 0.2rem; }
 .cam-feed-yarn-name {
   max-width: 8rem;

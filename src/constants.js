@@ -10,7 +10,7 @@ export {
   DEFAULT_MACHINE_GAUGE,
   MAX_MACHINE_GAUGE,
   MIN_MACHINE_GAUGE,
-} from "./simulation/yarnLengthMetrics";
+} from "./domain/machineGauge.js";
 
 export const SNAPSHOT_FIELDS = [
   "yarnPalette",

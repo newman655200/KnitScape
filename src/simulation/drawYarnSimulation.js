@@ -41,13 +41,16 @@ export function drawYarnSimulation({
   const frontCtx = frontCanvas.getContext("2d");
 
   function rowYarnPly(link, ply, yarnIndex = 0) {
+    const assigned = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount || 1));
+    const explicitMaterial = assigned?.some(item => item.assetMaterial) || assigned?.length > 1;
+    if (ply !== activeYarnPlies[0] && explicitMaterial) return null;
     if (ply === activeYarnPlies[0] && feedCount) {
       const plies = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount));
       if (plies) ply = plies[yarnIndex];
       else if (yarnIndex > 0) return null;
       if (!ply) return null;
     }
-    if (!hasYarnSequenceMask) return ply;
+    if (!hasYarnSequenceMask || ply.assetMaterial) return ply;
 
     const paletteIndex = yarnIndexForSequenceRow(
       normalizedYarnSequence,
@@ -67,8 +70,11 @@ export function drawYarnSimulation({
 
   function parallelOffset(link, ply, yarnIndex) {
     if (ply !== activeYarnPlies[0] || !feedCount) return 0;
-    const count = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount))?.length || 1;
-    return (yarnIndex - (count - 1) / 2) * ply.diameter;
+    const plies = feedYarnPlies.get(courseToFeedIndex(link.row, feedCount));
+    if (!plies) return 0;
+    const total = plies.reduce((sum, item) => sum + item.diameter, 0);
+    return plies.slice(0, yarnIndex).reduce((sum, item) => sum + item.diameter, 0)
+      + plies[yarnIndex].diameter / 2 - total / 2;
   }
 
   function collectSequenceMaskPath(maskBatches, ply, pathData) {

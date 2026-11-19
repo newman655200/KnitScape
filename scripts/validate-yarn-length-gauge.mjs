@@ -53,7 +53,7 @@ assert.equal(
 
 assert.equal(DEFAULT_MACHINE_GAUGE, 32);
 assert.equal(normalizeMachineGauge(64), 64);
-assert.equal(normalizeMachineGauge("bad"), 32);
+assert.throws(() => normalizeMachineGauge("bad"), /Gauge/);
 assert.ok(Math.abs(gaugeToNeedlePitchMm(32) - 0.79375) < 1e-6);
 assert.ok(Math.abs(gaugeToNeedlePitchMm(64) - 0.396875) < 1e-6);
 assert.ok(Math.abs(modelLengthToMm(10, 32) - 7.9375) < 1e-9);
@@ -211,8 +211,18 @@ assert.deepEqual(
 
 const fourNeedleGeometry = buildProductionGeometry(Bimp.empty(4, 1, 0));
 const eightNeedleGeometry = buildProductionGeometry(Bimp.empty(8, 1, 0));
-assert.equal(fourNeedleGeometry.measuredNeedleCountByCourse.get(0), 4);
-assert.equal(eightNeedleGeometry.measuredNeedleCountByCourse.get(0), 8);
+// A 32-cell chart integrates a four-needle period, then reports per 100 needles.
+const countSemanticsGeometry = buildProductionGeometry(new Bimp(32, 4,
+  Array.from({ length: 32 * 4 }, (_, index) => [0, 2, 2, 2][index % 4])));
+for (const measurement of [countSemanticsGeometry,
+  countSemanticsGeometry.createModelLengthEvaluator()(0.6),
+  countSemanticsGeometry.createModelLengthEvaluator()(0.9)]) {
+  assert.equal(measurement.integrationNeedleCount, 4);
+  assert.deepEqual([...measurement.windowNeedleCountByCourse.values()], [32, 32, 32, 32]);
+  assert.ok(!("measuredNeedleCountByCourse" in measurement));
+}
+assert.equal(fourNeedleGeometry.windowNeedleCountByCourse.get(0), 4);
+assert.equal(eightNeedleGeometry.windowNeedleCountByCourse.get(0), 8);
 
 const periodicResults = [];
 for (const [name, tile] of [["K", [0]], ["K-M", [0, 2]],
@@ -221,8 +231,9 @@ for (const [name, tile] of [["K", [0]], ["K-M", [0, 2]],
     const pattern = new Bimp(width, 1,
       Array.from({ length: width }, (_, index) => tile[index % tile.length]));
     const geometry = buildProductionGeometry(pattern);
-    assert.equal(geometry.measuredNeedleCountByCourse.get(0), width,
-      `${name} must measure all machine-needle advances, including terminal Miss.`);
+    assert.equal(geometry.windowNeedleCountByCourse.get(0), width,
+      `${name} must report the chart window width, not the integration denominator.`);
+    assert.equal(geometry.integrationNeedleCount, tile.length);
     return { width, per100: geometry.measuredModelLengthPer100NeedlesByCourse.get(0) };
   });
   for (const window of windows) {
@@ -242,7 +253,7 @@ const arrangedPattern = createSingleJerseyExecutionInput(
 const arrangedGeometry = buildProductionGeometry(arrangedPattern);
 assert.equal(arrangedPattern.width, 8);
 assert.equal(arrangement.length, 3);
-assert.equal(arrangedGeometry.measuredNeedleCountByCourse.get(0), 8);
+assert.equal(arrangedGeometry.windowNeedleCountByCourse.get(0), 8);
 
 const fourWideRepeatChart = buildChartFromRepeats({
   repeats: [
@@ -262,8 +273,8 @@ const eightWideRepeatChart = buildChartFromRepeats({
 });
 const fourWideRepeatGeometry = buildProductionGeometry(fourWideRepeatChart);
 const eightWideRepeatGeometry = buildProductionGeometry(eightWideRepeatChart);
-assert.equal(fourWideRepeatGeometry.measuredNeedleCountByCourse.get(0), 8);
-assert.equal(eightWideRepeatGeometry.measuredNeedleCountByCourse.get(0), 8);
+assert.equal(fourWideRepeatGeometry.windowNeedleCountByCourse.get(0), 8);
+assert.equal(eightWideRepeatGeometry.windowNeedleCountByCourse.get(0), 8);
 assert.equal(
   fourWideRepeatGeometry.measuredModelLengthPer100NeedlesByCourse.get(0),
   eightWideRepeatGeometry.measuredModelLengthPer100NeedlesByCourse.get(0)
@@ -272,7 +283,7 @@ assert.equal(
 const boundaryMissGeometry = buildProductionGeometry(
   new Bimp(4, 1, [0, 2, 0, 2])
 );
-assert.equal(boundaryMissGeometry.measuredNeedleCountByCourse.get(0), 4);
+assert.equal(boundaryMissGeometry.windowNeedleCountByCourse.get(0), 4);
 assert.ok(
   Math.abs(
     modelLengthToMm(

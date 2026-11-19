@@ -222,7 +222,7 @@ if (exists(helperPath)) {
     typeof helpers.resizeYarnSequenceToChartHeight === "function"
   ) {
     const base = new Bimp(1, 2, [0, 1]);
-    const grown = helpers.resizeYarnSequenceToChartHeight(base, 5, 2);
+    const grown = helpers.resizeYarnSequenceToChartHeight(base, 5, 2, 3);
     expect(grown.width === 1, "sequence width must remain one yarn selector column.");
     expect(grown.height === 5, "sequence height must grow to chart.height.");
     expect(
@@ -230,7 +230,7 @@ if (exists(helperPath)) {
       "added chart-height rows must be filled with the current active yarn."
     );
 
-    const reduced = helpers.resizeYarnSequenceToChartHeight(grown, 1, 0);
+    const reduced = helpers.resizeYarnSequenceToChartHeight(grown, 1, 0, 3);
     expect(reduced.height === 1, "sequence height must shrink to chart.height.");
     expect(
       Array.from(reduced.pixels).join(",") === "0",
@@ -344,6 +344,7 @@ try {
 
   stateModule.loadWorkspace({
     activeYarn: 2,
+    yarnPalette: ["first", "second", "third"],
     chart: Bimp.empty(48, 60, 0),
     yarnSequence: new Bimp(1, 60, Array(60).fill(0)),
     repeats: [

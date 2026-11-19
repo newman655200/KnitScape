@@ -519,6 +519,7 @@ try {
       roughness: null,
       height: null,
       ambientOcclusion: null,
+      metallic: null,
     },
   };
   const texturedPlies = [

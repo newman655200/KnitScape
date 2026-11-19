@@ -1,5 +1,21 @@
 import { Bimp } from "../lib/Bimp.js";
 
+export function isValidYarnPaletteIndex(index, paletteLength) {
+  return Number.isInteger(index) && index >= 0 && index < paletteLength;
+}
+
+export function assertValidYarnPaletteIndex(index, paletteLength) {
+  if (!isValidYarnPaletteIndex(index, paletteLength)) {
+    throw new RangeError(`Yarn sequence references invalid palette index ${String(index)} (palette length ${paletteLength}).`);
+  }
+}
+
+export function assertValidYarnSequence(yarnSequence, paletteLength) {
+  const pixels = Array.isArray(yarnSequence) || yarnSequence instanceof Uint8ClampedArray
+    ? yarnSequence : yarnSequence?.pixels || [];
+  for (const pixel of pixels) assertValidYarnPaletteIndex(pixel, paletteLength);
+}
+
 function normalizedYarnIndex(value) {
   const index = Math.floor(Number(value));
   return Number.isFinite(index) && index >= 0 ? index : 0;
@@ -52,8 +68,11 @@ export function yarnIndexForSequenceRow(yarnSequence, row) {
 export function resizeYarnSequenceToChartHeight(
   yarnSequence,
   chartHeight,
-  activeYarn = 0
+  activeYarn,
+  paletteLength
 ) {
+  assertValidYarnPaletteIndex(activeYarn, paletteLength);
+  assertValidYarnSequence(yarnSequence, paletteLength);
   const nextHeight = normalizedHeight(chartHeight);
   const normalizedSequence = normalizeYarnSequence(yarnSequence, {
     height: Math.min(nextHeight, normalizedHeight(yarnSequence?.height)),
@@ -61,7 +80,7 @@ export function resizeYarnSequenceToChartHeight(
   const width = 1;
   const previousPixels = Array.from(normalizedSequence.pixels);
   const previousHeight = normalizedSequence.height;
-  const fillColor = normalizedYarnIndex(activeYarn);
+  const fillColor = activeYarn;
   const pixels = [];
 
   for (let y = 0; y < nextHeight; y++) {
@@ -75,10 +94,11 @@ export function resizeYarnSequenceToChartHeight(
   return new Bimp(width, nextHeight, pixels);
 }
 
-export function resizeYarnSequenceRows(yarnSequence, requestedHeight, activeYarn) {
+export function resizeYarnSequenceRows(yarnSequence, requestedHeight, activeYarn, paletteLength) {
   return resizeYarnSequenceToChartHeight(
     yarnSequence,
     requestedHeight,
-    activeYarn
+    activeYarn,
+    paletteLength
   );
 }

@@ -4,6 +4,7 @@ import {
   endTexturePreviewInteraction,
 } from "../actions/texturePerformance";
 import { colorSequencePosAtCoords } from "../utils";
+import { isValidYarnPaletteIndex } from "../actions/yarnSequenceRows";
 
 function brushColor(e, colorCanvas) {
   let pos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
@@ -15,6 +16,7 @@ function brushColor(e, colorCanvas) {
   });
 
   function move(e) {
+    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
     let newPos = colorSequencePosAtCoords(e.touches[0], colorCanvas);
     if (newPos.x == pos.x && newPos.y == pos.y) return;
 
@@ -45,6 +47,7 @@ function brushColor(e, colorCanvas) {
 
 export function colorSequenceTouchInteraction(canvas) {
   canvas.addEventListener("touchstart", (e) => {
+    if (!isValidYarnPaletteIndex(GLOBAL_STATE.activeYarn, GLOBAL_STATE.yarnPalette.length)) return;
     dispatch({ transforming: true });
     beginTexturePreviewInteraction();
 

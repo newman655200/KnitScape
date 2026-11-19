@@ -92,6 +92,22 @@ try {
   prepare(); const f = select([0, 0]);
   library.assignYarnToFeed(0, 0, 'B'); flush(); reject(f); assert.equal(length(), 23); record('BLOCKER F');
 
+  prepare();
+  actions.setSingleJerseyFeedYarnLengthInputMode(0, 0, 'relaxedWithDraft');
+  actions.setSingleJerseyFeedYarnLength(0, 0, 8);
+  actions.setSingleJerseyFeedYarnDraftRatio(0, 0, 3);
+  const relaxedReplacementRevision = revision();
+  library.assignYarnToFeed(0, 0, 'B');
+  const replaced = current().singleJerseyCamProgram.feeds[0].yarns[0];
+  assert.equal(revision(), relaxedReplacementRevision + 1);
+  assert.equal(replaced.lengthInputMode, 'relaxedWithDraft');
+  assert.equal(Object.hasOwn(replaced, 'relaxedLengthCmPer100Needles'), false,
+    'A replacement Yarn cannot inherit another Yarn measurement');
+  assert.equal(Object.hasOwn(replaced, 'draftRatio'), false,
+    'A replacement Yarn cannot inherit another Yarn draft ratio');
+  assert.equal(Object.hasOwn(replaced, 'yarnLengthCmPer100Needles'), false);
+  assert.deepEqual(current().yarnLengthSolverResults, []);
+
   prepare(); const g = select([0, 0]); const project = JSON.parse(JSON.stringify(getProjectData()));
   project.feedYarnStructureRevision = g.structureRevision; // Imported runtime data cannot restore the old generation.
   importer.loadJSON(project); flush(); reject(g); assert.equal(length(), 23); record('BLOCKER G');
@@ -110,6 +126,11 @@ try {
   changes('Cam operation', () => actions.setSingleJerseyCamOperation(0, 0, 'T'), 0);
   changes('Gauge/arrangement', () => state.dispatch({ machineGauge: 31, needleArrangement: [1, 2] }), 0);
   changes('explicit Clear length', () => actions.clearSingleJerseyFeedYarnLength(0, 0), 0);
+  changes('switch relaxed input mode', () => actions.setSingleJerseyFeedYarnLengthInputMode(0, 0, 'relaxedWithDraft'), 0);
+  changes('relaxed length edit', () => actions.setSingleJerseyFeedYarnLength(0, 0, 8), 0);
+  changes('draft ratio edit', () => actions.setSingleJerseyFeedYarnDraftRatio(0, 0, 3), 0);
+  changes('explicit Clear draft', () => actions.clearSingleJerseyFeedYarnDraftRatio(0, 0), 0);
+  changes('switch direct input mode', () => actions.setSingleJerseyFeedYarnLengthInputMode(0, 0, 'directTarget'), 0);
   changes('solver/validity', () => state.dispatch({ yarnLengthSolverResults: [], previewValidity: 'DESIGN_PREVIEW' }), 0);
   changes('failed full replacement', () => assert.throws(() => actions.setSingleJerseyFeedYarns(0, [yarn('A', -1)])), 0);
   changes('runtime field cannot be overwritten', () => state.dispatch({ feedYarnStructureRevision: 0 }), 0);

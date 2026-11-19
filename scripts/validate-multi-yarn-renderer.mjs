@@ -251,6 +251,38 @@ try {
   assert.equal(canvasFallback.draws.length, 0);
   assert.equal(canvasFallback.paths.length, canvasFallback.args.yarnPathLinks.length * 3 * 2,
     "WebGL-unavailable Canvas fallback must render every slot on both initial and ready-image frames.");
+  const relaxed = (length = 8, ratio = 3) => ({ yarnId: "B", lengthInputMode: "relaxedWithDraft",
+    relaxedLengthCmPer100Needles: length, draftRatio: ratio, tensionCN: 4, placement: "parallel" });
+  const processFeeds = [{ yarns: [feed(["A", 23]).yarns[0], relaxed()] }];
+  const drafted = await render(processFeeds, { texturePerformanceMode: "solid" });
+  assert.deepEqual(drafted.solverInputs, [[23, 24]], "Solver receives only the resolved numerical targets.");
+  assert.equal(drafted.result.previewValidity, "VALIDATED");
+  const draftedResult = drafted.result.yarnLengthSolverResults[1];
+  assert.equal(draftedResult.status, "CONVERGED");
+  assert.equal(draftedResult.lengthInput.relaxedLengthCmPer100Needles, 8);
+  assert.equal(draftedResult.lengthInput.draftRatio, 3);
+  assert.equal(draftedResult.lengthInput.effectiveTargetLengthCmPer100Needles, 24);
+  const reusedDraft = await render(processFeeds, { scale: 2, texturePerformanceMode: "solid" });
+  assert.deepEqual(reusedDraft.solverInputs, [], "identical facts may reuse the existing bounded cache.");
+  const equalProduct = await render([{ yarns: [processFeeds[0].yarns[0], relaxed(10, 2.4)] }],
+    { texturePerformanceMode: "solid" });
+  assert.deepEqual(equalProduct.solverInputs, [[23, 24]], "equal product with changed facts invalidates cache.");
+  const changedSource = equalProduct.result.yarnLengthSolverResults[1].lengthInput;
+  assert.equal(changedSource.relaxedLengthCmPer100Needles, 10);
+  assert.equal(changedSource.draftRatio, 2.4);
+  assert.notEqual(changedSource.inputSignature, draftedResult.lengthInput.inputSignature);
+  const { draftRatio: unusedRatio, ...missingRatio } = relaxed();
+  const incomplete = await render([{ yarns: [processFeeds[0].yarns[0], missingRatio] }],
+    { texturePerformanceMode: "solid" });
+  assert.deepEqual(incomplete.solverInputs, [[23]]);
+  assert.equal(incomplete.result.previewValidity, "PARTIAL", "incomplete relaxed assignment prevents false VALIDATED.");
+  assert.equal(incomplete.result.yarnLengthSolverResults.length, 1);
+  const allIncomplete = await render([{ yarns: [missingRatio] }], { texturePerformanceMode: "solid" });
+  assert.equal(allIncomplete.result.previewValidity, "DESIGN_PREVIEW", "incomplete input alone has no effective solve target.");
+  const direct24 = await render([feed(["A", 23], ["B", 24])], { texturePerformanceMode: "solid" });
+  assert.deepEqual(direct24.result.yarnLengthSolverResults.map(result => result.solvedLengthCmPer100Needles),
+    drafted.result.yarnLengthSolverResults.map(result => result.solvedLengthCmPer100Needles),
+    "resolved target must have zero numerical drift against the existing direct solver input.");
   console.log("PASS: 1/2/3/N parallel Yarn geometry/material/UV, symmetric model placement, isolated Solver failure, duplicate target reuse, cache/transform/Solid regression.");
 } finally {
   await server.close(); delete globalThis.__multiYarnDraws; delete globalThis.__multiYarnJobs;

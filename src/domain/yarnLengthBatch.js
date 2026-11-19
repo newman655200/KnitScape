@@ -1,4 +1,4 @@
-import { validateYarnLengthInput } from "./yarnLengthInput.js";
+import { normalizeYarnLengthFields, resolveYarnLengthInput, validateYarnLengthInput } from "./yarnLengthInput.js";
 
 const reject = (reason, failedTargetIndex) => ({ ok: false, reason, updatedCount: 0,
   ...(failedTargetIndex === undefined ? {} : { failedTargetIndex }) });
@@ -9,6 +9,7 @@ export function validateYarnLengthBatchTargets(camProgram, targets) {
   if (!targets.length) return reject("NO_TARGETS");
   const seen = new Set();
   const checked = [];
+  let lengthInputMode;
   for (let index = 0; index < targets.length; index++) {
     const target = targets[index];
     if (!target || typeof target !== "object" || Array.isArray(target) ||
@@ -22,13 +23,20 @@ export function validateYarnLengthBatchTargets(camProgram, targets) {
     const feed = Array.isArray(camProgram?.feeds) ? camProgram.feeds[target.feedIndex] : null;
     const yarn = Array.isArray(feed?.yarns) ? feed.yarns[target.yarnIndex] : null;
     if (!yarn || yarn.yarnId !== target.yarnId) return reject("STALE_TARGET", index);
-    if (yarn.yarnLengthCmPer100Needles === undefined ||
-      !validateYarnLengthInput(yarn.yarnLengthCmPer100Needles, { allowUnset: true }).ok) {
+    try {
+      normalizeYarnLengthFields(yarn);
+    } catch {
       return reject("TARGET_NOT_EDITABLE", index);
     }
+    const mode = resolveYarnLengthInput(yarn).lengthInputMode;
+    if (Object.hasOwn(target, "lengthInputMode") && target.lengthInputMode !== mode) {
+      return reject("STALE_LENGTH_INPUT_MODE", index);
+    }
+    if (lengthInputMode !== undefined && lengthInputMode !== mode) return reject("MIXED_LENGTH_INPUT_MODES", index);
+    lengthInputMode = mode;
     checked.push({ feedIndex: target.feedIndex, yarnIndex: target.yarnIndex, yarnId: target.yarnId });
   }
-  return { ok: true, targets: checked };
+  return { ok: true, targets: checked, lengthInputMode };
 }
 
 export function validateYarnLengthBatchSelection(camProgram, selection, currentStructureRevision) {
@@ -44,5 +52,14 @@ export function preflightYarnLengthBatch(camProgram, selection, value, currentSt
   if (!targets.ok) return targets;
   const validation = validateYarnLengthInput(value);
   if (!validation.ok) return reject(validation.reason);
+  if (targets.lengthInputMode === "relaxedWithDraft") {
+    for (const [index, target] of targets.targets.entries()) {
+      const yarn = camProgram.feeds[target.feedIndex].yarns[target.yarnIndex];
+      const resolved = resolveYarnLengthInput({ ...yarn, relaxedLengthCmPer100Needles: validation.value });
+      if (resolved.draftRatio !== null && resolved.effectiveTargetLengthCmPer100Needles === null) {
+        return reject("INVALID_EFFECTIVE_YARN_LENGTH", index);
+      }
+    }
+  }
   return { ...targets, value: validation.value };
 }

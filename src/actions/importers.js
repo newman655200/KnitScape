@@ -7,15 +7,17 @@ import {
   DEFAULT_STITCH_SYMBOL_INDEX,
 } from "../constants";
 import { normalizeYarnPly } from "../yarnTexture/yarnScanTexture";
-import { normalizeYarnSequence } from "./yarnSequenceRows";
+import { assertValidYarnSequence, normalizeYarnSequence } from "./yarnSequenceRows";
 import { normalizeYarnLibrary } from "../domain/yarnLibrary.js";
 import { normalizeSingleJerseyCamProgram } from "./singleJerseyCamProgram.js";
 import { resolveSingleJerseyOperations } from "../domain/singleJerseyMachine.js";
+import { validateMachineGauge } from "../domain/machineGauge.js";
 import { YarnAssetRegistry, yarnAssetRegistry, getYarnPbrAssetRefs } from "../yarnTexture/yarnAssetRegistry.js";
-import { migrateYarnLibraryAssets, readProjectPackage } from "./projectPackage.js";
+import { assertProjectCompatibility, migrateYarnLibraryAssets, readProjectPackage } from "./projectPackage.js";
 import { cancelYarnPbrImports } from "./yarnLibrary.js";
 import { t } from "../i18n/index.js";
 
+// Runtime-only generation shared by project loads and New; never persisted or undone.
 let projectLoadRequest = 0;
 
 function cloneYarnPlies(plies = DEFAULT_YARN_PLIES) {
@@ -34,18 +36,21 @@ function hasProjectAssets(project) {
 }
 
 function yarnProjectFields(project) {
-  // Legacy Pattern-only imports retain the current Machine and Yarn Library.
+  // Omitted Gauge retains the current value; explicit Gauge is independent of Cam.
+  const gaugeFields = Object.hasOwn(project, "machineGauge")
+    ? { machineGauge: validateMachineGauge(project.machineGauge) } : {};
+  // Legacy Pattern-only imports retain the current Cam and Yarn Library.
   const hasCam = Object.hasOwn(project, "singleJerseyCamProgram");
   const hasLibrary = Object.hasOwn(project, "yarnLibrary");
-  if (!hasCam && !hasLibrary) return {};
+  if (!hasCam && !hasLibrary) return gaugeFields;
   const cam = hasCam ? normalizeSingleJerseyCamProgram(project.singleJerseyCamProgram)
     : GLOBAL_STATE.singleJerseyCamProgram;
-  const fields = { yarnLibrary: normalizeYarnLibrary(
+  const fields = { ...gaugeFields, yarnLibrary: normalizeYarnLibrary(
     hasLibrary ? project.yarnLibrary : GLOBAL_STATE.yarnLibrary, cam?.feeds),
     pendingYarnId: null, yarnLibraryError: null };
   if (hasCam) {
     fields.singleJerseyCamProgram = cam;
-    for (const key of ["needleArrangement", "needleArrangementInputs", "machineGauge"]) {
+    for (const key of ["needleArrangement", "needleArrangementInputs"]) {
       if (Object.hasOwn(project, key)) fields[key] = structuredClone(project[key]);
     }
     const arrangement = fields.needleArrangement ?? GLOBAL_STATE.needleArrangement;
@@ -56,10 +61,6 @@ function yarnProjectFields(project) {
       (!Array.isArray(fields.needleArrangementInputs) || fields.needleArrangementInputs.length !== 4 ||
         fields.needleArrangementInputs.some(value => typeof value !== "string"))) {
       throw new TypeError("Invalid needle arrangement inputs.");
-    }
-    if (fields.machineGauge !== undefined &&
-      (!Number.isFinite(fields.machineGauge) || fields.machineGauge <= 0)) {
-      throw new TypeError("Invalid machine Gauge.");
     }
     if (cam && arrangement.length) resolveSingleJerseyOperations(cam, arrangement, 1, 1);
   }
@@ -90,16 +91,21 @@ export function loadJSON(patternJSON, assetRegistry = null) {
   const staged = replaceAssets ? assetRegistry ?? yarnAssetRegistry.fork() : null;
   let action;
   try {
+    assertProjectCompatibility(patternJSON);
     const project = replaceAssets ? { ...patternJSON,
       yarnLibrary: migrateYarnLibraryAssets(patternJSON.yarnLibrary, staged) } : patternJSON;
     validatePattern(project);
     const { yarnSequence, yarnPalette, yarnPlies, repeats, width, height } = project;
     const chart = Bimp.empty(width, height, DEFAULT_STITCH_SYMBOL_INDEX);
+    const nextPalette = Array.isArray(yarnPalette) && yarnPalette.length
+      ? yarnPalette : [DEFAULT_YARN_COLOR];
+    // Validate raw references before normalization or Bimp can coerce/crop them.
+    assertValidYarnSequence(yarnSequence, nextPalette.length);
     action = {
       ...yarnProjectFields(project),
       workspaceMode: "pattern",
-      yarnPalette: Array.isArray(yarnPalette) && yarnPalette.length
-        ? yarnPalette : [DEFAULT_YARN_COLOR],
+      yarnPalette: nextPalette,
+      activeYarn: 0,
       yarnPlies: cloneYarnPlies(yarnPlies),
       width, height,
       yarnSequence: normalizeYarnSequence(yarnSequence, { height: chart.height, fillYarn: 0 }),
@@ -127,8 +133,8 @@ export function loadJSON(patternJSON, assetRegistry = null) {
 export async function loadProjectFile(file) {
   const request = ++projectLoadRequest;
   let staged = null;
+  let project;
   try {
-    let project;
     if (/\.knitscape$/i.test(file.name) || file.type === "application/zip") {
       const opened = await readProjectPackage(file);
       project = opened.project; staged = opened.registry;
@@ -136,21 +142,25 @@ export async function loadProjectFile(file) {
       project = JSON.parse(await file.text());
       if (Object.hasOwn(project, "yarnLibrary")) staged = new YarnAssetRegistry();
     }
-    if (request !== projectLoadRequest) { staged?.clear(); return false; }
-    return loadJSON(project, staged);
   } catch (error) {
     staged?.clear();
     if (request !== projectLoadRequest) return false;
     throw error;
   }
+  if (request !== projectLoadRequest) { staged?.clear(); return false; }
+  // loadJSON owns staging and commit errors; its generation increment is not stale source work.
+  return loadJSON(project, staged);
 }
 
 export function newPattern() {
   projectLoadRequest++;
   const chart = Bimp.empty(30, 40, DEFAULT_STITCH_SYMBOL_INDEX);
   dispatch({
+    snapshots: [],
+    lastSnapshot: 0,
     yarnSequence: normalizeYarnSequence(undefined, { height: chart.height, fillYarn: 0 }),
     yarnPalette: [DEFAULT_YARN_COLOR],
+    activeYarn: 0,
     yarnPlies: cloneYarnPlies(),
     chart,
     repeats: [{ bitmap: Bimp.empty(4, 4, DEFAULT_STITCH_SYMBOL_INDEX), area: [30, 40], pos: [0, 0] }],
@@ -161,9 +171,18 @@ export function newPattern() {
   fitChart();
 }
 
-export function loadLibraryPattern(path) {
+export async function loadLibraryPattern(path) {
+  const request = ++projectLoadRequest;
   dispatch({ showLibrary: false });
-  GLOBAL_STATE.patternLibrary[path]().then((mod) => loadJSON(mod));
+  let mod;
+  try {
+    mod = await GLOBAL_STATE.patternLibrary[path]();
+  } catch (error) {
+    if (request !== projectLoadRequest) return false;
+    throw error;
+  }
+  if (request !== projectLoadRequest) return false;
+  return loadJSON(mod);
 }
 
 export function uploadFile() {

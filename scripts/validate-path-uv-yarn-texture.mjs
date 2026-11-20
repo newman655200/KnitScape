@@ -10,7 +10,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const packageJSON = JSON.parse(read("package.json"));
 assert.equal(
   packageJSON.scripts["validate:path-uv-yarn-texture"],
-  "node --experimental-default-type=module scripts/validate-path-uv-yarn-texture.mjs",
+  "node scripts/validate-path-uv-yarn-texture.mjs",
   "package.json must expose validate:path-uv-yarn-texture."
 );
 

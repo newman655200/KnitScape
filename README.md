@@ -1,13 +1,17 @@
 # KnitScape — 当前主线
 
-本仓库从当前 **`main`** 继续开发。核对日期：2026-10-17（Asia/Shanghai）。
+本仓库从当前 **`main`** 继续开发。阶段核对日期：2026-11-20（Asia/Shanghai）。
 
-- **FACT**：当前HEAD为 `7ababf264d495f6b96d4d66652c529424938ac4d`，包含历史起点 `2a1efc1`。P0 baseline是软件工作流基线。
-- **FACT**：当前有开工前已有未提交的材料解析、逐纱直径及Metallic等改动；不能把当前工作区称为干净baseline，不能覆盖已有修改。
-- **SUBJECTIVE / DESIGN DECISION**：当前交接阶段为 **P0-C0 Correctness Preparation**，先完成工艺确认和测量契约，再进入后续开发。
-- **UNKNOWN / PENDING PROCESS CONFIRMATION**：23/8的测量程序、第二纱路径、Feed/负载关系及数值类型；真实纱径与其他物性仍缺数据。
+## 当前阶段（2026-11-20 更新）
 
-P0已建立可信目标输入、派生结果、失败状态、Feed×Yarn独立目标、批量及revision回归保护，**不等于已证明真实生产23cm/100针正确**。当前Solver/UI窗口与完整repeat诊断定义不同；后者也不能自动升级为工厂authority。当前Simulation是二维分层路径预览，尚非真实3D物理织物模型。
+- **FACT — 工艺已确认（2026-10-20）**：SOP-001 的 23 / 8 cm/100机针 为拆纱放松实测长度，实际牵伸倍率 3.0（氨纶织造态参考 24 cm/100机针），张力 5/4 cN 仅记录。详见 [YARN_LENGTH_CONTRACT](docs/YARN_LENGTH_CONTRACT.md) 顶部“SOP-001 生产确认补充”。2026-10-17 写的“七问全部 PENDING、Gate 关闭”已过时，不再作为阻塞项。
+- **FACT — 纱长线已闭合**：指定 SOP 包 8 路双纱共 16 槽纱长收敛，越界/清空/批量/revision 有回归保护（功能提交 `7ababf2`）。这一线不再继续打磨。
+- **当前关口 — 三维几何验收（未通过）**：桌面模板 `SURFACE_CROSSING` 诊断 19,092 → 13,452 条，仍大量穿透；双纱样布演示输出 `physicalLengthEligible:false`、`lengths:null`；显示坐标与部分接口的 mm 单位未统一。具体验收条件见 [NEXT_TASK](docs/NEXT_TASK.md)。
+- **DESIGN DECISION**：在三维几何验收通过前，不再做报告、任务书、打包、清理等元工作，也不重新讨论已确认的工艺语义。
+- **仍为 UNKNOWN**：真实纱径及弹性、摩擦等物性；M1 与 M3 测量窗口差异仍在。这些不阻塞几何验收，但不得用默认值冒充实测。
+- **FACT**：当前 HEAD 为 `23e71e7`；最后一次功能提交为 `7ababf2`。工作区仍有未提交改动（大部分是 CRLF 行尾噪声），不要覆盖。
+
+P0已建立可信目标输入、派生结果、失败状态、Feed×Yarn独立目标、批量及revision回归保护；纱长求解已按 10-20 工艺确认闭合，但**尚未用三维弧长验收**，也不等于生产精度验收。当前Solver/UI窗口与完整repeat诊断定义不同。正式Simulation是二维分层路径预览；三维空间工作台与样布演示存在，但未通过几何验收。
 
 ## 当前产品链路
 
@@ -42,14 +46,17 @@ createSingleJerseySimulationInput()
 
 | 文档 | 解决的问题 |
 |---|---|
-| [当前功能与算法](KnitScape_当前功能与算法.md) | 当前实现和能力边界 |
-| [NEXT_TASK](NEXT_TASK.md) / [ROADMAP](docs/ROADMAP.md) | 确认前可做项、禁令、确认后分支与关口 |
+| [当前功能与算法](docs/KnitScape_当前功能与算法.md) | 当前实现和能力边界 |
+| [NEXT_TASK](docs/NEXT_TASK.md) / [ROADMAP](docs/ROADMAP.md) | 当前关口（三维几何验收）的验收条件与禁令；ROADMAP 给出阶段图与之后的路线 |
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | Machine / Simulation / Geometry / Renderer边界 |
 | [DOMAIN_AUTHORITY](docs/DOMAIN_AUTHORITY.md) | 输入权威、派生数据、兼容源和消费者 |
 | [YARN_LENGTH_CONTRACT](docs/YARN_LENGTH_CONTRACT.md) | 当前各长度口径与未来契约骨架 |
 | [PROCESS_VALIDATION](docs/PROCESS_VALIDATION.md) | 七个工艺问题、四类验证、物理数据来源六项原则 |
 | [LEGACY_MAP](docs/LEGACY_MAP.md) | Legacy真实用途及移除前提 |
 | [本轮审计](reports/doc-alignment-2026-10-17/REPORT.md) | 开工状态、文档冲突、核验与保留证据 |
+| [docs/archive](docs/archive) | 2026-11-18 清理/架构/复用总结报告，以及一次性的 Codex 任务书 |
+
+> 2026-11-20 起 `reports/` 不再随仓库保存（已加入 `.gitignore`），文档中指向 `reports/` 的链接为历史证据。需要时可恢复：`git checkout 23e71e7 -- reports`。验证脚本所需的测试数据已移到 `scripts/fixtures/`。
 
 FACT / INFERENCE / PREDICTION / SUBJECTIVE / DESIGN DECISION / UNKNOWN 的统一含义以PROCESS_VALIDATION为准；任何影响物理结果的数据都需Value、Unit、Source、测量/推导原理、Confidence、Applicable state。未知不由软件默认值补成工艺事实。
 

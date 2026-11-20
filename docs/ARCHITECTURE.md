@@ -2,7 +2,7 @@
 
 核对日期：2026-10-17（Asia/Shanghai）。**FACT**：当前分支 `main`，HEAD `7ababf264d495f6b96d4d66652c529424938ac4d`，另有开工前已存在的未提交材料解析改动。本文描述当前工作区，不把 HEAD、历史报告和未提交实现当成同一快照。
 
-**SUBJECTIVE / DESIGN DECISION**：当前交接阶段命名为 `P0-C0 Correctness Preparation`。P0 是软件工作流基线；工艺测量尚待确认。证据分类、物理数据来源原则统一见 [PROCESS_VALIDATION.md](PROCESS_VALIDATION.md)。本轮只收敛文档，下面的未来层不表示已经开发。
+**当前阶段（2026-11-20）**：10-20 SOP-001 工艺已确认，纱长已闭合（16 槽收敛）；当前关口是**三维几何验收**，见 [NEXT_TASK](NEXT_TASK.md)。旧的 `P0-C0` 阶段已过时。P0 是软件工作流基线。证据分类、物理数据来源原则统一见 [PROCESS_VALIDATION.md](PROCESS_VALIDATION.md)。本轮只收敛文档，下面的未来层不表示已经开发。
 
 ## 工艺权威与消费者
 

@@ -22,7 +22,6 @@ import { desktopPointerPanZoom } from "./events/desktopPointerPanZoom";
 import { colorSequencePointerInteraction } from "./events/colorSequencePointerInteraction";
 import { repeatPointerInteraction } from "./events/repeatPointerInteraction";
 import { simulationPointerInteraction } from "./events/simulationPointerInteraction";
-// import { repeatLibraryDragInteraction } from "./events/repeatLibraryDragInteraction";
 
 // Touch interaction
 import { desktopTouchPanZoom } from "./events/desktopTouchPanZoom";
@@ -31,7 +30,6 @@ import { repeatTouchInteraction } from "./events/repeatTouchInteraction";
 import { simulationTouchInteraction } from "./events/simulationTouchInteraction";
 
 import { drawSymbolPicker } from "./components/drawSymbolPicker";
-// import { drawRepeatLibrary } from "./components/drawRepeatLibrary";
 import { resizeCanvases } from "./components/resizeCanvases";
 import { runSimulation, flushSimulationPreviews, getCurrentSimulationSnapshots } from "./components/runSimulation";
 import { closeModals } from "./events/closeModals";
@@ -48,8 +46,7 @@ let symbolCanvas,
   desktop,
   repeatContainer,
   yarnSequenceEditorCanvas,
-  simContainer,
-  repeatLibrary;
+  simContainer;
 
 const spatialWorkbench = createSpatialWorkbenchHost({ getContext: () => {
   const snapshots = getCurrentSimulationSnapshots();
@@ -67,7 +64,6 @@ function initKeyboard() {
   repeatPointerInteraction(repeatContainer);
   colorSequencePointerInteraction(yarnSequenceEditorCanvas);
   simulationPointerInteraction(simContainer);
-  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
@@ -78,7 +74,6 @@ function initTouch() {
   repeatTouchInteraction(repeatContainer);
   colorSequenceTouchInteraction(yarnSequenceEditorCanvas);
   simulationTouchInteraction(simContainer);
-  // repeatLibraryDragInteraction(repeatLibrary);
   closeModals();
 }
 
@@ -103,7 +98,6 @@ function init() {
   desktop = document.getElementById("desktop");
   repeatContainer = document.getElementById("repeat-container");
   simContainer = document.getElementById("sim-container");
-  repeatLibrary = document.getElementById("repeat-library");
 
   Split(["#chart-pane", "#sim-pane"], {
     sizes: [60, 40],

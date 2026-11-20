@@ -1,23 +1,20 @@
 # 当前阶段路线与关口
 
-核对日期：2026-10-17。**FACT**：P0已形成软件工作流基线，后续审计发现测量口径差异，工艺定义未完整确认。**SUBJECTIVE / DESIGN DECISION**：以下是后续工作顺序，不是本轮实施清单；本轮只改Markdown，到文档交付即停止。证据、来源六项原则和关口定义见 [PROCESS_VALIDATION.md](PROCESS_VALIDATION.md)。
+阶段核对日期：2026-11-20。**FACT**：2026-10-20 SOP-001 工艺已确认（23 / 8 为拆纱放松实测，牵伸倍率 3.0），P0-C1 纱长已闭合（16 槽收敛）。三维空间工作台与样布演示已有原型，但未通过几何验收。**当前关口：三维几何验收**，验收条件见 [NEXT_TASK.md](NEXT_TASK.md)。证据、来源六项原则和关口定义见 [PROCESS_VALIDATION.md](PROCESS_VALIDATION.md)。
+
+下文“BEFORE PROCESS CONFIRMATION”为 2026-10-17 的历史计划，已不适用；其中禁令仍有效的部分已并入 NEXT_TASK。
 
 ```text
 P0 BASELINE（软件行为，不是生产标定）
     ↓
-P0-C0 Correctness Preparation                ← 当前交接阶段
+P0-C0 Correctness Preparation                ✓ 已被 10-20 工艺确认取代
     ↓
-PROCESS CONFIRMATION GATE（当前关闭）
+PROCESS CONFIRMATION GATE                    ✓ 对 SOP-001 打开（10-20）
     ↓
-P0-C1 Canonical Yarn Length
-    ↓ Correctness Gate
-Architecture Consolidation
+P0-C1 Canonical Yarn Length                  ✓ 纱长闭合（16 槽收敛，分支 C）
     ↓
-Material Authority
-    ↓
-YarnTopology / YarnPath
-    ↓
-3D Geometry（xyz Centerline → Yarn Mesh）
+3D Geometry（xyz Centerline → Yarn Mesh）    ← 当前关口：三维几何验收（未通过）
+    ↓ Correctness Gate（三维弧长独立验证）
     ↓
 Physical UV / PBR
     ↓
@@ -28,9 +25,11 @@ Conditional Relaxation / Contact
 Fuzz / High Fidelity → Production-grade Fabric View
 ```
 
+**说明（2026-11-20）**：原图在 3D 前排有 Architecture Consolidation、Material Authority、YarnTopology / YarnPath。实际上空间路径、管面与审计器已先行实现（`src/simulation/yarnSpatialPath.js` 等），这三项未作为独立阶段完成；只在几何验收直接需要时处理，不再单独开阶段。
+
 **PREDICTION**：末端的production-grade是目标，尚无日期或真实效果保证；是否需要relaxation及采用何种模型，要由前面阶段后剩余误差的证据决定。
 
-## BEFORE PROCESS CONFIRMATION
+## BEFORE PROCESS CONFIRMATION（2026-10-17 历史计划，已不适用）
 
 ### P0-C0 — Correctness Preparation
 
@@ -55,7 +54,7 @@ Fuzz / High Fidelity → Production-grade Fabric View
 
 ### DO NOT DO YET
 
-以下禁令适用于工艺确认前；来源/单位/原理不完整时，不能通过默认值绕过：
+以下禁令原为工艺确认前制定。2026-11-20 起：第 4 条已被确认结果取代（20D LOW 确为裸氨纶）；第 1 条不再适用（16 槽已收敛）；其余仍然有效。来源/单位/原理不完整时，不能通过默认值绕过：
 
 1. 不降低loopHeight bound只是为了让8收敛。
 2. 不把5cN / 4cN直接变成geometry force。
@@ -69,6 +68,8 @@ Fuzz / High Fidelity → Production-grade Fabric View
 10. 不全面重构项目，不复制Machine Domain或建立另一套长期Simulation执行路径。
 
 ## AFTER PROCESS CONFIRMATION
+
+**状态（2026-11-20）**：阶段一已按 10-20 确认完成纱长部分；阶段二选中 **Branch C**（放松实测 × 牵伸倍率 3.0 → 织造态参考 24）；阶段三的纱长复跑已完成（16 槽收敛），剩余的“独立复算最终应用几何”即当前三维几何验收。
 
 ### 阶段一：P0-C1 — Canonical Yarn Length
 
@@ -102,11 +103,11 @@ UI Acceptance
 
 要求 canonical length、independent verification、Feed × Yarn关联、failure state、source mapping、repeat boundary全部一致；明确主/副纱是否已真正录入并生效。独立复算必须测最终实际应用的几何，失败slot候选不当作显示值。工艺/机台验证另以同状态真实记录判断，不以UI的VALIDATED代替。
 
-Correctness Gate未通过前不跳到主路线。完整SOP不能用“主纱通过、第二纱失败但画面存在”验收；若仅交付受限模型范围，需显式记录范围和未解决项。[关口定义](PROCESS_VALIDATION.md#两个关口--subjective--design-decision)
+Correctness Gate未通过前不跳到主路线；当前缺的正是三维几何上的独立验证。完整SOP不能用“主纱通过、第二纱失败但画面存在”验收；若仅交付受限模型范围，需显式记录范围和未解决项。[关口定义](PROCESS_VALIDATION.md#两个关口--subjective--design-decision)
 
 ## 通过Correctness Gate后的主路线
 
-以下均为 **SUBJECTIVE / DESIGN DECISION**，不是当前能力声明。Architecture Consolidation只做有证据的边界收敛，保持单一Machine authority，不做全仓重写。
+以下均为 **SUBJECTIVE / DESIGN DECISION**，不是当前能力声明。（2026-11-20：表中 1–4 项的 3D Centerline / Yarn Mesh 已有原型，正在做几何验收；1、2 项只在验收直接需要时处理。验收通过后从第 5 项继续。）Architecture Consolidation只做有证据的边界收敛，保持单一Machine authority，不做全仓重写。
 
 | 顺序 | 阶段 | 进入/完成要求 |
 |---|---|---|

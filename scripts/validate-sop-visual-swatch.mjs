@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import { withSopFixtureSnapshot } from './helpers/sopFixtureSnapshot.mjs';
+import { withSopFixtureSnapshot, testOutputDir } from './helpers/sopFixtureSnapshot.mjs';
 
 // Round9 has no existing full-window fixture check: this verifies only the new
 // derived view, while the Round6/7 validators retain their numerical assertions.
@@ -101,4 +101,4 @@ await withSopFixtureSnapshot(async ({ snapshot, project, server, archiveDir, fix
   await fs.writeFile(`${archiveDir}/visual-swatch-validation.json`, JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
   console.log('PASS: full-window visual swatch coverage, provenance, assumption isolation, invalid input and snapshot preservation');
-}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || 'C:/Users/liuchen/Documents/KnitScape/archives/round9-20261104/geometry' });
+}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || testOutputDir('sop-visual-swatch') });

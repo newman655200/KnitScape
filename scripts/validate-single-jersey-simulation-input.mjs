@@ -162,7 +162,7 @@ assert.equal(
 const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
 assert.equal(
   packageJSON.scripts["validate:single-jersey-simulation-input"],
-  "node --experimental-default-type=module scripts/validate-single-jersey-simulation-input.mjs"
+  "node scripts/validate-single-jersey-simulation-input.mjs"
 );
 
 console.log(

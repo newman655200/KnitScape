@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { withSopFixtureSnapshot } from './helpers/sopFixtureSnapshot.mjs';
+import { withSopFixtureSnapshot, testOutputDir } from './helpers/sopFixtureSnapshot.mjs';
 
 await withSopFixtureSnapshot(async ({ snapshot, server }) => {
   const { buildSopTopology } = await server.ssrLoadModule('/src/simulation/sopTopologyAdapter.js');
@@ -79,4 +79,4 @@ await withSopFixtureSnapshot(async ({ snapshot, server }) => {
   assert.equal(protectedPlan.eligibleCount, 0);
   assert.ok(protectedPlan.skipped.some(p => p.pathId === correction.pathId && p.reason === 'PROTECTED_INTERLOCK_RELATION'));
   console.log('PASS: strict endpoint proof, unrelated UNKNOWN blocker, exact-reference stale rejection, immutable source/identity, surface subset, arc/radius evidence and before/after exact audit');
-}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || 'C:/Users/liuchen/Documents/KnitScape/archives/round11-20261104/visual-trim-validation' });
+}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || testOutputDir('sop-visual-transition-trims') });

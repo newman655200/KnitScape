@@ -319,7 +319,7 @@ try {
   const { createSingleJerseyExecutionInput } = await server.ssrLoadModule("/src/components/singleJerseyExecutionInput.js");
   const { getYarnLengthFeedbackRows } = await server.ssrLoadModule("/src/views/yarnLengthSolverFeedback.js");
   const opened = await readProjectPackage(new Blob([await fs.readFile(
-    "reports/spandex-process-contract-implementation-2026-10-20/SOP-001-N6W6040-bare-spandex.knitscape")]));
+    "scripts/fixtures/SOP-001-N6W6040-bare-spandex.knitscape")]));
   const sop = opened.project;
   const unset = structuredClone(sop);
   unset.singleJerseyCamProgram.feeds.forEach(feed => {
@@ -390,7 +390,7 @@ try {
   assert.equal(current.previewValidity, "VALIDATED");
   assert.equal(current.yarnLengthSolverResults.length, 16);
   const frozen = JSON.parse(await fs.readFile(
-    "reports/p0-c2-gated-verification-2026-10-20/root-cause-regression.json", "utf8"))
+    "scripts/fixtures/root-cause-regression.json", "utf8"))
     .summaries.find(summary => summary.label === "current" && summary.scene === "C").results;
   const numericFields = ["targetLengthCmPer100Needles", "solvedLengthCmPer100Needles",
     "errorCmPer100Needles", "solvedLoopHeight", "status", "appliedToSimulation"];

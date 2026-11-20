@@ -761,7 +761,7 @@ assert.doesNotMatch(
 const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
 assert.equal(
   packageJSON.scripts["validate:single-jersey-execution-integration"],
-  "node --experimental-default-type=module scripts/validate-single-jersey-execution-integration.mjs"
+  "node scripts/validate-single-jersey-execution-integration.mjs"
 );
 
 console.log(

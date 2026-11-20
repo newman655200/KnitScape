@@ -54,8 +54,7 @@ const forbiddenModules = new Map([
   ["yarnPathUvStrip.js", "uvStrip"],
 ]);
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent",
-  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), "Documents", "KnitScape",
-    "archives", "validation-cache", "classic-preview-vite"),
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "validation-cache", "classic-preview-vite"),
   server: { middlewareMode: true, hmr: { server: createHttpServer() } },
   plugins: [{ name: "classic-resource-boundary", enforce: "pre", transform(code, id) {
     const file = id.replaceAll("\\", "/");

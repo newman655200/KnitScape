@@ -1,6 +1,6 @@
 import { color as parseColor } from 'd3';
 import { buildSopTopology } from '../simulation/sopTopologyAdapter.js';
-import { buildSopSpatialHypothesis, SOP_SPATIAL_DEFAULTS } from '../simulation/sopSpatialHypothesis.js';
+import { buildSopSpatialHypothesis, SOP_SPATIAL_DEFAULTS, buildSopVisualSwatch, SOP_VISUAL_SWATCH_DEFAULTS } from '../simulation/sopSpatialHypothesis.js';
 import { buildSopInterlockSwatch, SOP_INTERLOCK_DEFAULTS } from '../simulation/sopInterlockSwatch.js';
 import { createYarnSpatialPreviewRenderer } from '../simulation/yarnSpatialPreviewRenderer.js';
 import { createSimulationSnapshot } from '../simulation/simulationSnapshot.js';

@@ -250,7 +250,7 @@ try {
   const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
   assert.equal(
     packageJSON.scripts["validate:workspace-mode"],
-    "node --experimental-default-type=module scripts/validate-workspace-mode.mjs"
+    "node scripts/validate-workspace-mode.mjs"
   );
 
   console.log(

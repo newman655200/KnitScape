@@ -6,3 +6,12 @@ dist
 # Local offline/runtime bundles and reference photos.
 安装环境/
 织法图/
+
+# Electron desktop installer output
+release/
+
+# Vite cache used by validate:sop-interlock-swatch
+.vite-swatch-validation/
+
+# Audit/verification reports stay on disk only; validator fixtures live in scripts/fixtures
+reports/

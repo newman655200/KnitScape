@@ -1,3 +1,0 @@
-PASS: only the seven palette guide locations moved by two lines; previous generated metadata retained.
-PASS: all unrelated tracked diffs match the pre-turn snapshot.
-Task allowlist: src/actions/importers.js, src/actions/exporters.js, src/actions/yarnSequenceRows.js, src/actions/repeatDimensions.js, src/events/colorSequencePointerInteraction.js, src/events/colorSequenceTouchInteraction.js, src/views/yarnPicker.js, scripts/validate-yarn-sequence-editor.mjs, scripts/validate-project-load-lifecycle.mjs, src/codeGuide/generatedLines.json

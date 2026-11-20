@@ -19,8 +19,7 @@ const markers = [
   ["yarnLengthSolver.js", "  gauge = normalizeMachineGauge(gauge);", "solver"],
 ];
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent",
-  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), "Documents", "KnitScape", "archives",
-    "validation-cache", "spatial-workbench"), server: { middlewareMode: true, hmr: { server: http.createServer() } },
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "validation-cache", "spatial-workbench"), server: { middlewareMode: true, hmr: { server: http.createServer() } },
   plugins: [{ name: "observe-spatial-isolation", enforce: "pre",
     resolveId(id) { if (id === "virtual:spatial-lit") return id; },
     load(id) { if (id === "virtual:spatial-lit") return 'export { render, nothing } from "lit-html";'; },

@@ -11,7 +11,7 @@ import { modelLengthToMm, targetModelLengthPer100Needles } from "../src/simulati
 const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
 assert.equal(
   packageJSON.scripts["validate:yarn-length-solver"],
-  "node --experimental-default-type=module scripts/validate-yarn-length-solver.mjs"
+  "node scripts/validate-yarn-length-solver.mjs"
 );
 
 let modelPathBuilds = 0;

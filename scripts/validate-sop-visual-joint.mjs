@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { withSopFixtureSnapshot } from './helpers/sopFixtureSnapshot.mjs';
+import { withSopFixtureSnapshot, testOutputDir } from './helpers/sopFixtureSnapshot.mjs';
 
 await withSopFixtureSnapshot(async ({ snapshot, server, archiveDir }) => {
   const { buildSopTopology } = await server.ssrLoadModule('/src/simulation/sopTopologyAdapter.js');
@@ -119,4 +119,4 @@ await withSopFixtureSnapshot(async ({ snapshot, server, archiveDir }) => {
   }
   await fs.writeFile(path.join(archiveDir, 'joint-validation.json'), JSON.stringify(result.report, null, 2));
   console.log('PASS: actual Gt gap reproduced; exact shared rings, G1, frame, UV seam, open boundary, no caps/folds/new crossings, immutable identities, cancellation and stale report rejection');
-}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || 'C:/Users/liuchen/Documents/KnitScape/archives/round11-1-20261105/joint-validation' });
+}, { archiveDir: process.env.KNITSCAPE_TEST_OUTPUT_DIR || testOutputDir('sop-visual-joint') });

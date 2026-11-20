@@ -7,7 +7,14 @@ import { createServer as httpServer } from "node:http";
 import { createServer } from "vite";
 
 export const SOP_FIXTURE_SHA256 = "5ff940f1c643618609974a4f8b1d97323b9dce39edee812e3bb312f74fb40b4d";
-export const SOP_FIXTURE_PATH = path.join(os.homedir(), "Documents/KnitScape/archives/knitscape-sop-retest-2026-10-29/browser-continuation/SOP-restored-23-8x3-retest.knitscape");
+// Regression SOP package, vendored from archives/knitscape-sop-retest-2026-10-29/browser-continuation (SHA-256 pinned above).
+export const SOP_FIXTURE_PATH = fileURLToPath(new URL("../fixtures/SOP-restored-23-8x3-retest.knitscape", import.meta.url));
+
+// Per-validator scratch directory outside the checkout (Vite caches, audit output).
+// Override the base with KNITSCAPE_TEST_OUTPUT_DIR / KNITSCAPE_TEST_CACHE_DIR in individual validators.
+export function testOutputDir(...segments) {
+  return path.join(os.tmpdir(), "knitscape-validation", ...segments);
+}
 
 // Compute current production Machine scope exactly once from the actual package.
 // All Vite cache artifacts stay outside the checkout; no browser/state/renderer is used.
@@ -15,7 +22,7 @@ export async function withSopFixtureSnapshot(callback, options = {}) {
   const root = fileURLToPath(new URL("../../", import.meta.url));
   const fixturePath = options.fixturePath || process.env.KNITSCAPE_SOP_FIXTURE || SOP_FIXTURE_PATH;
   const archiveDir = options.archiveDir || process.env.KNITSCAPE_TEST_OUTPUT_DIR ||
-    path.join(os.homedir(), "Documents/KnitScape/archives/knitscape-round6-20261103/sop-topology-adapter");
+    testOutputDir("sop-topology-adapter");
   const relative = path.relative(root, archiveDir);
   if (relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)) {
     throw new Error("Test artifacts must be outside the checkout.");

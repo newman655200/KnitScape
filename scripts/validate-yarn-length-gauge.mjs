@@ -48,7 +48,7 @@ const packageJSON = JSON.parse(read("package.json"));
 
 assert.equal(
   packageJSON.scripts["validate:yarn-length-gauge"],
-  "node --experimental-default-type=module scripts/validate-yarn-length-gauge.mjs"
+  "node scripts/validate-yarn-length-gauge.mjs"
 );
 
 assert.equal(DEFAULT_MACHINE_GAUGE, 32);

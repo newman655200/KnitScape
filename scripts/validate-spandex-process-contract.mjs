@@ -4,10 +4,10 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { createServer } from "vite";
-import { auditFinalYarnLength } from "../reports/yarn-length-semantics-audit-2026-10-16/independent-auditor.mjs";
+import { auditFinalYarnLength } from "./fixtures/independent-auditor.mjs";
 
-const sourceFile = "reports/sop-001/SOP-001-N6W6040-main-yarn-with-cam.knitscape";
-const historicalFile = "reports/spandex-length-semantics-2026-10-20/results.json";
+const sourceFile = "scripts/fixtures/SOP-001-N6W6040-main-yarn-with-cam.knitscape";
+const historicalFile = "scripts/fixtures/spandex-length-semantics-results.json";
 const outputDirectory = process.argv.includes("--write-report")
   ? "reports/spandex-process-contract-implementation-2026-10-20" : null;
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -135,6 +135,7 @@ try {
   assert.deepEqual(diagnostics(getProjectData()).rows, nominal.rows, "Reimported SOP results and metadata must match.");
   assert.equal(sha(await fs.readFile(sourceFile)), sourceHash, "Historical fixture is immutable.");
   if (outputDirectory) {
+    await fs.mkdir(outputDirectory, { recursive: true });
     await fs.writeFile(`${outputDirectory}/SOP-001-N6W6040-bare-spandex.knitscape`, new Uint8Array(await blob.arrayBuffer()));
     await fs.writeFile(`${outputDirectory}/SOP-001-project.manifest.json`, JSON.stringify(roundTrip.project, null, 2));
     await fs.writeFile(`${outputDirectory}/sop-results.json`, JSON.stringify({

@@ -17,7 +17,7 @@ import {
 const packageJSON = JSON.parse(fs.readFileSync("package.json", "utf8"));
 assert.equal(
   packageJSON.scripts["validate:row-length-loop-model"],
-  "node --experimental-default-type=module scripts/validate-row-length-loop-model.mjs"
+  "node scripts/validate-row-length-loop-model.mjs"
 );
 
 assert.equal(moveNeckPointX({ x: -0.5, y: 0 }, 0, 0.8).x, -0.4);
@@ -300,7 +300,7 @@ assert.match(
 );
 assert.equal(fs.existsSync("src/simulation/YarnForce.js"), false);
 
-const technicalDoc = fs.readFileSync("KnitScape_当前功能与算法.md", "utf8");
+const technicalDoc = fs.readFileSync("docs/KnitScape_当前功能与算法.md", "utf8");
 for (const heading of [
   "项目当前定位",
   "当前已实现功能",
@@ -315,7 +315,8 @@ for (const heading of [
 }
 // Section titles are prose; the software/process validation boundary is the contract.
 function assertValidationBoundary(document) {
-  assert.match(document, /P0-C0 Correctness Preparation/, "must identify the current preparation stage");
+  // 2026-11-20: stage moved from P0-C0 to the 3D geometry acceptance gate (docs/NEXT_TASK.md).
+  assert.match(document, /当前关口是\*\*三维几何验收\*\*/, "must identify the current gate");
   const baselineSection = document.split(/^## .*$/m).find(
     (section) => section.includes("SolverResult") && section.includes("PreviewValidity")
   );
@@ -330,18 +331,18 @@ function assertValidationBoundary(document) {
   assert.match(baselineSection, /没有证明真实工厂23\/8与当前Solver测量定义一致/);
   assert.match(baselineSection, /没有完成真实机台精度标定/);
   assert.match(baselineSection, /当前VALIDATED仅是模型窗口数值目标成功并应用/);
-  assert.match(baselineSection, /\]\(docs\/PROCESS_VALIDATION\.md\)/);
+  assert.match(baselineSection, /\]\(PROCESS_VALIDATION\.md\)/);
 }
 assertValidationBoundary(technicalDoc);
 assertValidationBoundary(technicalDoc.replace(/^## 7\..*$/m, "## 软件验证说明"));
 for (const contractText of [
-  "P0-C0 Correctness Preparation", "SolverResult", "PreviewValidity",
+  "三维几何验收", "SolverResult", "PreviewValidity",
   "合法/非法输入保护", "明确Clear", "UNREACHABLE_TARGET",
   "Feed×Yarn独立目标", "批量目标原子预检", "feedYarnStructureRevision",
   "UNKNOWN / PENDING PROCESS CONFIRMATION",
   "没有证明真实工厂23/8与当前Solver测量定义一致",
   "没有完成真实机台精度标定", "当前VALIDATED仅是模型窗口数值目标成功并应用",
-  "docs/PROCESS_VALIDATION.md",
+  "](PROCESS_VALIDATION.md)",
 ]) {
   assert.throws(() => assertValidationBoundary(technicalDoc.replaceAll(contractText, "")),
     assert.AssertionError, `removing ${contractText} must fail the document contract`);

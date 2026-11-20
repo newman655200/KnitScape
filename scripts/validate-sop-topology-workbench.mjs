@@ -121,7 +121,7 @@ await withSopFixtureSnapshot(async ({ snapshot }) => {
 const loaded = new Set(), calls = { compute: 0, solver: 0, machine: 0 };
 globalThis.__sopCalls = calls;
 const server = await createServer({ configFile: false, appType: 'custom', logLevel: 'silent',
-  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), 'Documents/KnitScape/archives/knitscape-round6-20261103/workbench/vite-cache'),
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), 'knitscape-validation', 'sop-topology-workbench', 'vite-cache'),
   server: { middlewareMode: true, hmr: { server: http.createServer() } },
   plugins: [{ name: 'sop-workbench-observation', enforce: 'pre', transform(source, id) {
     const file = id.replaceAll('\\', '/'); loaded.add(file);

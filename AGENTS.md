@@ -54,23 +54,28 @@ Cam Program 不得直接写入 Pattern。
 
 FACT：当前项目导出/包白名单及导入链已包含 `needleArrangementInputs`、`needleArrangement`、`singleJerseyCamProgram`、Gauge、Library/Feed targets；“机器字段尚未保存”是旧说明，不能再作为下一任务。
 
-当前交接阶段（SUBJECTIVE / DESIGN DECISION）：`P0-C0 Correctness Preparation`。P0 已建立软件输入/状态/失败/Feed×Yarn/批量/revision保护，但不证明真实生产纱长。Solver窗口与完整repeat诊断口径有差异；full-repeat也不能未经工艺确认成为生产authority。
+当前阶段（2026-11-20 更新）：
 
-UNKNOWN / PENDING PROCESS CONFIRMATION：七个工艺问题、真实直径及其他物性。以 [NEXT_TASK.md](NEXT_TASK.md)、[当前架构](docs/ARCHITECTURE.md)、[工艺问题与数据来源](docs/PROCESS_VALIDATION.md)、[路线](docs/ROADMAP.md) 为当前交接入口；具体冲突见 [审计报告](reports/doc-alignment-2026-10-17/REPORT.md)。
+- FACT：2026-10-20 已收到生产确认——23 / 8 cm/100机针为拆纱放松实测，牵伸倍率 3.0（氨纶织造态参考 24），见 [YARN_LENGTH_CONTRACT.md](docs/YARN_LENGTH_CONTRACT.md) 顶部。旧的 `P0-C0 Correctness Preparation` 及“七问全部 PENDING”是 10-17 快照，已过时，不得再作为阻塞或下一任务。
+- FACT：纱长线已闭合——指定 SOP 包 16 槽收敛，回归保护齐全。不再继续打磨求解器。
+- 当前关口：**三维几何验收**（未通过）。验收条件见 [NEXT_TASK.md](docs/NEXT_TASK.md)。通过前不做报告、任务书、打包、清理等元工作。
+- UNKNOWN：真实纱径及其他物性；不得用默认值冒充实测。
+
+以 [NEXT_TASK.md](docs/NEXT_TASK.md)、[当前架构](docs/ARCHITECTURE.md)、[纱长契约](docs/YARN_LENGTH_CONTRACT.md) 为当前交接入口。
 
 ## 5. 修改要求
 
 每次功能开发：
 
 1. 先确认当前 `main`；
-2. 先读 `KnitScape_当前功能与算法.md` 与 `NEXT_TASK.md`；
+2. 先读 `docs/KnitScape_当前功能与算法.md` 与 `docs/NEXT_TASK.md`；
 3. 尽量新增纯函数并补验证脚本；
 4. 不把业务规则复制进多个组件；
 5. 不建立“旧版/新版”并行运行路径；
 6. 不因 UI 需求破坏 Machine Domain；
 7. 完成后运行相关 `npm run validate:*` 和 `npm run build`。
 
-文档任务不属于功能开发；2026-10-17本轮只允许Markdown，不运行会生成构建产物的功能流程，不把历史npm通过写成本轮验证。任何影响物理结果的数据须说明Value、Unit、Source、Measurement/derivation principle、Confidence、Applicable state；未知不补默认“实测”。完整规则见 [PROCESS_VALIDATION.md](docs/PROCESS_VALIDATION.md)。
+文档任务不属于功能开发；不把历史npm通过写成本轮验证。任何影响物理结果的数据须说明Value、Unit、Source、Measurement/derivation principle、Confidence、Applicable state；未知不补默认“实测”。完整规则见 [PROCESS_VALIDATION.md](docs/PROCESS_VALIDATION.md)。
 
 ## 6. 文件归档位置（2026-10-31 用户要求）
 

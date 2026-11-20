@@ -1,0 +1,23 @@
+# Normalize line endings: LF in the repository and in every checkout,
+# regardless of core.autocrlf on the cloning machine.
+* text=auto eol=lf
+
+# Windows batch files must stay CRLF for cmd.exe.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets: never touch line endings, never diff as text.
+*.knitscape binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.exr binary
+*.hdr binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.zip binary
+*.pdf binary

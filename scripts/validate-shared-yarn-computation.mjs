@@ -6,8 +6,7 @@ import { createServer as createHttpServer } from "node:http";
 import { createServer } from "vite";
 
 // No project Vite config, listener, or workspace cache is needed for these probes.
-const cacheDir = process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), "Documents", "KnitScape",
-  "archives", "validation-cache", "shared-yarn-computation-vite");
+const cacheDir = process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "validation-cache", "shared-yarn-computation-vite");
 for (const name of ["computeYarnSimulation", "simulationSnapshot", "yarnRenderItems"]) {
   assert.ok(fs.existsSync(`src/simulation/${name}.js`), `${name} must provide the shared headless boundary`);
 }

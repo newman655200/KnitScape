@@ -49,8 +49,7 @@ const instruments = [
   ["/simulation/yarnLengthSolver.js", "  gauge = normalizeMachineGauge(gauge);", "solver"],
 ];
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent",
-  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), "Documents", "KnitScape",
-    "archives", "validation-cache", "preview-mode-isolation"),
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "validation-cache", "preview-mode-isolation"),
   server: { middlewareMode: true, hmr: { server: http.createServer() } },
   plugins: [{ name: "observe-calculation-boundaries", enforce: "pre", transform(source, id) {
     const renderer = id.replaceAll("\\", "/").endsWith("/simulation/pbrPreviewRenderer.js") ? "pbr"

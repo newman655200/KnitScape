@@ -3,7 +3,7 @@ import path from "node:path";
 import os from "node:os";
 import { createServer } from "vite";
 import { createServer as createHttpServer } from "node:http";
-const server = await createServer({ configFile:false, logLevel:"silent", cacheDir:path.join(os.homedir(),"Documents/KnitScape/archives/round9-20261104/pbr-test-cache"), server:{middlewareMode:true,hmr:{server:createHttpServer()}} });
+const server = await createServer({ configFile:false, logLevel:"silent", cacheDir:path.join(os.tmpdir(),"knitscape-validation","spatial-pbr-renderer"), server:{middlewareMode:true,hmr:{server:createHttpServer()}} });
 let loaded = 0;
 let imageWidth = 4, imageHeight = 2;
 const pendingImages = [];

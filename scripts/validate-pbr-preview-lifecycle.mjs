@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { createServer as createHttpServer } from "node:http";
+import os from "node:os";
 import path from "node:path";
 import { createServer } from "vite";
 
@@ -29,7 +30,7 @@ const counters = { decodes: 0, aborts: 0, strips: 0, draws: 0 };
 const observed = globalThis.__pbrPreviewLifecycle = { counters, frames: [] };
 const hmrServer = createHttpServer();
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent",
-  cacheDir: path.join(process.env.USERPROFILE, "Documents/KnitScape/archives/validation-cache/pbr-preview-lifecycle"),
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "pbr-preview-lifecycle"),
   server: { middlewareMode: true, hmr: { server: hmrServer } },
   plugins: [{ name: "observe-pbr-lifecycle", enforce: "pre", transform(code, id) {
     const file = id.replaceAll("\\", "/");

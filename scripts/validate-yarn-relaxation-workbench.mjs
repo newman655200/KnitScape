@@ -200,8 +200,7 @@ assert.ok(fs.existsSync("src/views/yarnRelaxationWorkbench.js"), "Missing lazy r
 const loaded = new Set(), calls = { compute: 0, solver: 0 };
 globalThis.__relaxationCalls = calls;
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent",
-  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.homedir(), "Documents", "KnitScape", "archives",
-    "knitscape-round5-20261103", "workbench-integration", "vite-cache"),
+  cacheDir: process.env.KNITSCAPE_TEST_CACHE_DIR || path.join(os.tmpdir(), "knitscape-validation", "knitscape-round5-20261103", "workbench-integration", "vite-cache"),
   server: { middlewareMode: true, hmr: { server: http.createServer() } },
   plugins: [{ name: "observe-relaxation-boundaries", enforce: "pre", transform(source, id) {
     const normalized = id.replaceAll("\\", "/"); loaded.add(normalized);
@@ -374,8 +373,8 @@ try {
     assert.ok(!/GLOBAL_STATE|\bdispatch\s*\(|from\s+["'][^"']*(?:state|yarnLengthSolver|projectPackage|PhysicalUv)/.test(source), `No original state or Solver authority import: ${file}`);
   }
   const packageScripts = JSON.parse(fs.readFileSync("package.json", "utf8")).scripts;
-  assert.equal(packageScripts["validate:yarn-spatial-relaxation"], "node --experimental-default-type=module scripts/validate-yarn-spatial-relaxation.mjs");
-  assert.equal(packageScripts["validate:yarn-relaxation-workbench"], "node --experimental-default-type=module scripts/validate-yarn-relaxation-workbench.mjs");
+  assert.equal(packageScripts["validate:yarn-spatial-relaxation"], "node scripts/validate-yarn-spatial-relaxation.mjs");
+  assert.equal(packageScripts["validate:yarn-relaxation-workbench"], "node scripts/validate-yarn-relaxation-workbench.mjs");
   console.log("PASS original state/snapshots/M1-M3/Solver identity, mode isolation and actual in-memory project ZIP export/read preservation");
 } finally {
   runner?.stopSimulation(); await server.close();

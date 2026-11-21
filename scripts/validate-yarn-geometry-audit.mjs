@@ -30,7 +30,7 @@ const swatch = (...entries) => ({ status: 'OK', paths: entries.map(x => x.path),
 const fast = { yieldControl: async () => {} };
 const almostA = tube('near-a', { type: 'line', points: [[0, 0, 0], [1e6, 0, 0]], auditSampleCount: 2 }, .001);
 const almostB = tube('near-b', { type: 'line', points: [[0, -.01, 0], [1e6, .01, 0]], auditSampleCount: 2 }, .001);
-const nearReport = await auditYarnGeometry(swatch(almostA, almostB), { ...fast, cellSize: 500000 });
+const nearReport = await auditYarnGeometry(swatch(almostA, almostB), { ...fast, cellSizeMm: 500000 });
 assert.ok(nearReport.statistics.narrowphaseTests > 0, 'Ill-conditioned almost-parallel segment distance must not certify separation');
 assert.equal(nearReport.counts.byClassification.VISUAL_OVERLAP, 0, 'Almost-parallel true crossing is not mere projected occlusion');
 const a = tube('a', { type: 'line', points: [[-1, 0, 0], [1, 0, 0]] });

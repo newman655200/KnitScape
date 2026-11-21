@@ -45,6 +45,9 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
   const geometryVersions = new WeakMap();
   const auditCache = new WeakMap();
   const notify = () => { if (!disposed) onChange(); };
+  // The SOP swatch derives its tube radius in mm from the machine gauge; the
+  // frozen desktop-template debug view still carries radiusMm as an option.
+  const displayedRadiusMm = () => derivedGeometry?.parameters?.radiusMm ?? options.radiusMm;
   function clearScene() {
     sceneEpoch++; profileRunning = false; profileReport = null;
     auditEpoch++; auditRunning = false; auditProgress = auditReport = auditPathIds = auditSelectedFindingId = null;
@@ -345,7 +348,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
       if (Array.isArray(witnesses) && witnesses.length && witnesses.every(point => Array.isArray(point) &&
         point.length === 3 && point.every(Number.isFinite))) {
         api.setView({ target: [0, 1, 2].map(axis => witnesses.reduce((sum, point) => sum + point[axis], 0) / witnesses.length),
-          distance: Math.max(.01, options.radiusMm * 30), yaw: .9, pitch: .4 });
+          distance: Math.max(.01, displayedRadiusMm() * 30), yaw: .9, pitch: .4 });
       } else api.focusSelected();
     },
     clearAuditSelection() {
@@ -360,7 +363,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
         derivedGeometry.paths.find(item => visible.has(item.id));
       if (!path) return;
       api.setView({ target: path.centerline.points[Math.floor(path.centerline.points.length / 2)],
-        distance: Math.max(.01, options.radiusMm * 30), yaw: .9, pitch: .4 });
+        distance: Math.max(.01, displayedRadiusMm() * 30), yaw: .9, pitch: .4 });
     },
     updateContext(next) {
       if (disposed) return;
@@ -393,7 +396,7 @@ export function createSopTopologyWorkbenchController({ context, session = null, 
       if (!auditReport) return null;
       return { ...auditReport, comparison: { state: comparisonState, geometryVersion: geometryVersions.get(derivedGeometry) ?? null,
         geometryVersionMeaning: 'SESSION_LOCAL_IMMUTABLE_GEOMETRY_REFERENCE', jointTargetId, debugMode, view,
-        radiusMm: options.radiusMm, jointReport: derivedGeometry.visualJointReport ?? derivedGeometry.visualCorrectionReport ?? null,
+        radiusMm: displayedRadiusMm(), jointReport: derivedGeometry.visualJointReport ?? derivedGeometry.visualCorrectionReport ?? null,
         recommendation: comparisonState === 'Gt' ? 'KNOWN_FAILED_DIAGNOSTIC_ONLY' :
           comparisonState === 'Gn' ? 'CANDIDATE_NOT_ACCEPTED' : 'BASELINE_WITH_KNOWN_GEOMETRY_ISSUES' } };
     },

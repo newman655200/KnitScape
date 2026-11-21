@@ -3,7 +3,19 @@
 import { add, clamp, cross, distance, normalize, scale, subtract } from './yarnSpatialMath.js';
 import { createSpatialCurve } from './yarnSpatialPath.js';
 import { segmentDistance } from './yarnGeometryAudit.js';
-export const SOP_INTERLOCK_LAYOUT = Object.freeze({ columnPitch: .68, courseStep: .48 });
+// Every length constant in this module and in sopSwatchForm.js is expressed in
+// one private construction frame, SOP_LAYOUT_UNIT, where columnPitch (.68)
+// spans exactly one machine needle pitch. Nothing leaves the swatch builder in
+// this frame: the finished centerline is scaled once, uniformly, by
+// sopLayoutMmPerUnit(needlePitchMm) and every public coordinate, radius, arc
+// length and audit tolerance is then in mm. A uniform scale preserves shape,
+// radius * curvature and surface crossings exactly. courseStep is still a
+// display assumption; it is scaled with the same factor, never by yarn length.
+export const SOP_INTERLOCK_LAYOUT = Object.freeze({ columnPitch: .68, courseStep: .48, unit: 'SOP_LAYOUT_UNIT' });
+export function sopLayoutMmPerUnit(needlePitchMm) {
+  if (!(Number.isFinite(needlePitchMm) && needlePitchMm > 0)) throw new Error('A positive machine needle pitch in mm is required');
+  return needlePitchMm / SOP_INTERLOCK_LAYOUT.columnPitch;
+}
 const {columnPitch,courseStep}=SOP_INTERLOCK_LAYOUT;
 const sheetNormal=[0,0,1],sinkerY=-.18,throatY=.035;
 const platingSlots=[

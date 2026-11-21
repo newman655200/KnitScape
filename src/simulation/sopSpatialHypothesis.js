@@ -1,3 +1,6 @@
+// FROZEN (2026-11-20): desktop-template / hypothesis geometry is a debug view
+// only. The 3D geometry gate in docs/NEXT_TASK.md is judged on the SOP interlock
+// swatch (sopInterlockSwatch.js). Do not tune SURFACE_CROSSING or units here.
 import { buildSpatialPath } from "./yarnSpatialPath.js";
 import { measureSpatialLength } from "./yarnSpatialLength.js";
 import { buildParallelTransportFrames } from "./yarnParallelTransport.js";

@@ -6,7 +6,7 @@
 
 - **FACT — 工艺已确认（2026-10-20）**：SOP-001 的 23 / 8 cm/100机针 为拆纱放松实测长度，实际牵伸倍率 3.0（氨纶织造态参考 24 cm/100机针），张力 5/4 cN 仅记录。详见 [YARN_LENGTH_CONTRACT](docs/YARN_LENGTH_CONTRACT.md) 顶部“SOP-001 生产确认补充”。2026-10-17 写的“七问全部 PENDING、Gate 关闭”已过时，不再作为阻塞项。
 - **FACT — 纱长线已闭合**：指定 SOP 包 8 路双纱共 16 槽纱长收敛，越界/清空/批量/revision 有回归保护（功能提交 `7ababf2`）。这一线不再继续打磨。
-- **当前关口 — 三维几何验收（未通过）**：桌面模板 `SURFACE_CROSSING` 诊断 19,092 → 13,452 条，仍大量穿透；双纱样布演示输出 `physicalLengthEligible:false`、`lengths:null`；显示坐标与部分接口的 mm 单位未统一。具体验收条件见 [NEXT_TASK](docs/NEXT_TASK.md)。
+- **当前关口 — 三维几何验收（未通过）**：只验收双纱样布线（`sopInterlockSwatch`）；桌面模板冻结为调试视图（其 `SURFACE_CROSSING` 13,452 条不再处理）。条件 1（mm 单位统一）已完成；样布仍输出 `physicalLengthEligible:false`、`lengths:null`。具体验收条件见 [NEXT_TASK](docs/NEXT_TASK.md)。
 - **DESIGN DECISION**：在三维几何验收通过前，不再做报告、任务书、打包、清理等元工作，也不重新讨论已确认的工艺语义。
 - **仍为 UNKNOWN**：真实纱径及弹性、摩擦等物性；M1 与 M3 测量窗口差异仍在。这些不阻塞几何验收，但不得用默认值冒充实测。
 - **FACT**：当前 HEAD 为 `23e71e7`；最后一次功能提交为 `7ababf2`。工作区仍有未提交改动（大部分是 CRLF 行尾噪声），不要覆盖。

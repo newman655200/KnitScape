@@ -1,6 +1,6 @@
 # KnitScape 下一任务：三维几何验收
 
-阶段核对日期：2026-11-20（Asia/Shanghai）。当前 HEAD `23e71e7`；最后一次功能提交 `7ababf2`。工作区有未提交改动（大部分是 CRLF 行尾噪声），不要为对齐文档回退代码。
+阶段核对日期：2026-11-20（Asia/Shanghai）。基线 HEAD `1b7c8ed`；最后一次功能提交 `7ababf2`。不要为对齐文档回退代码。
 
 > 本文件 2026-10-17 版（`P0-C0 Correctness Preparation`、“七问全部 PENDING”）已过时，可用 `git show 23e71e7:NEXT_TASK.md`（当时位于仓库根目录） 查看。
 
@@ -13,18 +13,33 @@
 
 ## 当前关口：三维几何验收 — 未通过
 
-现状（来源：[B-当前工程架构-20261118](archive/B-当前工程架构-20261118.md)）：
+### 范围（2026-11-20 决定）
 
-- 桌面模板 12,840 条路径的 `SURFACE_CROSSING` 诊断记录从 19,092 降到 13,452，仍大量穿透。
-- 双纱样布演示的整布无穿透尚无证据；演示输出 `physicalLengthEligible:false`、`lengths:null`，即三维弧长还没有接到纱长上。
-- 显示坐标与部分接口的 mm 单位标签不一致。
+- **只验收样布线**：[sopInterlockSwatch.js](../src/simulation/sopInterlockSwatch.js)（及 [sopInterlockCurve.js](../src/simulation/sopInterlockCurve.js)、[sopSwatchForm.js](../src/simulation/sopSwatchForm.js)），入口 `buildSopInterlockSwatch`，指定 SOP 包 `public/current-SOP.knitscape`。
+- **桌面模板冻结**：[sopSpatialHypothesis.js](../src/simulation/sopSpatialHypothesis.js)（`buildSopSpatialHypothesis` / `buildSopVisualSwatch` / 修剪与接头候选）只作调试视图，不再降穿透、不再改单位；其 13,452 条 `SURFACE_CROSSING` 不计入本关口。
 
-涉及代码：[yarnSpatialPath.js](../src/simulation/yarnSpatialPath.js)、[yarnTubeGeometry.js](../src/simulation/yarnTubeGeometry.js)、[yarnGeometryAudit.js](../src/simulation/yarnGeometryAudit.js)。
+现状：
+
+- 样布 8×16 repeat 窗口：同一审计器 `SURFACE_CROSSING` = 0（`CLOSE_ENVELOPES_NO_SURFACE_CROSSING` 51,564、`VISUAL_OVERLAP` 3,115 个带见证）；整布 48×60（`--full-boundaries`）全部 60 行审计 `SURFACE_CROSSING` = 0，见条件 2。
+- 演示仍输出 `physicalLengthEligible:false`、`lengths:null`。
+- 单位：见条件 1，已统一为 mm。
+
+涉及代码：上述样布文件，以及共用的 [yarnSpatialPath.js](../src/simulation/yarnSpatialPath.js)、[yarnTubeGeometry.js](../src/simulation/yarnTubeGeometry.js)、[yarnGeometryAudit.js](../src/simulation/yarnGeometryAudit.js)。
 
 ### 验收条件（按顺序，一次一项）
 
-1. **单位统一**：中心线坐标、管面半径、审计容差和接口标签使用同一长度单位（mm），有针对性的 validator 覆盖。
-2. **无穿透**：在指定 SOP 包上，用同一检测器审计实际要显示的管面，`SURFACE_CROSSING` 为 0（或每条剩余记录都有书面理由并被用户认可）。只降数字不算通过。
+1. **单位统一** — ✅ 2026-11-20 完成：中心线坐标、管面半径、审计容差和接口标签使用同一长度单位（mm），有针对性的 validator 覆盖。
+   - 做法：样布内部构造仍在私有坐标系 `SOP_LAYOUT_UNIT`（`columnPitch .68` = 1 针距）中进行，`formSopYarnTube` 末尾**一次性均匀缩放** `mmPerLayoutUnit = needlePitchMm / 0.68`（`needlePitchMm = 25.4 / machineGauge`，E32 → 1.16728）。之后中心线、管面、`radiusMm`、`arcLengthMm`、UV 全部在 mm 中直接构建。均匀缩放不改变形状、`半径×曲率` 与穿透判定（8×16 审计计数与改动前逐项相同）。
+   - 接口：`SOP_INTERLOCK_DEFAULTS.layoutRadius = .035`（SOP_LAYOUT_UNIT，唯一长度输入）；输出 `parameters.radiusMm`（E32 = 0.04085 mm；主纱槽 ×1.4 = 0.05720 mm）、`mmPerLayoutUnit`、`needlePitchMm`、`units`；`centerline.unit`、`section.unit`、`sectionEvidence.unit` 均为 `'mm'`；`cell.modelArcLength` → `cell.arcLengthMm`，`feedYarnLengths[].modelArcLength` → `arcLengthMm`。传入 `radiusMm` 会被拒绝。
+   - 审计：容差改名 `epsilonMm`（1e-7）/ `cellSizeMm`（0.25），报告带 `units`；旧名 `epsilon`/`cellSize` 返回 INVALID；中心线或截面单位非 mm 记 `LENGTH_UNIT_NOT_MM`。
+   - 验证：`validate:sop-swatch-units`（标签、实测网格半径、换机号纯缩放 ≤1e-11、审计单位与拒绝路径）。
+   - 副作用：`uvRepeatLengthMm: 1` 现在是真 mm，纹理密度约为原来的 1.17 倍；纱径仍是模型值（VISUAL_ASSUMPTION），不是实测。courseStep 仍是显示常量，只随同一系数缩放。
+2. **无穿透** — ✅ 2026-11-21 审计证据：在指定 SOP 包上，用同一检测器审计实际要显示的管面，`SURFACE_CROSSING` 为 0（或每条剩余记录都有书面理由并被用户认可）。只降数字不算通过。
+   - 缺口：`--full-boundaries` 原先只审首 11 行和末 5 行，中部未审。现已改为整布全部行都审（`validate-sop-interlock-swatch.mjs` 的 `auditPaths = swatch.paths`）。
+   - 结果（`public/current-SOP.knitscape`，48 针 × 60 行，120 条管，radialSegments 12，mm）：`auditYarnGeometry` 状态 COMPLETE，审过 17,694,720 个三角形 / 737,280 个环带，粗筛候选 9,916,293 对，`SURFACE_CROSSING` = 0，`ABNORMAL_GEOMETRY` = 0；`CLOSE_ENVELOPES_NO_SURFACE_CROSSING` 1,153,161、`VISUAL_OVERLAP` 73,920 个带见证。8×16 窗口不变（0；51,564 / 3,115）。整布构建时 `acceptsTubeLayout` 通过（2880 格）。
+   - 做法：整布构建在沙箱约 22 分钟（布局验收约 230 s + 每条链约 9 s），超过单次 10 分钟上限，所以按行分 3 段（0–19 / 20–39 / 40–59）构建，管面合并后**一次**整体审计（78 s）。各链只依赖共享 `commonLayout`，彼此独立；另建 18–21 行一段做对照，8 条管逐字节相同。
+   - 局限：开口管面审计只证明没有表面交叉，不排除包含；CLOSE_ENVELOPES 仍记 UNKNOWN（与 8×16 口径相同）。完整 `node scripts/validate-sop-interlock-swatch.mjs --full-boundaries`（含其余整布断言）还没有一次跑完，需在本机复跑（预计 10–25 分钟）。
+   - 附带发现：整布构建 22 分钟，作为 app 里的整布预览不可用；性能不属本关口。
 3. **三维弧长可用**：演示输出 `physicalLengthEligible:true`，每个 Feed × Yarn 槽给出三维中心线弧长（cm/100机针）。
 4. **弧长对照**：每槽三维弧长与已确认参考值（主纱 23；氨纶织造态 24）并列给出，独立复算，不复制 Solver 读数。允许偏差由用户确认；在确认前只报告偏差，不写“通过”。
 
@@ -44,7 +59,7 @@
 
 ## 验证注意
 
-部分 validator 依赖仓库外 SOP 包（`C:\Users\liuchen\Documents\KnitScape\archives\…\SOP-restored-23-8x3-retest.knitscape`）。`validate:sop-flat-layout` 在 2026-11-20 是真失败（测试调用 `interlockCellControls` 未传 `commonLayout`），与本关口相关时先修。
+`1b7c8ed` 起 validator 自包含（夹具在 `scripts/fixtures/`）。已知 3 个失败（`sop-joint-lifecycle` / `sop-swatch-lifecycle` / `sop-topology-workbench`）来自 `23e71e7` 的 controller 改动，与单位无关，待决定改测试还是改源码。
 
 ## 本关口通过后
 

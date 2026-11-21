@@ -206,7 +206,7 @@ try {
   }
 
   const finalThroat = { scope: 'Pre-form plated Catmull; entryStart through mother phase 5 and mirror',
-    requiredAxisDistance: swatch.parameters.radiusMm + .005, checkedBranches: 0, worst: null, failures: [] };
+    requiredAxisDistance: swatch.parameters.layoutRadius + .005, checkedBranches: 0, worst: null, failures: [] };
   const finalCurvature = { method: 'Actual row cubics; 513 uniform parameter positions plus analytic derivative breakpoints per role segment',
     criterion: 'radius * curvature < 1', cases: [], failures: [] };
   const finalAllCurvature = {method: 'Every actual audited row cubic; both one-sided endpoints and all real curvature-extremum roots',
@@ -312,7 +312,8 @@ try {
       assert.ok(curve.regular && curve.continuity.tangentContinuous, 'Invalid formed Catmull ' + path.id);
       assert.equal(integral.status, 'OK', path.id);
       assert.equal(ringParameters.length, path.centerline.points.length);
-      assert.ok(controls.some((p, i) => Math.abs(p[1] - path.centerline.controlPoints[i][1]) > 1e-8),
+      // Pre-form controls are SOP_LAYOUT_UNIT; formed controls are mm.
+      assert.ok(controls.some((p, i) => Math.abs(p[1] * swatch.parameters.mmPerLayoutUnit - path.centerline.controlPoints[i][1]) > 1e-8),
         'Missing released-fabric deformation ' + path.id);
       for (const [i, t] of ringParameters.entries()) {
         const point = curve.point(t);
@@ -320,7 +321,7 @@ try {
       }
       for (const cell of path.cells) {
         const arc = integral.cumulativeLengths[cell.controlEnd] - integral.cumulativeLengths[cell.controlStart];
-        assert.ok(arc > 0 && Math.abs(arc - cell.modelArcLength) < 1e-9, 'Formed cell arc ' + path.id);
+        assert.ok(arc > 0 && Math.abs(arc - cell.arcLengthMm) < 1e-9, 'Formed cell arc ' + path.id);
       }
       const mesh = tubesById.get(path.id), lastRing = ringParameters.length - 1;
       const finalUv = mesh.uv[lastRing * (mesh.counts.radialSegments + 1) * 2];
@@ -340,7 +341,7 @@ try {
       if (path.row >= 20 && path.row <= 24) { include(focusBounds, bounds.min); include(focusBounds, bounds.max); }
     }
     const selectedRows = new Set(swatch.paths.filter(path => {
-      const bounds = boundsByPath.get(path.id), padding = 2 * swatch.parameters.radiusMm;
+      const bounds = boundsByPath.get(path.id), padding = 2 * swatch.parameters.layoutRadius;
       return [0, 1, 2].every(axis => bounds.min[axis] <= focusBounds.max[axis] + padding && bounds.max[axis] >= focusBounds.min[axis] - padding);
     }).map(path => path.row));
     const localAuditPaths = swatch.paths.filter(path => selectedRows.has(path.row));
@@ -359,7 +360,7 @@ try {
         const result = {pathId: path.id, row: cell.row, needle: cell.needle, operation: cell.operation,
           yarnIndex: path.yarnIndex, segmentIndex, canonicalSegment,
           rowSegmentParameter: maximum.u, canonicalParameter: path.centerline.direction > 0 ? maximum.u : 1 - maximum.u,
-          curvature: maximum.curvature, radiusTimesCurvature: swatch.parameters.radiusMm * maximum.curvature,
+          curvature: maximum.curvature, radiusTimesCurvature: swatch.parameters.layoutRadius * maximum.curvature,
           bendingRadius: maximum.curvature > 0 ? 1 / maximum.curvature : null, point: maximum.point};
         finalAllCurvature.checkedCubics++;
         if (!finalAllCurvature.worst || result.radiusTimesCurvature > finalAllCurvature.worst.radiusTimesCurvature)
@@ -417,7 +418,7 @@ try {
               const v = segment.derivative(u), a = A.map((value, axis) => 2 * value * u + B[axis]);
               const cross = [v[1]*a[2]-v[2]*a[1], v[2]*a[0]-v[0]*a[2], v[0]*a[1]-v[1]*a[0]];
               const curvature = Math.hypot(...cross) / Math.hypot(...v) ** 3;
-              const radiusTimesCurvature = swatch.parameters.radiusMm * curvature;
+              const radiusTimesCurvature = swatch.parameters.layoutRadius * curvature;
               if (!Number.isFinite(radiusTimesCurvature) || radiusTimesCurvature > worst.radiusTimesCurvature)
                 worst = { canonicalSegment, segmentIndex, u, curvature, radiusTimesCurvature };
             }
@@ -440,8 +441,8 @@ try {
           const sampled = buildSpatialPath(cellCurve, {sampleCount});
           const frames = sampled.status === 'OK' ? buildParallelTransportFrames(sampled) : null;
           const tube = frames?.status === 'OK' ? buildYarnTubeGeometry({path: sampled, frames,
-            radiusA: swatch.parameters.radiusMm, radialSegments: swatch.parameters.radialSegments,
-            capEnds: false, uvRepeatLength: swatch.parameters.uvRepeatLengthMm}) : null;
+            radiusA: swatch.parameters.layoutRadius, radialSegments: swatch.parameters.radialSegments,
+            capEnds: false, uvRepeatLength: 1}) : null;
           const result = {row: cell.row, needle: cell.needle, yarnIndex: path.yarnIndex, sampleCount,
             status: tube?.status ?? frames?.status ?? sampled.status,
             failureStage: sampled.status !== 'OK' ? 'sampling' : frames?.status !== 'OK' ? 'transport' : tube?.status !== 'OK' ? 'tube' : null,
@@ -480,11 +481,10 @@ try {
       depthSigns[classification]++;
     }
   }
-  // On expansion, retain exact emitted tubes for the two finite ends and a
-  // complete feed cycle along both selvedges. The central bulk is not audited.
-  const auditPaths = fullSize
-      ? swatch.paths.filter(path => path.row < repeatHeight + 3 || path.row >= project.height - 5)
-      : swatch.paths;
+  // Audit every emitted tube, in both the repeat window and the full design.
+  // The full sheet used to keep only the two ends, leaving the central bulk
+  // unproven; it is now audited in full (48x60: ~17.7M triangles, slow).
+  const auditPaths = swatch.paths;
   const auditIds = new Set(auditPaths.map(p => p.id));
   const target = { ...swatch, paths: auditPaths, scene: swatch.scene.filter(item => auditIds.has(item.id)) };
   const audit = await auditYarnGeometry(target, { yieldControl: () => Promise.resolve() });
@@ -509,7 +509,7 @@ try {
       assert.equal(item.id, path.id);
       return [path.row + '/' + path.yarnIndex, { feed: path.feedIndex, slot: path.yarnIndex,
         yarnId: path.yarnId, needles: path.cells.map(c => c.needle),
-        integral: path.cells.reduce((sum, c) => sum + c.modelArcLength, 0),
+        integral: path.cells.reduce((sum, c) => sum + c.arcLengthMm, 0),
         shape: createHash('sha256').update(item.geometry.positions).digest('hex') }];
     }));
     const original = describe(swatch);

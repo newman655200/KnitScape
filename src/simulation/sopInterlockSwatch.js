@@ -2,17 +2,19 @@
 // migrations and ordered chains, even when the preview covers only two repeats.
 import { resolveYarnLengthInput } from '../domain/yarnLengthInput.js';
 import { distance } from './yarnSpatialMath.js';
-import { interlockLengthControls, interlockCurvatureMaximum, buildInterlockReleaseLayout, SOP_INTERLOCK_LAYOUT } from './sopInterlockCurve.js';
+import { interlockLengthControls, interlockCurvatureMaximum, buildInterlockReleaseLayout, SOP_INTERLOCK_LAYOUT, sopLayoutMmPerUnit } from './sopInterlockCurve.js';
 import { buildSpatialPath } from './yarnSpatialPath.js';
 import { buildParallelTransportFrames } from './yarnParallelTransport.js';
 import { buildYarnTubeGeometry } from './yarnTubeGeometry.js';
-import { SOP_VISUAL_SWATCH_DEFAULTS } from './sopSpatialHypothesis.js';
 import { formSopYarnTube, reverseLayPhaseFor, SOP_SWATCH_FORM } from './sopSwatchForm.js';
 
 // 128 rings per cell resolve the retained-release turns: the same frozen
 // safe cubic geometry crossed at 64, and passed the original strict mesh
 // audit at both 128 and 256. The tube builder and circular section are unchanged.
-export const SOP_INTERLOCK_DEFAULTS = Object.freeze({ ...SOP_VISUAL_SWATCH_DEFAULTS, sampleCount: 128, radialSegments: 16, uvRepeatLengthMm: 1 });
+// layoutRadius is the fixed reference tube radius in SOP_LAYOUT_UNIT (the frame
+// where columnPitch spans one needle). The public radiusMm is derived from it
+// and the published machine gauge; it is never an input. uvRepeatLengthMm is mm.
+export const SOP_INTERLOCK_DEFAULTS = Object.freeze({ layoutRadius: .035, sampleCount: 128, radialSegments: 16, uvRepeatLengthMm: 1 });
 
 // The current SOP's confirmed knitting-state references, keyed by yarn asset.
 // Feed edits and preview material swaps must never change these denominators.
@@ -40,7 +42,7 @@ function checked(result, label) {
 
 function makeTube(cells, chain, parameters, direction, lengthRatio, commonLayout) {
   requireSource(direction !== 0, '无法从当前 YarnChain 的 CN 顺序判定行进方向');
-  const { radiusMm, radialSegments, sampleCount } = parameters;
+  const { layoutRadius, radialSegments, sampleCount } = parameters;
   const controls = [];
   // Length edits reuse the frozen base and move only this row/yarn.
   for (const [i, cell] of cells.entries()) {
@@ -50,7 +52,7 @@ function makeTube(cells, chain, parameters, direction, lengthRatio, commonLayout
       boundary:base.releaseReference.boundary,ghostControls:base.releaseReference.ghostControls??0,
       startSegment:base.releaseReference.startSegment??null,endSegment:base.releaseReference.endSegment??null,
       releaseStation:base.releaseStation};
-    let local=interlockLengthControls(commonLayout,cell.row+'/'+cell.needle,chain.yarnIndex,lengthRatio,radiusMm);
+    let local=interlockLengthControls(commonLayout,cell.row+'/'+cell.needle,chain.yarnIndex,lengthRatio,layoutRadius);
     if (direction < 0) local.reverse();
     if (i > 0) {
       requireSource(cell.needle === cells[i - 1].needle + direction, 'Gap in source needle order');
@@ -60,16 +62,16 @@ function makeTube(cells, chain, parameters, direction, lengthRatio, commonLayout
     controls.push(...local);
     cell.controlEnd = controls.length - 1;
   }
-  // The existing tube API requires a metric unit tag. Its numeric coordinates
-  // here are display units throughout; column spacing is a layout choice and
-  // does not alter source needle identity. No gauge conversion occurs.
+  // Private construction step in SOP_LAYOUT_UNIT. The shared spatial core only
+  // accepts metric tags; the 'mm' tag here is internal and the result never
+  // leaves this module: formSopYarnTube scales the final layout into real mm.
   const sampled = checked(buildSpatialPath({ type: 'catmull-rom', points: controls, closed: false, unit: 'mm' },
     { sampleCount: cells.length * sampleCount + 1 }), 'Source chain ' + chain.id);
   let ring = 0, previousControl = 0;
   const arc = sampled.lengthMeasurement.cumulativeLengths;
   for (const cell of cells) {
     // Integrate to the actual stitch boundary, which can fall between tube rings.
-    cell.modelArcLength = arc[cell.controlEnd] - arc[previousControl];
+    cell.layoutArcLength = arc[cell.controlEnd] - arc[previousControl];
     cell.controlStart = previousControl;
     previousControl = cell.controlEnd;
     cell.ringStart = ring;
@@ -77,9 +79,9 @@ function makeTube(cells, chain, parameters, direction, lengthRatio, commonLayout
     cell.ringEnd = ring;
   }
   const frames = checked(buildParallelTransportFrames(sampled), 'Transport');
-  const mesh = checked(buildYarnTubeGeometry({ path: sampled, frames, radiusA: radiusMm,
-    radialSegments, capEnds: false, uvRepeatLength: parameters.uvRepeatLengthMm }), 'Tube ' + chain.id);
-  return { mesh, ringParameters: sampled.parameters, centerline: { status: 'OK', unit: 'MODEL_NEEDLE_PITCH', closed: false,
+  const mesh = checked(buildYarnTubeGeometry({ path: sampled, frames, radiusA: layoutRadius,
+    radialSegments, capEnds: false, uvRepeatLength: 1 }), 'Tube ' + chain.id);
+  return { mesh, ringParameters: sampled.parameters, centerline: { status: 'OK', unit: SOP_INTERLOCK_LAYOUT.unit, closed: false,
     points: sampled.points, tangents: sampled.tangents, controlPoints: controls, direction,
     continuity: sampled.continuity, evidenceStatus: 'VISUAL_ASSUMPTION' } };
 }
@@ -96,12 +98,18 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
   // Twelve sides keep the shallow, enclosed openings stable in the full swatch.
   // The magnified sample uses sixteen; callers may select their own refinement.
   const radialSegments = options.fullSize ? 12 : SOP_INTERLOCK_DEFAULTS.radialSegments;
-  const parameters = { ...SOP_INTERLOCK_DEFAULTS, radialSegments, ...options };
+  // Derived output fields are never inputs; an explicit radiusMm is rejected below.
+  const { radiusMm: rejectedRadiusMm, mmPerLayoutUnit: _derivedScale, needlePitchMm: _derivedPitch, units: _derivedUnits, ...inputOptions } = options;
+  const parameters = { ...SOP_INTERLOCK_DEFAULTS, radialSegments, ...inputOptions };
   const { repeatWidth, repeatHeight, fullSize = false } = parameters;
   const identity = topology?.identity;
   try {
+    requireSource(rejectedRadiusMm === undefined, 'radiusMm is derived from layoutRadius and the machine gauge; pass layoutRadius (' + SOP_INTERLOCK_LAYOUT.unit + ') instead');
     requireSource(topology?.status === 'READY' && topology.roi.window === 'full',
       'A current full machine topology is required');
+    const needlePitchMm = topology.scale?.needlePitchMm;
+    requireSource(Number.isFinite(needlePitchMm) && needlePitchMm > 0, 'The machine topology must publish needlePitchMm (25.4 / gauge)');
+    const mmPerLayoutUnit = sopLayoutMmPerUnit(needlePitchMm);
     const continuity = topology.continuity;
     const current = item => item.snapshotId === identity.key && item.projectGeneration === identity.projectGeneration &&
       item.revision === identity.feedYarnStructureRevision;
@@ -120,8 +128,8 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
       canToggleSize: fitsRepeat && (repeatWidth * 2 !== sourceWidth || repeatHeight * 2 !== sourceHeight),
       operations: { K: 0, T: 0 },
       generatedCells: 0, generatedAssignments: 0, boundary: 'OPEN_SOURCE_WINDOW' };
-    requireSource(Number.isFinite(parameters.radiusMm) && parameters.radiusMm > 0 &&
-      parameters.radiusMm <= 0.1 && Number.isInteger(parameters.sampleCount) && parameters.sampleCount >= 16 &&
+    requireSource(Number.isFinite(parameters.layoutRadius) && parameters.layoutRadius > 0 &&
+      parameters.layoutRadius <= 0.1 && Number.isFinite(parameters.uvRepeatLengthMm) && parameters.uvRepeatLengthMm > 0 && Number.isInteger(parameters.sampleCount) && parameters.sampleCount >= 16 &&
       parameters.sampleCount <= 128 && Number.isInteger(parameters.radialSegments) && parameters.radialSegments >= 6 &&
       parameters.radialSegments <= 24, 'Invalid tube parameters');
     const inRowWindow = row => row >= rowStart && row < rowStart + height;
@@ -144,7 +152,7 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
       const lengthRatio = referenceCmPer100Needles !== null && settingCmPer100Needles !== null
         ? settingCmPer100Needles / referenceCmPer100Needles : null;
       const summary = { sourceFeed: feedIndex, yarnId: strand.yarnId, yarnIndex,
-        referenceCmPer100Needles, settingCmPer100Needles, lengthRatio, eventCount: 0, modelArcLength: 0 };
+        referenceCmPer100Needles, settingCmPer100Needles, lengthRatio, eventCount: 0, arcLengthMm: 0 };
       supplies.get(key)[yarnIndex] = { input, summary };
       coverage.feedYarnLengths.push(summary);
       if (referenceCmPer100Needles === null || input.status !== 'READY') {
@@ -235,7 +243,7 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
           stackIndex: op.operation === 'T' && contextPriorK[needle] === null ? row + 1 : undefined });
       }
     }
-    const layoutKey = JSON.stringify([parameters.radiusMm, parameters.sampleCount, parameters.radialSegments,
+    const layoutKey = JSON.stringify([parameters.layoutRadius, parameters.sampleCount, parameters.radialSegments,
       rowStart, height, needleStart, width, layoutCells]);
     if (baseLayoutCache?.key !== layoutKey) {
       const acceptsTubeLayout = layout => {
@@ -246,7 +254,7 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
             // Arc-length sample rings can skip a narrow one-sided cubic
             // curvature peak. Check the actual cubic extrema as well.
             const bend=interlockCurvatureMaximum(centerline.controlPoints);
-            if(!(bend.curvature*parameters.radiusMm<1))throw new Error('Tube actual cubic curvature: '+JSON.stringify({row,yarnIndex,...bend}));
+            if(!(bend.curvature*parameters.layoutRadius<1))throw new Error('Tube actual cubic curvature: '+JSON.stringify({row,yarnIndex,...bend}));
           }
           return true;
         } catch(error) {
@@ -255,7 +263,7 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
           return false;
         }
       };
-      baseLayoutCache = { key: layoutKey, value: buildInterlockReleaseLayout(layoutCells, parameters.radiusMm, acceptsTubeLayout) };
+      baseLayoutCache = { key: layoutKey, value: buildInterlockReleaseLayout(layoutCells, parameters.layoutRadius, acceptsTubeLayout) };
     }
     const commonLayout = baseLayoutCache.value;
     coverage.releaseLayout = commonLayout.diagnostics;
@@ -263,8 +271,11 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
     const layPhase = reverseLayPhaseFor(operations, sourceWidth, sourceHeight, repeatWidth, repeatHeight);
     coverage.displayForm = { ...SOP_SWATCH_FORM,
       courseStep: layPhase === null ? SOP_INTERLOCK_LAYOUT.courseStep : SOP_SWATCH_FORM.courseStep,
-      reverseLayApplied: layPhase !== null, reverseLayPhaseRadians: layPhase };
-    const section = { value: parameters.radiusMm, unit: 'DISPLAY_UNIT', source: 'Reference radius of the source display tube',
+      reverseLayApplied: layPhase !== null, reverseLayPhaseRadians: layPhase,
+      layoutUnit: SOP_INTERLOCK_LAYOUT.unit, mmPerLayoutUnit,
+      layoutUnitMeaning: 'columnPitch spans one machine needle pitch; lengths here are converted to mm by mmPerLayoutUnit' };
+    const radiusMm = parameters.layoutRadius * mmPerLayoutUnit;
+    const section = { value: radiusMm, unit: 'mm', source: 'Reference radius of the source display tube (layoutRadius × mmPerLayoutUnit)',
       derivationPrinciple: 'Reference circular display radius before the slot-specific circular sweep',
       confidence: 'VISUAL_ASSUMPTION', applicableState: 'REFERENCE_DISPLAY_SECTION_ONLY' };
     const radiiBySlot = [];
@@ -342,14 +353,14 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
       requireSource(supply, '当前 YarnChain 缺少对应来源路、纱线和纱位的输入记录');
       const { input: lengthInput, summary } = supply;
       const referenceTube = makeTube(cells, chain, parameters, direction, summary.lengthRatio, commonLayout.cells);
-      const { mesh, centerline, radius } = formSopYarnTube(referenceTube, cells, parameters.uvRepeatLengthMm, layPhase, chain.yarnIndex, parameters.radiusMm, sourceHeight);
+      const { mesh, centerline, radius } = formSopYarnTube(referenceTube, cells, parameters.uvRepeatLengthMm, layPhase, chain.yarnIndex, parameters.layoutRadius, sourceHeight, mmPerLayoutUnit);
       radiiBySlot[chain.yarnIndex] = radius;
-      const formedSection = { value: radius, unit: 'DISPLAY_UNIT', quantity: 'CIRCULAR_RADIUS',
+      const formedSection = { value: radius, unit: 'mm', quantity: 'CIRCULAR_RADIUS',
         source: 'Slot-specific radius passed to the final parallel-transport tube sweep',
         derivationPrinciple: 'Neutral display radius times this SOP display form’s yarn-slot factor',
         confidence: 'VISUAL_ASSUMPTION', applicableState: 'DISPLAY_ONLY_UNCALIBRATED' };
       summary.eventCount += cells.length;
-      summary.modelArcLength += cells.reduce((sum, cell) => sum + cell.modelArcLength, 0);
+      summary.arcLengthMm += cells.reduce((sum, cell) => sum + cell.arcLengthMm, 0);
       const id = chain.id + '/swatch:' + needleStart + '+' + width;
       const path = { id, yarnId: chain.yarnId, yarnIndex: chain.yarnIndex, feedIndex: sourceFeed, sourceFeed, row: first.row,
         cells, centerline, geometryRole: 'CONTINUOUS_STITCH_CHAIN', evidenceStatus: 'VISUAL_ASSUMPTION',
@@ -367,7 +378,9 @@ export async function buildSopInterlockSwatch(topology, options = {}, afterChain
     coverage.generatedAssignments = generated.size;
     requireSource(generated.size === expectedAssignments,
       '三维样布只找到了 ' + generated.size + ' / ' + expectedAssignments + ' 个针位纱线分配');
-    return { status: 'OK', identity, parameters, paths, scene, evidenceScene: scene, coverage, lengths: null,
+    const publishedParameters = { ...parameters, radiusMm, mmPerLayoutUnit, needlePitchMm,
+      units: { geometry: 'mm', centerline: 'mm', radius: 'mm', arcLength: 'mm', uvRepeat: 'mm', layoutRadius: SOP_INTERLOCK_LAYOUT.unit } };
+    return { status: 'OK', identity, parameters: publishedParameters, paths, scene, evidenceScene: scene, coverage, lengths: null,
       sectionEvidence: { ...section, formedRadiiBySlot: radiiBySlot }, mode: 'SOP_INTERLOCK_SWATCH',
       counts: { meshes: paths.length, triangles: scene.reduce((n, item) => n + item.geometry.counts.triangles, 0) },
       diagnostics: [{ code: 'VISUAL_ASSUMPTION', message: 'Loop placement and yarn radius are display assumptions.' }] };

@@ -128,10 +128,17 @@ function localAdjacency(a, b, source) {
  * by source pair and evidence kind, preserving witness counts and source IDs.
  * evidence is a caller-supplied TEST_ONLY relation contract, never inferred CN.
  * Default +Z projection is explicit and is not the user's live camera.
+ * Units: every input centerline, tube mesh and section radius must be tagged mm;
+ * the numeric tolerances are epsilonMm (contact/plane tolerance) and cellSizeMm
+ * (broadphase hash cell). The unitless legacy names epsilon/cellSize are refused.
  */
+export const AUDIT_DEFAULT_TOLERANCES_MM = Object.freeze({ epsilonMm: 1e-7, cellSizeMm: .25 });
 export async function auditYarnGeometry(swatch, options = {}) {
   const clock = () => globalThis.performance?.now() ?? Date.now(), started = clock();
-  const epsilon = options.epsilon ?? 1e-7, cellSize = options.cellSize ?? .25;
+  const legacyToleranceNames = ['epsilon', 'cellSize'].filter(name => Object.hasOwn(options, name));
+  const epsilon = options.epsilonMm ?? AUDIT_DEFAULT_TOLERANCES_MM.epsilonMm, cellSize = options.cellSizeMm ?? AUDIT_DEFAULT_TOLERANCES_MM.cellSizeMm;
+  const units = Object.freeze({ length: 'mm', epsilonMm: epsilon, cellSizeMm: cellSize,
+    meaning: 'Centerlines, tube vertices, swept radii, witness distances and both tolerances share one unit (mm).' });
   const yieldControl = options.yieldControl ?? (() => new Promise(resolve => setTimeout(resolve, 0)));
   const statistics = { durationMs: 0, bands: 0, broadphaseCandidates: 0, narrowphaseTests: 0, spatialCells: 0,
     memberships: 0, yields: 0, maxChunkMs: 0, estimatedIndexBytes: 0, skippedLocalAdjacency: 0, examinedMeshTriangles: 0 };
@@ -173,7 +180,7 @@ export async function auditYarnGeometry(swatch, options = {}) {
     }
     statistics.durationMs = clock() - started;
     statistics.maxChunkMs = Math.max(statistics.maxChunkMs, clock() - chunkStart);
-    const report = { status, complete: status === 'COMPLETE', findings: result, sources,
+    const report = { status, complete: status === 'COMPLETE', findings: result, sources, units,
       counts: { findings: result.length, byClassification, byRelation, sourcePaths: Object.keys(sources).length }, statistics,
       memory: { heapBefore, heapAfter: globalThis.performance?.memory?.usedJSHeapSize ?? null,
         meaning: 'Optional browser heap sample is process-wide, not retained audit allocation. Index estimate counts numeric payload only; excludes JS object/string/Map overhead and input mesh.' },
@@ -207,7 +214,7 @@ export async function auditYarnGeometry(swatch, options = {}) {
       geometryEvidence: { kind, ...witness }, physicalRelation: 'UNKNOWN', evidenceScope: 'SAMPLED_RENDER_GEOMETRY',
       evidenceSource: evidence?.source ?? 'Existing sampled XYZ path and Tube Geometry; no CN-derived contact' });
   }
-  if (swatch?.status !== 'OK' || !Array.isArray(swatch.paths) || !Array.isArray(swatch.scene) || !Number.isFinite(epsilon) || epsilon <= 0 ||
+  if (legacyToleranceNames.length || swatch?.status !== 'OK' || !Array.isArray(swatch.paths) || !Array.isArray(swatch.scene) || !Number.isFinite(epsilon) || epsilon <= 0 ||
     !Number.isFinite(cellSize) || cellSize <= 0 || swatch.paths.length > 20000) return finish('INVALID');
   if (swatch.paths.some(p => !p || typeof p.id !== 'string') || new Set(swatch.paths.map(p => p.id)).size !== swatch.paths.length ||
     swatch.scene.length !== swatch.paths.length || swatch.scene.some(p => !p || typeof p.id !== 'string') ||
@@ -225,7 +232,8 @@ export async function auditYarnGeometry(swatch, options = {}) {
       lengthMeaning: 'Sampled polyline diagnostic in geometry unit, not XYZ curve integral or M1/M3', unit: mesh?.unit ?? null };
     meshes[m] = mesh;
     let issue = null;
-    if (!mesh || !validPoints || mesh.unit !== 'mm' || mesh.counts?.rings !== pts.length || !Number.isInteger(mesh.counts?.radialSegments) ||
+    if (mesh && validPoints && (path.centerline.unit !== 'mm' || (provenance.section && provenance.section.unit !== 'mm'))) issue = 'LENGTH_UNIT_NOT_MM';
+    else if (!mesh || !validPoints || mesh.unit !== 'mm' || mesh.counts?.rings !== pts.length || !Number.isInteger(mesh.counts?.radialSegments) ||
       mesh.counts.radialSegments < 3 || mesh.counts.radialSegments > 256 || mesh.counts.vertices > 2000000 ||
       !mesh.positions || !mesh.indices || !mesh.normals || pts.length < 2 ||
       mesh.positions.length !== mesh.counts.vertices * 3 || mesh.normals.length !== mesh.positions.length ||

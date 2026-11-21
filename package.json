@@ -11,6 +11,7 @@
     "validate:sop-diagonal-release": "node scripts/validate-sop-diagonal-release.mjs",
     "validate:sop-flat-layout": "node scripts/validate-sop-flat-layout.mjs",
     "validate:sop-interlock-swatch": "node scripts/validate-sop-interlock-swatch.mjs",
+    "validate:sop-swatch-units": "node scripts/validate-sop-swatch-units.mjs",
     "validate:sop-visual-joint": "node scripts/validate-sop-visual-joint.mjs",
     "validate:sop-joint-lifecycle": "node scripts/validate-sop-joint-lifecycle.mjs",
     "validate:spatial-debug-views": "node scripts/validate-spatial-debug-views.mjs",

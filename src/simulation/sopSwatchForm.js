@@ -11,7 +11,7 @@ export const SOP_SWATCH_FORM = Object.freeze({
   columnPitch: SOP_INTERLOCK_LAYOUT.columnPitch, courseStep: SOP_INTERLOCK_LAYOUT.courseStep * .72,
   openEdge: Object.freeze({supportCourses: 8, rampCourses: 3, lateralPerDepth: 0.085, depthScaleChange: 0.085}),
   courseScale: .72, depthScale: 1.35, depthSpan: .20, lateralLay: .75, mainRadiusScale: 1.4, platedRadiusScale: 1,
-  units: { dimensionless: 'courseScale, depthScale, lateralLay, mainRadiusScale, platedRadiusScale', displayLength: 'columnPitch, courseStep, depthSpan, periodic XYZ coefficient triples' },
+  units: { dimensionless: 'courseScale, depthScale, lateralLay, mainRadiusScale, platedRadiusScale', layoutLength: SOP_INTERLOCK_LAYOUT.unit + ': columnPitch, courseStep, depthSpan, periodic XYZ coefficient triples; converted to mm once at the end of formSopYarnTube' },
 });
 const form = SOP_SWATCH_FORM;
 const walePhase = 2*Math.PI/(4*form.columnPitch), coursePhase = -6*Math.PI/(8*form.courseStep);
@@ -391,7 +391,12 @@ function layOpenUpperEdge(controls, sourceHeight, radius) {
   return relaxCurvature(placed, radius);
 }
 
-export function formSopYarnTube({ mesh, centerline, ringParameters }, cells, uvRepeat, layPhase, yarnIndex, radius, sourceHeight) {
+// Input controls, radius and every form constant are in SOP_LAYOUT_UNIT. The
+// returned centerline, tube, radius and per-cell arc lengths are in mm: the
+// finished layout is scaled once by mmPerLayoutUnit, and uvRepeatMm is in mm.
+export function formSopYarnTube({ mesh, centerline, ringParameters }, cells, uvRepeatMm, layPhase, yarnIndex, radius, sourceHeight, mmPerLayoutUnit) {
+  if (!(Number.isFinite(mmPerLayoutUnit) && mmPerLayoutUnit > 0)) throw Error('formSopYarnTube requires mmPerLayoutUnit');
+  if (centerline.unit !== SOP_INTERLOCK_LAYOUT.unit) throw Error('formSopYarnTube expects a ' + SOP_INTERLOCK_LAYOUT.unit + ' reference centerline');
   const sourceRow = cells[0].row;
   const phaseIndex = Math.round((layPhase - 1.5*Math.PI)/(Math.PI/4));
   const originRow = ((3*phaseIndex)%8+8)%8;
@@ -420,7 +425,10 @@ export function formSopYarnTube({ mesh, centerline, ringParameters }, cells, uvR
     controls = relaxCurvature(controls, radius);
     controls = layOpenUpperEdge(controls, sourceHeight, radius);
   }
-  const curve = check(createSpatialCurve({ type: 'catmull-rom', points: controls, unit: 'mm' })).curve;
+  // Single layout → mm conversion. All later geometry is built directly in mm.
+  controls = controls.map(point => point.map(value => value * mmPerLayoutUnit));
+  radius *= mmPerLayoutUnit;
+  const curve =check(createSpatialCurve({ type: 'catmull-rom', points: controls, unit: 'mm' })).curve;
   const arc = check(measureSpatialLength(curve)).cumulativeLengths;
   const points = [], tangents = [], cumulativeLengths = [];
   for (const t of ringParameters) {
@@ -433,7 +441,8 @@ export function formSopYarnTube({ mesh, centerline, ringParameters }, cells, uvR
   const path = { status: 'OK', unit: 'mm', closed: false, points, tangents, cumulativeLengths, totalLength: arc.at(-1) };
   const frames = check(buildParallelTransportFrames(path));
   const tube = check(buildYarnTubeGeometry({ path, frames, radiusA: radius,
-    radialSegments: mesh.counts.radialSegments, uvRepeatLength: uvRepeat, capEnds: false }));
-  for (const c of cells) c.modelArcLength = arc[c.controlEnd] - arc[c.controlStart];
-  return { mesh: tube, radius, centerline: { ...centerline, points, tangents, controlPoints: controls, continuity: curve.continuity } };
+    radialSegments: mesh.counts.radialSegments, uvRepeatLength: uvRepeatMm, capEnds: false }));
+  for (const c of cells) c.arcLengthMm = arc[c.controlEnd] - arc[c.controlStart];
+  return { mesh: tube, radius, centerline: { ...centerline, unit: 'mm', points, tangents, controlPoints: controls,
+    cumulativeLengths, totalLength: arc.at(-1), continuity: curve.continuity } };
 }

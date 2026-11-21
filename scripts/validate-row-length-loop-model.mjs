@@ -315,8 +315,8 @@ for (const heading of [
 }
 // Section titles are prose; the software/process validation boundary is the contract.
 function assertValidationBoundary(document) {
-  // 2026-11-20: stage moved from P0-C0 to the 3D geometry acceptance gate (docs/NEXT_TASK.md).
-  assert.match(document, /当前关口是\*\*三维几何验收\*\*/, "must identify the current gate");
+  // 2026-11-21: 3D code removed; stage is the 3D algorithm redesign (docs/NEXT_TASK.md).
+  assert.match(document, /当前关口是\*\*三维算法重新设计\*\*/, "must identify the current gate");
   const baselineSection = document.split(/^## .*$/m).find(
     (section) => section.includes("SolverResult") && section.includes("PreviewValidity")
   );
@@ -336,7 +336,7 @@ function assertValidationBoundary(document) {
 assertValidationBoundary(technicalDoc);
 assertValidationBoundary(technicalDoc.replace(/^## 7\..*$/m, "## 软件验证说明"));
 for (const contractText of [
-  "三维几何验收", "SolverResult", "PreviewValidity",
+  "三维算法重新设计", "SolverResult", "PreviewValidity",
   "合法/非法输入保护", "明确Clear", "UNREACHABLE_TARGET",
   "Feed×Yarn独立目标", "批量目标原子预检", "feedYarnStructureRevision",
   "UNKNOWN / PENDING PROCESS CONFIRMATION",

@@ -2,7 +2,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { render } from "lit-html";
 import Split from "split.js";
 
-import { StateMonitor, GLOBAL_STATE } from "./state";
+import { StateMonitor } from "./state";
 
 import { fitChart } from "./actions/zoomFit";
 
@@ -31,14 +31,13 @@ import { simulationTouchInteraction } from "./events/simulationTouchInteraction"
 
 import { drawSymbolPicker } from "./components/drawSymbolPicker";
 import { resizeCanvases } from "./components/resizeCanvases";
-import { runSimulation, flushSimulationPreviews, getCurrentSimulationSnapshots } from "./components/runSimulation";
+import { runSimulation, flushSimulationPreviews } from "./components/runSimulation";
 import { closeModals } from "./events/closeModals";
 import { generateChart } from "./components/generateChart";
 import { isMobile } from "./utils";
 import { isCodeGuideMode } from "./codeGuide/mode";
 import { initCodeGuideEvents } from "./codeGuide/codeGuideEvents";
 import { createAppRenderer } from "./components/renderApp";
-import { createSpatialWorkbenchHost } from "./components/spatialWorkbenchHost.js";
 
 let symbolCanvas,
   gridCanvas,
@@ -48,13 +47,8 @@ let symbolCanvas,
   yarnSequenceEditorCanvas,
   simContainer;
 
-const spatialWorkbench = createSpatialWorkbenchHost({ getContext: () => {
-  const snapshots = getCurrentSimulationSnapshots();
-  return { ...GLOBAL_STATE, machineSnapshot: snapshots.machine,
-    machineSnapshotPending: snapshots.pendingMachine, machineSnapshotError: snapshots.machineExecutionError };
-} });
 const appRenderer = createAppRenderer({
-  renderView: () => { render(view(), document.body); flushSimulationPreviews(); spatialWorkbench.sync(); },
+  renderView: () => { render(view(), document.body); flushSimulationPreviews(); },
 });
 
 function initKeyboard() {
@@ -136,13 +130,5 @@ function init() {
   fitChart();
 }
 
-window.onload = async () => {
-  const exampleStatus = document.querySelector("[data-swatch-example]");
-  if (exampleStatus) {
-    const { startExampleEditor } = await import("./swatchPreview.js");
-    await startExampleEditor(init, exampleStatus);
-  } else {
-    init();
-  }
-};
+window.onload = init;
 window.onresize = measureWindow;

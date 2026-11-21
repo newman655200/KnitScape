@@ -69,10 +69,6 @@ export function taskbar() {
       <button type="button" class="btn ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "selected" : ""}"
         aria-pressed=${GLOBAL_STATE.workbenchMode === "pbr25d"}
         @click=${() => dispatch({ workbenchMode: "pbr25d" })}>PBR + 2.5D</button>
-      <button type="button" data-swatch-open class="btn ${GLOBAL_STATE.workbenchMode === "sop3d" ? "selected" : ""}"
-        aria-pressed=${GLOBAL_STATE.workbenchMode === "sop3d"}
-        @click=${() => dispatch({ workbenchMode: "sop3d",
-          workspaceMode: GLOBAL_STATE.workspaceMode === "yarns" ? "machine" : GLOBAL_STATE.workspaceMode })}>三维样布</button>
     </div>
     <div
       class="fabric-mode-controls ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "workspace-hidden" : ""}"

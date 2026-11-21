@@ -28,8 +28,8 @@ export function pbrWorkbench() {
     @keydown=${event => event.stopPropagation()} @keyup=${event => event.stopPropagation()}>
     <div class="pbr-preview-main">
       <header class="pbr-workbench-heading">
-        <h2>PBR + 2.5D</h2><span>2.5D 空间几何：开发中</span>
-        <p>二维路径材质预览保留；下方为人工 XYZ 几何 TEST_ONLY 原型，真实组织空间几何未确认。</p>
+        <h2>PBR + 2.5D</h2><span>三维空间几何：已移除，算法重新设计中</span>
+        <p>二维路径材质预览。</p>
       </header>
       <div class="pbr-preview-toolbar">
         <label>Feed × Yarn <select id="pbr-yarn-select" .value=${live(selected)} ?disabled=${!yarnIds.length}
@@ -56,11 +56,10 @@ export function pbrWorkbench() {
           <canvas id="pbr-front" class=${view.flipped ? "bottom" : "top"}></canvas>
         </div>
       </div>
-      ${active ? html`<div id="yarn-spatial-workbench-slot"></div>` : null}
     </div>
     <aside class="pbr-workbench-sidebar">
       <div class="pbr-development-status"><strong>空间功能状态</strong>
-        <p>人工 XYZ 几何：TEST_ONLY 原型</p><p>真实组织空间几何、真实截面尺寸：未确认</p><p>纱线空间接触：未验证</p><p>物理松弛：未实现</p>
+        <p>三维纱线几何 / 样布：已移除（2026-11-21），从纱线组织到面料形态的算法重新设计中</p>
       </div>
       <details class="pbr-length-summary"><summary>原二维 Feed × Yarn 长度摘要 · ${rows.length} 项 · ${GLOBAL_STATE.previewValidity}</summary>
         ${active ? yarnLengthSolverFeedback() : null}

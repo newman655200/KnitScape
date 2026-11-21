@@ -13,7 +13,7 @@ PROCESS CONFIRMATION GATE                    ✓ 对 SOP-001 打开（10-20）
     ↓
 P0-C1 Canonical Yarn Length                  ✓ 纱长闭合（16 槽收敛，分支 C）
     ↓
-3D Geometry（xyz Centerline → Yarn Mesh）    ← 当前关口：三维几何验收（未通过）
+3D Geometry（xyz Centerline → Yarn Mesh）    ← 当前关口：算法重新设计（2026-11-21 三维代码已移除）
     ↓ Correctness Gate（三维弧长独立验证）
     ↓
 Physical UV / PBR

@@ -6,12 +6,12 @@
 
 - **FACT — 工艺已确认（2026-10-20）**：SOP-001 的 23 / 8 cm/100机针 为拆纱放松实测长度，实际牵伸倍率 3.0（氨纶织造态参考 24 cm/100机针），张力 5/4 cN 仅记录。详见 [YARN_LENGTH_CONTRACT](docs/YARN_LENGTH_CONTRACT.md) 顶部“SOP-001 生产确认补充”。2026-10-17 写的“七问全部 PENDING、Gate 关闭”已过时，不再作为阻塞项。
 - **FACT — 纱长线已闭合**：指定 SOP 包 8 路双纱共 16 槽纱长收敛，越界/清空/批量/revision 有回归保护（功能提交 `7ababf2`）。这一线不再继续打磨。
-- **当前关口 — 三维几何验收（未通过）**：只验收双纱样布线（`sopInterlockSwatch`）；桌面模板冻结为调试视图（其 `SURFACE_CROSSING` 13,452 条不再处理）。条件 1（mm 单位统一）已完成；样布仍输出 `physicalLengthEligible:false`、`lengths:null`。具体验收条件见 [NEXT_TASK](docs/NEXT_TASK.md)。
-- **DESIGN DECISION**：在三维几何验收通过前，不再做报告、任务书、打包、清理等元工作，也不重新讨论已确认的工艺语义。
+- **2026-11-21 决定 — 三维代码已全部移除**：三维样布、TEST_ONLY 三维实验、松弛工作台及其 validator 已删除（旧实现见提交 `fc56f2b`）。当前任务是重新讨论“纱线组织 → 面料形态”算法，见 [NEXT_TASK](docs/NEXT_TASK.md)。
+- **DESIGN DECISION**：不重新讨论已确认的工艺语义。
 - **仍为 UNKNOWN**：真实纱径及弹性、摩擦等物性；M1 与 M3 测量窗口差异仍在。这些不阻塞几何验收，但不得用默认值冒充实测。
-- **FACT**：当前 HEAD 为 `23e71e7`；最后一次功能提交为 `7ababf2`。工作区仍有未提交改动（大部分是 CRLF 行尾噪声），不要覆盖。
+- **FACT**：最后一次功能提交为 `7ababf2`；三维代码存档提交为 `fc56f2b`。
 
-P0已建立可信目标输入、派生结果、失败状态、Feed×Yarn独立目标、批量及revision回归保护；纱长求解已按 10-20 工艺确认闭合，但**尚未用三维弧长验收**，也不等于生产精度验收。当前Solver/UI窗口与完整repeat诊断定义不同。正式Simulation是二维分层路径预览；三维空间工作台与样布演示存在，但未通过几何验收。
+P0已建立可信目标输入、派生结果、失败状态、Feed×Yarn独立目标、批量及revision回归保护；纱长求解已按 10-20 工艺确认闭合，但不等于生产精度验收。当前Solver/UI窗口与完整repeat诊断定义不同。正式Simulation是二维分层路径预览；三维空间工作台与样布演示已于 2026-11-21 移除。
 
 ## 当前产品链路
 
@@ -47,7 +47,7 @@ createSingleJerseySimulationInput()
 | 文档 | 解决的问题 |
 |---|---|
 | [当前功能与算法](docs/KnitScape_当前功能与算法.md) | 当前实现和能力边界 |
-| [NEXT_TASK](docs/NEXT_TASK.md) / [ROADMAP](docs/ROADMAP.md) | 当前关口（三维几何验收）的验收条件与禁令；ROADMAP 给出阶段图与之后的路线 |
+| [NEXT_TASK](docs/NEXT_TASK.md) / [ROADMAP](docs/ROADMAP.md) | 当前任务（三维算法重新设计）；ROADMAP 给出阶段图与之后的路线 |
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | Machine / Simulation / Geometry / Renderer边界 |
 | [DOMAIN_AUTHORITY](docs/DOMAIN_AUTHORITY.md) | 输入权威、派生数据、兼容源和消费者 |
 | [YARN_LENGTH_CONTRACT](docs/YARN_LENGTH_CONTRACT.md) | 当前各长度口径与未来契约骨架 |

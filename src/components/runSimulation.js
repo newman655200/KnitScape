@@ -116,8 +116,7 @@ export function simulationView() {
   const operationPreview = operationDemoEnabled
     ? machinePreview?.getOperationPreview?.(operationCursor.row, operationCursor.needle) ?? null : null;
 
-  const showSwatch = GLOBAL_STATE.workbenchMode === "sop3d";
-  return html`<div id="sim-pane" class=${showSwatch ? "swatch-preview-active" : ""}>
+  return html`<div id="sim-pane">
     <div id="sim-container" data-code-guide-key="simulation.canvas">
       <div class="simulation-preview-grid ${showDesignComparison
         ? "comparison-active"
@@ -265,8 +264,6 @@ export function simulationView() {
         ${buttonIcon("fit", t("simulation.fit", language))}
       </button>
     </div>
-    ${showSwatch ? html`<section id="sop-swatch-workbench-slot" aria-label="三维样布预览"
-      @keydown=${event => event.stopPropagation()} @keyup=${event => event.stopPropagation()}></section>` : null}
   </div>`;
 }
 

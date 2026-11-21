@@ -109,7 +109,6 @@ export function createSimulationPreviewHost({ getState, getSnapshots, getClassic
     if (!dirty || disposed) return;
     dirty = false;
     const state = getState(), snapshots = getSnapshots();
-    if (mode === "sop3d") { setStatus("inactive"); return; }
     if (snapshots.pending) { setStatus("pending"); return; }
     if (mode === "pbr25d") {
       const snapshot = snapshots.machine ?? (snapshots.machineExecutionError ? null : snapshots.pattern);

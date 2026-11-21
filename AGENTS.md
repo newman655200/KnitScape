@@ -58,7 +58,7 @@ FACT：当前项目导出/包白名单及导入链已包含 `needleArrangementIn
 
 - FACT：2026-10-20 已收到生产确认——23 / 8 cm/100机针为拆纱放松实测，牵伸倍率 3.0（氨纶织造态参考 24），见 [YARN_LENGTH_CONTRACT.md](docs/YARN_LENGTH_CONTRACT.md) 顶部。旧的 `P0-C0 Correctness Preparation` 及“七问全部 PENDING”是 10-17 快照，已过时，不得再作为阻塞或下一任务。
 - FACT：纱长线已闭合——指定 SOP 包 16 槽收敛，回归保护齐全。不再继续打磨求解器。
-- 当前关口：**三维几何验收**（未通过），只在样布线 `sopInterlockSwatch` 上验收；桌面模板（`sopSpatialHypothesis`）冻结，只作调试视图。验收条件见 [NEXT_TASK.md](docs/NEXT_TASK.md)。通过前不做报告、任务书、打包、清理等元工作。
+- 2026-11-21：三维几何代码（样布、TEST_ONLY 三维实验、松弛工作台）已全部移除，旧实现见 `fc56f2b`。当前任务是与用户讨论“纱线组织 → 面料形态”新算法，方案确认前不写三维代码。见 [NEXT_TASK.md](docs/NEXT_TASK.md)。
 - UNKNOWN：真实纱径及其他物性；不得用默认值冒充实测。
 
 以 [NEXT_TASK.md](docs/NEXT_TASK.md)、[当前架构](docs/ARCHITECTURE.md)、[纱长契约](docs/YARN_LENGTH_CONTRACT.md) 为当前交接入口。

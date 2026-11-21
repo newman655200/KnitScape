@@ -3,7 +3,7 @@ import { defineConfig, normalizePath } from "vite";
 
 export default defineConfig(({ command }) => ({
   base: "./",
-  build: { rollupOptions: { input: { editor: "index.html", swatch: "swatch.html" } } },
+  build: { rollupOptions: { input: { editor: "index.html" } } },
   define: {
     // Code Guide opens the checkout used by the local dev server.
     // Only the dev server gets the real path; production builds (web/Electron

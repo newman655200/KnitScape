@@ -7,7 +7,7 @@
 
 **FACT**：`2a1efc1`是历史主线起点，当前HEAD包含它；工作区另有已有未提交材料解析修改。以下当前行为以源码为准，历史实验另标报告来源。旧路线不属于当前主线。
 
-**当前阶段（2026-11-20）**：10-20 SOP-001 工艺已确认，纱长已闭合（16 槽收敛）；当前关口是**三维几何验收**，见 [NEXT_TASK](NEXT_TASK.md)。旧的 `P0-C0` 阶段已过时。证据分类、物理数据来源六项原则和工艺七问见 [PROCESS_VALIDATION](PROCESS_VALIDATION.md)；当前路线以 [ROADMAP](ROADMAP.md) 为准。未知物性与测量方法不得猜默认值。
+**当前阶段（2026-11-20）**：10-20 SOP-001 工艺已确认，纱长已闭合（16 槽收敛）；当前关口是**三维算法重新设计**（2026-11-21 三维代码已全部移除，旧实现见 `fc56f2b`），见 [NEXT_TASK](NEXT_TASK.md)。旧的 `P0-C0` 阶段已过时。证据分类、物理数据来源六项原则和工艺七问见 [PROCESS_VALIDATION](PROCESS_VALIDATION.md)；当前路线以 [ROADMAP](ROADMAP.md) 为准。未知物性与测量方法不得猜默认值。
 
 ## 1. 项目当前定位
 
@@ -359,7 +359,7 @@ batch selection / pending / draft
 
 ```text
 P0软件基线 ✓ → PROCESS CONFIRMATION GATE ✓（10-20）→ P0-C1 纱长 ✓（16 槽收敛）
-→ 三维几何验收（xyz Centerline / Yarn Mesh；当前关口，未通过）
+→ 三维几何（xyz Centerline / Yarn Mesh；2026-11-21 代码已移除，算法重新设计中）
 → Physical UV/PBR → Real Fabric Calibration
 → Conditional Relaxation/Contact → Fuzz/High Fidelity
 ```

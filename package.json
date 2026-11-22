@@ -8,6 +8,7 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "validate:fabric-form-solver-math": "node scripts/validate-fabric-form-solver-math.mjs",
     "validate:operation-demo": "node scripts/validate-operation-demo.mjs",
     "validate:spandex-process-contract": "node scripts/validate-spandex-process-contract.mjs",
     "validate:gauge-authority": "node scripts/validate-gauge-authority.mjs",
@@ -70,6 +71,7 @@
     "@zip.js/zip.js": "2.23.0",
     "d3": "^7.8.5",
     "lit-html": "^2.7.5",
+    "ml-matrix": "6.15.1",
     "split.js": "^1.6.5"
   },
   "devDependencies": {

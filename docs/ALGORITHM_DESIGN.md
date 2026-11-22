@@ -158,3 +158,70 @@
 本轮实际运行独立算术脚本 [formula-check.mjs](C:/Users/liuchen/Documents/KnitScape/archives/t0-doc-baseline-2026-11-21/formula-check.mjs)，结果见 [formula-check.json](C:/Users/liuchen/Documents/KnitScape/archives/t0-doc-baseline-2026-11-21/formula-check.json)。核对弯曲圆环离散值、`e′=-f`、Abel 积分关系、GSM 与容差换算；不含织物求解器实现，也不代表 T1 A 类验收已经完成。
 
 20 tex、ρ=1.31 g/cm³、φ0=0.5 得 d_e=0.197173891 mm；3.0 mm 周期、24 段（段长 0.125 mm）、同相位平行直纱、每段 3×3 Gauss–Legendre、r/d_e=0.85 时，单位长度接触能相对解析值误差 **+0.8614227%**。这复现了固定 q=3 超过 0.1% 的反例，不能据此否定 Abel 核。五个间距（r/d_e=0.55/0.65/0.75/0.85/0.95）的独立 Abel 数值积分最大相对误差约 1.1×10⁻¹²；仅支持这次公式核验。T1 M3/A14 仍须按支撑范围切分或自适应细分，分别检查杆离散和积分收敛，不以默认 32/5 替代证明。
+
+## 10. 第一步结果（2026-11-22）
+
+本节记录用户随后授权的 **T1：单纱、全成圈、无摩擦周期平针**实际实现与计算结果。前九节保留 T0 时点的讨论、授权和阅读记录；其中“尚未实现”“本轮不安装依赖”等是当时状态，不替代本节。当前实现不含氨纶、集圈、实物标定或渲染管面；T/M 输入明确拒绝，动作仍由 `resolveSingleJerseyOperations()` 解释。
+
+### 10.1 实现与复用决策
+
+- [约束优化器](../src/fabricForm/constrainedOptimizer.js) 使用已安装并锁定的 `ml-matrix 6.15.1`：条件估计及原 Jacobian 残差检查允许时用 Cholesky，病态或秩不足时用 SVD。L-BFGS 的 two-loop/history 从 MIT 许可的 `numopt-js 0.6.0`（commit `0410894bf2d452ff2e89eee25d073520bf859104`）适配，保留许可。约束外层、自由方向反力拟合和周期安全步长由本项目组合实现，不称为直接复用了完整外部织物求解器。
+- [初始几何](../src/fabricForm/fabricFormInitialGeometry.js) 复用 `sabetta/stitch-by-stitch` 的 stockinette 控制点与曲线构造（commit `0ed27f35dcf5c3bda874f214bbcab0455055edf0`，MIT 许可保留），只作为穿套初值；未使用其接触能或优化器，也未声称复现原论文实验。
+- 弯曲与 van Wyk/Abel 接触保持任务书物理公式；接触积分按实际支撑切分并细分空间区间。原最近距离势垒权重的细分反例保留在证据中，生产势垒采用有一致双线测度的 `E_barrier=(K·E_f/d_e)∬b(r−r_c) ds dt`。固定平行几何的 36 组节点数、相位与间隙检查，能量和法向导数相对独立积分的最大误差分别为 `2.44e−13`、`8.35e−14`；积分势垒本身不保证不可穿越。
+- 全过程保护使用扫掠周期包围盒和段距离 Lipschitz 保守步长，包含移动格矢像、自身非零像以及展开材料近邻；保留“起终点安全、中间穿越”回归。其保证对象为未排除的非局部中心线段，不能替代局部纱管或最终三角网格零相交证明。
+
+### 10.2 M5 数值结果与边界
+
+未标定参考输入为 20 tex、ρ=1.31 g/cm³、d_f=0.021 mm、E_f=3000 N/mm²、K=0.01、φ0=0.5，均标 `ASSUMPTION`；派生 d_e=0.197173891 mm、r_c=0.098586946 mm、B=0.001262405 N·mm²。完整 Value、Unit、Source、principle、Confidence、Applicable state 与依赖链见 [冻结输入](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/frozen-cases.json)。来源是 T1 数值参考假设，适用状态限于未标定模型，不冒称真实纱批测量。
+
+| 检查 | 已取得证据及限制 |
+|---|---|
+| 梯度、周期复制、镜像 | 实际 24 节点参考构型共 75 个节点/格矢自由度中心差分，梯度相对误差 `5.59e−9`；精确复制 2×2、4×8 的每圈能量误差 ≤`1.39e−15`、拉回梯度误差 ≤`6.67e−13`。z 镜像检查同时反转穿套 `over` 元数据，保持 XY 有向关系；不把零剪切当所有分支的定理。见 [固定几何验收](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/fixed-acceptance.json)。 |
+| 尺度与刚度协变 | 几何/l/d_f ×2、tex ×4 后能量 ×8；E_f ×10 后能量与梯度 ×10。变换后的平衡构型再次进入生产入口，均满足收敛判据；这不是从无关初值寻找新分支。见 [尺度结果](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/scale-equilibrium.json)、[刚度结果](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/stiffness-equilibrium.json)。 |
+| 五个初值 | 种子 101/202/303/404/505 在相同材料网格上保持长度与可行性，均收敛；每圈能量约 0.01997412 N·mm、横密约 13.01618/cm、纵密约 18.45865/cm。只支持这些初值所得分支，不证明唯一解或全局最小值。见 [初值记录](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/branches.json)。 |
+| 大单元自由诊断 | 扰动后的 2×2 续算收敛，每圈能量 0.01997272474 N·mm、节点残差比 `3.82e−7`；原失败记录单独保留，累计 3595 次、417.97 s。4×8 收敛，每圈能量 0.01997412362 N·mm、节点残差比 `8.14e−7`、80.38 s。2×2 略低能量不证明稳定性或全局最优；它与固定几何复制恒等检查分开报告。见 [2×2](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/branch-2x2.json)、[续算前记录](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/branch-2x2-before-resume.json)、[4×8](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/branch-4x8.json)。 |
+| 锁定尺寸反力 | 固定 W/H，仅拟合节点与 S 自由方向的乘子。收敛后的同分支平衡能量中心差分与 W/H 反力的相对误差为 0.0837% / 0.0376%；固定方向非零反力未混入自由平衡失败条件。见 [锁定结果](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/locked.json)、[反力核对](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/locked-reaction-check.json)。 |
+
+上述参考解势垒能为零，仍单独保留有激活势垒的细分与力检查。模型自洽、已覆盖数值检查与实物准确性分开；这里没有实物验收结论。耗时环境为 Node v20.17.0、Windows、Intel i5-12500H；[1×1 参考冷启动记录](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/reference.json)为 56.95 s，部分初值为 42–43 s。A12 的单工况 30 s 目标未普遍达到；这些 M5 记录与第 10.4 节修复后重跑的四工况分别保留，不能把复用已收敛初值的瞬时复核计作冷启动性能。
+
+### 10.3 杆离散与积分独立收敛
+
+在 l=3 mm、同一参考材料及延续分支上，先确认固定几何 q=12/24 积分稳定，再以受保护的周期曲线延续细化材料网格；各级均实际达到物理平衡与长度判据。
+
+| 每圈节点数 | 横密（纵行/cm） | 纵密（路/cm） | 总能量（N·mm/圈） | 节点残差比 |
+|---|---:|---:|---:|---:|
+| 24 | 13.016176 | 18.458649 | 0.019974123 | 7.20e−7 |
+| 32 | 12.968713 | 18.378324 | 0.019644374 | 6.17e−7 |
+| 64 | 12.968000 | 18.297559 | 0.019353990 | 8.86e−7 |
+
+32→64 的横密与纵密变化绝对值为 **0.00550% / 0.43946%**，均小于 0.5%；24→64 的纵密变化为 0.87271%。据此先冻结 **N=32 为四工况计算设置、N=64 为更细参考，接触积分 q=12 并保留支撑切分**。这项密度收敛结论限于 l=3 mm 的已计算材料和分支，不声称能量、所有局部量或其他长度已达到同样误差；第 10.4 节的实际 4 mm 复核仍超过杆精度门槛。局部曲率、间隙、长度误差、尝试记录及累计耗时见 [细化汇总](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/refinement-summary.json)；N=32/64 的 q=12→24 梯度相对变化约 `6.11e−9` / `1.32e−9`，分别见 [32 节点积分核对](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/refinement-32-quadrature.json)、[64 节点积分核对](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/refinement-64-quadrature.json)。重试及中断后的累计耗时不是新的生产性能基准。
+
+### 10.4 四工况、SOP 参考及最终回归
+
+四工况在计算前冻结同一组材料参数、N=32/q=12 数值设置及来源相连分支规则；各纱长从同一归一化收敛几何出发，未按工况调参。N=64 诊断暴露近零步长的舍入回溯停滞后，优化器补充舍入窗口内的下降判据、未发生坐标变化的候选终止及内层定期物理收敛检查；物理公式、材料参数与 A4/长度门槛没有改变。以下四工况与 SOP 参考均已用修复后的优化器完整重跑，原 M6 记录保存在 [before-roundoff-fix](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/before-roundoff-fix/)。以下均为实际 `CONVERGED` 结果，密度是模型预测，GSM 是相同输入与预测面积的质量推导。
+
+| l（mm/圈）/ 结果文件 | 横密（纵行/cm） | 纵密（路/cm） | kw | kc | kc/kw | GSM（g/m²） | 暂定 B 区间 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| [2.6](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-2.6.json) | 13.87900 | 23.32518 | 3.60854 | 6.06455 | 1.68061 | 168.340 | kc、kc/kw 超上限 |
+| [3.0](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-3.json) | 12.96871 | 18.37832 | 3.89061 | 5.51350 | 1.41713 | 143.006 | 本行通过 |
+| [3.5](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-3.5.json) | 11.07467 | 15.37317 | 3.87613 | 5.38061 | 1.38814 | 119.177 | 本行通过 |
+| [4.0](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-4.json) | 8.77712 | 13.94901 | 3.51085 | 5.57961 | 1.58925 | 97.946 | kc/kw 超上限 |
+
+**B 类未通过。** kw、kc 的跨工况离散度分别为 10.20%、12.14%，低于 15%，两个方向密度均随纱长增加而下降；但上表两行超出暂定区间，不能用趋势或离散度通过抵消。四工况最大节点残差比 `9.94e−7`、最大格矢残差比 `1.01e−7`、最大段应变 `7.34e−7`，势垒能均为零；数值收敛不使 B 类偏差消失。区间的原始材料和放松状态尚未核验，也不是实物标定结论。保留偏差，停止逐工况调参，后续由用户审阅材料假设、模型适用性、实测口径及未覆盖数值问题。见 [B 类汇总](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/b-comparison.json)。
+
+**两个超界工况的 N=64 诊断均已真实收敛，A14 仍只部分成立。** 两点使用原物理参数、固定材料总长与同一分支的受保护平滑延拓，未改 K、φ0 或物理公式；N=32 原结果与 B 类判定保留。相对上表最终 N=32 结果：
+
+| l（mm/圈）/ N=64 结果 | 横密变化 | 纵密变化 | N=64 kc / kc/kw | 节点残差比 | 杆精度结论 |
+|---|---:|---:|---:|---:|---|
+| [2.6](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-2.6-fine64.json) | −0.33737% | −0.41930% | 6.03912 / 1.67923 | `7.85e−7` | 双方向变化 ≤0.5%；kc、kc/kw 仍超界 |
+| [4.0](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-4-fine64.json) | −0.11009% | **−0.66917%** | 5.54227 / 1.58035 | `8.60e−7` | 纵密变化超过 0.5%；kc/kw 仍超界 |
+
+两点 N=64 最终固定几何 q=12→24 的总能量相对变化分别约 `1.31e−13` / `1.44e−13`、梯度相对变化约 `1.50e−9` / `4.30e−9`；积分稳定与杆精度分开判断，见 [2.6 mm 积分核对](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-2.6-fine64-quadrature.json)与 4.0 mm 结果的 `finalQuadratureCheck`。2.6 mm 细化没有消除 B 偏差；4.0 mm 的杆离散精度尚未建立，不能把其偏差归结为纯粹物理模型原因，也不能用 l=3 mm 的通过结果代替。**本轮未运行 N=128，保留 A14 部分通过与 B FAIL，停止于 T1 交用户审阅，不进入 T2。** 首次停滞/未收敛结果及检查点分别保留；N=64 的成功续算耗时为 43.91 / 3.67 s，包含旧尝试的记录累计为 1427.17 / 1320.04 s，其中 2.6 mm 累计不含检查点至终止的额外时间。这些续算时间均不作为从头生产性能。
+
+[SOP 参考结果](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/sop-reference.json) 是“仅主纱、全成圈”的反事实工况：l=2.3 mm 使用生产确认的每路每针平均长度，tex=8 为质量比反推值 `INFERRED`，ρ=1.202415459 g/cm³ 为组分密度与质量分数假设，其他材料值沿用未标定参考，完整六字段见 JSON。结果为横密 **16.73302/cm**、纵密 **23.35601/cm**、GSM **71.910 g/m²**、包络厚度估计 **0.29144 mm**，节点残差比 `7.26e−7`。它不含真实 SOP 的氨纶和 K/T 组织，不能直接验收 22.6/cm、44.5 路/cm 或约 203 g/m²；包络厚度也不是规定压力下实测厚度。
+
+最终公开默认入口也单独完成一次从头运行：仅传 `createPlainJerseyTopology({loopLengthMm:3})` 与参考参数，不传 `initialCell`，默认 N32/q12 实际 `CONVERGED`，25.37 s、2045 次迭代，节点残差比 `7.23e−7`、最大段应变 `2.35e−8`；见 [默认入口结果](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/default-entry.json)。它确认独立入口可用，且该次冷启动达到 30 s 目标。
+
+**A12 未普遍达标。** 修复后四工况耗时分别为 **48.21、0.031、9.86、14.72 s**，SOP 参考为 **16.13 s**；3.0 mm 复用了已收敛的 N=32 状态，0.031 s 只表示复核。2.6 mm 仍超过 30 s 目标，M5 的参考冷启动记录也为 56.95 s，不能用 4.0 mm 提速或收敛初值复核时间抵消。完整 A/B 状态、公式、初值、图及日志见本次归档 [REPORT.md](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/REPORT.md)。
+
+**A13：本轮外层 `npm run validate`（47/47）与 `npm run build` 已通过，两命令退出码均为 0；最终优化器与输出字段版本的总验证耗时 164.78 s、构建命令耗时 2.93 s；总回归期间补充的拓扑节点数不匹配拒绝，在补丁后另跑全部 fabric-form 快检通过（5.79 s）。实际外层结果见 [REPORT.md](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/REPORT.md) 和 [final-regression.json](C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/final-regression.json)。** M0 的基线通过不替代本轮最终回归；代码回归通过不抵消 A12、A14 与 B 类的上述限制，也不自动进入 T2。

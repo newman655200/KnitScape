@@ -1,0 +1,3363 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>T1 收尾审阅报告</title><style>
+body{max-width:1360px;margin:36px auto;padding:0 28px;font:15px/1.65 "Microsoft YaHei",Arial,sans-serif;color:#25323b;background:#fff}h1{font-size:30px}h2{margin-top:44px;border-bottom:2px solid #dbe3e8;padding-bottom:10px}h3{margin-top:30px}a{color:#155d84}table{border-collapse:collapse;width:100%;font-size:12px;margin:18px 0;table-layout:auto}th,td{padding:7px;border:1px solid #dbe1e6;vertical-align:top;overflow-wrap:anywhere}th{background:#eef3f6;text-align:left}tr:nth-child(even){background:#fafbfc}pre,code{font-family:Consolas,monospace;font-size:12px;overflow-wrap:anywhere}svg{width:100%;height:auto;display:block;margin:24px 0}blockquote{border-left:3px solid #b9ccd8;padding-left:14px;color:#52626e}@media print{body{max-width:none;margin:0;padding:0;font-size:10px}h2{break-before:page}svg{break-inside:avoid}table{font-size:8px}}
+</style><h1>T1 收尾报告：A14 杆离散与按紧度的文献对照</h1>
+<p><strong>本轮 A14 尚未闭合，B 类未通过状态保留。</strong> 3.0 mm 的 N32 对 N64 密度误差达标，但严格逐级递减未满足；4.0 mm 已取得主链 N64 平衡解，N128 未完成；2.6、3.5 mm 与 SOP 的新主链 N64 因数值停滞提前停止。提前停止不冒称两小时超时。文献对照保留所有未排除的离散误差，Knapton 1971 关键全文和 TF 覆盖仍未知。</p>
+<p>执行日期：2026-11-22（Asia/Shanghai）。执行依据为 <code>66392a8cd419c5722d0a3cb2eff5bfbacdba9f4e</code> 的收尾任务书。只执行 (a)、(b)，不进入 T2–T8。原 T1 报告、参数、公式和 B 类暂定区间保留。</p>
+<p>正式归档：<a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22">本目录</a>。仓库内 HTML 是用户授权的审阅副本，图与表均内嵌；完整输入、求解结果和日志仍在仓库外。</p>
+<h2>(a) A14 杆离散补齐</h2>
+<p>本节由完整输入/终态 JSON 汇总。求解器 CONVERGED、杆密度序列判据、积分精度和冷起步同支确认分别报告；最细已求得平衡解不自动等同已建立连续极限精度。五条首次默认公开N64调用均未在默认预算内收敛；下表的最终冷路径状态包含从已接受态继续的后续续算。</p>
+<table>
+<thead>
+<tr>
+  <th>工况 mm</th>
+  <th>最细可用平衡 N</th>
+  <th>最细相邻≤0.5%</th>
+  <th>逐级变化递减</th>
+  <th>严格序列判据</th>
+  <th>生产 N32 横/纵误差（相对最细可用平衡级）</th>
+  <th>积分核验</th>
+  <th>公开冷起步路径（含续算）</th>
+  <th>整体 A14</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2.6</td>
+  <td>32</td>
+  <td>是（已算级）</td>
+  <td>级数不足</td>
+  <td>尚未建立</td>
+  <td>—</td>
+  <td>已平衡级固定几何通过</td>
+  <td>NOT_CONVERGED；同支尚未确认</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>64</td>
+  <td>是（已算级）</td>
+  <td>否</td>
+  <td>尚未建立</td>
+  <td>0.005497% / 0.441398%</td>
+  <td>已平衡级固定几何通过</td>
+  <td>CONVERGED；同支一致诊断已确认</td>
+  <td>NOT_ESTABLISHED_ROD_DENSITY_CRITERION</td>
+</tr>
+<tr>
+  <td>3.5</td>
+  <td>32</td>
+  <td>否</td>
+  <td>级数不足</td>
+  <td>尚未建立</td>
+  <td>—</td>
+  <td>已平衡级固定几何通过</td>
+  <td>CONVERGED；同支尚未确认</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>64</td>
+  <td>否</td>
+  <td>否</td>
+  <td>尚未建立</td>
+  <td>0.407902% / 0.553868%</td>
+  <td>已平衡级固定几何通过</td>
+  <td>CONVERGED；同支尚未确认</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>2.3</td>
+  <td>32</td>
+  <td>否</td>
+  <td>级数不足</td>
+  <td>只报告</td>
+  <td>—</td>
+  <td>已平衡级固定几何通过</td>
+  <td>NOT_CONVERGED；同支尚未确认</td>
+  <td>REPORT_ONLY</td>
+</tr>
+</tbody>
+</table>
+<p>相邻变化 Δ=(细级密度/粗级密度−1)，以粗级作分母；生产 N32 误差=|N32/最细可用平衡级−1|，以该平衡级作分母。它是有限网格间对照，不是连续极限误差：4mm必做N128尚未平衡，3mm虽N32对N64误差达标但严格逐级递减未成立。无高于N32的平衡参考时误差不作判定。下表另列相邻变化以细级作分母的数值，排除临界点歧义。log₂(Δ粗/Δ细)只作诊断；24→32与32→64倍率不同，不可将其当严格渐近阶数。</p>
+<p>3mm按旧报告只看最细相邻两级/生产N32对细级≤0.5%的解释仍达标；按本任务明确要求的相邻变化逐级递减，纵密变化0.435163%→0.439458%略增，因此严格收敛尚未建立。2.6mm、3.5mm及SOP停于主链N64未平衡；4mmN64已平衡，但必做N128停滞未完成，故未启动依赖N128平衡输入的N256。积分通过仅覆盖已平衡主链级，未完成的高N没有终态积分验证。</p>
+<p>3.0 mm 的24→32→64按授权只读复用旧存档，原方法为Hermite平滑弧长重采样并重新分配细网格restLength，总长保持；未重算这条主链。其余四条为本轮严格嵌套材料细分：N24沿旧3mm参考几何归一缩放；24→32确定性拆最长材料边，之后逐边二分，保留旧节点、旧材料边界以及父段参考长度和。两类方法不混称同一方法。各级求解期间段参考长度均固定。</p>
+<p>严格新链的N32与旧生产N32来自不同离散分段，两者分别保存。全二分保持初始折线几何，却使旧拐角双侧长度减半，所以初始离散弯曲能可加倍；该初值表示变化不直接判为平衡分支改变。子段继承旧应变，未宣称精确零应变。每个新网格重新检查非局部候选间隙，未假设几何相同就自动可行。</p>
+<p>执行前复现了既有独立细化脚本的自检初值错误：默认拓扑已经是N32，却再次要求加密到N32。按任务先停止并报告，用户明确授权后仅把自检初值写成nodesPerLoop:24，自检通过；原细化helper、求解器、材料及模型均未因该错误修改。复现与修正核验见implementation-error.json、self-check-failure.log和self-check-approved-fix.log；新嵌套细分独立自检见nested-subdivision-self-check.json。</p>
+<h3>2.6 mm</h3>
+<p>New nested linear material-arclength subdivision preserving all parent material intervals and old nodes</p>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>状态</th>
+  <th>横密 /cm</th>
+  <th>纵密 /cm</th>
+  <th>kw</th>
+  <th>kc</th>
+  <th>kc/kw</th>
+  <th>S/W</th>
+  <th>Δ横/纵（粗分母）</th>
+  <th>Δ横/纵（细分母）</th>
+  <th>log₂变化比 横/纵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>CONVERGED</td>
+  <td>13.945039</td>
+  <td>23.400949</td>
+  <td>3.625710</td>
+  <td>6.084247</td>
+  <td>1.678084</td>
+  <td>4.271e-8</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>CONVERGED</td>
+  <td>13.934556</td>
+  <td>23.349646</td>
+  <td>3.622985</td>
+  <td>6.070908</td>
+  <td>1.675665</td>
+  <td>4.538e-8</td>
+  <td>-0.075176% / -0.219237%</td>
+  <td>-0.075232% / -0.219718%</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>总能/弯曲/接触/势垒 N·mm</th>
+  <th>A2最大段应变</th>
+  <th>A4节点比</th>
+  <th>自由格矢残差 W/H N</th>
+  <th>格矢残差比 W/H/S</th>
+  <th>r_min/r_c</th>
+  <th>最大曲率 /mm</th>
+  <th>接触段对</th>
+  <th>累计迭代</th>
+  <th>累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>2.816e-2 / 2.591e-2 / 2.244e-3 / 0.000e+0</td>
+  <td>3.339e-9</td>
+  <td>2.918e-7</td>
+  <td>3.883e-10 / 1.467e-9</td>
+  <td>9.887e-9 / 2.227e-8 / 3.507e-8</td>
+  <td>1.729245</td>
+  <td>5.082850</td>
+  <td>56</td>
+  <td>1775</td>
+  <td>31.757</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>2.800e-2 / 2.585e-2 / 2.150e-3 / 0.000e+0</td>
+  <td>1.472e-8</td>
+  <td>1.894e-7</td>
+  <td>-5.056e-10 / -2.571e-10</td>
+  <td>1.296e-8 / 3.933e-9 / 1.615e-8</td>
+  <td>1.750049</td>
+  <td>5.123942</td>
+  <td>76</td>
+  <td>4632</td>
+  <td>212.929</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>q12→q24接触能相对差</th>
+  <th>raw总梯度相对∞范数差</th>
+  <th>q24节点比</th>
+  <th>q24格矢比 W/H/S</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>3.656e-10</td>
+  <td>4.475e-9</td>
+  <td>2.915e-7</td>
+  <td>1.062e-8 / 2.245e-8 / 3.429e-8</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>3.127e-10</td>
+  <td>4.799e-9</td>
+  <td>1.906e-7</td>
+  <td>1.306e-8 / 4.042e-9 / 1.551e-8</td>
+</tr>
+</tbody>
+</table>
+<p>人工复核：已完成主链仅到N32，N64未平衡，无法完成所需N64冷/延拓同支对照。冷路径的收敛与主链整体A14分开记录。</p>
+<h3>3 mm</h3>
+<p>Reused archived Hermite smooth arclength remeshing; fine rest lengths reassigned with total length preserved; no main-chain rerun</p>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>状态</th>
+  <th>横密 /cm</th>
+  <th>纵密 /cm</th>
+  <th>kw</th>
+  <th>kc</th>
+  <th>kc/kw</th>
+  <th>S/W</th>
+  <th>Δ横/纵（粗分母）</th>
+  <th>Δ横/纵（细分母）</th>
+  <th>log₂变化比 横/纵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>CONVERGED</td>
+  <td>13.016176</td>
+  <td>18.458649</td>
+  <td>3.904853</td>
+  <td>5.537595</td>
+  <td>1.418131</td>
+  <td>3.675e-7</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>CONVERGED</td>
+  <td>12.968713</td>
+  <td>18.378324</td>
+  <td>3.890614</td>
+  <td>5.513497</td>
+  <td>1.417128</td>
+  <td>1.240e-8</td>
+  <td>-0.364649% / -0.435163%</td>
+  <td>-0.365983% / -0.437065%</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>CONVERGED</td>
+  <td>12.968000</td>
+  <td>18.297559</td>
+  <td>3.890400</td>
+  <td>5.489268</td>
+  <td>1.410978</td>
+  <td>1.532e-8</td>
+  <td>-0.005497% / -0.439458%</td>
+  <td>-0.005497% / -0.441398%</td>
+  <td>6.052 / -0.014</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>总能/弯曲/接触/势垒 N·mm</th>
+  <th>A2最大段应变</th>
+  <th>A4节点比</th>
+  <th>自由格矢残差 W/H N</th>
+  <th>格矢残差比 W/H/S</th>
+  <th>r_min/r_c</th>
+  <th>最大曲率 /mm</th>
+  <th>接触段对</th>
+  <th>累计迭代</th>
+  <th>累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.997e-2 / 1.967e-2 / 3.019e-4 / 0.000e+0</td>
+  <td>3.141e-9</td>
+  <td>7.197e-7</td>
+  <td>2.862e-10 / -8.600e-10</td>
+  <td>1.101e-8 / 2.332e-8 / 1.569e-8</td>
+  <td>1.895050</td>
+  <td>3.742786</td>
+  <td>28</td>
+  <td>3064</td>
+  <td>56.953</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.964e-2 / 1.940e-2 / 2.450e-4 / 0.000e+0</td>
+  <td>2.014e-8</td>
+  <td>6.167e-7</td>
+  <td>-6.454e-10 / -3.249e-10</td>
+  <td>2.533e-8 / 8.998e-9 / 3.688e-8</td>
+  <td>1.909982</td>
+  <td>3.758909</td>
+  <td>50</td>
+  <td>未知（末次925）</td>
+  <td>238.172</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>1.935e-2 / 1.914e-2 / 2.136e-4 / 0.000e+0</td>
+  <td>6.105e-7</td>
+  <td>8.856e-7</td>
+  <td>7.975e-10 / -2.838e-9</td>
+  <td>3.177e-8 / 8.015e-8 / 8.480e-8</td>
+  <td>1.919321</td>
+  <td>3.757267</td>
+  <td>118</td>
+  <td>未知（末次2400）</td>
+  <td>≥1051.017（中断成本未知）</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>q12→q24接触能相对差</th>
+  <th>raw总梯度相对∞范数差</th>
+  <th>q24节点比</th>
+  <th>q24格矢比 W/H/S</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.639e-10</td>
+  <td>2.009e-9</td>
+  <td>7.202e-7</td>
+  <td>1.100e-8 / 2.350e-8 / 1.560e-8</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.290e-10</td>
+  <td>6.032e-9</td>
+  <td>6.136e-7</td>
+  <td>2.509e-8 / 9.452e-9 / 3.584e-8</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>2.292e-11</td>
+  <td>1.322e-9</td>
+  <td>8.859e-7</td>
+  <td>3.181e-8 / 8.013e-8 / 8.512e-8</td>
+</tr>
+</tbody>
+</table>
+<p>N64冷起步与延拓的数值对照：密度相对差（冷/延拓−1）=-0.000052% / 0.000023%，能量相对差=-0.000033%，S/W（延拓/冷）=1.532e-8 / 1.084e-7；循环投影穿套字一致=true。若冷路径尚未收敛，以上仅为未收敛终态诊断，不能确认同支。</p>
+<p>人工复核：Root confirmed same-branch numerical consistency after review; no uniqueness proof</p>
+<h3>3.5 mm</h3>
+<p>New nested linear material-arclength subdivision preserving all parent material intervals and old nodes</p>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>状态</th>
+  <th>横密 /cm</th>
+  <th>纵密 /cm</th>
+  <th>kw</th>
+  <th>kc</th>
+  <th>kc/kw</th>
+  <th>S/W</th>
+  <th>Δ横/纵（粗分母）</th>
+  <th>Δ横/纵（细分母）</th>
+  <th>log₂变化比 横/纵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>CONVERGED</td>
+  <td>11.104479</td>
+  <td>15.403131</td>
+  <td>3.886568</td>
+  <td>5.391096</td>
+  <td>1.387110</td>
+  <td>5.530e-7</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>CONVERGED</td>
+  <td>10.987160</td>
+  <td>15.400831</td>
+  <td>3.845506</td>
+  <td>5.390291</td>
+  <td>1.401712</td>
+  <td>1.958e-7</td>
+  <td>-1.056504% / -0.014937%</td>
+  <td>-1.067785% / -0.014939%</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>总能/弯曲/接触/势垒 N·mm</th>
+  <th>A2最大段应变</th>
+  <th>A4节点比</th>
+  <th>自由格矢残差 W/H N</th>
+  <th>格矢残差比 W/H/S</th>
+  <th>r_min/r_c</th>
+  <th>最大曲率 /mm</th>
+  <th>接触段对</th>
+  <th>累计迭代</th>
+  <th>累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.575e-2 / 1.568e-2 / 6.914e-5 / 0.000e+0</td>
+  <td>2.029e-7</td>
+  <td>4.185e-7</td>
+  <td>-6.235e-11 / 3.513e-11</td>
+  <td>3.565e-9 / 1.448e-9 / 2.137e-8</td>
+  <td>1.936241</td>
+  <td>3.139519</td>
+  <td>18</td>
+  <td>780</td>
+  <td>4.033</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.555e-2 / 1.549e-2 / 5.926e-5 / 0.000e+0</td>
+  <td>2.608e-7</td>
+  <td>7.527e-7</td>
+  <td>-1.409e-10 / -1.273e-9</td>
+  <td>8.247e-9 / 5.315e-8 / 6.634e-9</td>
+  <td>1.940220</td>
+  <td>3.183322</td>
+  <td>30</td>
+  <td>3119</td>
+  <td>25.388</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>q12→q24接触能相对差</th>
+  <th>raw总梯度相对∞范数差</th>
+  <th>q24节点比</th>
+  <th>q24格矢比 W/H/S</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.094e-9</td>
+  <td>1.039e-9</td>
+  <td>4.183e-7</td>
+  <td>3.570e-9 / 1.401e-9 / 2.120e-8</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>9.123e-10</td>
+  <td>3.472e-8</td>
+  <td>7.506e-7</td>
+  <td>8.642e-9 / 5.522e-8 / 2.178e-9</td>
+</tr>
+</tbody>
+</table>
+<p>人工复核：已完成主链仅到N32，N64未平衡，无法完成所需N64冷/延拓同支对照。冷路径的收敛与主链整体A14分开记录。</p>
+<h3>4 mm</h3>
+<p>New nested linear material-arclength subdivision preserving all parent material intervals and old nodes</p>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>状态</th>
+  <th>横密 /cm</th>
+  <th>纵密 /cm</th>
+  <th>kw</th>
+  <th>kc</th>
+  <th>kc/kw</th>
+  <th>S/W</th>
+  <th>Δ横/纵（粗分母）</th>
+  <th>Δ横/纵（细分母）</th>
+  <th>log₂变化比 横/纵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>CONVERGED</td>
+  <td>8.768382</td>
+  <td>13.906968</td>
+  <td>3.507353</td>
+  <td>5.562787</td>
+  <td>1.586036</td>
+  <td>2.290e-7</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>CONVERGED</td>
+  <td>8.644274</td>
+  <td>14.076335</td>
+  <td>3.457710</td>
+  <td>5.630534</td>
+  <td>1.628400</td>
+  <td>3.119e-7</td>
+  <td>-1.415402% / 1.217860%</td>
+  <td>-1.435723% / 1.203206%</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>CONVERGED</td>
+  <td>8.741468</td>
+  <td>13.872181</td>
+  <td>3.496587</td>
+  <td>5.548872</td>
+  <td>1.586940</td>
+  <td>2.083e-7</td>
+  <td>1.124372% / -1.450340%</td>
+  <td>1.111870% / -1.471684%</td>
+  <td>0.332 / -0.252</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>总能/弯曲/接触/势垒 N·mm</th>
+  <th>A2最大段应变</th>
+  <th>A4节点比</th>
+  <th>自由格矢残差 W/H N</th>
+  <th>格矢残差比 W/H/S</th>
+  <th>r_min/r_c</th>
+  <th>最大曲率 /mm</th>
+  <th>接触段对</th>
+  <th>累计迭代</th>
+  <th>累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.307e-2 / 1.303e-2 / 4.362e-5 / 0.000e+0</td>
+  <td>1.463e-7</td>
+  <td>4.961e-7</td>
+  <td>7.917e-11 / 1.548e-10</td>
+  <td>6.906e-9 / 8.514e-9 / 4.553e-8</td>
+  <td>1.950849</td>
+  <td>2.633092</td>
+  <td>20</td>
+  <td>799</td>
+  <td>4.001</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.300e-2 / 1.296e-2 / 4.527e-5 / 0.000e+0</td>
+  <td>2.407e-8</td>
+  <td>5.257e-7</td>
+  <td>1.715e-10 / -3.058e-10</td>
+  <td>1.526e-8 / 1.671e-8 / 1.074e-8</td>
+  <td>1.943433</td>
+  <td>2.677045</td>
+  <td>24</td>
+  <td>3021</td>
+  <td>23.366</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>1.275e-2 / 1.271e-2 / 3.764e-5 / 0.000e+0</td>
+  <td>4.056e-9</td>
+  <td>7.900e-7</td>
+  <td>8.700e-12 / 1.025e-9</td>
+  <td>7.806e-10 / 5.797e-8 / 6.177e-8</td>
+  <td>1.954623</td>
+  <td>2.642791</td>
+  <td>46</td>
+  <td>≥54675（中断步数未知）</td>
+  <td>≥1122.012（中断成本未知）</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>q12→q24接触能相对差</th>
+  <th>raw总梯度相对∞范数差</th>
+  <th>q24节点比</th>
+  <th>q24格矢比 W/H/S</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>5.035e-9</td>
+  <td>7.633e-10</td>
+  <td>4.955e-7</td>
+  <td>6.969e-9 / 8.537e-9 / 4.554e-8</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>2.184e-10</td>
+  <td>3.065e-8</td>
+  <td>5.253e-7</td>
+  <td>1.527e-8 / 1.676e-8 / 6.361e-9</td>
+</tr>
+<tr>
+  <td>64</td>
+  <td>2.941e-11</td>
+  <td>1.101e-8</td>
+  <td>7.903e-7</td>
+  <td>7.648e-10 / 5.795e-8 / 6.292e-8</td>
+</tr>
+</tbody>
+</table>
+<p>N64冷起步与延拓的数值对照：密度相对差（冷/延拓−1）=0.296953% / -0.118733%，能量相对差=-0.062146%，S/W（延拓/冷）=2.083e-7 / 6.685e-8；循环投影穿套字一致=true。若冷路径尚未收敛，以上仅为未收敛终态诊断，不能确认同支。</p>
+<p>人工复核：主链24→32→64的原始/循环投影字与定向穿套元数据一致、轨迹间隙保护通过、能量平滑降低且S/W接近零，作为已算主链的分支连续诊断。冷N64与主N64原始/循环投影字及定向拓扑一致，S/W分别6.68e-8和2.08e-7，能量相对差−0.06215%，密度相对差+0.29695%/−0.11873%；两者N64材料分段不同，密度小于0.5%不作分支判据，仅为同一穿套/近能量分支的相容诊断，严格同支未完全确认。N128未平衡，整体A14未建立。</p>
+<h3>2.3 mm（SOP 反事实参考）</h3>
+<p>New nested linear material-arclength subdivision preserving all parent material intervals and old nodes</p>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>状态</th>
+  <th>横密 /cm</th>
+  <th>纵密 /cm</th>
+  <th>kw</th>
+  <th>kc</th>
+  <th>kc/kw</th>
+  <th>S/W</th>
+  <th>Δ横/纵（粗分母）</th>
+  <th>Δ横/纵（细分母）</th>
+  <th>log₂变化比 横/纵</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>CONVERGED</td>
+  <td>16.762340</td>
+  <td>23.471330</td>
+  <td>3.855338</td>
+  <td>5.398406</td>
+  <td>1.400242</td>
+  <td>4.193e-7</td>
+  <td>—</td>
+  <td>—</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>CONVERGED</td>
+  <td>17.205262</td>
+  <td>23.092911</td>
+  <td>3.957210</td>
+  <td>5.311369</td>
+  <td>1.342200</td>
+  <td>2.746e-7</td>
+  <td>2.642361% / -1.612264%</td>
+  <td>2.574338% / -1.638684%</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>总能/弯曲/接触/势垒 N·mm</th>
+  <th>A2最大段应变</th>
+  <th>A4节点比</th>
+  <th>自由格矢残差 W/H N</th>
+  <th>格矢残差比 W/H/S</th>
+  <th>r_min/r_c</th>
+  <th>最大曲率 /mm</th>
+  <th>接触段对</th>
+  <th>累计迭代</th>
+  <th>累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.041e-2 / 1.033e-2 / 8.439e-5 / 0.000e+0</td>
+  <td>1.149e-7</td>
+  <td>4.350e-7</td>
+  <td>-2.047e-10 / -2.166e-10</td>
+  <td>1.173e-8 / 8.863e-9 / 2.020e-8</td>
+  <td>1.881596</td>
+  <td>4.756621</td>
+  <td>24</td>
+  <td>763</td>
+  <td>5.228</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.026e-2 / 1.019e-2 / 6.703e-5 / 0.000e+0</td>
+  <td>1.945e-7</td>
+  <td>6.098e-7</td>
+  <td>3.021e-10 / 1.326e-10</td>
+  <td>1.711e-8 / 5.598e-9 / 2.278e-8</td>
+  <td>1.901737</td>
+  <td>4.818990</td>
+  <td>26</td>
+  <td>3775</td>
+  <td>31.235</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>N</th>
+  <th>q12→q24接触能相对差</th>
+  <th>raw总梯度相对∞范数差</th>
+  <th>q24节点比</th>
+  <th>q24格矢比 W/H/S</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>24</td>
+  <td>1.631e-10</td>
+  <td>5.683e-9</td>
+  <td>4.310e-7</td>
+  <td>1.160e-8 / 7.732e-9 / 1.946e-8</td>
+</tr>
+<tr>
+  <td>32</td>
+  <td>1.430e-10</td>
+  <td>9.938e-9</td>
+  <td>6.104e-7</td>
+  <td>1.757e-8 / 6.037e-9 / 2.330e-8</td>
+</tr>
+</tbody>
+</table>
+<p>人工复核：主链N64因停滞未平衡，最细主链为N32。公开默认冷N64首次6000步未收敛，从其已接受态按统一24000/3200预算继续也未收敛（最终节点比6.0369e−5）；没有N64冷/延拓同支确认。SOP仅报告，不纳入验收通过。</p>
+<h3>失败、续算与成本</h3>
+<p>以下保留每次独立运行。续算只从同一已接受状态继续，未放宽容差、改变材料或修改模型；首次默认冷起步未收敛的事实不被后续续算覆盖。</p>
+<table>
+<thead>
+<tr>
+  <th>结果文件</th>
+  <th>状态</th>
+  <th>终止原因</th>
+  <th>总/内层预算</th>
+  <th>本次迭代</th>
+  <th>节点残差比</th>
+  <th>最大段应变</th>
+  <th>本次秒</th>
+  <th>该级累计秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>case-2.6-N24-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>1775</td>
+  <td>2.918e-7</td>
+  <td>3.339e-9</td>
+  <td>31.757</td>
+  <td>31.757</td>
+</tr>
+<tr>
+  <td>case-2.6-N32-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_OUTER_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>4582</td>
+  <td>1.160e-6</td>
+  <td>1.374e-10</td>
+  <td>208.510</td>
+  <td>208.510</td>
+</tr>
+<tr>
+  <td>case-2.6-N32-attempt2.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>50</td>
+  <td>1.894e-7</td>
+  <td>1.472e-8</td>
+  <td>4.418</td>
+  <td>212.929</td>
+</tr>
+<tr>
+  <td>case-2.6-cold-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>8.928e-4</td>
+  <td>3.159e-7</td>
+  <td>162.130</td>
+  <td>162.130</td>
+</tr>
+<tr>
+  <td>case-2.6-cold-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.598e-4</td>
+  <td>6.561e-7</td>
+  <td>192.170</td>
+  <td>354.300</td>
+</tr>
+<tr>
+  <td>case-3-cold-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.050e-4</td>
+  <td>9.444e-8</td>
+  <td>107.265</td>
+  <td>107.265</td>
+</tr>
+<tr>
+  <td>case-3-cold-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.166e-5</td>
+  <td>2.408e-8</td>
+  <td>135.381</td>
+  <td>242.647</td>
+</tr>
+<tr>
+  <td>case-3-cold-N64-attempt3.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>24000/800</td>
+  <td>1490</td>
+  <td>9.265e-7</td>
+  <td>6.674e-9</td>
+  <td>72.912</td>
+  <td>315.558</td>
+</tr>
+<tr>
+  <td>case-3.5-N24-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>780</td>
+  <td>4.185e-7</td>
+  <td>2.029e-7</td>
+  <td>4.033</td>
+  <td>4.033</td>
+</tr>
+<tr>
+  <td>case-3.5-N32-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>3119</td>
+  <td>7.527e-7</td>
+  <td>2.608e-7</td>
+  <td>25.388</td>
+  <td>25.388</td>
+</tr>
+<tr>
+  <td>case-3.5-cold-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>6.991e-3</td>
+  <td>1.280e-6</td>
+  <td>85.283</td>
+  <td>85.283</td>
+</tr>
+<tr>
+  <td>case-3.5-cold-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.014e-5</td>
+  <td>2.991e-8</td>
+  <td>110.458</td>
+  <td>195.741</td>
+</tr>
+<tr>
+  <td>case-3.5-cold-N64-attempt3.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>24000/3200</td>
+  <td>780</td>
+  <td>9.970e-7</td>
+  <td>6.283e-8</td>
+  <td>30.514</td>
+  <td>226.255</td>
+</tr>
+<tr>
+  <td>case-4-N24-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>799</td>
+  <td>4.961e-7</td>
+  <td>1.463e-7</td>
+  <td>4.001</td>
+  <td>4.001</td>
+</tr>
+<tr>
+  <td>case-4-N32-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>3021</td>
+  <td>5.257e-7</td>
+  <td>2.407e-8</td>
+  <td>23.366</td>
+  <td>23.366</td>
+</tr>
+<tr>
+  <td>case-4-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>7.223e-3</td>
+  <td>1.879e-5</td>
+  <td>73.926</td>
+  <td>73.926</td>
+</tr>
+<tr>
+  <td>case-4-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>7.261e-3</td>
+  <td>2.261e-7</td>
+  <td>100.270</td>
+  <td>174.197</td>
+</tr>
+<tr>
+  <td>case-4-N64-attempt3.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>24000/800</td>
+  <td>24000</td>
+  <td>1.346e-2</td>
+  <td>6.103e-7</td>
+  <td>390.381</td>
+  <td>564.578</td>
+</tr>
+<tr>
+  <td>case-4-N64-attempt5.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>24000/3200</td>
+  <td>18675</td>
+  <td>7.900e-7</td>
+  <td>4.056e-9</td>
+  <td>557.435</td>
+  <td>≥1122.012（中断成本未知）</td>
+</tr>
+<tr>
+  <td>case-4-cold-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>8.150e-4</td>
+  <td>1.393e-7</td>
+  <td>74.162</td>
+  <td>74.162</td>
+</tr>
+<tr>
+  <td>case-4-cold-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.954e-5</td>
+  <td>3.834e-8</td>
+  <td>99.514</td>
+  <td>173.676</td>
+</tr>
+<tr>
+  <td>case-4-cold-N64-attempt3.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>24000/3200</td>
+  <td>1575</td>
+  <td>8.987e-7</td>
+  <td>1.702e-8</td>
+  <td>76.356</td>
+  <td>250.032</td>
+</tr>
+<tr>
+  <td>case-sop-N24-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>763</td>
+  <td>4.350e-7</td>
+  <td>1.149e-7</td>
+  <td>5.228</td>
+  <td>5.228</td>
+</tr>
+<tr>
+  <td>case-sop-N32-attempt1.json</td>
+  <td>CONVERGED</td>
+  <td>CONVERGED</td>
+  <td>6000/800</td>
+  <td>3775</td>
+  <td>6.098e-7</td>
+  <td>1.945e-7</td>
+  <td>31.235</td>
+  <td>31.235</td>
+</tr>
+<tr>
+  <td>case-sop-cold-N64-attempt1.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>6000/800</td>
+  <td>6000</td>
+  <td>1.672e-3</td>
+  <td>1.569e-7</td>
+  <td>102.210</td>
+  <td>102.210</td>
+</tr>
+<tr>
+  <td>case-sop-cold-N64-attempt2.json</td>
+  <td>NOT_CONVERGED</td>
+  <td>MAX_ITERATIONS</td>
+  <td>24000/3200</td>
+  <td>24000</td>
+  <td>6.037e-5</td>
+  <td>9.853e-9</td>
+  <td>758.903</td>
+  <td>861.113</td>
+</tr>
+</tbody>
+</table>
+<p>初次公开cold运行均保持默认maxIterations=6000、innerIterations=800。先因6000次截断重置AL进度，将后续续算总预算统一增至24000；4mm严格N64在此预算下末12层仍全部INNER_LIMIT、内层梯度振荡，随后批准把后续需要的续算内层预算统一增至3200。memorySize=60、原maxOuterIterations=60、容差和模型不变；已收敛级不重跑、运行中变量不改。每次input/settings记录实际采用的6000/800、24000/800或24000/3200，每个单次进程两小时上限。</p>
+<p>计算曾并发执行，环境恢复后的实际同时求解最多4个进程；各记录为对应进程的实际墙钟，包含竞争资源和只读调试开销，不作为独占机器性能基准。环境中断期间无法确认的求解时间未计入已知成本。</p>
+<p>2.6 mm严格N64的只读检查显示近势垒暂态：检查点距rc仅1.17549e-8 mm，一次固定几何总能量/力求值约43.377秒；反力CHOLESKY约16.7毫秒。五秒CPU采样主要在势垒的径向积分。线性细分初值满秩、间隙可行、势垒不激活，但曲率集中和较大初始反力乘子可能引发大应变暂态。此证据定位数值代价，不证明模型平衡错误或实现正确性bug，未因此修改初罚项、积分公式或初值。只读检查暂停及采样开销保留在求解墙钟耗时中，详见readonly-profiling-note.json及检查点文件。</p>
+<p>raw总梯度的相对∞范数差不是形态误差的严格上界；本次同时报告q24约束反力投影后的节点/格矢残差，以支持积分精度诊断。分支诊断保留原始固定XY投影穿套序列与周期切缝循环归一结果，并结合连续非局部间隙保护、能量及剪切；投影穿套字不是完整拓扑不变量，也不单独证明全局唯一分支。</p>
+<h3>未完成级与整体门控</h3>
+<table>
+<thead>
+<tr>
+  <th>工况</th>
+  <th>必做节点</th>
+  <th>必做级均收敛</th>
+  <th>主链状态</th>
+  <th>冷路径状态</th>
+  <th>整体门控</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2.6</td>
+  <td>24→32→64</td>
+  <td>false</td>
+  <td>STAGNATION_STOP_INCOMPLETE</td>
+  <td>NOT_CONVERGED</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>24→32→64</td>
+  <td>true</td>
+  <td>CONVERGENCE_NOT_ESTABLISHED</td>
+  <td>CONVERGED</td>
+  <td>NOT_ESTABLISHED_ROD_DENSITY_CRITERION</td>
+</tr>
+<tr>
+  <td>3.5</td>
+  <td>24→32→64</td>
+  <td>false</td>
+  <td>STAGNATION_STOP_INCOMPLETE</td>
+  <td>CONVERGED</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>24→32→64→128</td>
+  <td>false</td>
+  <td>STAGNATION_STOP_INCOMPLETE</td>
+  <td>CONVERGED</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS</td>
+</tr>
+<tr>
+  <td>2.3</td>
+  <td>24→32→64</td>
+  <td>false</td>
+  <td>STAGNATION_STOP_INCOMPLETE</td>
+  <td>NOT_CONVERGED</td>
+  <td>REPORT_ONLY</td>
+</tr>
+</tbody>
+</table>
+<p>各级完整输入、材料六字段来源、设置、初值可行性、段映射和所有终态diagnostics见同目录 <em>-input.json、</em>-initial-check.json、<em>-attempt</em>.json、*-branch-assessment.json 与 closeout-summary.json。本轮未修改src求解器或B暂定区间，未注册validator。</p>
+<h3>环境中断（不视为数值失败或超时）</h3>
+<p>下列尝试没有完整result或正常process退出记录。环境恢复时未发现存活进程；终止时刻、已用求解时间与中断后的最后残差均未知，不能用环境空档替代CPU或求解耗时，也不能伪称触发两小时上限。表中checkpoint是更早已确认的接受态，未必是中断前最后一步。恢复仅指已接受几何/材料态重建并重新进入公开求解器，未恢复AL乘子、L-BFGS记忆等内部状态。相关续算的累计时间/迭代只列≥已知部分，原中断成本与额外步数仍未知。</p>
+<table>
+<thead>
+<tr>
+  <th>尝试</th>
+  <th>状态</th>
+  <th>已确认checkpoint</th>
+  <th>已确认迭代</th>
+  <th>已确认最大段应变</th>
+  <th>终止时间/求解耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>case-2.6-cold-N64-attempt3</td>
+  <td>ENVIRONMENT_INTERRUPTED</td>
+  <td>无</td>
+  <td>未知</td>
+  <td>—</td>
+  <td>未知 / 未知</td>
+</tr>
+<tr>
+  <td>case-2.6-N64-attempt1</td>
+  <td>ENVIRONMENT_INTERRUPTED</td>
+  <td>case-2.6-N64-attempt1-readonly-checkpoint.json</td>
+  <td>158</td>
+  <td>3.559e-1</td>
+  <td>未知 / 未知</td>
+</tr>
+<tr>
+  <td>case-3.5-N64-attempt1</td>
+  <td>ENVIRONMENT_INTERRUPTED</td>
+  <td>case-3.5-N64-attempt1-readonly-checkpoint.json</td>
+  <td>85</td>
+  <td>5.351e-1</td>
+  <td>未知 / 未知</td>
+</tr>
+<tr>
+  <td>case-4-N64-attempt4</td>
+  <td>ENVIRONMENT_INTERRUPTED</td>
+  <td>无</td>
+  <td>未知</td>
+  <td>—</td>
+  <td>未知 / 未知</td>
+</tr>
+<tr>
+  <td>case-sop-N64-attempt1</td>
+  <td>ENVIRONMENT_INTERRUPTED</td>
+  <td>无</td>
+  <td>未知</td>
+  <td>—</td>
+  <td>未知 / 未知</td>
+</tr>
+</tbody>
+</table>
+<h3>有明确停滞证据的提前停止</h3>
+<p>以下尝试在单次两小时上限之前主动停止，状态为STAGNATION_STOP/未完成；不是超时，也不据此判定模型错误或实现bug。最近已确认的接受态、梯度、残差及停止原因均另存；检查点与实际停止之间可能仍有未保存步骤，检查点不冒充停止瞬间的完整终态。表中的墙钟与CPU是该次进程的已知成本，原环境中断尝试的成本和额外未知步数不补估。</p>
+<table>
+<thead>
+<tr>
+  <th>尝试</th>
+  <th>停止时刻 UTC</th>
+  <th>已确认迭代/评估</th>
+  <th>能量</th>
+  <th>最大段应变</th>
+  <th>节点比</th>
+  <th>本次墙钟秒</th>
+  <th>本次CPU秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>case-2.6-N64-attempt2-stop.json</td>
+  <td>2026-11-22T08:40:20.4997430Z</td>
+  <td>4/5</td>
+  <td>2.289e-1</td>
+  <td>3.559e-1</td>
+  <td>8.044e+0</td>
+  <td>1245.504</td>
+  <td>1095.063</td>
+</tr>
+<tr>
+  <td>case-3.5-N64-attempt2-stop.json</td>
+  <td>2026-11-22T08:47:40.1882898Z</td>
+  <td>432/433</td>
+  <td>2.304e-1</td>
+  <td>1.967e+0</td>
+  <td>1.095e+1</td>
+  <td>1646.165</td>
+  <td>1481.688</td>
+</tr>
+<tr>
+  <td>case-4-N128-attempt1-stop.json</td>
+  <td>2026-11-22T08:47:40.4706252Z</td>
+  <td>213/219</td>
+  <td>3.320e+0</td>
+  <td>7.077e+0</td>
+  <td>1.668e+0</td>
+  <td>888.059</td>
+  <td>791.656</td>
+</tr>
+<tr>
+  <td>case-sop-N64-attempt2-stop.json</td>
+  <td>2026-11-22T08:45:23.1156079Z</td>
+  <td>111/115</td>
+  <td>2.321e-1</td>
+  <td>8.714e-1</td>
+  <td>4.645e+0</td>
+  <td>1498.857</td>
+  <td>1337.109</td>
+</tr>
+</tbody>
+</table>
+<p>case-2.6-N64-attempt2-stop.json：运行20分钟以上只确认4步；能量、大应变及约8.04的节点残差基本不变，先前固定几何求值/CPU采样已定位近rc势垒积分为主要开销。提前保存并停止该数值停滞尝试。</p>
+<p>case-3.5-N64-attempt2-stop.json：连续两个检查区间333.773秒和171.846秒分别前进64步和31步，但节点残差仅相对下降5.62e−5和1.13e−5，最大段应变反增至1.966875、物理能量也增加；运行26分钟以上仍在首个AL外层、罚项100，未见有效平衡进展，提前停止。</p>
+<p>case-4-N128-attempt1-stop.json：连续141.095秒和99.747秒仅前进3步和1步，能量/大应变相对变化仅约1e−7和3e−8，节点残差1.66768未下降；运行14分钟以上仍在首个AL外层、罚项100，按停滞提前停止。没有平衡N128作为N256的合法延拓输入，因此未启动N256。</p>
+<p>case-sop-N64-attempt2-stop.json：从与环境中断前相同的原N32细分初值重新启动24分钟以上，最近230.325秒仅确认3步；能量相对变化+1.25e−7，大应变约0.8714和节点残差约4.6448几乎不动，提前保存并停止。</p>
+<h3>供后续另行授权的建议</h3>
+<p>若严格链仍未完成，可分别研究保留父材料区间的平滑弧长加密，或另行设计的内外层预算调度系统对照，区分初始离散反力/增广拉格朗日暂态与最终平衡模型问题。前者需证明旧材料映射、局部不可伸长、总长与非局部间隙保护；后者需记录计算成本及原容差下的结果一致性。本轮已根据实际停滞证据调整公开迭代预算；保材料平滑加密及另行设计的系统对照尚未实施，也未换初值以求通过。当前环境中断、停滞或未收敛证据不足以归咎于物理模型或确认现有代码正确性错误。</p>
+<h2>(b) 按放松状态、紧度的文献对照</h2>
+<h3>文献证据与待选方案</h3>
+<p>日期：2026-11-22。用途：回答任务书 §3.1，并列出 §3.5 的选择依据；本说明不改变模型、材料、B 类暂定区间或 validator。文献元数据来自 <a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature-input.json">literature-input.json</a> 的 sources；统计只取 <a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature-derived.json">literature-derived.json</a> 的 68 个 points。本节先说明独立于模型的文献证据；实际 T1 分类见随后逐数据集比较表。</p>
+<h3>一、四个问题的回答</h3>
+<p><strong>1. k 是否随 TF 变化，哪种状态近似常数？</strong></p>
+<p>已读原文支持“取决于材料、程序和所考察的量”，不能把所有 fully-relaxed 合为一个普适常数。Al-Douri 的原始 Tables 7/8（印刷 pp63–64；Figures 19/21/25）中，干放松和作者所称完全放松的形状比均有 TF 趋势；完全放松组的 kc、kw 离散度约 11.3%、12.6%，而原表 kc/kw 仍为 21.6%。这些是本组跨试样范围，不能转换成测量误差或通用容限。<a href="https://stax.strath.ac.uk/concern/theses/f7623c56g">Al-Douri 原论文</a></p>
+<p>Sharma 全文 pp13–18 支持干态依赖较明显、充分放松后较弱，但 p17 保留非零斜率，不宜写成严格数学常数。其 Table 1 为密度对 1/l 的回归斜率，<strong>括号为截距，不能当作 SD/CI，也不能把斜率当成各点 c·l</strong>。Stevens RR85 的 BW/AW 原始数据重算后也有变化，但四种线密度、歪斜及末次压烫共同变化，单凭散点不能辨认纯 TF 因果关系。Gravas 可用数据仅同一 TF 的干/湿两点，不能判断 TF 依赖。<a href="https://nopr.niscpr.res.in/bitstream/123456789/32966/1/IJFTR%209(1)%2013-18.pdf">Sharma 全文</a>、<a href="https://www.cottontech.co.uk/index_htm_files/RR85.pdf">Stevens RR85</a>、<a href="https://www.degruyterbrill.com/document/doi/10.1515/aut-2006-060405/pdf">Gravas 全文</a></p>
+<p>Knapton 1968/1971 摘要宣称其完全放松羊毛的 k 不随相关变量或紧度变化；<strong>本轮未取得正文与原表</strong>，所以无法核查散布、程序细节和检验范围。Al-Douri 是另一套原始实验，不能冒名替代或直接否定 Knapton。现有证据不足以给全部材料和 fully-relaxed 程序统一指定“常数”。<a href="https://journals.sagepub.com/doi/10.1177/004051756803801004">1968 出版社摘要</a>、<a href="https://journals.sagepub.com/doi/10.1177/004051757104101103">1971 出版社摘要</a></p>
+<p><strong>2. 各数据集覆盖 1.12 和 1.72 吗？</strong></p>
+<p>下表是实际提取点的最小/最大 TF，统一为 √tex/l(mm)。范围包含某值并不保证该值附近样本充足；最终逐点比较仍须用 ±0.1 邻域并报告 n。</p>
+<table>
+<thead>
+<tr>
+  <th>数据集/状态</th>
+  <th style="text-align:right">n</th>
+  <th style="text-align:right">TF(mm) 实测点范围</th>
+  <th>包含 1.12</th>
+  <th>包含 1.72</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Al-Douri 干</td>
+  <td style="text-align:right">13</td>
+  <td style="text-align:right">0.674453–1.700184</td>
+  <td>是</td>
+  <td>否</td>
+</tr>
+<tr>
+  <td>Al-Douri 全</td>
+  <td style="text-align:right">13</td>
+  <td style="text-align:right">0.788227–1.744162</td>
+  <td>是</td>
+  <td>是</td>
+</tr>
+<tr>
+  <td>RR85 BW 坯布</td>
+  <td style="text-align:right">20</td>
+  <td style="text-align:right">0.880841–1.863355</td>
+  <td>是</td>
+  <td>是</td>
+</tr>
+<tr>
+  <td>RR85 AW 洗烘+压烫</td>
+  <td style="text-align:right">20</td>
+  <td style="text-align:right">0.909041–1.886502</td>
+  <td>是</td>
+  <td>是</td>
+</tr>
+<tr>
+  <td>Gravas 干</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">1.555617–1.555617</td>
+  <td>否</td>
+  <td>否</td>
+</tr>
+<tr>
+  <td>Gravas 湿</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">1.555617–1.555617</td>
+  <td>否</td>
+  <td>否</td>
+</tr>
+</tbody>
+</table>
+<p>Sharma 的归一化 TF 覆盖为 <strong>UNKNOWN</strong>：原式为 1/(l√c)，c 仅称 count；支数制、单股/合股有效支数未明确，不能把图上 cover factor 直接除以 25.4。只有证明 c 为有效 Ne 且 l 用 in，才可用 √590.5/25.4；若 c 是单股支数而 tex 为两股总值，还涉及 √2。Knapton 1971 对 1.12/1.72 的覆盖、Munden/Postle 等其余未取得正文来源的覆盖，均为 <strong>UNKNOWN</strong>。</p>
+<p><strong>3. T1 四个工况落在何处？</strong></p>
+<p><strong>实际分类见下方“逐数据集比较”与“邻近点范围明细”。</strong> 对每个最细参考结果按“数据集 × 状态 × TF±0.1”筛点，再分别判 kc、kw、kc/kw；邻域为空即“该 TF 与状态下无数据”，不能用全组范围补洞。尚未建立 A14 收敛者须保留“离散误差未排除”。单点邻域的区间退化为一点，偏离只是对该观测点的比较，不是统计拒绝域。SOP 仍只报告。</p>
+<p><strong>4. 无摩擦平衡模型对应哪种放松状态？</strong></p>
+<table>
+<thead>
+<tr>
+  <th>候选状态</th>
+  <th>支持比较的理由</th>
+  <th>反对直接等同的证据或缺口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>织造态/BW</td>
+  <td>可作制造后形态的描述性参照</td>
+  <td>保留工艺张力、历史和接触约束；RR85 未给 BW 静置时长，不能自动叫干放松</td>
+</tr>
+<tr>
+  <td>干放松</td>
+  <td>有明确调湿条件；Postle–Munden 的分析标题本身讨论干放松构形</td>
+  <td>静置未必释放摩擦锁定；其正文未取得，不能把理论名称当成 T1 模型等价证明</td>
+</tr>
+<tr>
+  <td>湿放松</td>
+  <td>水处理可改变纱线接触与残留应力；Gravas 程序明确</td>
+  <td>湿润还可改变材料尺寸/性能；静水处理不等于充分机械松弛，且 Gravas 明确排除搅动</td>
+</tr>
+<tr>
+  <td>含机械作用的完全放松</td>
+  <td>Knapton 摘要及 Al-Douri/Sharma 程序均包含促进构形重排的处理；最低能量假设提供讨论线索</td>
+  <td>水、热、搅动、烘干会影响纱线状态；Al-Douri 两状态实测 tex 不同。程序名不证明无摩擦绝对能量最低，原文也不足以证明 T1 已含全部作用</td>
+</tr>
+<tr>
+  <td>洗烘并压烫 AW</td>
+  <td>有较充分处理后的实测数据，能独立展示另一状态</td>
+  <td>压烫及歪斜影响几何；必须保持 fully_relaxed_with_press 标签，不能并入无压烫组</td>
+</tr>
+</tbody>
+</table>
+<p>这些是支持与反对对应关系的论据，<strong>不指定首选对应</strong>。最低能量、去摩擦、实验“充分放松”是需要实证连接的三个概念。经典摘要阅读范围见下表，不能据摘要宣布对应关系成立。</p>
+<h3>二、原文范围、材料与测量</h3>
+<table>
+<thead>
+<tr>
+  <th>来源与正式点数</th>
+  <th>实际阅读范围</th>
+  <th>纱线、机器</th>
+  <th>信度与主要缺口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Al-Douri 1983：干 13、全 13</td>
+  <td>已存全文 PDF；选择阅读印刷 pp33–34、38–41、46–50、62–68、74–84，重点 Tables 1–3/7–8/11、Figs 19–26；不是通读。扫描件印刷 p66 缺失</td>
+  <td>精纺羊毛，一根两股纱；名义 2/26s，采用实测 66.6/67.2 tex；股捻 S 2.17/2.26 t/cm、单纱 Z 3.56/3.90 t/cm。手动 V 床 8/10 针号或圆机 11 针号；筒径/针数 UNKNOWN</td>
+  <td>原表转录 HIGH；表格舍入粗。纤维细度、处理历史 UNKNOWN；剔除两根并喂与 Table 11 二手常数</td>
+</tr>
+<tr>
+  <td>Stevens 1978 RR85（2009 数字重排版）：BW 20、AW 20</td>
+  <td>正文印刷 pp1–7 与 Tables 1–9（pp7–15）；视觉复核 Tables 1/3/5（pp7/9/11）。Figs 1–11 未逐图数字化</td>
+  <td>棉单纱实测 36.9/29.2/24.6/23.3 tex；名义 Ne16/20/24/26 不代替实测 tex；英制捻系数 3.5/3.5/3.3/3.5；Camber Velnit 圆机 18 针号，筒径/针数 UNKNOWN</td>
+  <td>MEDIUM；原始观测但数字版改排，原 95%CI 未重印；洗后 tex 未另测，歪斜未校正</td>
+</tr>
+<tr>
+  <td>Gravas 等 2006：干 1、湿 1</td>
+  <td>出版社可读全文 pp223–237；重点 p230 程序、pp231–233 方法、Tables 8–12、p236 Table 13；本地 PDF 下载/截图未成功</td>
+  <td>所选样本 50% 腈纶/50% 超细羊毛，未染；3 根两股 Nm2/28 并喂，实测合计 218.4 tex；Stoll CMS411 Selectanit V 床 7 针号，前床平针；速度 1.2 m/s，针数/捻度 UNKNOWN</td>
+  <td>MEDIUM；仅两个状态点，不能拟合 TF 曲线；并喂结构与单纱 T1 可比性有限</td>
+</tr>
+<tr>
+  <td>Sharma 等 1984：正式点 0</td>
+  <td>全文 pp13–18；视觉复核 p14 Table 1、pp16–17 Figs 4–11、p18 结论，6 页均有本地渲染</td>
+  <td>腈纶 2 den/51 mm；grasi crimp 1.75 den/51 mm（化学身份 UNKNOWN）；两股 2/30s、2/40s，捻系数 2.5；圆机 15 针号、7.5 in、336 针</td>
+  <td>原文解释 HIGH；tex/归一化 TF UNKNOWN。count 制与有效支数未明，不猜测曲线点</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>数据集/状态</th>
+  <th>短程序摘录与中文概述</th>
+  <th>调湿、测长、密度测量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Al-Douri 干</td>
+  <td>中文概述：光滑表面平放至少 24 h</td>
+  <td>20±2°C、65±2%RH；HATRA、10 g、每布 10 次，l 原单位 cm；密度在 10 cm 长度计数后换 /cm。tex：0.5 g/tex 张力 2 min，取 80 cm 称重，10 份</td>
+</tr>
+<tr>
+  <td>Al-Douri 全</td>
+  <td>“they were left in a tumble dryer at 70°C for one hour”（p40，12 词）；40°C 水+Teepol 1 g/L，搅动 20 min，脱水，按摘录烘干，再平放调湿至少 24 h</td>
+  <td>同上；使用该状态实测 67.2 tex，未用名义数</td>
+</tr>
+<tr>
+  <td>RR85 BW</td>
+  <td>坯布收样；静置程序 UNKNOWN</td>
+  <td>调湿温湿度 UNKNOWN；KT3（May 1978）测纱长，表列 mm、负荷未复述；KT6 每次计 3 in，横纵各 10 次，报告 /in，无歪斜校正</td>
+</tr>
+<tr>
+  <td>RR85 AW</td>
+  <td>“five wash and tumble dry cycles followed by a final press”（11 词）；保留末次压烫标签，KT1A 的洗温/时长在本报告 UNKNOWN</td>
+  <td>同上；采用 AW 的 l；tex 沿用原表，不宣称洗后复测</td>
+</tr>
+<tr>
+  <td>Gravas 干</td>
+  <td>平放实验室 48 h</td>
+  <td>20±2°C、65±2%RH；15 cm 宽样拆横列，crimp tester 测 10 条、除对应 wale 数，l 为 mm；3×3 cm 视窗随机 10 次计数</td>
+</tr>
+<tr>
+  <td>Gravas 湿</td>
+  <td>“agitation of the samples was specifically excluded”（7 词）；40°C 静水 2 h，脱水、平干，至少调湿 24 h</td>
+  <td>同上；此研究的实测部分限干/湿，没有充分放松实测点</td>
+</tr>
+<tr>
+  <td>Sharma 干/湿 A/湿 B/全</td>
+  <td>全：“tumble dried in a tumble drier for 60 min”（9 词）。干：平铺数日，标记后 48 h；A：室温水+0.5% Lissapol 24 h、轻搅；B：1% Lissapol 沸水 10 min、115°C 烘箱 30 min；全：浸水 24 h、脱水、滚筒 60 min，水温/滚筒温度 UNKNOWN</td>
+  <td>27±2°C、65%RH；Shirley crimp tester、10 g；l 用 in、密度 /in；未列明确可换算的逐点配对表</td>
+</tr>
+</tbody>
+</table>
+<p>程序摘录每篇仅出现一次；Al-Douri 干/全合计作为同一篇计数。其他程序为概述。完整逐项原值、单位、方法、适用状态、信度和访问记录在 sources 与原始档案；不能把缺失条件补成行业默认值。</p>
+<h3>三、其余经典来源的访问边界</h3>
+<p>下列来源均未取得正文。其具体纱线、机器、测长/调湿、原 TF 范围、k 数值与散布为 UNKNOWN；不进入 68 点统计。下表仅记录实际可见的摘要信息。</p>
+<table>
+<thead>
+<tr>
+  <th>来源</th>
+  <th>实际范围与程序可见内容</th>
+  <th>可用结论与限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><a href="https://www.tandfonline.com/doi/abs/10.1080/19447025908659923">Munden 1959</a></td>
+  <td>出版社检索摘要，直接访问 HTTP403；羊毛/棉、干/湿标签，程序 UNKNOWN</td>
+  <td>最低能量形状假设与实验关系的摘要主张；TF 覆盖 UNKNOWN</td>
+</tr>
+<tr>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051756803801004">Knapton 等 1968 Part I</a></td>
+  <td>出版社摘要，受限；“thoroughly wetted-out, briefly hydroextracted, and tumble-dried”（7 词）</td>
+  <td>羊毛完全放松 k 恒定的摘要主张；正文细节和原表 UNKNOWN</td>
+</tr>
+<tr>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051757104101103">Knapton &amp; Fong 1971 Part VI</a></td>
+  <td>出版社摘要，受限；“considerable mechanical agitation in the presence of water”（9 词）</td>
+  <td>摘要称不依赖紧度；原始 TF 是否覆盖 1.12/1.72 UNKNOWN</td>
+</tr>
+<tr>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051757004001208">给定 DOI 的 1970 Part IV</a></td>
+  <td>出版社题录/摘要；羊毛 rib/half-cardigan，讨论洗烘</td>
+  <td><strong>实际结构是 1×1 罗纹/半畦编，不是纬平针</strong>；不用于平针数值</td>
+</tr>
+<tr>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051757004000609">1970 Part III：Knapton, Richards &amp; Fong</a></td>
+  <td>对应平针的题录/摘要与可见脚注 5；WURLAN 处理/未处理羊毛</td>
+  <td>涉及洗烘收缩与纱长/线密度，脚注有小的 count 效应限定；未取得可量化原表</td>
+</tr>
+<tr>
+  <td><a href="https://www.tandfonline.com/doi/abs/10.1080/00405006808659967">Postle 1968</a></td>
+  <td>出版社检索摘要、直接 HTTP403；“A wet treatment at an elevated temperature”（8 词）</td>
+  <td>天然/合成纤维不同处理响应的摘要概述；具体材料/实验范围 UNKNOWN</td>
+</tr>
+<tr>
+  <td><a href="https://www.tandfonline.com/doi/abs/10.1080/00405006708629880">Postle &amp; Munden 1967 I</a> / <a href="https://www.tandfonline.com/doi/abs/10.1080/00405006708629881">II</a></td>
+  <td>出版社检索摘要；分别为干放松线圈二维/三维分析</td>
+  <td>理论力/力矩与扭转分析，不能从摘要提取实验点或直接认定对应 T1</td>
+</tr>
+<tr>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051757004000712">Shanahan &amp; Postle 1970</a></td>
+  <td>出版社摘要；理论分析</td>
+  <td>摘要讨论较弱紧度敏感性和较浅能量极小；没有本轮读到的实测点</td>
+</tr>
+</tbody>
+</table>
+<p>访问失败包含受限摘要、403 或 PDF 链接返回 HTML；未绕过付费墙。开放访问查询无结果仅表示本轮未找到，不证明不存在合法副本。</p>
+<h3>四、68 个文献点的统计与单位审计</h3>
+<p>每格为 <strong>算术平均值 / 离散度百分数</strong>，离散度 D=(max−min)/mean。数据集之间不合并；“ratio”是逐点比例的均值，不是平均 kc 除以平均 kw。Al-Douri 的 kc、kw、ratio、ks 均用原表值，其中 ks 取 ksReported；其他来源从原始密度和匹配长度计算，ks 取 ksFromK。所有 k 无量纲。</p>
+<table>
+<thead>
+<tr>
+  <th>数据集/状态</th>
+  <th style="text-align:right">n</th>
+  <th style="text-align:right">kc：均值 / D</th>
+  <th style="text-align:right">kw：均值 / D</th>
+  <th style="text-align:right">ratio：均值 / D</th>
+  <th style="text-align:right">ks：均值 / D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Al-Douri 干</td>
+  <td style="text-align:right">13</td>
+  <td style="text-align:right">4.8077 / 10.4%</td>
+  <td style="text-align:right">3.5000 / 17.1%</td>
+  <td style="text-align:right">1.3785 / 24.7%</td>
+  <td style="text-align:right">16.8462 / 13.1%</td>
+</tr>
+<tr>
+  <td>Al-Douri 全</td>
+  <td style="text-align:right">13</td>
+  <td style="text-align:right">5.3231 / 11.3%</td>
+  <td style="text-align:right">3.9692 / 12.6%</td>
+  <td style="text-align:right">1.3446 / 21.6%</td>
+  <td style="text-align:right">21.1000 / 10.0%</td>
+</tr>
+<tr>
+  <td>RR85 BW 坯布</td>
+  <td style="text-align:right">20</td>
+  <td style="text-align:right">5.0791 / 53.3%</td>
+  <td style="text-align:right">3.7019 / 55.2%</td>
+  <td style="text-align:right">1.4723 / 118.0%</td>
+  <td style="text-align:right">18.2390 / 17.3%</td>
+</tr>
+<tr>
+  <td>RR85 AW 洗烘+压烫</td>
+  <td style="text-align:right">20</td>
+  <td style="text-align:right">5.7280 / 10.9%</td>
+  <td style="text-align:right">4.5988 / 32.2%</td>
+  <td style="text-align:right">1.2600 / 37.6%</td>
+  <td style="text-align:right">26.2952 / 30.8%</td>
+</tr>
+<tr>
+  <td>Gravas 干</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">5.0350 / 0.0%†</td>
+  <td style="text-align:right">3.8950 / 0.0%†</td>
+  <td style="text-align:right">1.2927 / 0.0%†</td>
+  <td style="text-align:right">19.6113 / 0.0%†</td>
+</tr>
+<tr>
+  <td>Gravas 湿</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">5.4150 / 0.0%†</td>
+  <td style="text-align:right">4.0850 / 0.0%†</td>
+  <td style="text-align:right">1.3256 / 0.0%†</td>
+  <td style="text-align:right">22.1203 / 0.0%†</td>
+</tr>
+</tbody>
+</table>
+<p>† 单点的公式结果为 0%，但样本散布、TF 依赖与测量不确定度均 <strong>UNKNOWN</strong>，不能据此宣称常数。上述离散度描述跨样本范围，不是标准差、95%CI、测量误差或新的 B 容限；RR85 还混有线密度/歪斜影响。原表精度有限，显示四位小数只是计算结果，不能提高原测量精度。</p>
+<p>三步换算逐点保存在 derived：先确认/换算 tex，再将 l 转 mm，最后算 √tex/l(mm)；原文 TF 再独立换算对照。Al-Douri 使用状态实测 tex 与 cm；RR85 使用实测 tex、mm，原 TF 数值经逐点验证对应 cm 口径；Gravas 用实测合计 tex 和 mm。Gravas 表列 K 使用 /cm×mm 混合长度，单独抄用时 kc/kw 须除 10、ks 除 100；本轮直接从原始密度计算，不把软件接受的 0.8–2 当成实验覆盖。</p>
+<p>重算 TF 与原印 TF <strong>并非全等</strong>。最大绝对差为 0.0086264，出现在 Al-Douri Table 8 fabric 13：67.2 tex、0.76 cm 算得 1.0786264；原印 10.7/cm 换成 1.07/mm。差值超过原 TF 半末位 0.005，但 l 的显示增量为 0.01 cm、tex 为 0.1 tex，均需计入舍入传播；同时计入这些显示舍入后，Al-Douri 26 点的两种 TF 区间有交叠。这只是舍入一致性核对，不是测量误差估计，更不能改写原表。</p>
+<p>Gravas <strong>Tables 10/11 为作者实测样本及对应 tex/l/TF</strong>，据此入图；Table 12 为汇总输入/均值区间，不能展开成每个 TF 的样本分布；<strong>Table 13 的软件预测不进入实测点</strong>。Sharma Table 1 的截距与 count 歧义保留为排除理由，未凭猜测生成点。</p>
+<h3>五、供用户选择的四个方案（均未实施）</h3>
+<table>
+<thead>
+<tr>
+  <th>方案</th>
+  <th>依据</th>
+  <th>后续改动范围</th>
+  <th>风险/代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1. 维持 §7.2 暂定区间，保留其 B 类判定，再排查模型</td>
+  <td>维持可追踪的既有关口；A14 解决离散问题后才能解释剩余偏差</td>
+  <td>用户另行授权模型诊断，例如压缩律、势垒宽度、φ0 来源；本轮不改参数或分支</td>
+  <td>暂定区间的材料/状态依据未完全解决；偏离不能自动等同模型已错，也不能借排查逐工况调参</td>
+</tr>
+<tr>
+  <td>2. 按放松状态分别建立对照</td>
+  <td>原文程序差异明确，干/湿/全/含压烫不宜混为一组</td>
+  <td>用户先指定目标状态与材料；再为各区间登记具体原表、TF 覆盖、适用范围和信度</td>
+  <td>同名 fully-relaxed 内仍有材料/历史差异；直接取跨来源包络可能掩盖偏差，Gravas 单点不足以定区间</td>
+</tr>
+<tr>
+  <td>3. 按 TF 参考曲线或回归带对照</td>
+  <td>Al-Douri 与 RR85 提供可复算的多 TF 点，部分 k/ratio 有系统变化；Sharma 支持检验趋势的必要性</td>
+  <td>另行确定材料/状态分层、拟合方法、验证集与区间含义；保留原点及残差，禁止覆盖外推冒充验证</td>
+  <td>点少、舍入粗、线密度/机器/歪斜混杂；拟合带不是实测置信带，可能过拟合；不能把 Gravas 单点拟成曲线</td>
+</tr>
+<tr>
+  <td>4. 保持现有 B 记录为暂定外部参照，先补匹配材料/程序的证据</td>
+  <td>Knapton 1971 原表覆盖仍未知；各现有数据与 T1 的材料和状态均存在差异</td>
+  <td>用户可选择合法取得关键全文，或设计固定材料、明确 tex/l/调湿与放松程序的匹配实验；证据足够后再决定 1–3</td>
+  <td>需要时间/实物成本；物理外部验证继续保持未闭合，不能以文献范围宽自动宣告通过</td>
+</tr>
+</tbody>
+</table>
+<p>四案保留给用户决定；本说明不推荐通过放宽区间来消除当前偏差，也不启动 T2–T8。T1 逐工况实际分类及 A14 状态见下方对比表。</p>
+<h3>复核入口</h3>
+<ul>
+<li><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature-input.json">literature-input.json</a>：17 条来源/数据集记录；Al-Douri 两种状态是同一篇论文。</li>
+<li><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature-derived.json">literature-derived.json</a>：68 个点及逐点换算；模型点及分类采用本轮最终保存的 A14 结果。</li>
+<li><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature-notes-statistics.json">literature-notes-statistics.json</a>：本说明统计结果、指标取值规则和原始数据来源。</li>
+<li><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/literature/classics/CLASSICS_AUDIT.md">经典文献访问审计</a>：正文缺口、原始扫描和视觉核对范围。</li>
+</ul>
+<h3>记忆候选的定向补核</h3>
+<table>
+<thead>
+<tr>
+  <th>来源</th>
+  <th>已核实题录和阅读范围</th>
+  <th>数据限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Hurd 与 Doyle 1953</td>
+  <td><em>Fundamental aspects of the design of knitted fabrics</em>, Journal of the Textile Institute Proceedings 44(8):P561–P578；<a href="https://api.crossref.org/works/10.1080/19447015308687861">Crossref 原始注册记录</a> HTTP200。常见 Doyle 1953 简称省略 Hurd；出版社摘要/PDF 403，没有读到原文或原摘要</td>
+  <td>仅题录；程序、TF、k 均 UNKNOWN，二手摘要不用作数据</td>
+</tr>
+<tr>
+  <td>Heap 等 1983 Part I</td>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051758305300208">出版社原页</a>，TRJ 53(2):109–119；题录、摘要、可见引用</td>
+  <td>表图与逐点 TF/k 未取得，不入图</td>
+</tr>
+<tr>
+  <td>Heap 等 1985 Part II</td>
+  <td><a href="https://journals.sagepub.com/doi/10.1177/004051758505500403">出版社原页</a>，TRJ 55(4):211–222；题录、摘要、可见引用</td>
+  <td>不挪用 Stevens 1978 RR85 的 40 个点；原始 TF 覆盖 UNKNOWN</td>
+</tr>
+</tbody>
+</table>
+<p>上述补核没有新增数值点。清单合计 17 条来源/状态记录、16 个不同来源 ID；正式图仍为 3 个原始实验来源的 6 个数据集、68 个状态点。</p>
+<h3>实际用于比较的模型点</h3>
+<p>下表采用 (a) 中可用的最细平衡解。求解器达到平衡与 A14 离散收敛成立是两个判断；空心点保留“离散误差未排除”。20 tex 等为 T1 未标定参考假设，SOP 的 8 tex 为 INFERRED；不是这些文献纱样的复现或真实 SOP 标定。</p>
+<table>
+<thead>
+<tr>
+  <th>工况</th>
+  <th>TF/mm口径</th>
+  <th>N</th>
+  <th>kc</th>
+  <th>kw</th>
+  <th>kc/kw</th>
+  <th>A14状态</th>
+  <th>结果文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2.6mm</td>
+  <td>1.72005</td>
+  <td>32</td>
+  <td>6.07091</td>
+  <td>3.62298</td>
+  <td>1.67566</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS; STAGNATION_STOP_INCOMPLETE</td>
+  <td><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/a14/case-2.6-N32-attempt2.json">结果</a></td>
+</tr>
+<tr>
+  <td>3mm</td>
+  <td>1.49071</td>
+  <td>64</td>
+  <td>5.48927</td>
+  <td>3.8904</td>
+  <td>1.41098</td>
+  <td>NOT_ESTABLISHED_ROD_DENSITY_CRITERION; CONVERGENCE_NOT_ESTABLISHED</td>
+  <td><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/refinement-64.json">结果</a></td>
+</tr>
+<tr>
+  <td>3.5mm</td>
+  <td>1.27775</td>
+  <td>32</td>
+  <td>5.39029</td>
+  <td>3.84551</td>
+  <td>1.40171</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS; STAGNATION_STOP_INCOMPLETE</td>
+  <td><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/a14/case-3.5-N32-attempt1.json">结果</a></td>
+</tr>
+<tr>
+  <td>4mm</td>
+  <td>1.11803</td>
+  <td>64</td>
+  <td>5.54887</td>
+  <td>3.49659</td>
+  <td>1.58694</td>
+  <td>INCOMPLETE_REQUIRED_LEVELS; STAGNATION_STOP_INCOMPLETE</td>
+  <td><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/a14/case-4-N64-attempt5.json">结果</a></td>
+</tr>
+<tr>
+  <td>SOP 2.3mm</td>
+  <td>1.22975</td>
+  <td>32</td>
+  <td>5.31137</td>
+  <td>3.95721</td>
+  <td>1.3422</td>
+  <td>REPORT_ONLY; STAGNATION_STOP_INCOMPLETE</td>
+  <td><a href="file:///C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/a14/case-sop-N32-attempt1.json">结果</a></td>
+</tr>
+</tbody>
+</table>
+<h3>逐数据集比较</h3>
+<p>每格的“内/外”分别指 kc、kw、kc/kw；括号内为 TF±0.1 的实际点数。三个指标都在范围内才记为总体“内”。不跨放松状态或数据集合并，不外推；“外”是样本范围判断，不是统计拒绝或新的 B 类验收。n=1 时范围退化成一个点。原文测量误差与样本分布的置信区间未知，不把样本极值范围当容差。</p>
+<table>
+<thead>
+<tr>
+  <th>数据集；顺序 kc/kw/比值</th>
+  <th>2.6mm</th>
+  <th>3mm</th>
+  <th>3.5mm</th>
+  <th>4mm</th>
+  <th>SOP 2.3mm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>外/外/外 (n=1)</td>
+  <td>外/外/外 (n=2)</td>
+  <td>外/外/内 (n=2)</td>
+  <td>外/内/外 (n=4)</td>
+  <td>外/外/外 (n=1)</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>外/外/外 (n=2)</td>
+  <td>外/外/外 (n=2)</td>
+  <td>内/外/外 (n=2)</td>
+  <td>内/外/外 (n=2)</td>
+  <td>内/外/外 (n=2)</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>外/外/外 (n=3)</td>
+  <td>外/外/外 (n=4)</td>
+  <td>外/内/外 (n=3)</td>
+  <td>外/外/外 (n=5)</td>
+  <td>外/内/外 (n=6)</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>外/外/外 (n=2)</td>
+  <td>外/外/外 (n=4)</td>
+  <td>外/外/外 (n=4)</td>
+  <td>内/外/外 (n=6)</td>
+  <td>外/外/外 (n=6)</td>
+</tr>
+<tr>
+  <td>gravas2006_dry_relaxed</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>外/外/外 (n=1)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+</tr>
+<tr>
+  <td>gravas2006_wet_relaxed</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>外/外/外 (n=1)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+  <td>无数据/无数据/无数据 (n=0)</td>
+</tr>
+</tbody>
+</table>
+<p>实际比较结果：22 个有邻近原始点的“工况×数据集”组合中，0 个组合的三个指标同时落在样本范围内。其余来源或邻域缺口仍单列无数据。这不是匹配实物的统计验收，也不改变原 B 类区间；所有模型点的 A14 状态见上表。</p>
+<p>未取得可用逐点数据的来源对五工况均记“该 TF 与状态下无数据”，不是文献没有数据或模型通过。原因如下。</p>
+<table>
+<thead>
+<tr>
+  <th>来源</th>
+  <th>实际阅读范围</th>
+  <th>无正式图点原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Knapton1968PartI</td>
+  <td>primary publisher abstract/metadata only; no body, tables or figures</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>KnaptonFong1971PartVI</td>
+  <td>primary publisher abstract/metadata only; no body, tables or figures</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>KnaptonFong1970PartIV</td>
+  <td>primary publisher abstract/metadata only; no body, tables or figures</td>
+  <td>Wrong structure for plain-jersey numeric comparison; full text also unavailable.</td>
+</tr>
+<tr>
+  <td>KnaptonRichardsFong1970PartIII</td>
+  <td>publisher abstract, metadata and visible footnote 5; no body/tables</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>Munden1959</td>
+  <td>search-indexed publisher abstract and bibliographic metadata; direct page returned HTTP403; no body/tables</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>Postle1968</td>
+  <td>search-indexed publisher abstract and metadata; direct page HTTP403</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>PostleMunden1967PartI</td>
+  <td>search-indexed publisher abstract and metadata; direct page HTTP403</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>PostleMunden1967PartII</td>
+  <td>search-indexed publisher abstract and metadata</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>ShanahanPostle1970</td>
+  <td>primary publisher abstract/metadata only; no body, tables or figures</td>
+  <td>Full text not acquired; no numerical filling from secondary quotations.</td>
+</tr>
+<tr>
+  <td>sharma1984</td>
+  <td>全文pp13–18；视觉核对p14 Table1、p16 Figures4–7、p17 Figures8–11及p18结论；所有6页已本地渲染。</td>
+  <td>count system/effective count unresolved; no unambiguous paired rawtex+loopLength+K table; no guessed graph reconstruction</td>
+</tr>
+<tr>
+  <td>Doyle1953</td>
+  <td>Crossref DOI-registration bibliographic metadata retrieved directly via API (HTTP200); publisher abstract/full/PDF requests failed. Secondary indexed abstract and references were seen as discovery leads only. No original article body, tables, figures or publisher-hosted abstract read.</td>
+  <td>UNKNOWN numerical data and TF coverage: article body/tables unavailable; secondary citations and abstracts are not original data.</td>
+</tr>
+<tr>
+  <td>Heap1983StarfishPartI</td>
+  <td>Publisher metadata and full abstract, visible reference list and information/affiliations sections only. Restricted access. Full article body, figures and tables not acquired or read.</td>
+  <td>No accessible primary full-text specimen table was read in this bounded bibliographic audit; no matched raw yarn+loop length+density/k points. Do not fill from memory, secondary quotations or the separate RR85 dataset.</td>
+</tr>
+<tr>
+  <td>Heap1985StarfishPartII</td>
+  <td>Publisher metadata and full abstract, visible reference list and information/affiliations sections only. Restricted access. Full article body, figures and tables not acquired or read.</td>
+  <td>No accessible primary full-text specimen table was read in this bounded bibliographic audit; no matched raw yarn+loop length+density/k points. Do not fill from memory, secondary quotations or the separate RR85 dataset.</td>
+</tr>
+</tbody>
+</table>
+<h3>分状态对比图</h3>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="1240" height="590" viewBox="0 0 1240 590">
+<rect width="100%" height="100%" fill="white"/><g font-family="Arial,Microsoft YaHei,sans-serif" fill="#24313c">
+<text x="30" y="30" font-size="19">Dry relaxed</text>
+<text x="30" y="53" font-size="12">Points only; no fitted curve. Grey band: unchanged provisional T1 B interval. TF = sqrt(tex) / l(mm).</text>
+<text x="62" y="85" font-size="17">kc</text>
+<rect x="62" y="183.7272727272728" width="335" height="195.36363636363632" fill="#eef0f2"/>
+<path d="M62,365.1363636363637h335" stroke="#dce2e7"/><text x="53" y="369.1363636363637" text-anchor="end" font-size="11">4.5</text>
+<path d="M62,295.36363636363643h335" stroke="#dce2e7"/><text x="53" y="299.36363636363643" text-anchor="end" font-size="11">5</text>
+<path d="M62,225.59090909090912h335" stroke="#dce2e7"/><text x="53" y="229.59090909090912" text-anchor="end" font-size="11">5.5</text>
+<path d="M62,155.81818181818187h335" stroke="#dce2e7"/><text x="53" y="159.81818181818187" text-anchor="end" font-size="11">6</text>
+<path d="M62,100V407" stroke="#e8ecef"/><text x="62" y="427" text-anchor="middle" font-size="11">0.6</text>
+<path d="M117.83333333333334,100V407" stroke="#e8ecef"/><text x="117.83333333333334" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M173.66666666666666,100V407" stroke="#e8ecef"/><text x="173.66666666666666" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M229.49999999999994,100V407" stroke="#e8ecef"/><text x="229.49999999999994" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M285.3333333333333,100V407" stroke="#e8ecef"/><text x="285.3333333333333" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M341.16666666666663,100V407" stroke="#e8ecef"/><text x="341.16666666666663" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M397,100V407" stroke="#e8ecef"/><text x="397" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="369.1346479610806" cy="323.27272727272737" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric21</title></circle>
+<circle cx="332.6242904256128" cy="351.18181818181824" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric22</title></circle>
+<circle cx="324.3577943798465" cy="337.22727272727275" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric23</title></circle>
+<circle cx="274.20771836886445" cy="295.36363636363643" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric11</title></circle>
+<circle cx="229.53622209017445" cy="323.27272727272737" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric12</title></circle>
+<circle cx="206.58853564564203" cy="337.22727272727275" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric6</title></circle>
+<circle cx="190.3761441835307" cy="309.3181818181818" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric7</title></circle>
+<circle cx="179.28078877664834" cy="309.3181818181818" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric13</title></circle>
+<circle cx="153.39162616058937" cy="337.22727272727275" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric8</title></circle>
+<circle cx="147.63847891257632" cy="337.22727272727275" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric14</title></circle>
+<circle cx="134.31540107507226" cy="323.27272727272737" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric15</title></circle>
+<circle cx="126.97411328705986" cy="323.27272727272737" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric9</title></circle>
+<circle cx="82.78481902588322" cy="281.409090909091" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric10</title></circle>
+<circle cx="328.7764436940519" cy="290.4795454545455" r="4" fill="#ce6b27"><title>plain12.5_undyed_dry_relaxed</title></circle>
+<path d="M374.6812643989933,139.92330435383536l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="366.6812643989933" y="136.92330435383536" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M310.65709581246085,221.08855523758336l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="318.65709581246085" y="218.08855523758336" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M251.20608212496646,234.9003344466559l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="259.20608212496643" y="231.9003344466559" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M206.61782185934567,212.7710157194293l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="214.61782185934567" y="209.7710157194293" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M237.8054662282514,245.91344511114102l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="245.8054662282514" y="271.913445111141" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="227" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="467" y="85" font-size="17">kw</text>
+<rect x="467" y="123.61538461538473" width="335" height="212.53846153846146" fill="#eef0f2"/>
+<path d="M467,383.38461538461536h335" stroke="#dce2e7"/><text x="458" y="387.38461538461536" text-anchor="end" font-size="11">3.2</text>
+<path d="M467,336.1538461538462h335" stroke="#dce2e7"/><text x="458" y="340.1538461538462" text-anchor="end" font-size="11">3.4</text>
+<path d="M467,288.9230769230769h335" stroke="#dce2e7"/><text x="458" y="292.9230769230769" text-anchor="end" font-size="11">3.6</text>
+<path d="M467,241.6923076923078h335" stroke="#dce2e7"/><text x="458" y="245.6923076923078" text-anchor="end" font-size="11">3.8</text>
+<path d="M467,194.46153846153854h335" stroke="#dce2e7"/><text x="458" y="198.46153846153854" text-anchor="end" font-size="11">4</text>
+<path d="M467,147.23076923076925h335" stroke="#dce2e7"/><text x="458" y="151.23076923076925" text-anchor="end" font-size="11">4.2</text>
+<path d="M467,100h335" stroke="#dce2e7"/><text x="458" y="104" text-anchor="end" font-size="11">4.4</text>
+<path d="M467,100V407" stroke="#e8ecef"/><text x="467" y="427" text-anchor="middle" font-size="11">0.6</text>
+<path d="M522.8333333333333,100V407" stroke="#e8ecef"/><text x="522.8333333333333" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M578.6666666666667,100V407" stroke="#e8ecef"/><text x="578.6666666666667" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M634.5,100V407" stroke="#e8ecef"/><text x="634.5" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M690.3333333333333,100V407" stroke="#e8ecef"/><text x="690.3333333333333" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M746.1666666666666,100V407" stroke="#e8ecef"/><text x="746.1666666666666" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M802,100V407" stroke="#e8ecef"/><text x="802" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="774.1346479610805" cy="288.9230769230769" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric21</title></circle>
+<circle cx="737.6242904256129" cy="241.6923076923078" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric22</title></circle>
+<circle cx="729.3577943798465" cy="265.3076923076923" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric23</title></circle>
+<circle cx="679.2077183688644" cy="312.5384615384616" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric11</title></circle>
+<circle cx="634.5362220901744" cy="265.3076923076923" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric12</title></circle>
+<circle cx="611.588535645642" cy="265.3076923076923" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric6</title></circle>
+<circle cx="595.3761441835306" cy="312.5384615384616" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric7</title></circle>
+<circle cx="584.2807887766484" cy="336.1538461538462" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric13</title></circle>
+<circle cx="558.3916261605893" cy="312.5384615384616" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric8</title></circle>
+<circle cx="552.6384789125764" cy="359.76923076923083" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric14</title></circle>
+<circle cx="539.3154010750723" cy="359.76923076923083" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric15</title></circle>
+<circle cx="531.9741132870599" cy="383.38461538461536" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric9</title></circle>
+<circle cx="487.7848190258832" cy="359.76923076923083" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric10</title></circle>
+<circle cx="733.7764436940519" cy="219.25769230769245" r="4" fill="#ce6b27"><title>plain12.5_undyed_dry_relaxed</title></circle>
+<path d="M779.6812643989933,277.4951845379337l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="771.6812643989933" y="274.4951845379337" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M715.6570958124609,214.34398921600524l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="723.6570958124609" y="211.34398921600524" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M656.2060821249664,224.9458949072846l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="648.2060821249664" y="248.9458949072846" text-anchor="end" font-size="10">3.5mm N32</text>
+<path d="M611.6178218593457,307.3444311878687l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="619.6178218593457" y="304.3444311878687" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M642.8054662282514,198.56651334844003l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="650.8054662282514" y="188.56651334844003" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="632" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="872" y="85" font-size="17">kc / kw</text>
+<rect x="872" y="218.0769230769231" width="335" height="165.30769230769238" fill="#eef0f2"/>
+<path d="M872,407h335" stroke="#dce2e7"/><text x="863" y="411" text-anchor="end" font-size="11">1.1</text>
+<path d="M872,359.76923076923083h335" stroke="#dce2e7"/><text x="863" y="363.76923076923083" text-anchor="end" font-size="11">1.2</text>
+<path d="M872,312.53846153846155h335" stroke="#dce2e7"/><text x="863" y="316.53846153846155" text-anchor="end" font-size="11">1.3</text>
+<path d="M872,265.3076923076924h335" stroke="#dce2e7"/><text x="863" y="269.3076923076924" text-anchor="end" font-size="11">1.4</text>
+<path d="M872,218.0769230769231h335" stroke="#dce2e7"/><text x="863" y="222.0769230769231" text-anchor="end" font-size="11">1.5</text>
+<path d="M872,170.8461538461538h335" stroke="#dce2e7"/><text x="863" y="174.8461538461538" text-anchor="end" font-size="11">1.6</text>
+<path d="M872,123.61538461538464h335" stroke="#dce2e7"/><text x="863" y="127.61538461538464" text-anchor="end" font-size="11">1.7</text>
+<path d="M872,100V407" stroke="#e8ecef"/><text x="872" y="427" text-anchor="middle" font-size="11">0.6</text>
+<path d="M927.8333333333333,100V407" stroke="#e8ecef"/><text x="927.8333333333333" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M983.6666666666667,100V407" stroke="#e8ecef"/><text x="983.6666666666667" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M1039.5,100V407" stroke="#e8ecef"/><text x="1039.5" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M1095.3333333333333,100V407" stroke="#e8ecef"/><text x="1095.3333333333333" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M1151.1666666666667,100V407" stroke="#e8ecef"/><text x="1151.1666666666667" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M1207,100V407" stroke="#e8ecef"/><text x="1207" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="1179.1346479610806" cy="298.36923076923074" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric21</title></circle>
+<circle cx="1142.6242904256128" cy="355.0461538461539" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric22</title></circle>
+<circle cx="1134.3577943798464" cy="326.7076923076923" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric23</title></circle>
+<circle cx="1084.2077183688643" cy="251.13846153846157" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric11</title></circle>
+<circle cx="1039.5362220901743" cy="312.53846153846155" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric12</title></circle>
+<circle cx="1016.5885356456421" cy="326.7076923076923" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric6</title></circle>
+<circle cx="1000.3761441835306" cy="265.3076923076924" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric7</title></circle>
+<circle cx="989.2807887766484" cy="246.41538461538468" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric13</title></circle>
+<circle cx="963.3916261605893" cy="293.6461538461538" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric8</title></circle>
+<circle cx="957.6384789125763" cy="255.86153846153854" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric14</title></circle>
+<circle cx="944.3154010750723" cy="236.9692307692308" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric15</title></circle>
+<circle cx="936.9741132870598" cy="218.0769230769231" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric9</title></circle>
+<circle cx="892.7848190258832" cy="194.46153846153845" r="4" fill="#176f92"><title>AlDouri1983-T7-fabric10</title></circle>
+<circle cx="1138.776443694052" cy="315.99437148217623" r="4" fill="#ce6b27"><title>plain12.5_undyed_dry_relaxed</title></circle>
+<path d="M1184.681264398993,129.10905840706474l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1176.681264398993" y="126.10905840706474" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M1120.6570958124607,254.1228433316931l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1128.6570958124607" y="251.1228433316931" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M1061.2060821249665,258.49923894867925l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1069.2060821249665" y="255.49923894867925" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M1016.6178218593458,171.0147261465626l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1024.617821859346" y="168.0147261465626" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M1047.8054662282514,286.606848620573l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1055.8054662282514" y="312.606848620573" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="1037" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="30" y="483" font-size="12">Diamonds: T1; hollow = A14 convergence not established / closeout incomplete. Sample ranges are not confidence intervals.</text>
+<circle cx="38" cy="510" r="4" fill="#176f92"/><text x="50" y="514" font-size="12">AlDouri1983-one-end-dry-relaxed</text>
+<circle cx="38" cy="532" r="4" fill="#ce6b27"/><text x="50" y="536" font-size="12">gravas2006_dry_relaxed</text>
+</g></svg></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="1240" height="590" viewBox="0 0 1240 590">
+<rect width="100%" height="100%" fill="white"/><g font-family="Arial,Microsoft YaHei,sans-serif" fill="#24313c">
+<text x="30" y="30" font-size="19">Fully relaxed (source protocol)</text>
+<text x="30" y="53" font-size="12">Points only; no fitted curve. Grey band: unchanged provisional T1 B interval. TF = sqrt(tex) / l(mm).</text>
+<text x="62" y="85" font-size="17">kc</text>
+<rect x="62" y="183.7272727272728" width="335" height="195.36363636363632" fill="#eef0f2"/>
+<path d="M62,365.1363636363637h335" stroke="#dce2e7"/><text x="53" y="369.1363636363637" text-anchor="end" font-size="11">4.5</text>
+<path d="M62,295.36363636363643h335" stroke="#dce2e7"/><text x="53" y="299.36363636363643" text-anchor="end" font-size="11">5</text>
+<path d="M62,225.59090909090912h335" stroke="#dce2e7"/><text x="53" y="229.59090909090912" text-anchor="end" font-size="11">5.5</text>
+<path d="M62,155.81818181818187h335" stroke="#dce2e7"/><text x="53" y="159.81818181818187" text-anchor="end" font-size="11">6</text>
+<path d="M92.45454545454548,100V407" stroke="#e8ecef"/><text x="92.45454545454548" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M153.36363636363637,100V407" stroke="#e8ecef"/><text x="153.36363636363637" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M214.27272727272725,100V407" stroke="#e8ecef"/><text x="214.27272727272725" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M275.18181818181813,100V407" stroke="#e8ecef"/><text x="275.18181818181813" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M336.09090909090907,100V407" stroke="#e8ecef"/><text x="336.09090909090907" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M397,100V407" stroke="#e8ecef"/><text x="397" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="379.99473989887287" cy="281.409090909091" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric21</title></circle>
+<circle cx="348.1241464140314" cy="295.36363636363643" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric22</title></circle>
+<circle cx="328.92007085265254" cy="295.36363636363643" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric23</title></circle>
+<circle cx="286.80587006015526" cy="267.45454545454544" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric11</title></circle>
+<circle cx="245.09275689425291" cy="267.45454545454544" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric6</title></circle>
+<circle cx="221.43457330762178" cy="239.54545454545453" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric12</title></circle>
+<circle cx="186.1870768153775" cy="211.63636363636374" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric7</title></circle>
+<circle cx="177.3089479996618" cy="239.54545454545453" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric13</title></circle>
+<circle cx="157.03174021068148" cy="253.50000000000006" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric8</title></circle>
+<circle cx="146.02411312523512" cy="239.54545454545453" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric14</title></circle>
+<circle cx="135.77563273533679" cy="225.59090909090912" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric15</title></circle>
+<circle cx="117.26224880519771" cy="211.63636363636374" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric9</title></circle>
+<circle cx="88.86912633541718" cy="225.59090909090912" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric10</title></circle>
+<path d="M372.65228843526546,139.92330435383536l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="364.65228843526546" y="136.92330435383536" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M302.8077408863209,221.08855523758336l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="310.8077408863209" y="218.08855523758336" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M237.9520895908725,234.9003344466559l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="245.9520895908725" y="231.9003344466559" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M189.3103511192862,212.7710157194293l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="197.3103511192862" y="209.7710157194293" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M223.33323588536516,245.91344511114102l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="231.33323588536516" y="271.913445111141" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="227" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="467" y="85" font-size="17">kw</text>
+<rect x="467" y="127.90909090909105" width="335" height="251.18181818181807" fill="#eef0f2"/>
+<path d="M467,379.0909090909091h335" stroke="#dce2e7"/><text x="458" y="383.0909090909091" text-anchor="end" font-size="11">3.4</text>
+<path d="M467,323.27272727272725h335" stroke="#dce2e7"/><text x="458" y="327.27272727272725" text-anchor="end" font-size="11">3.6</text>
+<path d="M467,267.4545454545455h335" stroke="#dce2e7"/><text x="458" y="271.4545454545455" text-anchor="end" font-size="11">3.8</text>
+<path d="M467,211.63636363636368h335" stroke="#dce2e7"/><text x="458" y="215.63636363636368" text-anchor="end" font-size="11">4</text>
+<path d="M467,155.81818181818184h335" stroke="#dce2e7"/><text x="458" y="159.81818181818184" text-anchor="end" font-size="11">4.2</text>
+<path d="M467,100h335" stroke="#dce2e7"/><text x="458" y="104" text-anchor="end" font-size="11">4.4</text>
+<path d="M497.4545454545455,100V407" stroke="#e8ecef"/><text x="497.4545454545455" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M558.3636363636364,100V407" stroke="#e8ecef"/><text x="558.3636363636364" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M619.2727272727273,100V407" stroke="#e8ecef"/><text x="619.2727272727273" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M680.1818181818181,100V407" stroke="#e8ecef"/><text x="680.1818181818181" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M741.0909090909091,100V407" stroke="#e8ecef"/><text x="741.0909090909091" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M802,100V407" stroke="#e8ecef"/><text x="802" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="784.9947398988729" cy="183.7272727272729" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric21</title></circle>
+<circle cx="753.1241464140314" cy="211.63636363636368" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric22</title></circle>
+<circle cx="733.9200708526525" cy="183.7272727272729" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric23</title></circle>
+<circle cx="691.8058700601551" cy="155.81818181818184" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric11</title></circle>
+<circle cx="650.092756894253" cy="211.63636363636368" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric6</title></circle>
+<circle cx="626.4345733076218" cy="183.7272727272729" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric12</title></circle>
+<circle cx="591.1870768153774" cy="239.5454545454546" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric7</title></circle>
+<circle cx="582.3089479996618" cy="211.63636363636368" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric13</title></circle>
+<circle cx="562.0317402106815" cy="267.4545454545455" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric8</title></circle>
+<circle cx="551.0241131252351" cy="211.63636363636368" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric14</title></circle>
+<circle cx="540.7756327353368" cy="267.4545454545455" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric15</title></circle>
+<circle cx="522.2622488051977" cy="295.3636363636363" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric9</title></circle>
+<circle cx="493.8691263354172" cy="239.5454545454546" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric10</title></circle>
+<path d="M777.6522884352654,310.85794536301256l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="769.6522884352654" y="307.85794536301256" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M707.807740886321,236.2247145280062l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="715.807740886321" y="233.2247145280062" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M642.9520895908724,248.75423943588174l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="634.9520895908724" y="272.75423943588174" text-anchor="end" font-size="10">3.5mm N32</text>
+<path d="M594.3103511192862,346.1343277674811l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="602.3103511192862" y="343.1343277674811" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M628.3332358853652,217.57860668452l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="636.3332358853652" y="207.57860668452" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="632" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="872" y="85" font-size="17">kc / kw</text>
+<rect x="872" y="218.0769230769231" width="335" height="165.30769230769238" fill="#eef0f2"/>
+<path d="M872,407h335" stroke="#dce2e7"/><text x="863" y="411" text-anchor="end" font-size="11">1.1</text>
+<path d="M872,359.76923076923083h335" stroke="#dce2e7"/><text x="863" y="363.76923076923083" text-anchor="end" font-size="11">1.2</text>
+<path d="M872,312.53846153846155h335" stroke="#dce2e7"/><text x="863" y="316.53846153846155" text-anchor="end" font-size="11">1.3</text>
+<path d="M872,265.3076923076924h335" stroke="#dce2e7"/><text x="863" y="269.3076923076924" text-anchor="end" font-size="11">1.4</text>
+<path d="M872,218.0769230769231h335" stroke="#dce2e7"/><text x="863" y="222.0769230769231" text-anchor="end" font-size="11">1.5</text>
+<path d="M872,170.8461538461538h335" stroke="#dce2e7"/><text x="863" y="174.8461538461538" text-anchor="end" font-size="11">1.6</text>
+<path d="M872,123.61538461538464h335" stroke="#dce2e7"/><text x="863" y="127.61538461538464" text-anchor="end" font-size="11">1.7</text>
+<path d="M902.4545454545456,100V407" stroke="#e8ecef"/><text x="902.4545454545456" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M963.3636363636365,100V407" stroke="#e8ecef"/><text x="963.3636363636365" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M1024.2727272727273,100V407" stroke="#e8ecef"/><text x="1024.2727272727273" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M1085.181818181818,100V407" stroke="#e8ecef"/><text x="1085.181818181818" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M1146.090909090909,100V407" stroke="#e8ecef"/><text x="1146.090909090909" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M1207,100V407" stroke="#e8ecef"/><text x="1207" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="1189.994739898873" cy="340.8769230769231" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric21</title></circle>
+<circle cx="1158.1241464140314" cy="336.1538461538462" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric22</title></circle>
+<circle cx="1138.9200708526525" cy="350.323076923077" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric23</title></circle>
+<circle cx="1096.805870060155" cy="340.8769230769231" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric11</title></circle>
+<circle cx="1055.092756894253" cy="312.53846153846155" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric6</title></circle>
+<circle cx="1031.4345733076218" cy="303.0923076923077" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric12</title></circle>
+<circle cx="996.1870768153774" cy="246.41538461538468" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric7</title></circle>
+<circle cx="987.3089479996618" cy="288.9230769230769" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric13</title></circle>
+<circle cx="967.0317402106814" cy="265.3076923076924" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric8</title></circle>
+<circle cx="956.0241131252351" cy="288.9230769230769" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric14</title></circle>
+<circle cx="945.7756327353368" cy="241.69230769230774" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric15</title></circle>
+<circle cx="927.2622488051977" cy="213.35384615384615" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric9</title></circle>
+<circle cx="898.8691263354173" cy="260.5846153846154" r="4" fill="#176f92"><title>AlDouri1983-T8-fabric10</title></circle>
+<path d="M1182.6522884352655,129.10905840706474l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1174.6522884352655" y="126.10905840706474" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M1112.807740886321,254.1228433316931l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1120.807740886321" y="251.1228433316931" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M1047.9520895908724,258.49923894867925l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1055.9520895908724" y="255.49923894867925" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M999.3103511192862,171.0147261465626l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1007.3103511192862" y="168.0147261465626" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M1033.3332358853652,286.606848620573l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1041.3332358853652" y="312.606848620573" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="1037" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="30" y="483" font-size="12">Diamonds: T1; hollow = A14 convergence not established / closeout incomplete. Sample ranges are not confidence intervals.</text>
+<circle cx="38" cy="510" r="4" fill="#176f92"/><text x="50" y="514" font-size="12">AlDouri1983-one-end-fully-relaxed</text>
+</g></svg></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="1240" height="590" viewBox="0 0 1240 590">
+<rect width="100%" height="100%" fill="white"/><g font-family="Arial,Microsoft YaHei,sans-serif" fill="#24313c">
+<text x="30" y="30" font-size="19">Greige / before washing</text>
+<text x="30" y="53" font-size="12">Points only; no fitted curve. Grey band: unchanged provisional T1 B interval. TF = sqrt(tex) / l(mm).</text>
+<text x="62" y="85" font-size="17">kc</text>
+<rect x="62" y="230.47500000000002" width="335" height="107.44999999999993" fill="#eef0f2"/>
+<path d="M62,407h335" stroke="#dce2e7"/><text x="53" y="411" text-anchor="end" font-size="11">3.5</text>
+<path d="M62,368.625h335" stroke="#dce2e7"/><text x="53" y="372.625" text-anchor="end" font-size="11">4</text>
+<path d="M62,330.25h335" stroke="#dce2e7"/><text x="53" y="334.25" text-anchor="end" font-size="11">4.5</text>
+<path d="M62,291.875h335" stroke="#dce2e7"/><text x="53" y="295.875" text-anchor="end" font-size="11">5</text>
+<path d="M62,253.5h335" stroke="#dce2e7"/><text x="53" y="257.5" text-anchor="end" font-size="11">5.5</text>
+<path d="M62,215.125h335" stroke="#dce2e7"/><text x="53" y="219.125" text-anchor="end" font-size="11">6</text>
+<path d="M62,176.75h335" stroke="#dce2e7"/><text x="53" y="180.75" text-anchor="end" font-size="11">6.5</text>
+<path d="M62,138.375h335" stroke="#dce2e7"/><text x="53" y="142.375" text-anchor="end" font-size="11">7</text>
+<path d="M62,100h335" stroke="#dce2e7"/><text x="53" y="104" text-anchor="end" font-size="11">7.5</text>
+<path d="M62,100V407" stroke="#e8ecef"/><text x="62" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M117.83333333333333,100V407" stroke="#e8ecef"/><text x="117.83333333333333" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M173.66666666666666,100V407" stroke="#e8ecef"/><text x="173.66666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M229.49999999999994,100V407" stroke="#e8ecef"/><text x="229.49999999999994" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M285.33333333333337,100V407" stroke="#e8ecef"/><text x="285.33333333333337" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M341.1666666666667,100V407" stroke="#e8ecef"/><text x="341.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M397,100V407" stroke="#e8ecef"/><text x="397" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="156.2337549153116" cy="341.61746062992125" r="4" fill="#176f92"><title>SJ16/549_BW</title></circle>
+<circle cx="185.4577200915673" cy="326.91409448818894" r="4" fill="#176f92"><title>SJ16/500_BW</title></circle>
+<circle cx="225.83750028487765" cy="309.0198622047244" r="4" fill="#176f92"><title>SJ16/450_BW</title></circle>
+<circle cx="281.4364450603387" cy="260.1567027559055" r="4" fill="#176f92"><title>SJ16/389_BW</title></circle>
+<circle cx="358.85324680401766" cy="189.99088582677166" r="4" fill="#176f92"><title>SJ16/330_BW</title></circle>
+<circle cx="119.58539968005022" cy="346.2315255905512" r="4" fill="#176f92"><title>SJ20/549_BW</title></circle>
+<circle cx="154.9210893672683" cy="331.14743110236225" r="4" fill="#176f92"><title>SJ20/490_BW</title></circle>
+<circle cx="203.92903864774894" cy="314.9694980314961" r="4" fill="#176f92"><title>SJ20/429_BW</title></circle>
+<circle cx="270.91125012852046" cy="263.2931791338582" r="4" fill="#176f92"><title>SJ20/361_BW</title></circle>
+<circle cx="344.8859942780323" cy="149.76059055118114" r="4" fill="#176f92"><title>SJ20/300_BW</title></circle>
+<circle cx="93.19270325725958" cy="353.44421259842517" r="4" fill="#176f92"><title>SJ24/549_BW</title></circle>
+<circle cx="129.55356562734428" cy="346.2526771653543" r="4" fill="#176f92"><title>SJ24/480_BW</title></circle>
+<circle cx="175.55757641187967" cy="320.4417125984251" r="4" fill="#176f92"><title>SJ24/419_BW</title></circle>
+<circle cx="233.14576611191615" cy="263.0514468503938" r="4" fill="#176f92"><title>SJ24/361_BW</title></circle>
+<circle cx="319.4380691155644" cy="155.2237401574804" r="4" fill="#176f92"><title>SJ24/290_BW</title></circle>
+<circle cx="84.56804497319355" cy="357.69870078740155" r="4" fill="#176f92"><title>SJ26/549_BW</title></circle>
+<circle cx="120.57870706829165" cy="339.09135826771654" r="4" fill="#176f92"><title>SJ26/480_BW</title></circle>
+<circle cx="157.9888356523936" cy="305.83503937007873" r="4" fill="#176f92"><title>SJ26/419_BW</title></circle>
+<circle cx="229.25784148399055" cy="275.31633858267713" r="4" fill="#176f92"><title>SJ26/361_BW</title></circle>
+<circle cx="308.1926433634497" cy="166.57004921259832" r="4" fill="#176f92"><title>SJ26/290_BW</title></circle>
+<path d="M318.84793106565996,203.6828173946094l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="310.84793106565996" y="200.6828173946094" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M254.8237624791275,248.32370538067082l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="262.8237624791275" y="245.32370538067082" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M195.37274879163311,255.9201839456607l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="203.37274879163311" y="252.9201839456607" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M150.7844885260123,243.7490586456861l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="158.7844885260123" y="240.7490586456861" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M181.97213289491808,261.9773948111275l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="189.97213289491808" y="287.9773948111275" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="227" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="467" y="85" font-size="17">kw</text>
+<rect x="467" y="163.95833333333334" width="335" height="115.12499999999997" fill="#eef0f2"/>
+<path d="M467,394.2083333333333h335" stroke="#dce2e7"/><text x="458" y="398.2083333333333" text-anchor="end" font-size="11">2.5</text>
+<path d="M467,330.25h335" stroke="#dce2e7"/><text x="458" y="334.25" text-anchor="end" font-size="11">3</text>
+<path d="M467,266.29166666666663h335" stroke="#dce2e7"/><text x="458" y="270.29166666666663" text-anchor="end" font-size="11">3.5</text>
+<path d="M467,202.33333333333331h335" stroke="#dce2e7"/><text x="458" y="206.33333333333331" text-anchor="end" font-size="11">4</text>
+<path d="M467,138.37499999999997h335" stroke="#dce2e7"/><text x="458" y="142.37499999999997" text-anchor="end" font-size="11">4.5</text>
+<path d="M467,100V407" stroke="#e8ecef"/><text x="467" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M522.8333333333333,100V407" stroke="#e8ecef"/><text x="522.8333333333333" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M578.6666666666666,100V407" stroke="#e8ecef"/><text x="578.6666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M634.5,100V407" stroke="#e8ecef"/><text x="634.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M690.3333333333334,100V407" stroke="#e8ecef"/><text x="690.3333333333334" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M746.1666666666667,100V407" stroke="#e8ecef"/><text x="746.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M802,100V407" stroke="#e8ecef"/><text x="802" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="561.2337549153117" cy="141.18513779527555" r="4" fill="#176f92"><title>SJ16/549_BW</title></circle>
+<circle cx="590.4577200915674" cy="164.82957677165345" r="4" fill="#176f92"><title>SJ16/500_BW</title></circle>
+<circle cx="630.8375002848777" cy="217.693405511811" r="4" fill="#176f92"><title>SJ16/450_BW</title></circle>
+<circle cx="686.4364450603388" cy="262.65561023622047" r="4" fill="#176f92"><title>SJ16/389_BW</title></circle>
+<circle cx="763.8532468040177" cy="339.6775590551181" r="4" fill="#176f92"><title>SJ16/330_BW</title></circle>
+<circle cx="524.5853996800503" cy="129.85393700787384" r="4" fill="#176f92"><title>SJ20/549_BW</title></circle>
+<circle cx="559.9210893672683" cy="175.90393700787402" r="4" fill="#176f92"><title>SJ20/490_BW</title></circle>
+<circle cx="608.9290386477489" cy="239.7816929133858" r="4" fill="#176f92"><title>SJ20/429_BW</title></circle>
+<circle cx="675.9112501285205" cy="313.2683070866141" r="4" fill="#176f92"><title>SJ20/361_BW</title></circle>
+<circle cx="749.8859942780323" cy="376.330216535433" r="4" fill="#176f92"><title>SJ20/300_BW</title></circle>
+<circle cx="498.19270325725955" cy="124.9790026246718" r="4" fill="#176f92"><title>SJ24/549_BW</title></circle>
+<circle cx="534.5535656273444" cy="186.62073490813646" r="4" fill="#176f92"><title>SJ24/480_BW</title></circle>
+<circle cx="580.5575764118796" cy="244.14798228346456" r="4" fill="#176f92"><title>SJ24/419_BW</title></circle>
+<circle cx="638.1457661119161" cy="307.4365157480314" r="4" fill="#176f92"><title>SJ24/361_BW</title></circle>
+<circle cx="724.4380691155645" cy="384.76062992125986" r="4" fill="#176f92"><title>SJ24/290_BW</title></circle>
+<circle cx="489.56804497319354" cy="123.40774278215221" r="4" fill="#176f92"><title>SJ26/549_BW</title></circle>
+<circle cx="525.5787070682917" cy="162.7395997375328" r="4" fill="#176f92"><title>SJ26/480_BW</title></circle>
+<circle cx="562.9888356523936" cy="223.07194881889757" r="4" fill="#176f92"><title>SJ26/419_BW</title></circle>
+<circle cx="634.2578414839905" cy="310.9114173228346" r="4" fill="#176f92"><title>SJ26/361_BW</title></circle>
+<circle cx="713.1926433634496" cy="380.1223917322834" r="4" fill="#176f92"><title>SJ26/290_BW</title></circle>
+<path d="M723.84793106566,244.55989162471406l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="715.84793106566" y="241.55989162471406" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M659.8237624791275,210.35299415866945l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="667.8237624791275" y="207.35299415866945" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M600.3727487916331,216.09569307477912l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="592.3727487916331" y="240.09569307477912" text-anchor="end" font-size="10">3.5mm N32</text>
+<path d="M555.7844885260123,260.72823356009553l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="563.7844885260123" y="257.72823356009553" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M586.9721328949181,201.80686139707163l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="594.9721328949181" y="191.80686139707163" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="632" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="872" y="85" font-size="17">kc / kw</text>
+<rect x="872" y="281.4090909090909" width="335" height="48.84090909090912" fill="#eef0f2"/>
+<path d="M872,351.1818181818182h335" stroke="#dce2e7"/><text x="863" y="355.1818181818182" text-anchor="end" font-size="11">1</text>
+<path d="M872,281.4090909090909h335" stroke="#dce2e7"/><text x="863" y="285.4090909090909" text-anchor="end" font-size="11">1.5</text>
+<path d="M872,211.63636363636363h335" stroke="#dce2e7"/><text x="863" y="215.63636363636363" text-anchor="end" font-size="11">2</text>
+<path d="M872,141.86363636363635h335" stroke="#dce2e7"/><text x="863" y="145.86363636363635" text-anchor="end" font-size="11">2.5</text>
+<path d="M872,100V407" stroke="#e8ecef"/><text x="872" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M927.8333333333334,100V407" stroke="#e8ecef"/><text x="927.8333333333334" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M983.6666666666666,100V407" stroke="#e8ecef"/><text x="983.6666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M1039.5,100V407" stroke="#e8ecef"/><text x="1039.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M1095.3333333333335,100V407" stroke="#e8ecef"/><text x="1095.3333333333335" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M1151.1666666666667,100V407" stroke="#e8ecef"/><text x="1151.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M1207,100V407" stroke="#e8ecef"/><text x="1207" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="966.2337549153116" cy="355.11267605633805" r="4" fill="#176f92"><title>SJ16/549_BW</title></circle>
+<circle cx="995.4577200915674" cy="343.04688136975136" r="4" fill="#176f92"><title>SJ16/500_BW</title></circle>
+<circle cx="1035.8375002848777" cy="318.9313131313131" r="4" fill="#176f92"><title>SJ16/450_BW</title></circle>
+<circle cx="1091.4364450603387" cy="276.6383061383061" r="4" fill="#176f92"><title>SJ16/389_BW</title></circle>
+<circle cx="1168.8532468040175" cy="188.9908293460925" r="4" fill="#176f92"><title>SJ16/330_BW</title></circle>
+<circle cx="929.5853996800503" cy="359.58038720538724" r="4" fill="#176f92"><title>SJ20/549_BW</title></circle>
+<circle cx="964.9210893672682" cy="341.8372564935065" r="4" fill="#176f92"><title>SJ20/490_BW</title></circle>
+<circle cx="1013.9290386477489" cy="313.847288676236" r="4" fill="#176f92"><title>SJ20/429_BW</title></circle>
+<circle cx="1080.9112501285204" cy="251.41905901116422" r="4" fill="#176f92"><title>SJ20/361_BW</title></circle>
+<circle cx="1154.8859942780323" cy="128.52929292929292" r="4" fill="#176f92"><title>SJ20/300_BW</title></circle>
+<circle cx="903.1927032572595" cy="363.5137420718816" r="4" fill="#176f92"><title>SJ24/549_BW</title></circle>
+<circle cx="939.5535656273443" cy="345.47314049586777" r="4" fill="#176f92"><title>SJ24/480_BW</title></circle>
+<circle cx="985.5575764118797" cy="314.91229475370443" r="4" fill="#176f92"><title>SJ24/419_BW</title></circle>
+<circle cx="1043.1457661119161" cy="254.71343873517787" r="4" fill="#176f92"><title>SJ24/361_BW</title></circle>
+<circle cx="1129.4380691155645" cy="123.11413696435721" r="4" fill="#176f92"><title>SJ24/290_BW</title></circle>
+<circle cx="894.5680449731935" cy="365.52761257434156" r="4" fill="#176f92"><title>SJ26/549_BW</title></circle>
+<circle cx="930.5787070682917" cy="348.7443429932513" r="4" fill="#176f92"><title>SJ26/480_BW</title></circle>
+<circle cx="967.9888356523936" cy="315.5403384494293" r="4" fill="#176f92"><title>SJ26/419_BW</title></circle>
+<circle cx="1039.2578414839904" cy="259.7554858934169" r="4" fill="#176f92"><title>SJ26/361_BW</title></circle>
+<circle cx="1118.1926433634496" cy="136.1247540338449" r="4" fill="#176f92"><title>SJ26/290_BW</title></circle>
+<path d="M1128.8479310656598,250.89585816572367l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1120.8479310656598" y="247.89585816572367" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M1064.8237624791275,287.8317491661821l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1072.8237624791275" y="284.8317491661821" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M1005.3727487916332,289.12477514392793l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1013.3727487916332" y="286.12477514392793" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M960.7844885260123,263.2770781796662l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="968.7844885260123" y="260.2770781796662" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M991.9721328949181,297.4292961833511l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="999.9721328949181" y="323.4292961833511" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="1037" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="30" y="483" font-size="12">Diamonds: T1; hollow = A14 convergence not established / closeout incomplete. Sample ranges are not confidence intervals.</text>
+<circle cx="38" cy="510" r="4" fill="#176f92"/><text x="50" y="514" font-size="12">stevens1978_rr85_greige</text>
+</g></svg></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="1240" height="590" viewBox="0 0 1240 590">
+<rect width="100%" height="100%" fill="white"/><g font-family="Arial,Microsoft YaHei,sans-serif" fill="#24313c">
+<text x="30" y="30" font-size="19">Five wash/tumble cycles + final press</text>
+<text x="30" y="53" font-size="12">Points only; no fitted curve. Grey band: unchanged provisional T1 B interval. TF = sqrt(tex) / l(mm).</text>
+<text x="62" y="85" font-size="17">kc</text>
+<rect x="62" y="183.7272727272728" width="335" height="195.36363636363632" fill="#eef0f2"/>
+<path d="M62,365.1363636363637h335" stroke="#dce2e7"/><text x="53" y="369.1363636363637" text-anchor="end" font-size="11">4.5</text>
+<path d="M62,295.36363636363643h335" stroke="#dce2e7"/><text x="53" y="299.36363636363643" text-anchor="end" font-size="11">5</text>
+<path d="M62,225.59090909090912h335" stroke="#dce2e7"/><text x="53" y="229.59090909090912" text-anchor="end" font-size="11">5.5</text>
+<path d="M62,155.81818181818187h335" stroke="#dce2e7"/><text x="53" y="159.81818181818187" text-anchor="end" font-size="11">6</text>
+<path d="M62,100V407" stroke="#e8ecef"/><text x="62" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M117.83333333333333,100V407" stroke="#e8ecef"/><text x="117.83333333333333" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M173.66666666666666,100V407" stroke="#e8ecef"/><text x="173.66666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M229.49999999999994,100V407" stroke="#e8ecef"/><text x="229.49999999999994" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M285.33333333333337,100V407" stroke="#e8ecef"/><text x="285.33333333333337" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M341.1666666666667,100V407" stroke="#e8ecef"/><text x="341.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M397,100V407" stroke="#e8ecef"/><text x="397" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="163.53414774861383" cy="218.77845382963488" r="4" fill="#176f92"><title>SJ16/549_AW</title></circle>
+<circle cx="194.92890432375992" cy="203.32956335003576" r="4" fill="#176f92"><title>SJ16/500_AW</title></circle>
+<circle cx="235.81145618604936" cy="202.5219577666429" r="4" fill="#176f92"><title>SJ16/450_AW</title></circle>
+<circle cx="288.483178933978" cy="170.82206513958488" r="4" fill="#176f92"><title>SJ16/389_AW</title></circle>
+<circle cx="365.3151918988915" cy="143.95132426628481" r="4" fill="#176f92"><title>SJ16/330_AW</title></circle>
+<circle cx="128.2124624981196" cy="208.8124910522548" r="4" fill="#176f92"><title>SJ20/549_AW</title></circle>
+<circle cx="161.00290518843372" cy="211.46055833929856" r="4" fill="#176f92"><title>SJ20/490_AW</title></circle>
+<circle cx="208.4052932063406" cy="204.07673586256254" r="4" fill="#176f92"><title>SJ20/429_AW</title></circle>
+<circle cx="274.6590355342591" cy="204.2195776664281" r="4" fill="#176f92"><title>SJ20/361_AW</title></circle>
+<circle cx="355.2877612837454" cy="138.03987115246971" r="4" fill="#176f92"><title>SJ20/300_AW</title></circle>
+<circle cx="101.40322056663359" cy="205.57108088761638" r="4" fill="#176f92"><title>SJ24/549_AW</title></circle>
+<circle cx="135.79577375954767" cy="225.04151753758043" r="4" fill="#176f92"><title>SJ24/480_AW</title></circle>
+<circle cx="183.0999102121457" cy="224.5141016463852" r="4" fill="#176f92"><title>SJ24/419_AW</title></circle>
+<circle cx="245.90832521161536" cy="206.69183965640656" r="4" fill="#176f92"><title>SJ24/361_AW</title></circle>
+<circle cx="331.4145809203413" cy="157.90037580529707" r="4" fill="#176f92"><title>SJ24/290_AW</title></circle>
+<circle cx="92.44059380786584" cy="179.17281675017904" r="4" fill="#176f92"><title>SJ26/549_AW</title></circle>
+<circle cx="126.60246861533493" cy="188.32018611309962" r="4" fill="#176f92"><title>SJ26/480_AW</title></circle>
+<circle cx="173.0437269941524" cy="215.96007516105925" r="4" fill="#176f92"><title>SJ26/419_AW</title></circle>
+<circle cx="232.68407985958115" cy="209.58163922691477" r="4" fill="#176f92"><title>SJ26/361_AW</title></circle>
+<circle cx="314.82905292806856" cy="156.6202934860416" r="4" fill="#176f92"><title>SJ26/290_AW</title></circle>
+<path d="M318.84793106565996,139.92330435383536l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="310.84793106565996" y="136.92330435383536" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M254.8237624791275,221.08855523758336l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="262.8237624791275" y="218.08855523758336" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M195.37274879163311,234.9003344466559l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="203.37274879163311" y="231.9003344466559" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M150.7844885260123,212.7710157194293l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="158.7844885260123" y="209.7710157194293" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M181.97213289491808,245.91344511114102l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="189.97213289491808" y="271.913445111141" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="227" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="467" y="85" font-size="17">kw</text>
+<rect x="467" y="266.2916666666667" width="335" height="115.125" fill="#eef0f2"/>
+<path d="M467,368.625h335" stroke="#dce2e7"/><text x="458" y="372.625" text-anchor="end" font-size="11">3.5</text>
+<path d="M467,304.6666666666667h335" stroke="#dce2e7"/><text x="458" y="308.6666666666667" text-anchor="end" font-size="11">4</text>
+<path d="M467,240.70833333333331h335" stroke="#dce2e7"/><text x="458" y="244.70833333333331" text-anchor="end" font-size="11">4.5</text>
+<path d="M467,176.74999999999997h335" stroke="#dce2e7"/><text x="458" y="180.74999999999997" text-anchor="end" font-size="11">5</text>
+<path d="M467,112.79166666666661h335" stroke="#dce2e7"/><text x="458" y="116.79166666666661" text-anchor="end" font-size="11">5.5</text>
+<path d="M467,100V407" stroke="#e8ecef"/><text x="467" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M522.8333333333333,100V407" stroke="#e8ecef"/><text x="522.8333333333333" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M578.6666666666666,100V407" stroke="#e8ecef"/><text x="578.6666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M634.5,100V407" stroke="#e8ecef"/><text x="634.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M690.3333333333334,100V407" stroke="#e8ecef"/><text x="690.3333333333334" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M746.1666666666667,100V407" stroke="#e8ecef"/><text x="746.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M802,100V407" stroke="#e8ecef"/><text x="802" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="568.5341477486138" cy="206.44278215223102" r="4" fill="#176f92"><title>SJ16/549_AW</title></circle>
+<circle cx="599.92890432376" cy="231.42178477690288" r="4" fill="#176f92"><title>SJ16/500_AW</title></circle>
+<circle cx="640.8114561860493" cy="257.22670603674544" r="4" fill="#176f92"><title>SJ16/450_AW</title></circle>
+<circle cx="693.483178933978" cy="277.12933070866137" r="4" fill="#176f92"><title>SJ16/389_AW</title></circle>
+<circle cx="770.3151918988915" cy="310.3876640419947" r="4" fill="#176f92"><title>SJ16/330_AW</title></circle>
+<circle cx="533.2124624981195" cy="194.49214238845144" r="4" fill="#176f92"><title>SJ20/549_AW</title></circle>
+<circle cx="566.0029051884337" cy="215.32644356955387" r="4" fill="#176f92"><title>SJ20/490_AW</title></circle>
+<circle cx="613.4052932063405" cy="230.73687664041987" r="4" fill="#176f92"><title>SJ20/429_AW</title></circle>
+<circle cx="679.6590355342591" cy="284.8748359580051" r="4" fill="#176f92"><title>SJ20/361_AW</title></circle>
+<circle cx="760.2877612837453" cy="304.58608923884515" r="4" fill="#176f92"><title>SJ20/300_AW</title></circle>
+<circle cx="506.4032205666336" cy="139.55848097112863" r="4" fill="#176f92"><title>SJ24/549_AW</title></circle>
+<circle cx="540.7957737595476" cy="168.6116797900261" r="4" fill="#176f92"><title>SJ24/480_AW</title></circle>
+<circle cx="588.0999102121457" cy="211.00547900262472" r="4" fill="#176f92"><title>SJ24/419_AW</title></circle>
+<circle cx="650.9083252116153" cy="261.5577427821523" r="4" fill="#176f92"><title>SJ24/361_AW</title></circle>
+<circle cx="736.4145809203413" cy="312.5431102362204" r="4" fill="#176f92"><title>SJ24/290_AW</title></circle>
+<circle cx="497.44059380786587" cy="123.72501640419952" r="4" fill="#176f92"><title>SJ26/549_AW</title></circle>
+<circle cx="531.6024686153349" cy="123.40774278215221" r="4" fill="#176f92"><title>SJ26/480_AW</title></circle>
+<circle cx="578.0437269941524" cy="193.2633366141731" r="4" fill="#176f92"><title>SJ26/419_AW</title></circle>
+<circle cx="637.6840798595812" cy="229.01453412073482" r="4" fill="#176f92"><title>SJ26/361_AW</title></circle>
+<circle cx="719.8290529280687" cy="286.1540026246718" r="4" fill="#176f92"><title>SJ26/290_AW</title></circle>
+<path d="M723.84793106566,346.89322495804737l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="715.84793106566" y="343.89322495804737" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M659.8237624791275,312.6863274920028l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="667.8237624791275" y="309.6863274920028" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M600.3727487916331,318.42902640811246l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="592.3727487916331" y="342.42902640811246" text-anchor="end" font-size="10">3.5mm N32</text>
+<path d="M555.7844885260123,363.06156689342885l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="563.7844885260123" y="360.06156689342885" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M586.9721328949181,304.14019473040497l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="594.9721328949181" y="294.14019473040497" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="632" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="872" y="85" font-size="17">kc / kw</text>
+<rect x="872" y="215.125" width="335" height="134.31250000000006" fill="#eef0f2"/>
+<path d="M872,407h335" stroke="#dce2e7"/><text x="863" y="411" text-anchor="end" font-size="11">1</text>
+<path d="M872,368.62499999999994h335" stroke="#dce2e7"/><text x="863" y="372.62499999999994" text-anchor="end" font-size="11">1.1</text>
+<path d="M872,330.25h335" stroke="#dce2e7"/><text x="863" y="334.25" text-anchor="end" font-size="11">1.2</text>
+<path d="M872,291.875h335" stroke="#dce2e7"/><text x="863" y="295.875" text-anchor="end" font-size="11">1.3</text>
+<path d="M872,253.50000000000006h335" stroke="#dce2e7"/><text x="863" y="257.50000000000006" text-anchor="end" font-size="11">1.4</text>
+<path d="M872,215.125h335" stroke="#dce2e7"/><text x="863" y="219.125" text-anchor="end" font-size="11">1.5</text>
+<path d="M872,176.74999999999997h335" stroke="#dce2e7"/><text x="863" y="180.74999999999997" text-anchor="end" font-size="11">1.6</text>
+<path d="M872,138.37500000000003h335" stroke="#dce2e7"/><text x="863" y="142.37500000000003" text-anchor="end" font-size="11">1.7</text>
+<path d="M872,100h335" stroke="#dce2e7"/><text x="863" y="104" text-anchor="end" font-size="11">1.8</text>
+<path d="M872,100V407" stroke="#e8ecef"/><text x="872" y="427" text-anchor="middle" font-size="11">0.8</text>
+<path d="M927.8333333333334,100V407" stroke="#e8ecef"/><text x="927.8333333333334" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M983.6666666666666,100V407" stroke="#e8ecef"/><text x="983.6666666666666" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M1039.5,100V407" stroke="#e8ecef"/><text x="1039.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M1095.3333333333335,100V407" stroke="#e8ecef"/><text x="1095.3333333333335" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M1151.1666666666667,100V407" stroke="#e8ecef"/><text x="1151.1666666666667" y="427" text-anchor="middle" font-size="11">1.8</text>
+<path d="M1207,100V407" stroke="#e8ecef"/><text x="1207" y="427" text-anchor="middle" font-size="11">2</text>
+<circle cx="973.5341477486139" cy="344.14439655172407" r="4" fill="#176f92"><title>SJ16/549_AW</title></circle>
+<circle cx="1004.92890432376" cy="315.780737704918" r="4" fill="#176f92"><title>SJ16/500_AW</title></circle>
+<circle cx="1045.8114561860493" cy="293.35096153846155" r="4" fill="#176f92"><title>SJ16/450_AW</title></circle>
+<circle cx="1098.483178933978" cy="254.31073943661977" r="4" fill="#176f92"><title>SJ16/389_AW</title></circle>
+<circle cx="1175.3151918988915" cy="200.36538461538458" r="4" fill="#176f92"><title>SJ16/330_AW</title></circle>
+<circle cx="938.2124624981196" cy="347.08966244725735" r="4" fill="#176f92"><title>SJ20/549_AW</title></circle>
+<circle cx="971.0029051884337" cy="333.25980392156856" r="4" fill="#176f92"><title>SJ20/490_AW</title></circle>
+<circle cx="1018.4052932063406" cy="316.7850877192982" r="4" fill="#176f92"><title>SJ20/429_AW</title></circle>
+<circle cx="1084.6590355342591" cy="268.5983606557378" r="4" fill="#176f92"><title>SJ20/361_AW</title></circle>
+<circle cx="1165.2877612837453" cy="202.99497126436796" r="4" fill="#176f92"><title>SJ20/300_AW</title></circle>
+<circle cx="911.4032205666335" cy="381.4166666666667" r="4" fill="#176f92"><title>SJ24/549_AW</title></circle>
+<circle cx="945.7957737595476" cy="373.63043478260875" r="4" fill="#176f92"><title>SJ24/480_AW</title></circle>
+<circle cx="993.0999102121457" cy="344.1112040133779" r="4" fill="#176f92"><title>SJ24/419_AW</title></circle>
+<circle cx="1055.9083252116154" cy="292.1118827160493" r="4" fill="#176f92"><title>SJ24/361_AW</title></circle>
+<circle cx="1141.4145809203412" cy="207.5793539325843" r="4" fill="#176f92"><title>SJ24/290_AW</title></circle>
+<circle cx="902.4405938078659" cy="377.3667953667954" r="4" fill="#176f92"><title>SJ26/549_AW</title></circle>
+<circle cx="936.6024686153349" cy="382.1998299319728" r="4" fill="#176f92"><title>SJ26/480_AW</title></circle>
+<circle cx="983.0437269941524" cy="351.99999999999994" r="4" fill="#176f92"><title>SJ26/419_AW</title></circle>
+<circle cx="1042.6840798595813" cy="321.47214076246337" r="4" fill="#176f92"><title>SJ26/361_AW</title></circle>
+<circle cx="1124.8290529280684" cy="235.75672043010766" r="4" fill="#176f92"><title>SJ26/290_AW</title></circle>
+<path d="M1128.8479310656598,141.71360995574008l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1120.8479310656598" y="138.71360995574008" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M1064.8237624791275,243.28731020700064l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1072.8237624791275" y="240.28731020700064" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M1005.3727487916332,246.84313164580192l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1013.3727487916332" y="243.84313164580192" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M960.7844885260123,175.7619649940821l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="968.7844885260123" y="172.7619649940821" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M991.9721328949181,269.68056450421557l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="999.9721328949181" y="295.68056450421557" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="1037" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="30" y="483" font-size="12">Diamonds: T1; hollow = A14 convergence not established / closeout incomplete. Sample ranges are not confidence intervals.</text>
+<circle cx="38" cy="510" r="4" fill="#176f92"/><text x="50" y="514" font-size="12">stevens1978_rr85_fully_relaxed_with_press</text>
+</g></svg></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="1240" height="590" viewBox="0 0 1240 590">
+<rect width="100%" height="100%" fill="white"/><g font-family="Arial,Microsoft YaHei,sans-serif" fill="#24313c">
+<text x="30" y="30" font-size="19">Wet relaxed</text>
+<text x="30" y="53" font-size="12">Points only; no fitted curve. Grey band: unchanged provisional T1 B interval. TF = sqrt(tex) / l(mm).</text>
+<text x="62" y="85" font-size="17">kc</text>
+<rect x="62" y="183.7272727272728" width="335" height="195.36363636363632" fill="#eef0f2"/>
+<path d="M62,365.1363636363637h335" stroke="#dce2e7"/><text x="53" y="369.1363636363637" text-anchor="end" font-size="11">4.5</text>
+<path d="M62,295.36363636363643h335" stroke="#dce2e7"/><text x="53" y="299.36363636363643" text-anchor="end" font-size="11">5</text>
+<path d="M62,225.59090909090912h335" stroke="#dce2e7"/><text x="53" y="229.59090909090912" text-anchor="end" font-size="11">5.5</text>
+<path d="M62,155.81818181818187h335" stroke="#dce2e7"/><text x="53" y="159.81818181818187" text-anchor="end" font-size="11">6</text>
+<path d="M62,100V407" stroke="#e8ecef"/><text x="62" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M145.74999999999997,100V407" stroke="#e8ecef"/><text x="145.74999999999997" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M229.49999999999994,100V407" stroke="#e8ecef"/><text x="229.49999999999994" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M313.25000000000006,100V407" stroke="#e8ecef"/><text x="313.25000000000006" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M397,100V407" stroke="#e8ecef"/><text x="397" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="294.6646655410779" cy="237.45227272727263" r="4" fill="#176f92"><title>plain12.5_undyed_wet_relaxed</title></circle>
+<path d="M363.52189659849,139.92330435383536l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="355.52189659849" y="136.92330435383536" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M267.4856437186913,221.08855523758336l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="275.4856437186913" y="218.08855523758336" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M178.3091231874497,234.9003344466559l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="186.3091231874497" y="231.9003344466559" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M111.42673278901849,212.7710157194293l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="119.42673278901849" y="209.7710157194293" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M158.2081993423771,245.91344511114102l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="166.2081993423771" y="271.913445111141" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="227" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="467" y="85" font-size="17">kw</text>
+<rect x="467" y="127.90909090909105" width="335" height="251.18181818181807" fill="#eef0f2"/>
+<path d="M467,379.0909090909091h335" stroke="#dce2e7"/><text x="458" y="383.0909090909091" text-anchor="end" font-size="11">3.4</text>
+<path d="M467,323.27272727272725h335" stroke="#dce2e7"/><text x="458" y="327.27272727272725" text-anchor="end" font-size="11">3.6</text>
+<path d="M467,267.4545454545455h335" stroke="#dce2e7"/><text x="458" y="271.4545454545455" text-anchor="end" font-size="11">3.8</text>
+<path d="M467,211.63636363636368h335" stroke="#dce2e7"/><text x="458" y="215.63636363636368" text-anchor="end" font-size="11">4</text>
+<path d="M467,155.81818181818184h335" stroke="#dce2e7"/><text x="458" y="159.81818181818184" text-anchor="end" font-size="11">4.2</text>
+<path d="M467,100h335" stroke="#dce2e7"/><text x="458" y="104" text-anchor="end" font-size="11">4.4</text>
+<path d="M467,100V407" stroke="#e8ecef"/><text x="467" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M550.75,100V407" stroke="#e8ecef"/><text x="550.75" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M634.5,100V407" stroke="#e8ecef"/><text x="634.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M718.25,100V407" stroke="#e8ecef"/><text x="718.25" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M802,100V407" stroke="#e8ecef"/><text x="802" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="699.664665541078" cy="187.91363636363644" r="4" fill="#176f92"><title>plain12.5_undyed_wet_relaxed</title></circle>
+<path d="M768.52189659849,310.85794536301256l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="760.52189659849" y="307.85794536301256" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M672.4856437186913,236.2247145280062l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="680.4856437186913" y="233.2247145280062" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M583.3091231874497,248.75423943588174l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="575.3091231874497" y="272.75423943588174" text-anchor="end" font-size="10">3.5mm N32</text>
+<path d="M516.4267327890185,346.1343277674811l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="524.4267327890185" y="343.1343277674811" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M563.2081993423772,217.57860668452l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="571.2081993423772" y="207.57860668452" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="632" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="872" y="85" font-size="17">kc / kw</text>
+<rect x="872" y="218.0769230769231" width="335" height="165.30769230769238" fill="#eef0f2"/>
+<path d="M872,407h335" stroke="#dce2e7"/><text x="863" y="411" text-anchor="end" font-size="11">1.1</text>
+<path d="M872,359.76923076923083h335" stroke="#dce2e7"/><text x="863" y="363.76923076923083" text-anchor="end" font-size="11">1.2</text>
+<path d="M872,312.53846153846155h335" stroke="#dce2e7"/><text x="863" y="316.53846153846155" text-anchor="end" font-size="11">1.3</text>
+<path d="M872,265.3076923076924h335" stroke="#dce2e7"/><text x="863" y="269.3076923076924" text-anchor="end" font-size="11">1.4</text>
+<path d="M872,218.0769230769231h335" stroke="#dce2e7"/><text x="863" y="222.0769230769231" text-anchor="end" font-size="11">1.5</text>
+<path d="M872,170.8461538461538h335" stroke="#dce2e7"/><text x="863" y="174.8461538461538" text-anchor="end" font-size="11">1.6</text>
+<path d="M872,123.61538461538464h335" stroke="#dce2e7"/><text x="863" y="127.61538461538464" text-anchor="end" font-size="11">1.7</text>
+<path d="M872,100V407" stroke="#e8ecef"/><text x="872" y="427" text-anchor="middle" font-size="11">1</text>
+<path d="M955.75,100V407" stroke="#e8ecef"/><text x="955.75" y="427" text-anchor="middle" font-size="11">1.2</text>
+<path d="M1039.5,100V407" stroke="#e8ecef"/><text x="1039.5" y="427" text-anchor="middle" font-size="11">1.4</text>
+<path d="M1123.25,100V407" stroke="#e8ecef"/><text x="1123.25" y="427" text-anchor="middle" font-size="11">1.6</text>
+<path d="M1207,100V407" stroke="#e8ecef"/><text x="1207" y="427" text-anchor="middle" font-size="11">1.8</text>
+<circle cx="1104.664665541078" cy="300.45617173524147" r="4" fill="#176f92"><title>plain12.5_undyed_wet_relaxed</title></circle>
+<path d="M1173.52189659849,129.10905840706474l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1165.52189659849" y="126.10905840706474" text-anchor="end" font-size="10">2.6mm N32</text>
+<path d="M1077.4856437186913,254.1228433316931l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="1085.4856437186913" y="251.1228433316931" text-anchor="start" font-size="10">3mm N64</text>
+<path d="M988.3091231874497,258.49923894867925l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="996.3091231874497" y="255.49923894867925" text-anchor="start" font-size="10">3.5mm N32</text>
+<path d="M921.4267327890184,171.0147261465626l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="929.4267327890184" y="168.0147261465626" text-anchor="start" font-size="10">4mm N64</text>
+<path d="M968.2081993423772,286.606848620573l6,6 -6,6 -6,-6Z" stroke="#161c22" stroke-width="1.5" fill="white"/>
+<text x="976.2081993423772" y="312.606848620573" text-anchor="start" font-size="10">SOP 2.3mm N32</text>
+<text x="1037" y="450" text-anchor="middle" font-size="12">TF (sqrt(tex)/mm)</text>
+<text x="30" y="483" font-size="12">Diamonds: T1; hollow = A14 convergence not established / closeout incomplete. Sample ranges are not confidence intervals.</text>
+<circle cx="38" cy="510" r="4" fill="#176f92"/><text x="50" y="514" font-size="12">gravas2006_wet_relaxed</text>
+</g></svg></p>
+<h3>每条原始记录的三步计算链</h3>
+<p>这里的 68 条记录均有原文表格输入。它们已有实测 tex，因此第一步是恒等换算；没有把标称 Ne、Nm 或不明 count 代替实测值。通用换算的实际核对值：tex=590.5412474482356/Ne；tex=1000/Nm；tex=den/9。20 tex、3 mm 得 TF=1.4907119849998598，以 cm、in 口径分别为 14.9071198499986、37.8640844189964，除以 10、25.4 均回到同值。Ne 因子来自 1 lb=453.59237 g、1 hank=840 yd、1 yd=0.9144 m，舍入为任务书的 590.5。</p>
+<p>表中差值为“实际重算 TF − 原文 TF 换回 mm”。保留差值而不写死“通过”。原始 l 和 tex 有舍入，故差值不能只与原文 TF 的末位比较。Al-Douri 的正式 kc、kw、比值取印刷列，密度乘纱长仅作舍入审计；印刷 ks 独立保留。其他两来源的 k 由实测密度与纱长重算。</p>
+<table>
+<thead>
+<tr>
+  <th>记录/页表</th>
+  <th>① tex</th>
+  <th>② l→mm</th>
+  <th>③ TFmm</th>
+  <th>原文TF→mm；差</th>
+  <th>kc / kw / kc/kw；主值来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>AlDouri1983-T7-fabric21<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.48 cm * 10 = 4.8 mm</td>
+  <td>TF_mm = sqrt(66.6)/4.8 = 1.7001838135919305</td>
+  <td>17/10 = 1.7; computed minus reported = 0.00018381359193053726</td>
+  <td>4.8 / 3.6 / 1.33; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric22<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.52 cm * 10 = 5.2 mm</td>
+  <td>TF_mm = sqrt(66.6)/5.2 = 1.5694004433156281</td>
+  <td>15.7/10 = 1.5699999999999998; computed minus reported = -0.000599556684371727</td>
+  <td>4.6 / 3.8 / 1.21; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric23<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.53 cm * 10 = 5.300000000000001 mm</td>
+  <td>TF_mm = sqrt(66.6)/5.300000000000001 = 1.539789114196465</td>
+  <td>15.4/10 = 1.54; computed minus reported = -0.0002108858035350103</td>
+  <td>4.7 / 3.7 / 1.27; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric11<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.6 cm * 10 = 6 mm</td>
+  <td>TF_mm = sqrt(66.6)/6 = 1.3601470508735443</td>
+  <td>13.6/10 = 1.3599999999999999; computed minus reported = 0.0001470508735443854</td>
+  <td>5 / 3.5 / 1.43; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric12<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.68 cm * 10 = 6.800000000000001 mm</td>
+  <td>TF_mm = sqrt(66.6)/6.800000000000001 = 1.2001297507707742</td>
+  <td>12/10 = 1.2; computed minus reported = 0.00012975077077426178</td>
+  <td>4.8 / 3.7 / 1.3; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric6<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.73 cm * 10 = 7.3 mm</td>
+  <td>TF_mm = sqrt(66.6)/7.3 = 1.1179290829097626</td>
+  <td>11.2/10 = 1.1199999999999999; computed minus reported = -0.002070917090237323</td>
+  <td>4.7 / 3.7 / 1.27; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric7<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.77 cm * 10 = 7.7 mm</td>
+  <td>TF_mm = sqrt(66.6)/7.7 = 1.059854844836528</td>
+  <td>10.6/10 = 1.06; computed minus reported = -0.00014515516347213264</td>
+  <td>4.9 / 3.5 / 1.4; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric13<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.8 cm * 10 = 8 mm</td>
+  <td>TF_mm = sqrt(66.6)/8 = 1.0201102881551583</td>
+  <td>10.2/10 = 1.02; computed minus reported = 0.00011028815515823354</td>
+  <td>4.9 / 3.4 / 1.44; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric8<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.88 cm * 10 = 8.8 mm</td>
+  <td>TF_mm = sqrt(66.6)/8.8 = 0.927372989231962</td>
+  <td>9.3/10 = 0.93; computed minus reported = -0.0026270107680380628</td>
+  <td>4.7 / 3.5 / 1.34; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric14<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.9 cm * 10 = 9 mm</td>
+  <td>TF_mm = sqrt(66.6)/9 = 0.9067647005823629</td>
+  <td>9.1/10 = 0.9099999999999999; computed minus reported = -0.0032352994176370053</td>
+  <td>4.7 / 3.3 / 1.42; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric15<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.95 cm * 10 = 9.5 mm</td>
+  <td>TF_mm = sqrt(66.6)/9.5 = 0.8590402426569753</td>
+  <td>8.6/10 = 0.86; computed minus reported = -0.0009597573430246698</td>
+  <td>4.8 / 3.3 / 1.46; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric9<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 0.98 cm * 10 = 9.8 mm</td>
+  <td>TF_mm = sqrt(66.6)/9.8 = 0.8327430923715577</td>
+  <td>8.3/10 = 0.8300000000000001; computed minus reported = 0.002743092371557676</td>
+  <td>4.8 / 3.2 / 1.5; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T7-fabric10<br>printed p63, Table 7; PDF page 72</td>
+  <td>tex = 66.6 tex = 66.6</td>
+  <td>l_mm = 1.21 cm * 10 = 12.1 mm</td>
+  <td>TF_mm = sqrt(66.6)/12.1 = 0.6744530830777906</td>
+  <td>6.7/10 = 0.67; computed minus reported = 0.004453083077790576</td>
+  <td>5.1 / 3.3 / 1.55; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric21<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.47 cm * 10 = 4.699999999999999 mm</td>
+  <td>TF_mm = sqrt(67.2)/4.699999999999999 = 1.7441618325037618</td>
+  <td>17.4/10 = 1.7399999999999998; computed minus reported = 0.0041618325037620085</td>
+  <td>5.1 / 4.1 / 1.24; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric22<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.5 cm * 10 = 5 mm</td>
+  <td>TF_mm = sqrt(67.2)/5 = 1.6395121225535358</td>
+  <td>16.4/10 = 1.64; computed minus reported = -0.00048787744646405784</td>
+  <td>5 / 4 / 1.25; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric23<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.52 cm * 10 = 5.2 mm</td>
+  <td>TF_mm = sqrt(67.2)/5.2 = 1.5764539639937845</td>
+  <td>15.7/10 = 1.5699999999999998; computed minus reported = 0.006453963993784617</td>
+  <td>5 / 4.1 / 1.22; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric11<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.57 cm * 10 = 5.699999999999999 mm</td>
+  <td>TF_mm = sqrt(67.2)/5.699999999999999 = 1.4381685285557335</td>
+  <td>14.4/10 = 1.44; computed minus reported = -0.0018314714442664304</td>
+  <td>5.2 / 4.2 / 1.24; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric6<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.63 cm * 10 = 6.3 mm</td>
+  <td>TF_mm = sqrt(67.2)/6.3 = 1.301200097264711</td>
+  <td>13/10 = 1.3; computed minus reported = 0.001200097264711042</td>
+  <td>5.2 / 4 / 1.3; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric12<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.67 cm * 10 = 6.7 mm</td>
+  <td>TF_mm = sqrt(67.2)/6.7 = 1.2235165093683102</td>
+  <td>12.2/10 = 1.22; computed minus reported = 0.003516509368310272</td>
+  <td>5.4 / 4.1 / 1.32; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric7<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.74 cm * 10 = 7.4 mm</td>
+  <td>TF_mm = sqrt(67.2)/7.4 = 1.1077784611848216</td>
+  <td>11.1/10 = 1.1099999999999999; computed minus reported = -0.002221538815178281</td>
+  <td>5.6 / 3.9 / 1.44; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric13<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.76 cm * 10 = 7.6 mm</td>
+  <td>TF_mm = sqrt(67.2)/7.6 = 1.0786263964168</td>
+  <td>10.7/10 = 1.0699999999999998; computed minus reported = 0.008626396416800075</td>
+  <td>5.4 / 4 / 1.35; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric8<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.81 cm * 10 = 8.100000000000001 mm</td>
+  <td>TF_mm = sqrt(67.2)/8.100000000000001 = 1.012044520094775</td>
+  <td>10.1/10 = 1.01; computed minus reported = 0.0020445200947749598</td>
+  <td>5.3 / 3.8 / 1.4; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric14<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.84 cm * 10 = 8.4 mm</td>
+  <td>TF_mm = sqrt(67.2)/8.4 = 0.9759000729485332</td>
+  <td>9.8/10 = 0.9800000000000001; computed minus reported = -0.0040999270514668895</td>
+  <td>5.4 / 4 / 1.35; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric15<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.87 cm * 10 = 8.7 mm</td>
+  <td>TF_mm = sqrt(67.2)/8.7 = 0.9422483462951357</td>
+  <td>9.4/10 = 0.9400000000000001; computed minus reported = 0.002248346295135595</td>
+  <td>5.5 / 3.8 / 1.45; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric9<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 0.93 cm * 10 = 9.3 mm</td>
+  <td>TF_mm = sqrt(67.2)/9.3 = 0.8814581304051268</td>
+  <td>8.8/10 = 0.8800000000000001; computed minus reported = 0.0014581304051266564</td>
+  <td>5.6 / 3.7 / 1.51; reported_k</td>
+</tr>
+<tr>
+  <td>AlDouri1983-T8-fabric10<br>printed p64, Table 8; PDF page 73</td>
+  <td>tex = 67.2 tex = 67.2</td>
+  <td>l_mm = 1.04 cm * 10 = 10.4 mm</td>
+  <td>TF_mm = sqrt(67.2)/10.4 = 0.7882269819968922</td>
+  <td>7.9/10 = 0.79; computed minus reported = -0.0017730180031078069</td>
+  <td>5.5 / 3.9 / 1.41; reported_k</td>
+</tr>
+<tr>
+  <td>SJ16/549_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 5.34 mm * 1 = 5.34 mm</td>
+  <td>TF_mm = sqrt(36.9)/5.34 = 1.13755374895037</td>
+  <td>11.38/10 = 1.1380000000000001; computed minus reported = -0.00044625104963014195</td>
+  <td>4.35189 / 4.47803 / 0.971831; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/549_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 5.22 mm * 1 = 5.22 mm</td>
+  <td>TF_mm = sqrt(36.9)/5.22 = 1.163704409845781</td>
+  <td>11.64/10 = 1.1640000000000001; computed minus reported = -0.0002955901542192052</td>
+  <td>5.54882 / 4.76787 / 1.16379; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/500_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 4.89 mm * 1 = 4.89 mm</td>
+  <td>TF_mm = sqrt(36.9)/4.89 = 1.2422366092832262</td>
+  <td>12.42/10 = 1.242; computed minus reported = 0.000236609283226219</td>
+  <td>4.54346 / 4.29319 / 1.0583; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/500_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 4.76 mm * 1 = 4.76 mm</td>
+  <td>TF_mm = sqrt(36.9)/4.76 = 1.2761632393686924</td>
+  <td>12.76/10 = 1.276; computed minus reported = 0.00016323936869233613</td>
+  <td>5.65953 / 4.5726 / 1.2377; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/450_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 4.38 mm * 1 = 4.38 mm</td>
+  <td>TF_mm = sqrt(36.9)/4.38 = 1.3868805980353827</td>
+  <td>13.87/10 = 1.387; computed minus reported = -0.00011940196461734942</td>
+  <td>4.77661 / 3.87992 / 1.23111; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/450_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 4.27 mm * 1 = 4.27 mm</td>
+  <td>TF_mm = sqrt(36.9)/4.27 = 1.4226082012634604</td>
+  <td>14.23/10 = 1.423; computed minus reported = -0.00039179873653960584</td>
+  <td>5.66531 / 4.37087 / 1.29615; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/389_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 3.83 mm * 1 = 3.83 mm</td>
+  <td>TF_mm = sqrt(36.9)/3.83 = 1.586040997231064</td>
+  <td>15.86/10 = 1.5859999999999999; computed minus reported = 0.00004099723106421038</td>
+  <td>5.41327 / 3.52843 / 1.53419; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/389_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 3.77 mm * 1 = 3.77 mm</td>
+  <td>TF_mm = sqrt(36.9)/3.77 = 1.6112830290172349</td>
+  <td>16.11/10 = 1.611; computed minus reported = 0.0002830290172348704</td>
+  <td>5.89248 / 4.21528 / 1.39789; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/330_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 3.26 mm * 1 = 3.26 mm</td>
+  <td>TF_mm = sqrt(36.9)/3.26 = 1.8633549139248393</td>
+  <td>18.63/10 = 1.863; computed minus reported = 0.0003549139248393285</td>
+  <td>6.32748 / 2.9263 / 2.16228; derived_density</td>
+</tr>
+<tr>
+  <td>SJ16/330_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 36.9 tex = 36.9</td>
+  <td>l_mm = 3.22 mm * 1 = 3.22 mm</td>
+  <td>TF_mm = sqrt(36.9)/3.22 = 1.8865021799363277</td>
+  <td>18.87/10 = 1.887; computed minus reported = -0.0004978200636722718</td>
+  <td>6.08504 / 3.95528 / 1.53846; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/549_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 5.37 mm * 1 = 5.37 mm</td>
+  <td>TF_mm = sqrt(29.2)/5.37 = 1.0062760585554038</td>
+  <td>10.06/10 = 1.006; computed minus reported = 0.000276058555403802</td>
+  <td>4.29177 / 4.56661 / 0.939815; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/549_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 5.21 mm * 1 = 5.21 mm</td>
+  <td>TF_mm = sqrt(29.2)/5.21 = 1.037178970142518</td>
+  <td>10.37/10 = 1.037; computed minus reported = 0.00017897014251810894</td>
+  <td>5.62024 / 4.8613 / 1.15612; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/490_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 4.77 mm * 1 = 4.77 mm</td>
+  <td>TF_mm = sqrt(29.2)/4.77 = 1.1328516634051402</td>
+  <td>11.33/10 = 1.133; computed minus reported = -0.00014833659485979922</td>
+  <td>4.48831 / 4.20661 / 1.06696; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/490_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 4.68 mm * 1 = 4.68 mm</td>
+  <td>TF_mm = sqrt(29.2)/4.68 = 1.1546372723167775</td>
+  <td>11.55/10 = 1.155; computed minus reported = -0.00036272768322254123</td>
+  <td>5.60126 / 4.69843 / 1.19216; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/429_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 4.13 mm * 1 = 4.13 mm</td>
+  <td>TF_mm = sqrt(29.2)/4.13 = 1.3084025264993993</td>
+  <td>13.08/10 = 1.308; computed minus reported = 0.0004025264993992028</td>
+  <td>4.69909 / 3.70724 / 1.26754; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/429_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 4.08 mm * 1 = 4.08 mm</td>
+  <td>TF_mm = sqrt(29.2)/4.08 = 1.3244368711868917</td>
+  <td>13.24/10 = 1.324; computed minus reported = 0.00043687118689161863</td>
+  <td>5.65417 / 4.57795 / 1.23509; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/361_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 3.49 mm * 1 = 3.49 mm</td>
+  <td>TF_mm = sqrt(29.2)/3.49 = 1.548338806430521</td>
+  <td>15.48/10 = 1.548; computed minus reported = 0.00033880643052097703</td>
+  <td>5.3724 / 3.13276 / 1.71491; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/361_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 3.46 mm * 1 = 3.46 mm</td>
+  <td>TF_mm = sqrt(29.2)/3.46 = 1.5617637093764505</td>
+  <td>15.62/10 = 1.5619999999999998; computed minus reported = -0.00023629062354935115</td>
+  <td>5.65315 / 4.15472 / 1.36066; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/300_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 2.98 mm * 1 = 2.98 mm</td>
+  <td>TF_mm = sqrt(29.2)/2.98 = 1.8133229645780262</td>
+  <td>18.13/10 = 1.813; computed minus reported = 0.00032296457802627465</td>
+  <td>6.85165 / 2.63976 / 2.59556; derived_density</td>
+</tr>
+<tr>
+  <td>SJ20/300_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 29.2 tex = 29.2</td>
+  <td>l_mm = 2.92 mm * 1 = 2.92 mm</td>
+  <td>TF_mm = sqrt(29.2)/2.92 = 1.8505830254940132</td>
+  <td>18.51/10 = 1.8510000000000002; computed minus reported = -0.00041697450598698893</td>
+  <td>6.1274 / 4.00063 / 1.53161; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/549_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 5.44 mm * 1 = 5.44 mm</td>
+  <td>TF_mm = sqrt(24.6)/5.44 = 0.911735056443915</td>
+  <td>9.12/10 = 0.9119999999999999; computed minus reported = -0.00026494355608497333</td>
+  <td>4.1978 / 4.60472 / 0.911628; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/549_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 5.27 mm * 1 = 5.27 mm</td>
+  <td>TF_mm = sqrt(24.6)/5.27 = 0.9411458647162995</td>
+  <td>9.41/10 = 0.9410000000000001; computed minus reported = 0.00014586471629940423</td>
+  <td>5.64346 / 5.29075 / 1.06667; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/480_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 4.76 mm * 1 = 4.76 mm</td>
+  <td>TF_mm = sqrt(24.6)/4.76 = 1.0419829216501886</td>
+  <td>10.42/10 = 1.042; computed minus reported = -0.00001707834981146128</td>
+  <td>4.2915 / 4.12283 / 1.04091; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/480_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 4.66 mm * 1 = 4.66 mm</td>
+  <td>TF_mm = sqrt(24.6)/4.66 = 1.0643430701834544</td>
+  <td>10.64/10 = 1.064; computed minus reported = 0.0003430701834543637</td>
+  <td>5.50394 / 5.06362 / 1.08696; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/419_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 4.11 mm * 1 = 4.11 mm</td>
+  <td>TF_mm = sqrt(24.6)/4.11 = 1.206773408042554</td>
+  <td>12.07/10 = 1.207; computed minus reported = -0.00022659195744600957</td>
+  <td>4.6278 / 3.67311 / 1.25991; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/419_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 4.02 mm * 1 = 4.02 mm</td>
+  <td>TF_mm = sqrt(24.6)/4.02 = 1.2337907231479845</td>
+  <td>12.34/10 = 1.234; computed minus reported = -0.00020927685201543866</td>
+  <td>5.50772 / 4.7322 / 1.16388; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/361_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 3.51 mm * 1 = 3.51 mm</td>
+  <td>TF_mm = sqrt(24.6)/3.51 = 1.4130594606994011</td>
+  <td>14.13/10 = 1.413; computed minus reported = 0.00005946069940110377</td>
+  <td>5.37555 / 3.17835 / 1.6913; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/361_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 3.4 mm * 1 = 3.4 mm</td>
+  <td>TF_mm = sqrt(24.6)/3.4 = 1.458776090310264</td>
+  <td>14.59/10 = 1.459; computed minus reported = -0.00022390968973606817</td>
+  <td>5.63543 / 4.33701 / 1.29938; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/290_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 2.88 mm * 1 = 2.88 mm</td>
+  <td>TF_mm = sqrt(24.6)/2.88 = 1.722166217727395</td>
+  <td>17.22/10 = 1.722; computed minus reported = 0.00016621772739511265</td>
+  <td>6.78047 / 2.57386 / 2.63436; derived_density</td>
+</tr>
+<tr>
+  <td>SJ24/290_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 24.6 tex = 24.6</td>
+  <td>l_mm = 2.81 mm * 1 = 2.81 mm</td>
+  <td>TF_mm = sqrt(24.6)/2.81 = 1.7650671555355508</td>
+  <td>17.65/10 = 1.765; computed minus reported = 0.00006715553555092235</td>
+  <td>5.98508 / 3.93843 / 1.51966; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/549_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 5.48 mm * 1 = 5.48 mm</td>
+  <td>TF_mm = sqrt(23.3)/5.48 = 0.8808407581129322</td>
+  <td>8.81/10 = 0.881; computed minus reported = -0.00015924188706784026</td>
+  <td>4.14236 / 4.61701 / 0.897196; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/549_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 5.31 mm * 1 = 5.31 mm</td>
+  <td>TF_mm = sqrt(23.3)/5.31 = 0.9090409330431015</td>
+  <td>9.09/10 = 0.909; computed minus reported = 0.0000409330431014876</td>
+  <td>5.83264 / 5.41453 / 1.07722; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/480_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 4.78 mm * 1 = 4.78 mm</td>
+  <td>TF_mm = sqrt(23.3)/4.78 = 1.009834174572985</td>
+  <td>10.1/10 = 1.01; computed minus reported = -0.00016582542701493175</td>
+  <td>4.3848 / 4.30953 / 1.01747; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/480_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 4.68 mm * 1 = 4.68 mm</td>
+  <td>TF_mm = sqrt(23.3)/4.68 = 1.0314118278758266</td>
+  <td>10.31/10 = 1.0310000000000001; computed minus reported = 0.00041182787582649816</td>
+  <td>5.76709 / 5.41701 / 1.06463; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/419_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 4.22 mm * 1 = 4.22 mm</td>
+  <td>TF_mm = sqrt(23.3)/4.22 = 1.143840605322007</td>
+  <td>11.44/10 = 1.144; computed minus reported = -0.00015939467799297447</td>
+  <td>4.81811 / 3.83787 / 1.25541; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/419_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 4.03 mm * 1 = 4.03 mm</td>
+  <td>TF_mm = sqrt(23.3)/4.03 = 1.1977685743074116</td>
+  <td>11.98/10 = 1.198; computed minus reported = -0.00023142569258838286</td>
+  <td>5.56902 / 4.87091 / 1.14332; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/361_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 3.45 mm * 1 = 3.45 mm</td>
+  <td>TF_mm = sqrt(23.3)/3.45 = 1.3991325665098169</td>
+  <td>13.99/10 = 1.399; computed minus reported = 0.00013256650981685603</td>
+  <td>5.21575 / 3.15118 / 1.65517; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/361_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 3.42 mm * 1 = 3.42 mm</td>
+  <td>TF_mm = sqrt(23.3)/3.42 = 1.4114056591984996</td>
+  <td>14.11/10 = 1.411; computed minus reported = 0.0004056591984995528</td>
+  <td>5.61472 / 4.59142 / 1.22287; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/290_BW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 2.87 mm * 1 = 2.87 mm</td>
+  <td>TF_mm = sqrt(23.3)/2.87 = 1.6818840956302676</td>
+  <td>16.82/10 = 1.682; computed minus reported = -0.00011590436973230034</td>
+  <td>6.63264 / 2.61012 / 2.54113; derived_density</td>
+</tr>
+<tr>
+  <td>SJ26/290_AW<br>PDF p11 / printed p9 Table3; PDF p9 / printed p7 Table1; PDF p13 / printed p11 Table5</td>
+  <td>tex = 23.3 tex = 23.3</td>
+  <td>l_mm = 2.83 mm * 1 = 2.83 mm</td>
+  <td>TF_mm = sqrt(23.3)/2.83 = 1.7056563089960666</td>
+  <td>17.06/10 = 1.706; computed minus reported = -0.00034369100393338847</td>
+  <td>5.99425 / 4.14472 / 1.44624; derived_density</td>
+</tr>
+<tr>
+  <td>plain12.5_undyed_dry_relaxed<br>p233 Table10; p234 Table11 (PDF pp11-12)</td>
+  <td>tex = 218.4 tex = 218.4</td>
+  <td>l_mm = 9.5 mm * 1 = 9.5 mm</td>
+  <td>TF_mm = sqrt(218.4)/9.5 = 1.5556171117398876</td>
+  <td>1.56/1 = 1.56; computed minus reported = -0.004382888260112461</td>
+  <td>5.035 / 3.895 / 1.29268; derived_density</td>
+</tr>
+<tr>
+  <td>plain12.5_undyed_wet_relaxed<br>p233 Table10; p234 Table11 (PDF pp11-12)</td>
+  <td>tex = 218.4 tex = 218.4</td>
+  <td>l_mm = 9.5 mm * 1 = 9.5 mm</td>
+  <td>TF_mm = sqrt(218.4)/9.5 = 1.5556171117398876</td>
+  <td>1.56/1 = 1.56; computed minus reported = -0.004382888260112461</td>
+  <td>5.415 / 4.085 / 1.32558; derived_density</td>
+</tr>
+</tbody>
+</table>
+<h3>邻近点范围与逐项判断明细</h3>
+<table>
+<thead>
+<tr>
+  <th>数据集</th>
+  <th>模型</th>
+  <th>TF</th>
+  <th>n</th>
+  <th>kc范围/判断</th>
+  <th>kw范围/判断</th>
+  <th>比值范围/判断</th>
+  <th>点ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>2.6</td>
+  <td>1.72005</td>
+  <td>1</td>
+  <td>4.8–4.8 / 外</td>
+  <td>3.6–3.6 / 外</td>
+  <td>1.33–1.33 / 外</td>
+  <td>AlDouri1983-T7-fabric21</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>2</td>
+  <td>4.6–4.7 / 外</td>
+  <td>3.7–3.8 / 外</td>
+  <td>1.21–1.27 / 外</td>
+  <td>AlDouri1983-T7-fabric22, AlDouri1983-T7-fabric23</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>3.5</td>
+  <td>1.27775</td>
+  <td>2</td>
+  <td>4.8–5 / 外</td>
+  <td>3.5–3.7 / 外</td>
+  <td>1.3–1.43 / 内</td>
+  <td>AlDouri1983-T7-fabric11, AlDouri1983-T7-fabric12</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>4</td>
+  <td>1.11803</td>
+  <td>4</td>
+  <td>4.7–4.9 / 外</td>
+  <td>3.4–3.7 / 内</td>
+  <td>1.27–1.44 / 外</td>
+  <td>AlDouri1983-T7-fabric12, AlDouri1983-T7-fabric6, AlDouri1983-T7-fabric7, AlDouri1983-T7-fabric13</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-dry-relaxed</td>
+  <td>sop-reference</td>
+  <td>1.22975</td>
+  <td>1</td>
+  <td>4.8–4.8 / 外</td>
+  <td>3.7–3.7 / 外</td>
+  <td>1.3–1.3 / 外</td>
+  <td>AlDouri1983-T7-fabric12</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>2.6</td>
+  <td>1.72005</td>
+  <td>2</td>
+  <td>5–5.1 / 外</td>
+  <td>4–4.1 / 外</td>
+  <td>1.24–1.25 / 外</td>
+  <td>AlDouri1983-T8-fabric21, AlDouri1983-T8-fabric22</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>2</td>
+  <td>5–5.2 / 外</td>
+  <td>4.1–4.2 / 外</td>
+  <td>1.22–1.24 / 外</td>
+  <td>AlDouri1983-T8-fabric23, AlDouri1983-T8-fabric11</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>3.5</td>
+  <td>1.27775</td>
+  <td>2</td>
+  <td>5.2–5.4 / 内</td>
+  <td>4–4.1 / 外</td>
+  <td>1.3–1.32 / 外</td>
+  <td>AlDouri1983-T8-fabric6, AlDouri1983-T8-fabric12</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>4</td>
+  <td>1.11803</td>
+  <td>2</td>
+  <td>5.4–5.6 / 内</td>
+  <td>3.9–4 / 外</td>
+  <td>1.35–1.44 / 外</td>
+  <td>AlDouri1983-T8-fabric7, AlDouri1983-T8-fabric13</td>
+</tr>
+<tr>
+  <td>AlDouri1983-one-end-fully-relaxed</td>
+  <td>sop-reference</td>
+  <td>1.22975</td>
+  <td>2</td>
+  <td>5.2–5.4 / 内</td>
+  <td>4–4.1 / 外</td>
+  <td>1.3–1.32 / 外</td>
+  <td>AlDouri1983-T8-fabric6, AlDouri1983-T8-fabric12</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>2.6</td>
+  <td>1.72005</td>
+  <td>3</td>
+  <td>6.63264–6.85165 / 外</td>
+  <td>2.57386–2.63976 / 外</td>
+  <td>2.54113–2.63436 / 外</td>
+  <td>SJ20/300_BW, SJ24/290_BW, SJ26/290_BW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>4</td>
+  <td>5.21575–5.41327 / 外</td>
+  <td>3.13276–3.52843 / 外</td>
+  <td>1.53419–1.71491 / 外</td>
+  <td>SJ16/389_BW, SJ20/361_BW, SJ24/361_BW, SJ26/361_BW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>3.5</td>
+  <td>1.27775</td>
+  <td>3</td>
+  <td>4.54346–4.69909 / 外</td>
+  <td>3.67311–4.29319 / 内</td>
+  <td>1.0583–1.26754 / 外</td>
+  <td>SJ16/500_BW, SJ20/429_BW, SJ24/419_BW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>4</td>
+  <td>1.11803</td>
+  <td>5</td>
+  <td>4.2915–4.81811 / 外</td>
+  <td>3.67311–4.47803 / 外</td>
+  <td>0.971831–1.25991 / 外</td>
+  <td>SJ16/549_BW, SJ20/490_BW, SJ24/480_BW, SJ24/419_BW, SJ26/419_BW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_greige</td>
+  <td>sop-reference</td>
+  <td>1.22975</td>
+  <td>6</td>
+  <td>4.35189–4.81811 / 外</td>
+  <td>3.67311–4.47803 / 内</td>
+  <td>0.971831–1.26754 / 外</td>
+  <td>SJ16/549_BW, SJ16/500_BW, SJ20/490_BW, SJ20/429_BW, SJ24/419_BW, SJ26/419_BW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>2.6</td>
+  <td>1.72005</td>
+  <td>2</td>
+  <td>5.98508–5.99425 / 外</td>
+  <td>3.93843–4.14472 / 外</td>
+  <td>1.44624–1.51966 / 外</td>
+  <td>SJ24/290_AW, SJ26/290_AW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>4</td>
+  <td>5.61472–5.66531 / 外</td>
+  <td>4.15472–4.59142 / 外</td>
+  <td>1.22287–1.36066 / 外</td>
+  <td>SJ16/450_AW, SJ20/361_AW, SJ24/361_AW, SJ26/361_AW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>3.5</td>
+  <td>1.27775</td>
+  <td>4</td>
+  <td>5.50772–5.65953 / 外</td>
+  <td>4.5726–4.87091 / 外</td>
+  <td>1.14332–1.2377 / 外</td>
+  <td>SJ16/500_AW, SJ20/429_AW, SJ24/419_AW, SJ26/419_AW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>4</td>
+  <td>1.11803</td>
+  <td>6</td>
+  <td>5.50394–5.76709 / 内</td>
+  <td>4.69843–5.41701 / 外</td>
+  <td>1.06463–1.19216 / 外</td>
+  <td>SJ16/549_AW, SJ20/549_AW, SJ20/490_AW, SJ24/480_AW, SJ26/480_AW, SJ26/419_AW</td>
+</tr>
+<tr>
+  <td>stevens1978_rr85_fully_relaxed_with_press</td>
+  <td>sop-reference</td>
+  <td>1.22975</td>
+  <td>6</td>
+  <td>5.50772–5.65953 / 外</td>
+  <td>4.5726–4.87091 / 外</td>
+  <td>1.14332–1.2377 / 外</td>
+  <td>SJ16/549_AW, SJ16/500_AW, SJ20/490_AW, SJ20/429_AW, SJ24/419_AW, SJ26/419_AW</td>
+</tr>
+<tr>
+  <td>gravas2006_dry_relaxed</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>1</td>
+  <td>5.035–5.035 / 外</td>
+  <td>3.895–3.895 / 外</td>
+  <td>1.29268–1.29268 / 外</td>
+  <td>plain12.5_undyed_dry_relaxed</td>
+</tr>
+<tr>
+  <td>gravas2006_wet_relaxed</td>
+  <td>3</td>
+  <td>1.49071</td>
+  <td>1</td>
+  <td>5.415–5.415 / 外</td>
+  <td>4.085–4.085 / 外</td>
+  <td>1.32558–1.32558 / 外</td>
+  <td>plain12.5_undyed_wet_relaxed</td>
+</tr>
+</tbody>
+</table>
+<h2>本轮外层验证与修改边界</h2>
+<table>
+<thead>
+<tr>
+  <th>命令</th>
+  <th>退出码</th>
+  <th>耗时/s</th>
+  <th>实际结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>npm run validate</td>
+  <td>0</td>
+  <td>193.969</td>
+  <td>PASS: original SOLID traces, widths/colors, group masks, legacy/Asset rules, actual Yarn ID filters, mapped front/back, DEV trial, latest colors and lifecycle. | PASS: immutable shared core paths/topology/SolverResult/metrics/validity/revision; six-map real package and original bytes survive Classic/save/reload. | PASS: independent workbenches share immutable calculations; pending inputs, project identity, viewport and appearance stay isolated. | 47/47 validators passed.</td>
+</tr>
+<tr>
+  <td>npm run build</td>
+  <td>0</td>
+  <td>3.76496</td>
+  <td>rendering chunks... | ✓ built in 2.90s</td>
+</tr>
+</tbody>
+</table>
+<p>日志包装器曾出现新建输出文件失败和控制台 GBK 编码错误；后者发生在两条命令完成、退出码与日志均保存之后。已修正包装器显示，不重复执行已通过命令；详见 final-regression.json。</p>
+<p>本轮只新增独立收尾/文献脚本、输出所需记录，并按用户明确回复修正旧细化脚本自检初值为 N24。没有注册 validator，没有修改 src、package.json、材料、物理能量、优化器实现、分支选取或 B 区间。续算的公开迭代预算调整及其依据见 (a)，不与材料调参混称。审阅副本仅是静态文档。</p>
+<table>
+<thead>
+<tr>
+  <th>实际修改文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/docs/ALGORITHM_DESIGN.md">docs/ALGORITHM_DESIGN.md</a></td>
+</tr>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/docs/NEXT_TASK.md">docs/NEXT_TASK.md</a></td>
+</tr>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/docs/T1_CLOSEOUT_REVIEW.html">docs/T1_CLOSEOUT_REVIEW.html</a></td>
+</tr>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/scripts/compare-fabric-form-literature.mjs">scripts/compare-fabric-form-literature.mjs</a></td>
+</tr>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/scripts/run-fabric-form-a14-closeout.mjs">scripts/run-fabric-form-a14-closeout.mjs</a></td>
+</tr>
+<tr>
+  <td><a href="file:///C:/Users/liuchen/Desktop/KnitScape/scripts/run-fabric-form-refinement.mjs">scripts/run-fabric-form-refinement.mjs</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>范围核对项</th>
+  <th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>baseline</td>
+  <td>66392a8cd419c5722d0a3cb2eff5bfbacdba9f4e</td>
+</tr>
+<tr>
+  <td>branch</td>
+  <td>main</td>
+</tr>
+<tr>
+  <td>HEADBeforeCommit</td>
+  <td>66392a8cd419c5722d0a3cb2eff5bfbacdba9f4e</td>
+</tr>
+<tr>
+  <td>taskExactlyMatchesCommittedText</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>protectedPathChanges</td>
+  <td>[]</td>
+</tr>
+<tr>
+  <td>unexpectedFiles</td>
+  <td>[]</td>
+</tr>
+<tr>
+  <td>materialInputsMatchFrozenCases</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>existingEditException</td>
+  <td>User explicitly approved only self-check initial topology N24 in run-fabric-form-refinement.mjs</td>
+</tr>
+<tr>
+  <td>reportCopyException</td>
+  <td>User authorized a review copy inside KnitScape; canonical archive remains outside repository</td>
+</tr>
+</tbody>
+</table>
+<p>材料参数按完整结果文件逐一与对应冻结工况直接比较，明细见 scope-audit.json；未用文件哈希代替功能或数值正确性。</p>
+<h2>交付索引与复现</h2>
+<ul>
+<li><code>a14/closeout-summary.json</code>、<code>a14/case-*-summary.json</code>：逐级结果及判定；每次 attempt 保存完整 input、result、initial-check、process 与日志。</li>
+<li><code>literature-input.json</code> / <code>literature-derived.json</code>：来源原始数据、三步计算链和实际分类；另有 sources、points、comparisons 三份 CSV。</li>
+<li><code>literature/classics/</code>、<code>literature/datasets/</code>：可取得原文、表格页、摘录和访问限制。</li>
+<li><code>baseline.json</code>、<code>units-check.json</code>、<code>final-regression.json</code>、<code>scope-audit.json</code>：接手、实际换算、外层验证和修改边界证据。</li>
+<li>文献重算命令：<code>node scripts/compare-fabric-form-literature.mjs C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22</code>。</li>
+<li>A14 命令、续算与未完成项详见 (a)；复用已存结果时脚本不会把它伪称本轮冷启动。</li>
+</ul>
+<p>本轮停止于 T1 收尾，保留 B FAIL。上述建议未实施，等待用户审阅决定。</p>
+</html>

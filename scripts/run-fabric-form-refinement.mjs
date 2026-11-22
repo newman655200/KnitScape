@@ -14,7 +14,7 @@ const { createRefinedFabricCell, describeRefinementGeometry } = await import(hel
 
 if (process.argv.includes("--self-check")) {
   const params = createFabricFormParams();
-  const source = createFabricFormInitialGeometry(createPlainJerseyTopology(), params);
+  const source = createFabricFormInitialGeometry(createPlainJerseyTopology({ nodesPerLoop: 24 }), params);
   const before = JSON.stringify(source);
   const refined = createRefinedFabricCell(source, 32, params);
   assert.equal(refined.positions.length, 32);

@@ -1,0 +1,2510 @@
+{
+  "input": {
+    "topology": {
+      "m": 1,
+      "n": 1,
+      "nodesPerLoop": 48,
+      "loopLengthMm": 4,
+      "nodeCount": 48,
+      "operations": [
+        [
+          "K"
+        ]
+      ],
+      "yarns": [
+        {
+          "id": 0,
+          "feed": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "materialLength": 4
+        }
+      ],
+      "edges": [
+        {
+          "id": 0,
+          "from": 0,
+          "to": 1,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 0,
+          "restLength": 0.08329652121055486,
+          "materialStart": 0
+        },
+        {
+          "id": 1,
+          "from": 1,
+          "to": 2,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 1,
+          "restLength": 0.08327931932367356,
+          "materialStart": 0.08329652121055486
+        },
+        {
+          "id": 2,
+          "from": 2,
+          "to": 3,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 2,
+          "restLength": 0.08333965811598418,
+          "materialStart": 0.16657584053422841
+        },
+        {
+          "id": 3,
+          "from": 3,
+          "to": 4,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 3,
+          "restLength": 0.08333861980173721,
+          "materialStart": 0.2499154986502126
+        },
+        {
+          "id": 4,
+          "from": 4,
+          "to": 5,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 4,
+          "restLength": 0.08335483213861326,
+          "materialStart": 0.3332541184519498
+        },
+        {
+          "id": 5,
+          "from": 5,
+          "to": 6,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 5,
+          "restLength": 0.08338784457978461,
+          "materialStart": 0.4166089505905631
+        },
+        {
+          "id": 6,
+          "from": 6,
+          "to": 7,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 6,
+          "restLength": 0.08338711903145728,
+          "materialStart": 0.4999967951703477
+        },
+        {
+          "id": 7,
+          "from": 7,
+          "to": 8,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 7,
+          "restLength": 0.08341470403536515,
+          "materialStart": 0.5833839142018049
+        },
+        {
+          "id": 8,
+          "from": 8,
+          "to": 9,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 8,
+          "restLength": 0.08341535835297603,
+          "materialStart": 0.66679861823717
+        },
+        {
+          "id": 9,
+          "from": 9,
+          "to": 10,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 9,
+          "restLength": 0.08341566639513204,
+          "materialStart": 0.7502139765901461
+        },
+        {
+          "id": 10,
+          "from": 10,
+          "to": 11,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 10,
+          "restLength": 0.08337588032096684,
+          "materialStart": 0.8336296429852781
+        },
+        {
+          "id": 11,
+          "from": 11,
+          "to": 12,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 11,
+          "restLength": 0.08336364417587443,
+          "materialStart": 0.917005523306245
+        },
+        {
+          "id": 12,
+          "from": 12,
+          "to": 13,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 12,
+          "restLength": 0.08336486489519779,
+          "materialStart": 1.0003691674821193
+        },
+        {
+          "id": 13,
+          "from": 13,
+          "to": 14,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 13,
+          "restLength": 0.0833296291934993,
+          "materialStart": 1.083734032377317
+        },
+        {
+          "id": 14,
+          "from": 14,
+          "to": 15,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 14,
+          "restLength": 0.0833025863161992,
+          "materialStart": 1.1670636615708163
+        },
+        {
+          "id": 15,
+          "from": 15,
+          "to": 16,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 15,
+          "restLength": 0.08330507516345935,
+          "materialStart": 1.2503662478870154
+        },
+        {
+          "id": 16,
+          "from": 16,
+          "to": 17,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 16,
+          "restLength": 0.08327828182984692,
+          "materialStart": 1.3336713230504749
+        },
+        {
+          "id": 17,
+          "from": 17,
+          "to": 18,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 17,
+          "restLength": 0.08329699648070235,
+          "materialStart": 1.4169496048803218
+        },
+        {
+          "id": 18,
+          "from": 18,
+          "to": 19,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 18,
+          "restLength": 0.08329781559597157,
+          "materialStart": 1.5002466013610243
+        },
+        {
+          "id": 19,
+          "from": 19,
+          "to": 20,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 19,
+          "restLength": 0.08328191973024605,
+          "materialStart": 1.5835444169569959
+        },
+        {
+          "id": 20,
+          "from": 20,
+          "to": 21,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 20,
+          "restLength": 0.08329724712957486,
+          "materialStart": 1.666826336687242
+        },
+        {
+          "id": 21,
+          "from": 21,
+          "to": 22,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 21,
+          "restLength": 0.08329757359691027,
+          "materialStart": 1.7501235838168168
+        },
+        {
+          "id": 22,
+          "from": 22,
+          "to": 23,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 22,
+          "restLength": 0.08328210860457685,
+          "materialStart": 1.8334211574137271
+        },
+        {
+          "id": 23,
+          "from": 23,
+          "to": 24,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 23,
+          "restLength": 0.08329673392239902,
+          "materialStart": 1.9167032660183039
+        },
+        {
+          "id": 24,
+          "from": 24,
+          "to": 25,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 24,
+          "restLength": 0.08329652116901982,
+          "materialStart": 1.999999999940703
+        },
+        {
+          "id": 25,
+          "from": 25,
+          "to": 26,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 25,
+          "restLength": 0.08327931926702663,
+          "materialStart": 2.0832965211097227
+        },
+        {
+          "id": 26,
+          "from": 26,
+          "to": 27,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 26,
+          "restLength": 0.08333965813241569,
+          "materialStart": 2.1665758403767494
+        },
+        {
+          "id": 27,
+          "from": 27,
+          "to": 28,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 27,
+          "restLength": 0.08333861981559215,
+          "materialStart": 2.249915498509165
+        },
+        {
+          "id": 28,
+          "from": 28,
+          "to": 29,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 28,
+          "restLength": 0.08335483215561204,
+          "materialStart": 2.3332541183247573
+        },
+        {
+          "id": 29,
+          "from": 29,
+          "to": 30,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 29,
+          "restLength": 0.08338784460246888,
+          "materialStart": 2.416608950480369
+        },
+        {
+          "id": 30,
+          "from": 30,
+          "to": 31,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 30,
+          "restLength": 0.08338711905685565,
+          "materialStart": 2.499996795082838
+        },
+        {
+          "id": 31,
+          "from": 31,
+          "to": 32,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 31,
+          "restLength": 0.0834147040331312,
+          "materialStart": 2.5833839141396937
+        },
+        {
+          "id": 32,
+          "from": 32,
+          "to": 33,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 32,
+          "restLength": 0.08341535830042857,
+          "materialStart": 2.666798618172825
+        },
+        {
+          "id": 33,
+          "from": 33,
+          "to": 34,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 33,
+          "restLength": 0.0834156663463775,
+          "materialStart": 2.7502139764732534
+        },
+        {
+          "id": 34,
+          "from": 34,
+          "to": 35,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 34,
+          "restLength": 0.08337588023171419,
+          "materialStart": 2.833629642819631
+        },
+        {
+          "id": 35,
+          "from": 35,
+          "to": 36,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 35,
+          "restLength": 0.0833636441655236,
+          "materialStart": 2.9170055230513454
+        },
+        {
+          "id": 36,
+          "from": 36,
+          "to": 37,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 36,
+          "restLength": 0.08336486487995806,
+          "materialStart": 3.000369167216869
+        },
+        {
+          "id": 37,
+          "from": 37,
+          "to": 38,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 37,
+          "restLength": 0.08332962918935938,
+          "materialStart": 3.0837340320968267
+        },
+        {
+          "id": 38,
+          "from": 38,
+          "to": 39,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 38,
+          "restLength": 0.0833025863121929,
+          "materialStart": 3.167063661286186
+        },
+        {
+          "id": 39,
+          "from": 39,
+          "to": 40,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 39,
+          "restLength": 0.08330507515919601,
+          "materialStart": 3.2503662475983788
+        },
+        {
+          "id": 40,
+          "from": 40,
+          "to": 41,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 40,
+          "restLength": 0.08327828187019323,
+          "materialStart": 3.3336713227575747
+        },
+        {
+          "id": 41,
+          "from": 41,
+          "to": 42,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 41,
+          "restLength": 0.08329699653138947,
+          "materialStart": 3.416949604627768
+        },
+        {
+          "id": 42,
+          "from": 42,
+          "to": 43,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 42,
+          "restLength": 0.08329781564907875,
+          "materialStart": 3.5002466011591578
+        },
+        {
+          "id": 43,
+          "from": 43,
+          "to": 44,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 43,
+          "restLength": 0.08328191978097514,
+          "materialStart": 3.5835444168082367
+        },
+        {
+          "id": 44,
+          "from": 44,
+          "to": 45,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 44,
+          "restLength": 0.08329724716944607,
+          "materialStart": 3.666826336589212
+        },
+        {
+          "id": 45,
+          "from": 45,
+          "to": 46,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 45,
+          "restLength": 0.08329757363298834,
+          "materialStart": 3.750123583758658
+        },
+        {
+          "id": 46,
+          "from": 46,
+          "to": 47,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 46,
+          "restLength": 0.08328210862868302,
+          "materialStart": 3.8334211573916464
+        },
+        {
+          "id": 47,
+          "from": 47,
+          "to": 0,
+          "p": 1,
+          "q": 0,
+          "yarnId": 0,
+          "order": 47,
+          "restLength": 0.08329673397967026,
+          "materialStart": 3.9167032660203294
+        }
+      ],
+      "bends": [
+        {
+          "node": 0,
+          "prevEdge": 47,
+          "nextEdge": 0
+        },
+        {
+          "node": 1,
+          "prevEdge": 0,
+          "nextEdge": 1
+        },
+        {
+          "node": 2,
+          "prevEdge": 1,
+          "nextEdge": 2
+        },
+        {
+          "node": 3,
+          "prevEdge": 2,
+          "nextEdge": 3
+        },
+        {
+          "node": 4,
+          "prevEdge": 3,
+          "nextEdge": 4
+        },
+        {
+          "node": 5,
+          "prevEdge": 4,
+          "nextEdge": 5
+        },
+        {
+          "node": 6,
+          "prevEdge": 5,
+          "nextEdge": 6
+        },
+        {
+          "node": 7,
+          "prevEdge": 6,
+          "nextEdge": 7
+        },
+        {
+          "node": 8,
+          "prevEdge": 7,
+          "nextEdge": 8
+        },
+        {
+          "node": 9,
+          "prevEdge": 8,
+          "nextEdge": 9
+        },
+        {
+          "node": 10,
+          "prevEdge": 9,
+          "nextEdge": 10
+        },
+        {
+          "node": 11,
+          "prevEdge": 10,
+          "nextEdge": 11
+        },
+        {
+          "node": 12,
+          "prevEdge": 11,
+          "nextEdge": 12
+        },
+        {
+          "node": 13,
+          "prevEdge": 12,
+          "nextEdge": 13
+        },
+        {
+          "node": 14,
+          "prevEdge": 13,
+          "nextEdge": 14
+        },
+        {
+          "node": 15,
+          "prevEdge": 14,
+          "nextEdge": 15
+        },
+        {
+          "node": 16,
+          "prevEdge": 15,
+          "nextEdge": 16
+        },
+        {
+          "node": 17,
+          "prevEdge": 16,
+          "nextEdge": 17
+        },
+        {
+          "node": 18,
+          "prevEdge": 17,
+          "nextEdge": 18
+        },
+        {
+          "node": 19,
+          "prevEdge": 18,
+          "nextEdge": 19
+        },
+        {
+          "node": 20,
+          "prevEdge": 19,
+          "nextEdge": 20
+        },
+        {
+          "node": 21,
+          "prevEdge": 20,
+          "nextEdge": 21
+        },
+        {
+          "node": 22,
+          "prevEdge": 21,
+          "nextEdge": 22
+        },
+        {
+          "node": 23,
+          "prevEdge": 22,
+          "nextEdge": 23
+        },
+        {
+          "node": 24,
+          "prevEdge": 23,
+          "nextEdge": 24
+        },
+        {
+          "node": 25,
+          "prevEdge": 24,
+          "nextEdge": 25
+        },
+        {
+          "node": 26,
+          "prevEdge": 25,
+          "nextEdge": 26
+        },
+        {
+          "node": 27,
+          "prevEdge": 26,
+          "nextEdge": 27
+        },
+        {
+          "node": 28,
+          "prevEdge": 27,
+          "nextEdge": 28
+        },
+        {
+          "node": 29,
+          "prevEdge": 28,
+          "nextEdge": 29
+        },
+        {
+          "node": 30,
+          "prevEdge": 29,
+          "nextEdge": 30
+        },
+        {
+          "node": 31,
+          "prevEdge": 30,
+          "nextEdge": 31
+        },
+        {
+          "node": 32,
+          "prevEdge": 31,
+          "nextEdge": 32
+        },
+        {
+          "node": 33,
+          "prevEdge": 32,
+          "nextEdge": 33
+        },
+        {
+          "node": 34,
+          "prevEdge": 33,
+          "nextEdge": 34
+        },
+        {
+          "node": 35,
+          "prevEdge": 34,
+          "nextEdge": 35
+        },
+        {
+          "node": 36,
+          "prevEdge": 35,
+          "nextEdge": 36
+        },
+        {
+          "node": 37,
+          "prevEdge": 36,
+          "nextEdge": 37
+        },
+        {
+          "node": 38,
+          "prevEdge": 37,
+          "nextEdge": 38
+        },
+        {
+          "node": 39,
+          "prevEdge": 38,
+          "nextEdge": 39
+        },
+        {
+          "node": 40,
+          "prevEdge": 39,
+          "nextEdge": 40
+        },
+        {
+          "node": 41,
+          "prevEdge": 40,
+          "nextEdge": 41
+        },
+        {
+          "node": 42,
+          "prevEdge": 41,
+          "nextEdge": 42
+        },
+        {
+          "node": 43,
+          "prevEdge": 42,
+          "nextEdge": 43
+        },
+        {
+          "node": 44,
+          "prevEdge": 43,
+          "nextEdge": 44
+        },
+        {
+          "node": 45,
+          "prevEdge": 44,
+          "nextEdge": 45
+        },
+        {
+          "node": 46,
+          "prevEdge": 45,
+          "nextEdge": 46
+        },
+        {
+          "node": 47,
+          "prevEdge": 46,
+          "nextEdge": 47
+        }
+      ],
+      "loops": [
+        {
+          "id": 0,
+          "feed": 0,
+          "needle": 0,
+          "yarnId": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "passesThrough": {
+            "loopId": 0,
+            "p": 0,
+            "q": -1,
+            "crossings": [
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": 1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": 1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 1,
+                "q": -1,
+                "over": 1,
+                "orientation": 1
+              }
+            ]
+          }
+        }
+      ],
+      "crossingConvention": {
+        "projection": "XY",
+        "normal": "+Z",
+        "order": "increasing-material-order",
+        "over": "sign(z_self - z_target)",
+        "orientation": "sign((t_self cross t_target).z); both tangents follow increasing material order",
+        "source": "sabetta/stitch-by-stitch@0ed27f35dcf5c3bda874f214bbcab0455055edf0 stockinette initial geometry",
+        "scope": "Seed embedding signature, not a complete topological invariant of deformed curves"
+      }
+    },
+    "params": {
+      "provenance": {
+        "tex": {
+          "value": 20,
+          "unit": "tex",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.1394229955041348,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1971738911486305,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09858694557431524,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 44.07884733638547,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012624045801526722,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "tex": 20,
+      "densityGPerCm3": 1.31,
+      "fiberDiameterMm": 0.021,
+      "E_f": 3000,
+      "K": 0.01,
+      "phi0": 0.5,
+      "d_s": 0.1394229955041348,
+      "fiberTex": 0.4537323729763399,
+      "d_e": 0.1971738911486305,
+      "r_c": 0.09858694557431524,
+      "N_f": 44.07884733638547,
+      "B": 0.0012624045801526722
+    },
+    "initialCell": {
+      "positions": [
+        [
+          -0.3174128644336087,
+          -0.584229072875817,
+          0.12323258926460834
+        ],
+        [
+          -0.26728941440836596,
+          -0.5252978028531511,
+          0.09236099039342838
+        ],
+        [
+          -0.23245618322175488,
+          -0.45811901414066636,
+          0.057588855295942196
+        ],
+        [
+          -0.2138001361105011,
+          -0.3854991114363435,
+          0.02120478938397337
+        ],
+        [
+          -0.210301729489765,
+          -0.30981100756476765,
+          -0.013499643098060315
+        ],
+        [
+          -0.219908877571464,
+          -0.23263809034271504,
+          -0.0435008363081798
+        ],
+        [
+          -0.2408589727243279,
+          -0.15540864508893876,
+          -0.06695800839993526
+        ],
+        [
+          -0.270321727281338,
+          -0.07882092792803486,
+          -0.08177959044643726
+        ],
+        [
+          -0.3038576751843803,
+          -0.0027109406283171156,
+          -0.08815319859165616
+        ],
+        [
+          -0.3386852769896681,
+          0.07305595248016916,
+          -0.08602292388286001
+        ],
+        [
+          -0.3708271001484019,
+          0.14929393157236526,
+          -0.0753999700509678
+        ],
+        [
+          -0.39607754739351214,
+          0.22639784074433011,
+          -0.05619217154048031
+        ],
+        [
+          -0.4118931223900053,
+          0.30366959125558657,
+          -0.029202519250422193
+        ],
+        [
+          -0.415195107184275,
+          0.380226532081801,
+          0.003627838754700019
+        ],
+        [
+          -0.4040367974796164,
+          0.4546895186752653,
+          0.039329139202198715
+        ],
+        [
+          -0.3775881591812324,
+          0.5249236078502564,
+          0.075481084335047
+        ],
+        [
+          -0.33471639911579726,
+          0.5882736327907372,
+          0.10847384228163026
+        ],
+        [
+          -0.2775629707892193,
+          0.6419442447312751,
+          0.13654915650922747
+        ],
+        [
+          -0.20869898449867633,
+          0.6834823345228673,
+          0.1582454260352927
+        ],
+        [
+          -0.13130182455189965,
+          0.7107771522444726,
+          0.17250020210431244
+        ],
+        [
+          -0.0491178513842111,
+          0.7227244108001065,
+          0.17874005156825193
+        ],
+        [
+          0.03406019125922882,
+          0.7187754524948997,
+          0.17667841879899052
+        ],
+        [
+          0.11428510980738077,
+          0.6989060924702672,
+          0.16630264204317086
+        ],
+        [
+          0.18782582426184002,
+          0.6642609354129954,
+          0.14820883029359233
+        ],
+        [
+          0.25128326085170083,
+          0.6164311000909901,
+          0.12323271216741843
+        ],
+        [
+          0.3014067222977026,
+          0.557499824467558,
+          0.09236114264257546
+        ],
+        [
+          0.33623996413682555,
+          0.49032103136020533,
+          0.05758902684275627
+        ],
+        [
+          0.3548960207967945,
+          0.41770112587964503,
+          0.021204971330452002
+        ],
+        [
+          0.35839443750410194,
+          0.34201302023879443,
+          -0.013499456309393615
+        ],
+        [
+          0.34878729981451373,
+          0.26484010121483204,
+          -0.04350064825945607
+        ],
+        [
+          0.32783721570153945,
+          0.18761065328837379,
+          -0.06695782149237728
+        ],
+        [
+          0.29837447430437436,
+          0.11102293144198139,
+          -0.08177940562989855
+        ],
+        [
+          0.264838542421476,
+          0.03491293719125088,
+          -0.08815301503385825
+        ],
+        [
+          0.23001096017760614,
+          -0.04085396482460546,
+          -0.08602273938151148
+        ],
+        [
+          0.19786916041623304,
+          -0.11709195289163382,
+          -0.07539977954907251
+        ],
+        [
+          0.17261874098642072,
+          -0.1941958682995047,
+          -0.05619196989238348
+        ],
+        [
+          0.15680319722143155,
+          -0.27146762019894544,
+          -0.029202303307465816
+        ],
+        [
+          0.15350124533377835,
+          -0.3480245572874414,
+          0.0036280666845607407
+        ],
+        [
+          0.16465958845954942,
+          -0.4224875354946963,
+          0.039329374168035
+        ],
+        [
+          0.19110825941364862,
+          -0.4927216124501216,
+          0.07548131914035341
+        ],
+        [
+          0.23398004975721387,
+          -0.5560716226260332,
+          0.1084740660815916
+        ],
+        [
+          0.29113350278359906,
+          -0.6097422200554713,
+          0.13654935788736494
+        ],
+        [
+          0.35999750703042666,
+          -0.6512802976231675,
+          0.15824559401770036
+        ],
+        [
+          0.4373946775422146,
+          -0.6785751083998334,
+          0.17250032633167717
+        ],
+        [
+          0.519578654935659,
+          -0.6905223644819999,
+          0.1787401255516629
+        ],
+        [
+          0.6027566963694331,
+          -0.6865734078208772,
+          0.1766784392181644
+        ],
+        [
+          0.682981609290134,
+          -0.6667040526576309,
+          0.16630260935227645
+        ],
+        [
+          0.7565223146584097,
+          -0.6320589017613861,
+          0.1482087487649764
+        ]
+      ],
+      "W": 1.1373926043239746,
+      "H": 0.7156804212322285,
+      "S": -9.403362001033514e-8,
+      "topology": {
+        "m": 1,
+        "n": 1,
+        "nodesPerLoop": 48,
+        "loopLengthMm": 4,
+        "nodeCount": 48,
+        "operations": [
+          [
+            "K"
+          ]
+        ],
+        "yarns": [
+          {
+            "id": 0,
+            "feed": 0,
+            "nodeIndices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "edgeIndices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "materialLength": 4
+          }
+        ],
+        "edges": [
+          {
+            "id": 0,
+            "from": 0,
+            "to": 1,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 0,
+            "restLength": 0.08329652121055486,
+            "materialStart": 0
+          },
+          {
+            "id": 1,
+            "from": 1,
+            "to": 2,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 1,
+            "restLength": 0.08327931932367356,
+            "materialStart": 0.08329652121055486
+          },
+          {
+            "id": 2,
+            "from": 2,
+            "to": 3,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 2,
+            "restLength": 0.08333965811598418,
+            "materialStart": 0.16657584053422841
+          },
+          {
+            "id": 3,
+            "from": 3,
+            "to": 4,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 3,
+            "restLength": 0.08333861980173721,
+            "materialStart": 0.2499154986502126
+          },
+          {
+            "id": 4,
+            "from": 4,
+            "to": 5,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 4,
+            "restLength": 0.08335483213861326,
+            "materialStart": 0.3332541184519498
+          },
+          {
+            "id": 5,
+            "from": 5,
+            "to": 6,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 5,
+            "restLength": 0.08338784457978461,
+            "materialStart": 0.4166089505905631
+          },
+          {
+            "id": 6,
+            "from": 6,
+            "to": 7,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 6,
+            "restLength": 0.08338711903145728,
+            "materialStart": 0.4999967951703477
+          },
+          {
+            "id": 7,
+            "from": 7,
+            "to": 8,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 7,
+            "restLength": 0.08341470403536515,
+            "materialStart": 0.5833839142018049
+          },
+          {
+            "id": 8,
+            "from": 8,
+            "to": 9,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 8,
+            "restLength": 0.08341535835297603,
+            "materialStart": 0.66679861823717
+          },
+          {
+            "id": 9,
+            "from": 9,
+            "to": 10,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 9,
+            "restLength": 0.08341566639513204,
+            "materialStart": 0.7502139765901461
+          },
+          {
+            "id": 10,
+            "from": 10,
+            "to": 11,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 10,
+            "restLength": 0.08337588032096684,
+            "materialStart": 0.8336296429852781
+          },
+          {
+            "id": 11,
+            "from": 11,
+            "to": 12,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 11,
+            "restLength": 0.08336364417587443,
+            "materialStart": 0.917005523306245
+          },
+          {
+            "id": 12,
+            "from": 12,
+            "to": 13,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 12,
+            "restLength": 0.08336486489519779,
+            "materialStart": 1.0003691674821193
+          },
+          {
+            "id": 13,
+            "from": 13,
+            "to": 14,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 13,
+            "restLength": 0.0833296291934993,
+            "materialStart": 1.083734032377317
+          },
+          {
+            "id": 14,
+            "from": 14,
+            "to": 15,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 14,
+            "restLength": 0.0833025863161992,
+            "materialStart": 1.1670636615708163
+          },
+          {
+            "id": 15,
+            "from": 15,
+            "to": 16,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 15,
+            "restLength": 0.08330507516345935,
+            "materialStart": 1.2503662478870154
+          },
+          {
+            "id": 16,
+            "from": 16,
+            "to": 17,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 16,
+            "restLength": 0.08327828182984692,
+            "materialStart": 1.3336713230504749
+          },
+          {
+            "id": 17,
+            "from": 17,
+            "to": 18,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 17,
+            "restLength": 0.08329699648070235,
+            "materialStart": 1.4169496048803218
+          },
+          {
+            "id": 18,
+            "from": 18,
+            "to": 19,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 18,
+            "restLength": 0.08329781559597157,
+            "materialStart": 1.5002466013610243
+          },
+          {
+            "id": 19,
+            "from": 19,
+            "to": 20,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 19,
+            "restLength": 0.08328191973024605,
+            "materialStart": 1.5835444169569959
+          },
+          {
+            "id": 20,
+            "from": 20,
+            "to": 21,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 20,
+            "restLength": 0.08329724712957486,
+            "materialStart": 1.666826336687242
+          },
+          {
+            "id": 21,
+            "from": 21,
+            "to": 22,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 21,
+            "restLength": 0.08329757359691027,
+            "materialStart": 1.7501235838168168
+          },
+          {
+            "id": 22,
+            "from": 22,
+            "to": 23,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 22,
+            "restLength": 0.08328210860457685,
+            "materialStart": 1.8334211574137271
+          },
+          {
+            "id": 23,
+            "from": 23,
+            "to": 24,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 23,
+            "restLength": 0.08329673392239902,
+            "materialStart": 1.9167032660183039
+          },
+          {
+            "id": 24,
+            "from": 24,
+            "to": 25,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 24,
+            "restLength": 0.08329652116901982,
+            "materialStart": 1.999999999940703
+          },
+          {
+            "id": 25,
+            "from": 25,
+            "to": 26,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 25,
+            "restLength": 0.08327931926702663,
+            "materialStart": 2.0832965211097227
+          },
+          {
+            "id": 26,
+            "from": 26,
+            "to": 27,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 26,
+            "restLength": 0.08333965813241569,
+            "materialStart": 2.1665758403767494
+          },
+          {
+            "id": 27,
+            "from": 27,
+            "to": 28,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 27,
+            "restLength": 0.08333861981559215,
+            "materialStart": 2.249915498509165
+          },
+          {
+            "id": 28,
+            "from": 28,
+            "to": 29,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 28,
+            "restLength": 0.08335483215561204,
+            "materialStart": 2.3332541183247573
+          },
+          {
+            "id": 29,
+            "from": 29,
+            "to": 30,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 29,
+            "restLength": 0.08338784460246888,
+            "materialStart": 2.416608950480369
+          },
+          {
+            "id": 30,
+            "from": 30,
+            "to": 31,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 30,
+            "restLength": 0.08338711905685565,
+            "materialStart": 2.499996795082838
+          },
+          {
+            "id": 31,
+            "from": 31,
+            "to": 32,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 31,
+            "restLength": 0.0834147040331312,
+            "materialStart": 2.5833839141396937
+          },
+          {
+            "id": 32,
+            "from": 32,
+            "to": 33,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 32,
+            "restLength": 0.08341535830042857,
+            "materialStart": 2.666798618172825
+          },
+          {
+            "id": 33,
+            "from": 33,
+            "to": 34,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 33,
+            "restLength": 0.0834156663463775,
+            "materialStart": 2.7502139764732534
+          },
+          {
+            "id": 34,
+            "from": 34,
+            "to": 35,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 34,
+            "restLength": 0.08337588023171419,
+            "materialStart": 2.833629642819631
+          },
+          {
+            "id": 35,
+            "from": 35,
+            "to": 36,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 35,
+            "restLength": 0.0833636441655236,
+            "materialStart": 2.9170055230513454
+          },
+          {
+            "id": 36,
+            "from": 36,
+            "to": 37,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 36,
+            "restLength": 0.08336486487995806,
+            "materialStart": 3.000369167216869
+          },
+          {
+            "id": 37,
+            "from": 37,
+            "to": 38,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 37,
+            "restLength": 0.08332962918935938,
+            "materialStart": 3.0837340320968267
+          },
+          {
+            "id": 38,
+            "from": 38,
+            "to": 39,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 38,
+            "restLength": 0.0833025863121929,
+            "materialStart": 3.167063661286186
+          },
+          {
+            "id": 39,
+            "from": 39,
+            "to": 40,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 39,
+            "restLength": 0.08330507515919601,
+            "materialStart": 3.2503662475983788
+          },
+          {
+            "id": 40,
+            "from": 40,
+            "to": 41,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 40,
+            "restLength": 0.08327828187019323,
+            "materialStart": 3.3336713227575747
+          },
+          {
+            "id": 41,
+            "from": 41,
+            "to": 42,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 41,
+            "restLength": 0.08329699653138947,
+            "materialStart": 3.416949604627768
+          },
+          {
+            "id": 42,
+            "from": 42,
+            "to": 43,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 42,
+            "restLength": 0.08329781564907875,
+            "materialStart": 3.5002466011591578
+          },
+          {
+            "id": 43,
+            "from": 43,
+            "to": 44,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 43,
+            "restLength": 0.08328191978097514,
+            "materialStart": 3.5835444168082367
+          },
+          {
+            "id": 44,
+            "from": 44,
+            "to": 45,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 44,
+            "restLength": 0.08329724716944607,
+            "materialStart": 3.666826336589212
+          },
+          {
+            "id": 45,
+            "from": 45,
+            "to": 46,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 45,
+            "restLength": 0.08329757363298834,
+            "materialStart": 3.750123583758658
+          },
+          {
+            "id": 46,
+            "from": 46,
+            "to": 47,
+            "p": 0,
+            "q": 0,
+            "yarnId": 0,
+            "order": 46,
+            "restLength": 0.08328210862868302,
+            "materialStart": 3.8334211573916464
+          },
+          {
+            "id": 47,
+            "from": 47,
+            "to": 0,
+            "p": 1,
+            "q": 0,
+            "yarnId": 0,
+            "order": 47,
+            "restLength": 0.08329673397967026,
+            "materialStart": 3.9167032660203294
+          }
+        ],
+        "bends": [
+          {
+            "node": 0,
+            "prevEdge": 47,
+            "nextEdge": 0
+          },
+          {
+            "node": 1,
+            "prevEdge": 0,
+            "nextEdge": 1
+          },
+          {
+            "node": 2,
+            "prevEdge": 1,
+            "nextEdge": 2
+          },
+          {
+            "node": 3,
+            "prevEdge": 2,
+            "nextEdge": 3
+          },
+          {
+            "node": 4,
+            "prevEdge": 3,
+            "nextEdge": 4
+          },
+          {
+            "node": 5,
+            "prevEdge": 4,
+            "nextEdge": 5
+          },
+          {
+            "node": 6,
+            "prevEdge": 5,
+            "nextEdge": 6
+          },
+          {
+            "node": 7,
+            "prevEdge": 6,
+            "nextEdge": 7
+          },
+          {
+            "node": 8,
+            "prevEdge": 7,
+            "nextEdge": 8
+          },
+          {
+            "node": 9,
+            "prevEdge": 8,
+            "nextEdge": 9
+          },
+          {
+            "node": 10,
+            "prevEdge": 9,
+            "nextEdge": 10
+          },
+          {
+            "node": 11,
+            "prevEdge": 10,
+            "nextEdge": 11
+          },
+          {
+            "node": 12,
+            "prevEdge": 11,
+            "nextEdge": 12
+          },
+          {
+            "node": 13,
+            "prevEdge": 12,
+            "nextEdge": 13
+          },
+          {
+            "node": 14,
+            "prevEdge": 13,
+            "nextEdge": 14
+          },
+          {
+            "node": 15,
+            "prevEdge": 14,
+            "nextEdge": 15
+          },
+          {
+            "node": 16,
+            "prevEdge": 15,
+            "nextEdge": 16
+          },
+          {
+            "node": 17,
+            "prevEdge": 16,
+            "nextEdge": 17
+          },
+          {
+            "node": 18,
+            "prevEdge": 17,
+            "nextEdge": 18
+          },
+          {
+            "node": 19,
+            "prevEdge": 18,
+            "nextEdge": 19
+          },
+          {
+            "node": 20,
+            "prevEdge": 19,
+            "nextEdge": 20
+          },
+          {
+            "node": 21,
+            "prevEdge": 20,
+            "nextEdge": 21
+          },
+          {
+            "node": 22,
+            "prevEdge": 21,
+            "nextEdge": 22
+          },
+          {
+            "node": 23,
+            "prevEdge": 22,
+            "nextEdge": 23
+          },
+          {
+            "node": 24,
+            "prevEdge": 23,
+            "nextEdge": 24
+          },
+          {
+            "node": 25,
+            "prevEdge": 24,
+            "nextEdge": 25
+          },
+          {
+            "node": 26,
+            "prevEdge": 25,
+            "nextEdge": 26
+          },
+          {
+            "node": 27,
+            "prevEdge": 26,
+            "nextEdge": 27
+          },
+          {
+            "node": 28,
+            "prevEdge": 27,
+            "nextEdge": 28
+          },
+          {
+            "node": 29,
+            "prevEdge": 28,
+            "nextEdge": 29
+          },
+          {
+            "node": 30,
+            "prevEdge": 29,
+            "nextEdge": 30
+          },
+          {
+            "node": 31,
+            "prevEdge": 30,
+            "nextEdge": 31
+          },
+          {
+            "node": 32,
+            "prevEdge": 31,
+            "nextEdge": 32
+          },
+          {
+            "node": 33,
+            "prevEdge": 32,
+            "nextEdge": 33
+          },
+          {
+            "node": 34,
+            "prevEdge": 33,
+            "nextEdge": 34
+          },
+          {
+            "node": 35,
+            "prevEdge": 34,
+            "nextEdge": 35
+          },
+          {
+            "node": 36,
+            "prevEdge": 35,
+            "nextEdge": 36
+          },
+          {
+            "node": 37,
+            "prevEdge": 36,
+            "nextEdge": 37
+          },
+          {
+            "node": 38,
+            "prevEdge": 37,
+            "nextEdge": 38
+          },
+          {
+            "node": 39,
+            "prevEdge": 38,
+            "nextEdge": 39
+          },
+          {
+            "node": 40,
+            "prevEdge": 39,
+            "nextEdge": 40
+          },
+          {
+            "node": 41,
+            "prevEdge": 40,
+            "nextEdge": 41
+          },
+          {
+            "node": 42,
+            "prevEdge": 41,
+            "nextEdge": 42
+          },
+          {
+            "node": 43,
+            "prevEdge": 42,
+            "nextEdge": 43
+          },
+          {
+            "node": 44,
+            "prevEdge": 43,
+            "nextEdge": 44
+          },
+          {
+            "node": 45,
+            "prevEdge": 44,
+            "nextEdge": 45
+          },
+          {
+            "node": 46,
+            "prevEdge": 45,
+            "nextEdge": 46
+          },
+          {
+            "node": 47,
+            "prevEdge": 46,
+            "nextEdge": 47
+          }
+        ],
+        "loops": [
+          {
+            "id": 0,
+            "feed": 0,
+            "needle": 0,
+            "yarnId": 0,
+            "nodeIndices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "edgeIndices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47
+            ],
+            "passesThrough": {
+              "loopId": 0,
+              "p": 0,
+              "q": -1,
+              "crossings": [
+                {
+                  "loopId": 0,
+                  "p": 0,
+                  "q": -1,
+                  "over": -1,
+                  "orientation": -1
+                },
+                {
+                  "loopId": 0,
+                  "p": 0,
+                  "q": -1,
+                  "over": -1,
+                  "orientation": 1
+                },
+                {
+                  "loopId": 0,
+                  "p": 0,
+                  "q": -1,
+                  "over": 1,
+                  "orientation": -1
+                },
+                {
+                  "loopId": 0,
+                  "p": 1,
+                  "q": -1,
+                  "over": 1,
+                  "orientation": 1
+                }
+              ]
+            }
+          }
+        ],
+        "crossingConvention": {
+          "projection": "XY",
+          "normal": "+Z",
+          "order": "increasing-material-order",
+          "over": "sign(z_self - z_target)",
+          "orientation": "sign((t_self cross t_target).z); both tangents follow increasing material order",
+          "source": "sabetta/stitch-by-stitch@0ed27f35dcf5c3bda874f214bbcab0455055edf0 stockinette initial geometry",
+          "scope": "Seed embedding signature, not a complete topological invariant of deformed curves"
+        }
+      },
+      "refinement": {
+        "sourceNodes": 32,
+        "targetNodes": 48,
+        "method": "C1 periodic cubic Hermite, arclength resampling, exact polygonal material-length normalization",
+        "numericalContinuationOnly": true,
+        "smoothArcLength": 4.0126861723189595,
+        "lengthNormalization": 0.9983036300453731,
+        "targetMaterialLength": 4,
+        "continuationComplete": true,
+        "continuationSteps": 1,
+        "homotopyNodes": 79,
+        "finalFeasible": true,
+        "finalMinDistance": 0.18859963557104292,
+        "topologyEvidence": "Unchanged directed periodic topology plus continuous nonlocal-gap protected polyline homotopy; no surface claim"
+      }
+    },
+    "maxIterations": 24000,
+    "innerIterations": 800
+  },
+  "origin": {
+    "sourceFile": "C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-4.json",
+    "method": {
+      "sourceNodes": 32,
+      "targetNodes": 48,
+      "method": "C1 periodic cubic Hermite, arclength resampling, exact polygonal material-length normalization",
+      "numericalContinuationOnly": true,
+      "smoothArcLength": 4.0126861723189595,
+      "lengthNormalization": 0.9983036300453731,
+      "targetMaterialLength": 4,
+      "continuationComplete": true,
+      "continuationSteps": 1,
+      "homotopyNodes": 79,
+      "finalFeasible": true,
+      "finalMinDistance": 0.18859963557104292,
+      "topologyEvidence": "Unchanged directed periodic topology plus continuous nonlocal-gap protected polyline homotopy; no surface claim"
+    },
+    "memorySize": "Omitted to exercise public N48 default=180"
+  }
+}

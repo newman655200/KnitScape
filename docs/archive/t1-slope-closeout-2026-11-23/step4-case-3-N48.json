@@ -1,0 +1,2296 @@
+{
+  "status": "CONVERGED",
+  "optimizerStatus": "CONVERGED",
+  "mode": "FREE",
+  "cell": {
+    "positions": [
+      [
+        -0.23805964832520654,
+        -0.4381718046568628,
+        0.09242444194845625
+      ],
+      [
+        -0.20226642257372812,
+        -0.39700187857079133,
+        0.06197877102015137
+      ],
+      [
+        -0.1792950309692936,
+        -0.3497117548815871,
+        0.02828901117386173
+      ],
+      [
+        -0.16962897498814913,
+        -0.2981517486970184,
+        -0.00566902723924475
+      ],
+      [
+        -0.17239567939003683,
+        -0.2440664848500742,
+        -0.03684642194268233
+      ],
+      [
+        -0.18616667603698686,
+        -0.18885174102839972,
+        -0.0626661749244208
+      ],
+      [
+        -0.2087193524628253,
+        -0.13362236978138478,
+        -0.0814302318183259
+      ],
+      [
+        -0.23701900351794342,
+        -0.07899473843644025,
+        -0.09264665908748043
+      ],
+      [
+        -0.2681014523542078,
+        -0.024827393322148446,
+        -0.09637447457683018
+      ],
+      [
+        -0.299184940762249,
+        0.02933966787373674,
+        -0.09265271255401368
+      ],
+      [
+        -0.32749916999420026,
+        0.08398970893340596,
+        -0.08143614652902802
+      ],
+      [
+        -0.3500516441274527,
+        0.1392105374756119,
+        -0.06267842250191899
+      ],
+      [
+        -0.3638303039683359,
+        0.1944394570924043,
+        -0.03685468680627213
+      ],
+      [
+        -0.36659947449995256,
+        0.2485401249171068,
+        -0.005669006444312246
+      ],
+      [
+        -0.3569368110844475,
+        0.30008896184432404,
+        0.02828125674495314
+      ],
+      [
+        -0.3339563374660761,
+        0.34739807671665307,
+        0.061984811497178945
+      ],
+      [
+        -0.298164931608982,
+        0.388562839643411,
+        0.09242690215104976
+      ],
+      [
+        -0.25163927941827025,
+        0.4219134089378409,
+        0.11740393249883682
+      ],
+      [
+        -0.1971817018326959,
+        0.44641652405466314,
+        0.1358281028645002
+      ],
+      [
+        -0.13756366986514496,
+        0.46139281275588395,
+        0.14708910571424605
+      ],
+      [
+        -0.07538840885282322,
+        0.4664289419311175,
+        0.15087599534588383
+      ],
+      [
+        -0.013206367674707205,
+        0.46139432705623373,
+        0.14709057368611836
+      ],
+      [
+        0.04641891339105826,
+        0.4464172901888473,
+        0.13582931731458092
+      ],
+      [
+        0.10087098222643016,
+        0.4219179079727507,
+        0.1174082221882495
+      ],
+      [
+        0.14741026355055248,
+        0.3885580904340199,
+        0.09242444670465745
+      ],
+      [
+        0.1832034892004555,
+        0.34738816472935824,
+        0.061978775261268895
+      ],
+      [
+        0.20617488065645567,
+        0.30009804172322785,
+        0.028289014660179298
+      ],
+      [
+        0.2158409365157793,
+        0.2485380362394994,
+        -0.005669024679720943
+      ],
+      [
+        0.21307423169674294,
+        0.19445277287788243,
+        -0.03684642030694597
+      ],
+      [
+        0.19930323421369373,
+        0.13923802947910568,
+        -0.06266617374771309
+      ],
+      [
+        0.17675055669489684,
+        0.08400865858222033,
+        -0.0814302301557886
+      ],
+      [
+        0.14845090456649995,
+        0.029381027504212853,
+        -0.09264665618670767
+      ],
+      [
+        0.11736845526341134,
+        -0.024786317684544354,
+        -0.0963744703290293
+      ],
+      [
+        0.08628496719713691,
+        -0.07895337915551176,
+        -0.09265270711686419
+      ],
+      [
+        0.05797073904429613,
+        -0.13360342049478466,
+        -0.08143614005899094
+      ],
+      [
+        0.03541826665150264,
+        -0.18882424947450838,
+        -0.06267841548428384
+      ],
+      [
+        0.021639608562944022,
+        -0.24405316977698194,
+        -0.036854679600859204
+      ],
+      [
+        0.01887043934101378,
+        -0.29815383785542676,
+        -0.00566899905832395
+      ],
+      [
+        0.02853310372431872,
+        -0.3497026746572812,
+        0.028281263970856785
+      ],
+      [
+        0.05151357803260044,
+        -0.39701178967114403,
+        0.06198481793941023
+      ],
+      [
+        0.08730498445441104,
+        -0.43817655321967186,
+        0.09242690740749059
+      ],
+      [
+        0.13383063700901993,
+        -0.47152712321429646,
+        0.1174039365697084
+      ],
+      [
+        0.18828821469149293,
+        -0.49603023874667485,
+        0.13582810571081846
+      ],
+      [
+        0.2479062465897406,
+        -0.5110065279833107,
+        0.1470891073446157
+      ],
+      [
+        0.31008150780594945,
+        -0.5160426578671533,
+        0.1508759955844639
+      ],
+      [
+        0.37226354919884325,
+        -0.511008043179056,
+        0.14709057209807552
+      ],
+      [
+        0.43188882988252086,
+        -0.49603100585669735,
+        0.13582931405564017
+      ],
+      [
+        0.48634089810028336,
+        -0.47153162297397055,
+        0.11740821787174277
+      ]
+    ],
+    "W": 0.7709398275361398,
+    "H": 0.5459336633436238,
+    "S": -1.184594153491673e-9,
+    "topology": {
+      "m": 1,
+      "n": 1,
+      "nodesPerLoop": 48,
+      "loopLengthMm": 3,
+      "nodeCount": 48,
+      "operations": [
+        [
+          "K"
+        ]
+      ],
+      "yarns": [
+        {
+          "id": 0,
+          "feed": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "materialLength": 3
+        }
+      ],
+      "edges": [
+        {
+          "id": 0,
+          "from": 0,
+          "to": 1,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 0,
+          "restLength": 0.062474448514505565,
+          "materialStart": 0
+        },
+        {
+          "id": 1,
+          "from": 1,
+          "to": 2,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 1,
+          "restLength": 0.06244229819477567,
+          "materialStart": 0.062474448514505565
+        },
+        {
+          "id": 2,
+          "from": 2,
+          "to": 3,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 2,
+          "restLength": 0.062490121817514475,
+          "materialStart": 0.12491674670928124
+        },
+        {
+          "id": 3,
+          "from": 3,
+          "to": 4,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 3,
+          "restLength": 0.06248920150921185,
+          "materialStart": 0.18740686852679572
+        },
+        {
+          "id": 4,
+          "from": 4,
+          "to": 5,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 4,
+          "restLength": 0.06248974283136864,
+          "materialStart": 0.24989607003600756
+        },
+        {
+          "id": 5,
+          "from": 5,
+          "to": 6,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 5,
+          "restLength": 0.0625379610891321,
+          "materialStart": 0.3123858128673762
+        },
+        {
+          "id": 6,
+          "from": 6,
+          "to": 7,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 6,
+          "restLength": 0.0625368418103646,
+          "materialStart": 0.37492377395650833
+        },
+        {
+          "id": 7,
+          "from": 7,
+          "to": 8,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 7,
+          "restLength": 0.06256290042555085,
+          "materialStart": 0.43746061576687295
+        },
+        {
+          "id": 8,
+          "from": 8,
+          "to": 9,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 8,
+          "restLength": 0.06256281070196809,
+          "materialStart": 0.5000235161924238
+        },
+        {
+          "id": 9,
+          "from": 9,
+          "to": 10,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 9,
+          "restLength": 0.06256303929674452,
+          "materialStart": 0.5625863268943919
+        },
+        {
+          "id": 10,
+          "from": 10,
+          "to": 11,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 10,
+          "restLength": 0.06252844216396573,
+          "materialStart": 0.6251493661911365
+        },
+        {
+          "id": 11,
+          "from": 11,
+          "to": 12,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 11,
+          "restLength": 0.06250560238668923,
+          "materialStart": 0.6876778083551022
+        },
+        {
+          "id": 12,
+          "from": 12,
+          "to": 13,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 12,
+          "restLength": 0.06250677798041446,
+          "materialStart": 0.7501834107417914
+        },
+        {
+          "id": 13,
+          "from": 13,
+          "to": 14,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 13,
+          "restLength": 0.06247615474523468,
+          "materialStart": 0.8126901887222059
+        },
+        {
+          "id": 14,
+          "from": 14,
+          "to": 15,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 14,
+          "restLength": 0.062467463778995994,
+          "materialStart": 0.8751663434674406
+        },
+        {
+          "id": 15,
+          "from": 15,
+          "to": 16,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 15,
+          "restLength": 0.06246825846664404,
+          "materialStart": 0.9376338072464366
+        },
+        {
+          "id": 16,
+          "from": 16,
+          "to": 17,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 16,
+          "restLength": 0.06245597566523999,
+          "materialStart": 1.0001020657130806
+        },
+        {
+          "id": 17,
+          "from": 17,
+          "to": 18,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 17,
+          "restLength": 0.062493843053895486,
+          "materialStart": 1.0625580413783207
+        },
+        {
+          "id": 18,
+          "from": 18,
+          "to": 19,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 18,
+          "restLength": 0.06249327259847559,
+          "materialStart": 1.1250518844322162
+        },
+        {
+          "id": 19,
+          "from": 19,
+          "to": 20,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 19,
+          "restLength": 0.06249372937028303,
+          "materialStart": 1.1875451570306916
+        },
+        {
+          "id": 20,
+          "from": 20,
+          "to": 21,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 20,
+          "restLength": 0.06250026410162944,
+          "materialStart": 1.2500388864009746
+        },
+        {
+          "id": 21,
+          "from": 21,
+          "to": 22,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 21,
+          "restLength": 0.06250041326930166,
+          "materialStart": 1.312539150502604
+        },
+        {
+          "id": 22,
+          "from": 22,
+          "to": 23,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 22,
+          "restLength": 0.06248667281132093,
+          "materialStart": 1.3750395637719057
+        },
+        {
+          "id": 23,
+          "from": 23,
+          "to": 24,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 23,
+          "restLength": 0.0624737634065,
+          "materialStart": 1.4375262365832266
+        },
+        {
+          "id": 24,
+          "from": 24,
+          "to": 25,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 24,
+          "restLength": 0.06247444851250912,
+          "materialStart": 1.4999999999897267
+        },
+        {
+          "id": 25,
+          "from": 25,
+          "to": 26,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 25,
+          "restLength": 0.06244229817306774,
+          "materialStart": 1.5624744485022357
+        },
+        {
+          "id": 26,
+          "from": 26,
+          "to": 27,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 26,
+          "restLength": 0.062490121808981676,
+          "materialStart": 1.6249167466753034
+        },
+        {
+          "id": 27,
+          "from": 27,
+          "to": 28,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 27,
+          "restLength": 0.06248920150418151,
+          "materialStart": 1.6874068684842851
+        },
+        {
+          "id": 28,
+          "from": 28,
+          "to": 29,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 28,
+          "restLength": 0.062489742831843,
+          "materialStart": 1.7498960699884667
+        },
+        {
+          "id": 29,
+          "from": 29,
+          "to": 30,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 29,
+          "restLength": 0.06253796109936495,
+          "materialStart": 1.8123858128203096
+        },
+        {
+          "id": 30,
+          "from": 30,
+          "to": 31,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 30,
+          "restLength": 0.06253684182674811,
+          "materialStart": 1.8749237739196747
+        },
+        {
+          "id": 31,
+          "from": 31,
+          "to": 32,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 31,
+          "restLength": 0.06256290042456979,
+          "materialStart": 1.9374606157464227
+        },
+        {
+          "id": 32,
+          "from": 32,
+          "to": 33,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 32,
+          "restLength": 0.06256281068985844,
+          "materialStart": 2.0000235161709923
+        },
+        {
+          "id": 33,
+          "from": 33,
+          "to": 34,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 33,
+          "restLength": 0.0625630392877336,
+          "materialStart": 2.062586326860851
+        },
+        {
+          "id": 34,
+          "from": 34,
+          "to": 35,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 34,
+          "restLength": 0.06252844214993851,
+          "materialStart": 2.1251493661485843
+        },
+        {
+          "id": 35,
+          "from": 35,
+          "to": 36,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 35,
+          "restLength": 0.06250560239104612,
+          "materialStart": 2.1876778082985227
+        },
+        {
+          "id": 36,
+          "from": 36,
+          "to": 37,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 36,
+          "restLength": 0.06250677797969194,
+          "materialStart": 2.250183410689569
+        },
+        {
+          "id": 37,
+          "from": 37,
+          "to": 38,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 37,
+          "restLength": 0.062476154768623976,
+          "materialStart": 2.3126901886692606
+        },
+        {
+          "id": 38,
+          "from": 38,
+          "to": 39,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 38,
+          "restLength": 0.062467463790668705,
+          "materialStart": 2.3751663434378845
+        },
+        {
+          "id": 39,
+          "from": 39,
+          "to": 40,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 39,
+          "restLength": 0.06246825847678818,
+          "materialStart": 2.4376338072285533
+        },
+        {
+          "id": 40,
+          "from": 40,
+          "to": 41,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 40,
+          "restLength": 0.06245597568239846,
+          "materialStart": 2.5001020657053417
+        },
+        {
+          "id": 41,
+          "from": 41,
+          "to": 42,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 41,
+          "restLength": 0.062493843048830634,
+          "materialStart": 2.56255804138774
+        },
+        {
+          "id": 42,
+          "from": 42,
+          "to": 43,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 42,
+          "restLength": 0.062493272594979776,
+          "materialStart": 2.6250518844365707
+        },
+        {
+          "id": 43,
+          "from": 43,
+          "to": 44,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 43,
+          "restLength": 0.06249372935619351,
+          "materialStart": 2.6875451570315505
+        },
+        {
+          "id": 44,
+          "from": 44,
+          "to": 45,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 44,
+          "restLength": 0.06250026409734129,
+          "materialStart": 2.750038886387744
+        },
+        {
+          "id": 45,
+          "from": 45,
+          "to": 46,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 45,
+          "restLength": 0.06250041325978359,
+          "materialStart": 2.8125391504850854
+        },
+        {
+          "id": 46,
+          "from": 46,
+          "to": 47,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 46,
+          "restLength": 0.0624866728158852,
+          "materialStart": 2.875039563744869
+        },
+        {
+          "id": 47,
+          "from": 47,
+          "to": 0,
+          "p": 1,
+          "q": 0,
+          "yarnId": 0,
+          "order": 47,
+          "restLength": 0.06247376343924688,
+          "materialStart": 2.937526236560754
+        }
+      ],
+      "bends": [
+        {
+          "node": 0,
+          "prevEdge": 47,
+          "nextEdge": 0
+        },
+        {
+          "node": 1,
+          "prevEdge": 0,
+          "nextEdge": 1
+        },
+        {
+          "node": 2,
+          "prevEdge": 1,
+          "nextEdge": 2
+        },
+        {
+          "node": 3,
+          "prevEdge": 2,
+          "nextEdge": 3
+        },
+        {
+          "node": 4,
+          "prevEdge": 3,
+          "nextEdge": 4
+        },
+        {
+          "node": 5,
+          "prevEdge": 4,
+          "nextEdge": 5
+        },
+        {
+          "node": 6,
+          "prevEdge": 5,
+          "nextEdge": 6
+        },
+        {
+          "node": 7,
+          "prevEdge": 6,
+          "nextEdge": 7
+        },
+        {
+          "node": 8,
+          "prevEdge": 7,
+          "nextEdge": 8
+        },
+        {
+          "node": 9,
+          "prevEdge": 8,
+          "nextEdge": 9
+        },
+        {
+          "node": 10,
+          "prevEdge": 9,
+          "nextEdge": 10
+        },
+        {
+          "node": 11,
+          "prevEdge": 10,
+          "nextEdge": 11
+        },
+        {
+          "node": 12,
+          "prevEdge": 11,
+          "nextEdge": 12
+        },
+        {
+          "node": 13,
+          "prevEdge": 12,
+          "nextEdge": 13
+        },
+        {
+          "node": 14,
+          "prevEdge": 13,
+          "nextEdge": 14
+        },
+        {
+          "node": 15,
+          "prevEdge": 14,
+          "nextEdge": 15
+        },
+        {
+          "node": 16,
+          "prevEdge": 15,
+          "nextEdge": 16
+        },
+        {
+          "node": 17,
+          "prevEdge": 16,
+          "nextEdge": 17
+        },
+        {
+          "node": 18,
+          "prevEdge": 17,
+          "nextEdge": 18
+        },
+        {
+          "node": 19,
+          "prevEdge": 18,
+          "nextEdge": 19
+        },
+        {
+          "node": 20,
+          "prevEdge": 19,
+          "nextEdge": 20
+        },
+        {
+          "node": 21,
+          "prevEdge": 20,
+          "nextEdge": 21
+        },
+        {
+          "node": 22,
+          "prevEdge": 21,
+          "nextEdge": 22
+        },
+        {
+          "node": 23,
+          "prevEdge": 22,
+          "nextEdge": 23
+        },
+        {
+          "node": 24,
+          "prevEdge": 23,
+          "nextEdge": 24
+        },
+        {
+          "node": 25,
+          "prevEdge": 24,
+          "nextEdge": 25
+        },
+        {
+          "node": 26,
+          "prevEdge": 25,
+          "nextEdge": 26
+        },
+        {
+          "node": 27,
+          "prevEdge": 26,
+          "nextEdge": 27
+        },
+        {
+          "node": 28,
+          "prevEdge": 27,
+          "nextEdge": 28
+        },
+        {
+          "node": 29,
+          "prevEdge": 28,
+          "nextEdge": 29
+        },
+        {
+          "node": 30,
+          "prevEdge": 29,
+          "nextEdge": 30
+        },
+        {
+          "node": 31,
+          "prevEdge": 30,
+          "nextEdge": 31
+        },
+        {
+          "node": 32,
+          "prevEdge": 31,
+          "nextEdge": 32
+        },
+        {
+          "node": 33,
+          "prevEdge": 32,
+          "nextEdge": 33
+        },
+        {
+          "node": 34,
+          "prevEdge": 33,
+          "nextEdge": 34
+        },
+        {
+          "node": 35,
+          "prevEdge": 34,
+          "nextEdge": 35
+        },
+        {
+          "node": 36,
+          "prevEdge": 35,
+          "nextEdge": 36
+        },
+        {
+          "node": 37,
+          "prevEdge": 36,
+          "nextEdge": 37
+        },
+        {
+          "node": 38,
+          "prevEdge": 37,
+          "nextEdge": 38
+        },
+        {
+          "node": 39,
+          "prevEdge": 38,
+          "nextEdge": 39
+        },
+        {
+          "node": 40,
+          "prevEdge": 39,
+          "nextEdge": 40
+        },
+        {
+          "node": 41,
+          "prevEdge": 40,
+          "nextEdge": 41
+        },
+        {
+          "node": 42,
+          "prevEdge": 41,
+          "nextEdge": 42
+        },
+        {
+          "node": 43,
+          "prevEdge": 42,
+          "nextEdge": 43
+        },
+        {
+          "node": 44,
+          "prevEdge": 43,
+          "nextEdge": 44
+        },
+        {
+          "node": 45,
+          "prevEdge": 44,
+          "nextEdge": 45
+        },
+        {
+          "node": 46,
+          "prevEdge": 45,
+          "nextEdge": 46
+        },
+        {
+          "node": 47,
+          "prevEdge": 46,
+          "nextEdge": 47
+        }
+      ],
+      "loops": [
+        {
+          "id": 0,
+          "feed": 0,
+          "needle": 0,
+          "yarnId": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "passesThrough": {
+            "loopId": 0,
+            "p": 0,
+            "q": -1,
+            "crossings": [
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": 1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": 1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 1,
+                "q": -1,
+                "over": 1,
+                "orientation": 1
+              }
+            ]
+          }
+        }
+      ],
+      "crossingConvention": {
+        "projection": "XY",
+        "normal": "+Z",
+        "order": "increasing-material-order",
+        "over": "sign(z_self - z_target)",
+        "orientation": "sign((t_self cross t_target).z); both tangents follow increasing material order",
+        "source": "sabetta/stitch-by-stitch@0ed27f35dcf5c3bda874f214bbcab0455055edf0 stockinette initial geometry",
+        "scope": "Seed embedding signature, not a complete topological invariant of deformed curves"
+      }
+    },
+    "refinement": {
+      "sourceNodes": 32,
+      "targetNodes": 48,
+      "method": "C1 periodic cubic Hermite, arclength resampling, exact polygonal material-length normalization",
+      "numericalContinuationOnly": true,
+      "smoothArcLength": 3.010727332308008,
+      "lengthNormalization": 0.998093125855637,
+      "targetMaterialLength": 3,
+      "continuationComplete": true,
+      "continuationSteps": 1,
+      "homotopyNodes": 79,
+      "finalFeasible": true,
+      "finalMinDistance": 0.18631604979448638,
+      "topologyEvidence": "Unchanged directed periodic topology plus continuous nonlocal-gap protected polyline homotopy; no surface claim"
+    }
+  },
+  "params": {
+    "provenance": {
+      "tex": {
+        "value": 20,
+        "unit": "tex",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "densityGPerCm3": {
+        "value": 1.31,
+        "unit": "g/cm^3",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "fiberDiameterMm": {
+        "value": 0.021,
+        "unit": "mm",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "E_f": {
+        "value": 3000,
+        "unit": "N/mm^2",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "K": {
+        "value": 0.01,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "phi0": {
+        "value": 0.5,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "d_s": {
+        "value": 0.1394229955041348,
+        "unit": "mm",
+        "source": "Derived from tex, densityGPerCm3",
+        "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "tex",
+          "densityGPerCm3"
+        ]
+      },
+      "fiberTex": {
+        "value": 0.4537323729763399,
+        "unit": "tex",
+        "source": "Derived from densityGPerCm3, fiberDiameterMm",
+        "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "densityGPerCm3",
+          "fiberDiameterMm"
+        ]
+      },
+      "d_e": {
+        "value": 0.1971738911486305,
+        "unit": "mm",
+        "source": "Derived from d_s, phi0",
+        "principle": "d_s / sqrt(phi0)",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "d_s",
+          "phi0"
+        ]
+      },
+      "r_c": {
+        "value": 0.09858694557431524,
+        "unit": "mm",
+        "source": "Derived from phi0, d_e",
+        "principle": "phi0 * d_e; uniaxial compaction model",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "phi0",
+          "d_e"
+        ]
+      },
+      "N_f": {
+        "value": 44.07884733638547,
+        "unit": "1",
+        "source": "Derived from tex, fiberTex",
+        "principle": "tex / fiberTex; continuum fiber count estimate",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "tex",
+          "fiberTex"
+        ]
+      },
+      "B": {
+        "value": 0.0012624045801526722,
+        "unit": "N*mm^2",
+        "source": "Derived from N_f, E_f, fiberDiameterMm",
+        "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "N_f",
+          "E_f",
+          "fiberDiameterMm"
+        ]
+      }
+    },
+    "tex": 20,
+    "densityGPerCm3": 1.31,
+    "fiberDiameterMm": 0.021,
+    "E_f": 3000,
+    "K": 0.01,
+    "phi0": 0.5,
+    "d_s": 0.1394229955041348,
+    "fiberTex": 0.4537323729763399,
+    "d_e": 0.1971738911486305,
+    "r_c": 0.09858694557431524,
+    "N_f": 44.07884733638547,
+    "B": 0.0012624045801526722
+  },
+  "metrics": {
+    "W": 0.7709398275361398,
+    "H": 0.5459336633436238,
+    "S": -1.184594153491673e-9,
+    "waleDensityPerCm": 12.971180944120084,
+    "courseDensityPerCm": 18.317243781513724,
+    "averageNeedlePitchMm": 0.7709398275361398,
+    "averageFeedPitchMm": 0.5459336633436238,
+    "kw": 3.891354283236025,
+    "kc": 5.4951731344541175,
+    "ks": 21.38366551388156,
+    "kcOverKw": 1.412149276185762,
+    "TF": 1.4907119849998598,
+    "gsm": 142.55777009254376,
+    "gsmFromDensities": 142.55777009254376,
+    "actualLengthMm": 3.000000004424868,
+    "targetLengthMm": 3,
+    "relativeLengthError": 1.4749559351656671e-9,
+    "maxLoopLengthError": 1.4749559351656671e-9,
+    "envelopeThicknessEstimateMm": 0.4444243613099246,
+    "provenance": {
+      "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+      "parameters": {
+        "tex": {
+          "value": 20,
+          "unit": "tex",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.1394229955041348,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1971738911486305,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09858694557431524,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 44.07884733638547,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012624045801526722,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "length": {
+        "value": 3,
+        "unit": "mm/needle/feed",
+        "source": "T1 numerical reference case",
+        "principle": "Prescribed material length; not fitted to density",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+      },
+      "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+      "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+    }
+  },
+  "energy": {
+    "total": 0.01942756741677036,
+    "bending": 0.019206931306682936,
+    "contact": 0.00022063611008742615,
+    "barrier": 0,
+    "barrierFraction": 0
+  },
+  "constraints": {
+    "maxSegmentStrain": 1.606774113760423e-8,
+    "maxLoopLengthError": 1.4749559351656671e-9,
+    "values": [
+      -1.958476825159039e-9,
+      -6.996605628195596e-9,
+      -9.720627414111505e-9,
+      6.898517312947661e-9,
+      -3.988399610577176e-9,
+      -1.0708130382397485e-8,
+      1.6965953086867103e-9,
+      1.3477241544990193e-10,
+      -2.0976775871872633e-11,
+      4.1094505576211304e-9,
+      1.606774113760423e-8,
+      3.148826532850535e-9,
+      -8.873917600737968e-9,
+      1.4308522588990513e-8,
+      1.1491512630357192e-8,
+      9.694909319790668e-10,
+      -8.622590530471541e-9,
+      5.240732958711192e-9,
+      3.0804512274329454e-9,
+      1.9152701646873993e-10,
+      -4.628299965503402e-10,
+      1.5014938181678872e-9,
+      -5.062320562743139e-10,
+      7.126161660764296e-9,
+      -2.8632879400802835e-9,
+      -9.286365232341609e-9,
+      -1.1079787975987188e-8,
+      7.928173895166424e-9,
+      -3.991961206040173e-9,
+      -1.1844509262282088e-8,
+      1.9211308099897906e-9,
+      3.605170162401805e-9,
+      2.3962241080255353e-9,
+      3.3111573483068923e-9,
+      1.505931068734867e-8,
+      7.833181436822656e-9,
+      -4.835775779810092e-9,
+      1.3281955313360072e-8,
+      1.031488827685223e-8,
+      3.2951503747824518e-9,
+      -6.161833376872039e-9,
+      3.5032847733873496e-9,
+      6.25514973151553e-10,
+      3.227102141067917e-9,
+      4.5540806681287904e-9,
+      2.3829760387172882e-9,
+      -2.0076496021204093e-11,
+      1.3524125375141693e-8
+    ],
+    "passed": true
+  },
+  "equilibrium": {
+    "passed": true,
+    "nodeResidual": 6.452255525007944e-9,
+    "nodeRatio": 9.96355650698429e-7,
+    "latticeResidual": [
+      -6.385607789066716e-10,
+      2.595305347498654e-10,
+      -1.7957299767465087e-9
+    ],
+    "latticeRatios": [
+      2.5339865058797524e-8,
+      7.2930620980996504e-9,
+      7.125955241207303e-8
+    ],
+    "freeResidual": [
+      2.111326787880563e-9,
+      -1.7669613758264369e-9,
+      9.280554016249942e-11,
+      7.388123329267471e-10,
+      -9.241938100229552e-10,
+      3.399434102269172e-10,
+      -7.80776595829015e-10,
+      2.0802303976608094e-10,
+      1.626492281137093e-9,
+      -5.030038356321209e-10,
+      -1.6890897708288222e-10,
+      9.479563436304295e-10,
+      -6.479935685255178e-11,
+      -5.379380101089293e-11,
+      9.60409701853543e-10,
+      -1.1719665689302605e-10,
+      -3.169810785380589e-10,
+      2.4873157656798983e-10,
+      9.005282604682141e-10,
+      1.4236325139582728e-10,
+      -8.18877003965629e-11,
+      2.0813993150542442e-10,
+      -3.522050706639135e-10,
+      -1.4951358714467011e-9,
+      -1.4449501170230028e-9,
+      -1.417653527555074e-9,
+      2.0524323820353407e-10,
+      2.1520198635258114e-9,
+      4.1126401416347047e-10,
+      3.741910024022965e-10,
+      2.1405729467606494e-9,
+      2.770106349164747e-10,
+      7.55656603262933e-10,
+      3.1711878273072563e-10,
+      -2.4150615535178943e-10,
+      8.916697371783022e-10,
+      -6.170501780974197e-10,
+      9.283276404536966e-11,
+      2.2871060080531525e-10,
+      -2.483146162648997e-10,
+      8.268834488650567e-10,
+      -9.907917689414014e-10,
+      -1.9870311906283744e-10,
+      5.595406490574439e-10,
+      -6.493543411312253e-10,
+      -9.570999860708529e-10,
+      -1.6528154712924792e-11,
+      1.0212873498283148e-9,
+      5.382078428761705e-10,
+      -1.909937126856609e-9,
+      7.64094848591107e-10,
+      1.1402046667940979e-10,
+      -4.515379324783464e-10,
+      7.83051319099004e-11,
+      -3.1257754891378386e-10,
+      1.2318536443721786e-9,
+      9.801705215702061e-11,
+      -1.1550581671682103e-11,
+      -9.6737778074521e-10,
+      -1.9196853609775716e-9,
+      1.193093193685435e-10,
+      -1.1402901986361236e-9,
+      4.598865043121958e-10,
+      9.052453196767285e-10,
+      1.7085187925883205e-9,
+      8.323971347271031e-10,
+      -2.8761113282649298e-11,
+      5.708739566137599e-10,
+      -4.1546498099481743e-10,
+      -8.512481483591294e-10,
+      -7.754168158263797e-10,
+      -1.499302999460883e-10,
+      -9.853818290841976e-10,
+      -4.911713553240604e-10,
+      -6.919923028689268e-10,
+      2.2797127727236521e-10,
+      -3.1961627615373356e-10,
+      -1.0547734560772959e-10,
+      -9.43005307738401e-10,
+      -1.3259161980166967e-9,
+      1.089117669314521e-9,
+      1.3749565895559979e-10,
+      -1.0767563975860872e-9,
+      5.610010511691854e-10,
+      1.7449877784056489e-9,
+      3.92308501656613e-10,
+      -3.4379066650783163e-9,
+      2.353032819805978e-9,
+      -1.3747305203926086e-10,
+      -2.6093833500190344e-9,
+      -1.8726533006566126e-9,
+      1.099965143275261e-9,
+      2.0255270764693925e-9,
+      -1.117205823512879e-9,
+      7.776957723637512e-10,
+      4.093838297872243e-10,
+      -8.203063671038957e-10,
+      4.67417932484282e-10,
+      -1.6267931242548717e-9,
+      -1.1438579536685034e-9,
+      1.2316260476763485e-9,
+      1.2798797872221046e-9,
+      1.8493739708039247e-9,
+      6.819007337954819e-10,
+      3.2603168463596344e-9,
+      3.448813716273695e-9,
+      -2.3857819487355103e-9,
+      -2.447093957157198e-9,
+      -1.891276453155899e-9,
+      -1.2590132859868763e-9,
+      -9.665643251055567e-10,
+      -1.1129490827196942e-9,
+      7.405536201626761e-10,
+      1.847983286361321e-9,
+      -1.0648309586511195e-9,
+      8.578855516597206e-10,
+      1.979871246116094e-9,
+      -8.318092742376493e-11,
+      -8.526097970001922e-11,
+      -4.496281983887296e-10,
+      -7.954405276816567e-10,
+      -3.326360133518169e-10,
+      5.468171306380332e-10,
+      7.392446151749388e-10,
+      2.0754457952590344e-9,
+      -7.8674252486019e-10,
+      5.589748421075402e-10,
+      2.0747381312968827e-9,
+      1.667011805287985e-10,
+      2.6461657344489797e-10,
+      -5.950817690177079e-10,
+      1.449084557642727e-9,
+      2.646125332739224e-10,
+      -1.7940146928782652e-9,
+      -1.4556298310805516e-10,
+      3.1772782495276264e-10,
+      -2.0332181971047247e-9,
+      -1.824634696806493e-10,
+      -3.620817066313231e-10,
+      -5.417249808459257e-10,
+      -2.0832358494510261e-10,
+      -6.385607789066716e-10,
+      2.595305347498654e-10,
+      -1.7957299767465087e-9
+    ],
+    "multipliers": [
+      0.0007276883093506523,
+      0.0007308380819536585,
+      0.0007410721033390657,
+      0.0007465005186410588,
+      0.0007350607557257257,
+      0.0007446557962515597,
+      0.0007566213617574308,
+      0.0007569789476945336,
+      0.0007569775436863131,
+      0.0007569471511347604,
+      0.0007445499814458492,
+      0.0007352357926297089,
+      0.0007467018544859218,
+      0.0007409003688788992,
+      0.0007311076624726759,
+      0.0007276164783760397,
+      0.0007386894704816651,
+      0.0007486414142142687,
+      0.0007455812804686015,
+      0.0007458959367188144,
+      0.0007459733887110252,
+      0.0007456660394221256,
+      0.0007485531065459764,
+      0.0007388960232101445,
+      0.0007276886029273406,
+      0.0007308383434004385,
+      0.0007410722930566943,
+      0.000746500631476151,
+      0.0007350607994232468,
+      0.0007446557935527861,
+      0.0007566213567208829,
+      0.0007569789392893811,
+      0.0007569775151461662,
+      0.0007569471042134189,
+      0.0007445499242459433,
+      0.0007352357256952684,
+      0.0007467017740199064,
+      0.0007409002689397572,
+      0.0007311075553949154,
+      0.0007276163748609628,
+      0.0007386893679858075,
+      0.0007486413155224645,
+      0.0007455811919584896,
+      0.0007458958265649203,
+      0.0007459732609488089,
+      0.0007456659280389885,
+      0.0007485530229239931,
+      0.0007388959624676769
+    ],
+    "rank": 48,
+    "multiplierSolveThreshold": 0,
+    "multiplierSolveMethod": "CHOLESKY",
+    "multiplierConditionEstimate": 126.66623883360651,
+    "R_W": -6.385607789066716e-10,
+    "R_H": 2.595305347498654e-10,
+    "R_S": -1.7957299767465087e-9
+  },
+  "clearance": {
+    "feasible": true,
+    "minDistance": 0.1884994143407422,
+    "minGap": 0.08991246876642695,
+    "ratioToCompaction": 1.9120119123545678,
+    "ratioToSolidDiameter": 1.3519965889353736,
+    "distanceScope": "support-AABB candidates; distances outside d_e are only bounded below by d_e",
+    "imageBounds": {
+      "pMax": 2,
+      "qMax": 3,
+      "minW": 0.7709398275361398,
+      "minH": 0.5459336633436238,
+      "maxAbsS": 1.184594153491673e-9,
+      "range": 0.1971738911486305
+    },
+    "activePairs": 84,
+    "barrierPairs": 0
+  },
+  "barrier": {
+    "maxGradient": 0,
+    "latticeGradient": [
+      0,
+      0,
+      0
+    ],
+    "measure": "(K*E_f/d_e) integral integral b(distance-r_c) ds dt",
+    "activationWidth": 0.009858694557431526,
+    "widthSensitivity": {
+      "multipliers": [
+        0.5,
+        1,
+        2
+      ],
+      "inactiveAtAllWidths": true,
+      "scope": "If inactive at all widths, energy and force remain exactly zero at this branch; no claim about other equilibria"
+    }
+  },
+  "iterations": 1925,
+  "evaluations": 2080,
+  "history": [
+    {
+      "outer": 0,
+      "iterations": 357,
+      "energy": 0.019068948070909003,
+      "constraint": 0.014576973234966095,
+      "physicalResidual": 0.000003215027875739032,
+      "innerGrad": 0.008779672349714218,
+      "innerGradL2": 0.03516854439666267,
+      "startingGradL2": 260.53936991012756,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 1,
+      "iterations": 606,
+      "energy": 0.019394163079238143,
+      "constraint": 0.0009729527200670329,
+      "physicalResidual": 0.0000032773675265300727,
+      "innerGrad": 0.008731355806041563,
+      "innerGradL2": 0.031013789636109113,
+      "startingGradL2": 78.749439009167,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 2,
+      "iterations": 774,
+      "energy": 0.01942439933247285,
+      "constraint": 0.00009356051303588409,
+      "physicalResidual": 0.0000026048146121622484,
+      "innerGrad": 0.0070065739505054125,
+      "innerGradL2": 0.03144065824718758,
+      "startingGradL2": 7.020002777874417,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 3,
+      "iterations": 1147,
+      "energy": 0.019427282720210035,
+      "constraint": 0.00002923163079460167,
+      "physicalResidual": 3.4011982790252415e-7,
+      "innerGrad": 0.0008802171440649431,
+      "innerGradL2": 0.0035498500286880934,
+      "startingGradL2": 0.6729340786855497,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 4,
+      "iterations": 1441,
+      "energy": 0.019427564489740208,
+      "constraint": 1.1237220887139188e-7,
+      "physicalResidual": 2.98685681691252e-8,
+      "innerGrad": 0.000093369845544089,
+      "innerGradL2": 0.00041859046795606326,
+      "startingGradL2": 4.802290926488167,
+      "penalty": 1000,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 5,
+      "iterations": 1925,
+      "energy": 0.01942756741677036,
+      "constraint": 1.606774113760423e-8,
+      "physicalResidual": 1.034644114155693e-8,
+      "innerGrad": 0.00010192109222373347,
+      "innerGradL2": 0.00041381839257972485,
+      "startingGradL2": 0.006363533848311123,
+      "penalty": 1000,
+      "innerStatus": "CONVERGED",
+      "forcedMultiplierUpdate": false
+    }
+  ],
+  "settings": {
+    "nodesPerLoop": 48,
+    "quadratureOrder": 12,
+    "gradientTolerance": 0.000001,
+    "constraintTolerance": 0.000001,
+    "maxIterations": 24000,
+    "innerIterations": 800,
+    "initialPenalty": 100,
+    "memorySize": 180,
+    "stagnationWindow": 3,
+    "initialMultipliers": "Free-direction least-squares physical reaction / energy scale",
+    "coordinateScale": 3,
+    "energyScale": 0.00042080152671755737
+  },
+  "trajectory": {
+    "protection": "Swept periodic AABBs and segment-distance Lipschitz bound",
+    "acceptedSafeBounds": 1925,
+    "minimumSafeBound": 0.00014301807483463856,
+    "passed": true,
+    "minimumEvaluatedDistance": 0.14542878718147847,
+    "maximumEvaluatedBarrierEnergy": 0,
+    "conservativeGapLowerBound": 0.009368368321432646,
+    "scope": "All trial evaluations, including rejected backtracks; trajectory gap lower bound uses the 0.8 safety factor and full swept-image coverage"
+  },
+  "diagnostics": {
+    "elapsedMs": 35257.4846,
+    "forcedMultiplierUpdate": 0,
+    "contact": {
+      "available": true,
+      "feasible": true,
+      "minDistanceMm": 0.1884994143407422,
+      "minDistanceOverDe": 0.9560059561772839,
+      "minimum": {
+        "edgeA": 2,
+        "edgeB": 36,
+        "edgeIndexA": 2,
+        "edgeIndexB": 36,
+        "p": 0,
+        "q": 0,
+        "s": 1,
+        "t": 1,
+        "pointA": [
+          -0.16962897498814913,
+          -0.2981517486970184,
+          -0.005669027239244753
+        ],
+        "pointB": [
+          0.01887043934101378,
+          -0.29815383785542676,
+          -0.005668999058323951
+        ],
+        "deltaWale": 0,
+        "deltaCourse": 0
+      },
+      "minimumExact": true,
+      "minimumLowerBoundMm": 0.1884994143407422,
+      "activePairs": 84,
+      "contactForceSumN": 0.08699070301722486,
+      "contactForceMaxN": 0.0033231732854271693,
+      "barrierForceSumN": 0,
+      "barrierForceMaxN": 0,
+      "multiplierSum": null,
+      "multiplierMax": null,
+      "groups": {
+        "waleSpacing": {
+          "minDistanceMm": 0.18849941653198066,
+          "minDistanceOverDe": 0.9560059672905122,
+          "minimum": {
+            "edgeA": 12,
+            "edgeB": 26,
+            "edgeIndexA": 12,
+            "edgeIndexB": 26,
+            "p": -1,
+            "q": 0,
+            "s": 1,
+            "t": 1,
+            "pointA": [
+              -0.36659947449995256,
+              0.2485401249171068,
+              -0.005669006444312244
+            ],
+            "pointB": [
+              -0.5550988910203605,
+              0.2485380362394994,
+              -0.005669024679720944
+            ],
+            "deltaWale": -1,
+            "deltaCourse": 0
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.18849941653198066,
+          "activePairs": 7,
+          "contactForceSumN": 0.005285599756646052,
+          "contactForceMaxN": 0.002996562430117731,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null
+        },
+        "courseSpacing": {
+          "minDistanceMm": 0.19009427877389265,
+          "minDistanceOverDe": 0.9640945749282739,
+          "minimum": {
+            "edgeA": 0,
+            "edgeB": 11,
+            "edgeIndexA": 0,
+            "edgeIndexB": 11,
+            "p": 0,
+            "q": -1,
+            "s": 0.600827891525975,
+            "t": 0.3385767598215129,
+            "pointA": [
+              -0.21655407996603254,
+              -0.4134357647722882,
+              0.07413183367850915
+            ],
+            "pointB": [
+              -0.3547167769464676,
+              -0.38802389721571556,
+              -0.053935105743599734
+            ],
+            "deltaWale": 0,
+            "deltaCourse": -1
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.19009427877389265,
+          "activePairs": 60,
+          "contactForceSumN": 0.07228724234488532,
+          "contactForceMaxN": 0.0033231732854271693,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null
+        },
+        "diagonal": {
+          "minDistanceMm": 0.1925582723901836,
+          "minDistanceOverDe": 0.9765911260788194,
+          "minimum": {
+            "edgeA": 10,
+            "edgeB": 47,
+            "edgeIndexA": 10,
+            "edgeIndexB": 47,
+            "p": -1,
+            "q": 1,
+            "s": 0.645412903823317,
+            "t": 0.8968183048305143,
+            "pointA": [
+              -0.34205482781294294,
+              0.1196299442343606,
+              -0.06932966939557518
+            ],
+            "pointB": [
+              -0.24286165142676683,
+              0.10431973608225578,
+              0.09500231029995554
+            ],
+            "deltaWale": -1,
+            "deltaCourse": 1
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.1925582723901836,
+          "activePairs": 10,
+          "contactForceSumN": 0.004132258132827811,
+          "contactForceMaxN": 0.0016135850970941008,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null
+        },
+        "sameLoop": {
+          "minDistanceMm": 0.1884994143407422,
+          "minDistanceOverDe": 0.9560059561772839,
+          "minimum": {
+            "edgeA": 2,
+            "edgeB": 36,
+            "edgeIndexA": 2,
+            "edgeIndexB": 36,
+            "p": 0,
+            "q": 0,
+            "s": 1,
+            "t": 1,
+            "pointA": [
+              -0.16962897498814913,
+              -0.2981517486970184,
+              -0.005669027239244753
+            ],
+            "pointB": [
+              0.01887043934101378,
+              -0.29815383785542676,
+              -0.005668999058323951
+            ],
+            "deltaWale": 0,
+            "deltaCourse": 0
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.1884994143407422,
+          "activePairs": 7,
+          "contactForceSumN": 0.005285602782865673,
+          "contactForceMaxN": 0.0029965637742921775,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null
+        }
+      },
+      "units": {
+        "distance": "mm",
+        "force": "N"
+      },
+      "quadratureOrder": 12,
+      "searchRangeMm": 0.7709398275361398,
+      "localExclusionLengthMm": 0.394347782297261,
+      "activeToleranceMm": 1e-9,
+      "activeDefinition": "segmentDistance - d_e <= 1e-9 mm; diagnostic tolerance does not extend energy support",
+      "distanceScope": "All eligible periodic pairs within searchRangeMm; null minima are bounded below by that range",
+      "grouping": "deltaWale=floor(orderB/N)-floor(orderA/N)+p*m; deltaCourse=feedB-feedA+q*n",
+      "spacing": {
+        "wale": {
+          "periodMm": 0.7709398275361398,
+          "densityMetric": "waleDensityPerCm"
+        },
+        "course": {
+          "periodMm": 0.5459336633436238,
+          "densityMetric": "courseDensityPerCm"
+        }
+      },
+      "multiplierReason": "No contact multipliers exist: contact is a soft double-line energy plus barrier; AL multipliers constrain segment lengths only",
+      "forceDefinition": "Sum/max of each active pair's norm(gradient[0]+gradient[1]); contact and barrier reported separately in N, not multipliers or stress",
+      "pairCountScope": "Unique segment/image pairs per periodic cell; counts and sums depend on discretization and cell size",
+      "diameterParameters": {
+        "d_e": {
+          "value": 0.1971738911486305,
+          "unit": "mm",
+          "provenance": {
+            "value": 0.1971738911486305,
+            "unit": "mm",
+            "source": "Derived from d_s, phi0",
+            "principle": "d_s / sqrt(phi0)",
+            "confidence": "DERIVED",
+            "applicableState": "Inherits the states and uncertainty of all dependencies",
+            "dependencies": [
+              "d_s",
+              "phi0"
+            ]
+          }
+        },
+        "d_s": {
+          "value": 0.1394229955041348,
+          "unit": "mm",
+          "provenance": {
+            "value": 0.1394229955041348,
+            "unit": "mm",
+            "source": "Derived from tex, densityGPerCm3",
+            "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+            "confidence": "DERIVED",
+            "applicableState": "Inherits the states and uncertainty of all dependencies",
+            "dependencies": [
+              "tex",
+              "densityGPerCm3"
+            ]
+          }
+        },
+        "r_c": {
+          "value": 0.09858694557431524,
+          "unit": "mm",
+          "provenance": {
+            "value": 0.09858694557431524,
+            "unit": "mm",
+            "source": "Derived from phi0, d_e",
+            "principle": "phi0 * d_e; uniaxial compaction model",
+            "confidence": "DERIVED",
+            "applicableState": "Inherits the states and uncertainty of all dependencies",
+            "dependencies": [
+              "phi0",
+              "d_e"
+            ]
+          }
+        }
+      },
+      "constantDiameterParameters": true,
+      "independentlySolvedDiameter": null,
+      "diameterInterpretation": "Fixed material parameters throughout the solve; centerline gaps do not define an independent solved or measured diameter",
+      "imageBounds": {
+        "pMax": 3,
+        "qMax": 4,
+        "minW": 0.7709398275361398,
+        "minH": 0.5459336633436238,
+        "maxAbsS": 1.184594153491673e-9,
+        "range": 0.7709398275361398
+      },
+      "candidatePairs": 5265
+    }
+  }
+}

@@ -1,0 +1,499 @@
+
+> knitscape@1.0.0 validate
+> node scripts/validate.mjs
+
+
+validate:fabric-form-solver-math
+PASS fabric form topology
+PASS fabric form bending
+PASS fabric form contact
+PASS fabric form periodic
+PASS fabric form initialization
+PASS fabric form optimizer
+PASS fabric form metrics
+Fabric form math completed in 6.08 s; full equilibrium/branches are a separate run.
+
+validate:operation-demo
+PASS: operation preview selects existing paths without changing geometry or Assignment.
+
+validate:spandex-process-contract
+PASS: SOP-001 8/8 main + 8/8 spandex CONVERGED; 8 × 3 = 24; per-Feed facts; v3 package/JSON reimport; zero M1/M3 drift; legacy direct 8 diagnostic unchanged.
+
+validate:gauge-authority
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: 1: import -> State -> UI -> geometry -> Solver -> UV -> export
+PASS: 32: import -> State -> UI -> geometry -> Solver -> UV -> export
+PASS: 32.5: import -> State -> UI -> geometry -> Solver -> UV -> export
+PASS: 120: import -> State -> UI -> geometry -> Solver -> UV -> export
+PASS: reject explicit number:121 atomically at import/dispatch/workspace
+PASS: reject explicit number:240 atomically at import/dispatch/workspace
+PASS: reject explicit number:0.5 atomically at import/dispatch/workspace
+PASS: reject explicit number:0 atomically at import/dispatch/workspace
+PASS: reject explicit number:-1 atomically at import/dispatch/workspace
+PASS: reject explicit number:NaN atomically at import/dispatch/workspace
+PASS: reject explicit number:Infinity atomically at import/dispatch/workspace
+PASS: reject explicit string:32 atomically at import/dispatch/workspace
+PASS: reject explicit object:null atomically at import/dispatch/workspace
+PASS: reject explicit undefined:undefined atomically at import/dispatch/workspace
+PASS: 121: JSON/package rejection preserves current state and binary registry
+PASS: 240: JSON/package rejection preserves current state and binary registry
+PASS: explicit Gauge is validated/applied independent of Cam; omission retains Gauge
+PASS: normalization never clamps or substitutes explicit invalid Gauge
+PASS: UI rejects 240 visibly, keeps canonical 32, accepts correction and decimals
+PASS: UI pitch follows current canonical Gauge even with stale preview metrics
+20/20 Gauge authority cases passed.
+
+validate:project-load-lifecycle
+PASS: library: old request -> New -> old resolve
+PASS: library: old request -> Load JSON -> old resolve
+PASS: library: old request -> Load file -> old resolve
+PASS: file: old request -> New -> old resolve
+PASS: file: old request -> Load JSON -> old resolve
+PASS: file: old request -> Load file -> old resolve
+PASS: library: same lifecycle applies normally and retains legacy library policy
+PASS: library -> pending library: latest request wins before either completes
+PASS: library -> pending file: latest request wins before either completes
+PASS: file -> pending library: latest request wins before either completes
+PASS: file -> pending file: latest request wins before either completes
+PASS: file: stale source rejection after New is silent
+PASS: file: stale source rejection after Load JSON is silent
+PASS: file: stale source rejection after Load file is silent
+PASS: file: current text error preserves the original error and state
+PASS: file: current JSON parse error throws without state changes
+PASS: file json: successful current load returns true and transfers assets
+PASS: file json: pre-commit validation failure clears staging exactly once
+OBSERVED json: projectCommitted=true, errorPropagated=true
+PASS: file json: post-commit fitChart error propagates with committed state and assets
+PASS: file knitscape: successful current load returns true and transfers assets
+PASS: file knitscape: pre-commit validation failure clears staging exactly once
+OBSERVED knitscape: projectCommitted=true, errorPropagated=true
+PASS: file knitscape: post-commit fitChart error propagates with committed state and assets
+PASS: file package: source staging error releases assets and propagates unchanged
+PASS: file package: stale source completion releases staged assets without committing
+PASS: uploadFile: source error uses the existing alert boundary
+PASS: uploadFile: post-commit error uses the existing alert boundary
+PASS: uploadFile: stale resolve uses the existing alert boundary
+PASS: uploadFile: stale reject uses the existing alert boundary
+PASS: library: stale rejection is silent; current rejection remains observable
+PASS: library: stale malformed result is ignored before validation
+PASS: library: current commit errors are not mistaken for stale source failures
+PASS: formal export and package retain the existing schema without lifecycle state
+PASS: length contract json: active facts survive save/load without derived 24
+PASS: length contract knitscape: active facts survive save/load without derived 24
+PASS: length contract: incomplete directTarget facts round-trip without invented targets
+PASS: length contract: incomplete relaxedWithDraft facts round-trip without invented targets
+PASS: length contract: legacy single and multiple yarn slots retain direct values and v2 package
+PASS: length contract: future version rejects atomically before state or assets change
+PASS: length contract: future capability rejects atomically before state or assets change
+PASS: length contract: missing capability rejects atomically before state or assets change
+PASS: length contract: missing format markers rejects atomically before state or assets change
+PASS: length contract: v2 new mode rejects atomically before state or assets change
+PASS: length contract: unknown mode rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=0 rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=-1 rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles= rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=null rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=invalid rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=NaN rejects atomically before state or assets change
+PASS: length contract: relaxedLengthCmPer100Needles=Infinity rejects atomically before state or assets change
+PASS: length contract: draftRatio=0 rejects atomically before state or assets change
+PASS: length contract: draftRatio=-1 rejects atomically before state or assets change
+PASS: length contract: draftRatio= rejects atomically before state or assets change
+PASS: length contract: draftRatio=null rejects atomically before state or assets change
+PASS: length contract: draftRatio=invalid rejects atomically before state or assets change
+PASS: length contract: draftRatio=NaN rejects atomically before state or assets change
+PASS: length contract: draftRatio=Infinity rejects atomically before state or assets change
+PASS: integrity: New resets selection before paint and resize
+PASS: integrity: Full Load resets selection before paint and resize
+PASS: integrity: Pattern-only Load resets selection before paint and resize
+PASS: integrity: pointer valid brush and line preserve slot 2
+PASS: integrity: pointer rejects selection 2
+PASS: integrity: pointer rejects selection -1
+PASS: integrity: pointer rejects selection 0.5
+PASS: integrity: pointer rejects selection NaN
+PASS: integrity: pointer rejects selection Infinity
+PASS: integrity: pointer rejects selection 0
+PASS: integrity: pointer rechecks selection during drag
+PASS: integrity: touch valid brush and line preserve slot 2
+PASS: integrity: touch rejects selection 2
+PASS: integrity: touch rejects selection -1
+PASS: integrity: touch rejects selection 0.5
+PASS: integrity: touch rejects selection NaN
+PASS: integrity: touch rejects selection Infinity
+PASS: integrity: touch rejects selection 0
+PASS: integrity: touch rechecks selection during drag
+PASS: integrity: resize rejects stale selection and damaged existing rows
+PASS: integrity: importer rejects raw reference 2 before normalization
+PASS: integrity: importer rejects raw reference -1 before normalization
+PASS: integrity: importer rejects raw reference 0.5 before normalization
+PASS: integrity: importer rejects raw reference NaN before normalization
+PASS: integrity: importer rejects raw reference Infinity before normalization
+PASS: integrity: importer rejects raw reference 0 before normalization
+PASS: integrity: importer rejects raw reference null before normalization
+PASS: integrity: import rejects bad references even in cropped rows/columns
+PASS: integrity: exporter rejects invalid references and never serializes selection
+PASS: integrity: failed download uses existing error handling and preserves state
+PASS: integrity: same-size palette load also resets old selection
+PASS: integrity: legacy missing, array, short and wide sequences retain valid normalization
+PASS: integrity: delete slot 1 rebinds selection 2
+PASS: integrity: delete slot 2 rebinds selection 2
+PASS: integrity: delete slot 2 rebinds selection 1
+PASS: integrity: delete slot 0 rebinds selection 2
+PASS: integrity: cannot delete the final palette slot
+OBSERVED elapsed: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: 7x9 -> New -> Undo (elapsed) stays coherent
+OBSERVED within snapshot interval: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: 7x9 -> New -> Undo (within snapshot interval) stays coherent
+PASS: new-undo: ordinary same-Pattern yarnSequence edit restores content
+PASS: new-undo: ordinary same-Pattern repeats edit restores content
+PASS: new-undo: ordinary same-Pattern yarnPalette edit restores content
+PASS: new-undo: ordinary same-Pattern yarnPlies edit restores content
+OBSERVED post-New repeat edit elapsed: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: New -> repeat edit -> Undo (elapsed) stays coherent
+OBSERVED post-New repeat edit within snapshot interval: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: New -> repeat edit -> Undo (within snapshot interval) stays coherent
+OBSERVED post-New sequence edit elapsed: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: New -> sequence edit -> Undo (elapsed) stays coherent
+OBSERVED post-New sequence edit within snapshot interval: {"chart":[30,40],"area":[30,40],"sequence":40}
+PASS: new-undo: New -> sequence edit -> Undo (within snapshot interval) stays coherent
+PASS: new-undo: Machine/Library/Gauge and valid palette selection survive New and Undo
+105/105 project load lifecycle cases passed.
+
+validate:yarn-material-authority
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: material authority CASE A–I and diameter contract; explicit/fallback provenance, units, invalid inputs, primary/second-yarn geometry, cache reuse/invalidation and package exclusion.
+
+validate:renderer-material-boundary
+PASS: 48 cases; all explicit slots draw; Canvas/UV decisions agree; same-diameter geometry unchanged.
+Observed single-assignment metadata matrix (not a normative expectation):
+┌─────────┬─────────────────────┬─────────────┬──────────┬──────────┬──────────────┬───────────┬─────────────┐
+│ (index) │ case                │ assignments │ resolved │ geometry │ drawsPerLink │ companion │ mask        │
+├─────────┼─────────────────────┼─────────────┼──────────┼──────────┼──────────────┼───────────┼─────────────┤
+│ 0       │ 'single-A_metadata' │ 1           │ 1        │ 1        │ 2            │ true      │ 'true,true' │
+│ 1       │ 'single-B_color'    │ 1           │ 1        │ 1        │ 1            │ false     │ 'false'     │
+│ 2       │ 'single-C_diameter' │ 1           │ 1        │ 1        │ 1            │ false     │ 'false'     │
+│ 3       │ 'single-D_map'      │ 1           │ 1        │ 1        │ 1            │ false     │ 'false'     │
+│ 4       │ 'single-E_repeat'   │ 1           │ 1        │ 1        │ 1            │ false     │ 'false'     │
+│ 5       │ 'single-F_full'     │ 1           │ 1        │ 1        │ 1            │ false     │ 'false'     │
+└─────────┴─────────────────────┴─────────────┴──────────┴──────────┴──────────────┴───────────┴─────────────┘
+
+validate:single-only
+PASS: repository contains only the single-face application.
+
+validate:code-guide
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: code guide core contract is present.
+
+validate:intranet
+PASS: intranet build checks passed.
+
+validate:single-ui
+PASS: single-face UI labels and images are configured.
+
+validate:i18n
+PASS: language switching is configured.
+
+validate:repeat-dimensions
+PASS: chart Width/Height and repeat unit dimensions stay separated.
+
+validate:two-ply-yarn
+PASS: two-ply yarn state, settings, JSON, and preview rendering are configured.
+
+validate:sim-wheel-performance
+PASS: simulation wheel zoom avoids immediate redraws.
+
+validate:no-yarn-length-simulation
+PASS: yarn-length parameters remain without the removed simulation.
+
+validate:row-length-loop-model
+PASS: row-length loop model math and continuity helpers are valid.
+
+validate:yarn-length-gauge
+[{"name":"K","windows":[{"width":4,"per100":314.9621661775831},{"width":8,"per100":314.9621661775831},{"width":16,"per100":314.9621661775831},{"width":32,"per100":314.9621661775831}]},{"name":"K-M","windows":[{"width":4,"per100":206.43698675692187},{"width":8,"per100":206.43698675692187},{"width":16,"per100":206.43698675692187},{"width":32,"per100":206.43698675692187}]},{"name":"M-K","windows":[{"width":4,"per100":206.43698675692187},{"width":8,"per100":206.43698675692187},{"width":16,"per100":206.43698675692187},{"width":32,"per100":206.43698675692187}]},{"name":"K-M-M-M","windows":[{"width":4,"per100":152.99744977289959},{"width":8,"per100":152.99744977289959},{"width":16,"per100":152.99744977289959},{"width":32,"per100":152.99744977289959}]},{"name":"K-T","windows":[{"width":4,"per100":252.36975968548686},{"width":8,"per100":252.36975968548686},{"width":16,"per100":252.36975968548686},{"width":32,"per100":252.36975968548686}]}]
+Maximum unit round-trip error: 3.552713678800501e-15 cm/100 needles.
+PASS: yarn length units and complete periodic needle windows are valid.
+
+validate:yarn-length-solver
+[{"cmPer100Needles":19,"target":239.37007874015748,"solved":239.360895506629,"loopHeight":0.26435241699218753,"error":0.009183233528489154,"solvedCmPer100Needles":18.999271080838675,"cmError":0.0007289191613253365,"iterations":14},{"cmPer100Needles":21,"target":264.5669291338583,"solved":264.55848407606294,"loopHeight":0.3667083740234376,"error":0.008445057795370303,"solvedCmPer100Needles":20.999329673537495,"cmError":0.0006703264625045335,"iterations":14},{"cmPer100Needles":23,"target":289.76377952755905,"solved":289.7620645905616,"loopHeight":0.47929992675781247,"error":0.0017149369974731599,"solvedCmPer100Needles":22.999863876875825,"cmError":0.00013612312417521366,"iterations":14},{"cmPer100Needles":25,"target":314.96062992125985,"solved":314.95910550197925,"loopHeight":0.5999847412109376,"error":0.0015244192805994317,"solvedCmPer100Needles":24.9998789992196,"cmError":0.00012100078039978257,"iterations":14},{"cmPer100Needles":27,"target":340.15748031496065,"solved":340.1574557820884,"loopHeight":0.7258468627929688,"error":0.000024532872259896976,"solvedCmPer100Needles":26.999998052703262,"cmError":0.000001947296738080695,"iterations":15}]
+Production vs independent 4096-sample reference: max error 0.000009081500365937245 model units/100 needles.
+PASS: Yarn Length Solver V1 is deterministic and isolated.
+
+validate:yarn-length-result-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+[
+  {
+    "target": 23,
+    "previewValidity": "VALIDATED",
+    "results": [
+      {
+        "feedIndex": 0,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.99985537891976,
+        "errorCmPer100Needles": 0.00014462108023835185,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 1,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.999856051617197,
+        "errorCmPer100Needles": 0.00014394838280168187,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 2,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.999856042155812,
+        "errorCmPer100Needles": 0.0001439578441862821,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 3,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 23,
+        "solvedLengthCmPer100Needles": 22.99985636579647,
+        "errorCmPer100Needles": 0.00014363420352733413,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      }
+    ]
+  },
+  {
+    "target": 27,
+    "previewValidity": "VALIDATED",
+    "results": [
+      {
+        "feedIndex": 0,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999994326440053,
+        "errorCmPer100Needles": 0.0000056735599464374785,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 1,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999992639583088,
+        "errorCmPer100Needles": 0.0000073604169134000584,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 2,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.999993319385176,
+        "errorCmPer100Needles": 0.00000668061482610227,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      },
+      {
+        "feedIndex": 3,
+        "yarnIndex": 0,
+        "targetLengthCmPer100Needles": 27,
+        "solvedLengthCmPer100Needles": 26.99999467898935,
+        "errorCmPer100Needles": 0.000005321010651506696,
+        "toleranceCmPer100Needles": 0.00079375,
+        "status": "CONVERGED",
+        "appliedToSimulation": true
+      }
+    ]
+  }
+]
+PASS: Project Feed targets flow through real runSimulation, Solver, rendered paths and current PreviewValidity.
+
+validate:yarn-length-failure-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+{"testCase":"A","previewValidity":"VALIDATED","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985537891976,"errorCmPer100Needles":0.00014462108023835185,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856051617197,"errorCmPer100Needles":0.00014394838280168187,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856042155812,"errorCmPer100Needles":0.0001439578441862821,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985636579647,"errorCmPer100Needles":0.00014363420352733413,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+{"testCase":"B","previewValidity":"INVALID","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308148,"errorCmPer100Needles":53.22783148691851,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+{"testCase":"C","previewValidity":"PARTIAL","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985537891976,"errorCmPer100Needles":0.00014462108023835185,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856042155812,"errorCmPer100Needles":0.0001439578441862821,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308148,"errorCmPer100Needles":53.22783148691851,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+{"testCase":"D","previewValidity":"DESIGN_PREVIEW","results":[]}
+{"testCase":"E","previewValidity":"PARTIAL","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856051617197,"errorCmPer100Needles":0.00014394838280168187,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856042155812,"errorCmPer100Needles":0.0001439578441862821,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985636579647,"errorCmPer100Needles":0.00014363420352733413,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+{"testCase":"F","previewValidity":"VALIDATED","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985537891976,"errorCmPer100Needles":0.00014462108023835185,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856051617197,"errorCmPer100Needles":0.00014394838280168187,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856042155812,"errorCmPer100Needles":0.0001439578441862821,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985636579647,"errorCmPer100Needles":0.00014363420352733413,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+{"testCase":"G","previewValidity":"PARTIAL","results":[{"feedIndex":0,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985537891976,"errorCmPer100Needles":0.00014462108023835185,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":0,"yarnIndex":1,"targetLengthCmPer100Needles":100,"solvedLengthCmPer100Needles":46.77216851308147,"errorCmPer100Needles":53.227831486918525,"status":"UNREACHABLE_TARGET","appliedToSimulation":false,"failureReason":"UNREACHABLE_TARGET","modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":1,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856051617197,"errorCmPer100Needles":0.00014394838280168187,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":2,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.999856042155812,"errorCmPer100Needles":0.0001439578441862821,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308147]},{"feedIndex":3,"yarnIndex":0,"targetLengthCmPer100Needles":23,"solvedLengthCmPer100Needles":22.99985636579647,"errorCmPer100Needles":0.00014363420352733413,"status":"CONVERGED","appliedToSimulation":true,"failureReason":null,"modelRangeCmPer100Needles":[14.033639424753016,46.77216851308148]}]}
+PASS: A–G, base path fallback, solver diagnostics, failure and recovery through real runSimulation.
+
+validate:yarn-length-input-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+{"testCase":"unset-original-A / D-ratio-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"A-legacy-direct-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null]],"results":[],"machineError":""}
+{"testCase":"B-relaxed-both-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"C-relaxed-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"F-main-23-relaxed-incomplete","previewValidity":"PARTIAL","inputs":[["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null]],"results":[[0,0,"CONVERGED"],[1,0,"CONVERGED"],[2,0,"CONVERGED"],[3,0,"CONVERGED"],[4,0,"CONVERGED"],[5,0,"CONVERGED"],[6,0,"CONVERGED"],[7,0,"CONVERGED"]],"machineError":""}
+{"testCase":"F-main-23-ratio-only","previewValidity":"PARTIAL","inputs":[["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null]],"results":[[0,0,"CONVERGED"],[1,0,"CONVERGED"],[2,0,"CONVERGED"],[3,0,"CONVERGED"],[4,0,"CONVERGED"],[5,0,"CONVERGED"],[6,0,"CONVERGED"],[7,0,"CONVERGED"]],"machineError":""}
+{"testCase":"G / K-complete-23-and-8-times-3","previewValidity":"VALIDATED","inputs":[["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24]],"results":[[0,0,"CONVERGED"],[0,1,"CONVERGED"],[1,0,"CONVERGED"],[1,1,"CONVERGED"],[2,0,"CONVERGED"],[2,1,"CONVERGED"],[3,0,"CONVERGED"],[3,1,"CONVERGED"],[4,0,"CONVERGED"],[4,1,"CONVERGED"],[5,0,"CONVERGED"],[5,1,"CONVERGED"],[6,0,"CONVERGED"],[6,1,"CONVERGED"],[7,0,"CONVERGED"],[7,1,"CONVERGED"]],"machineError":""}
+{"testCase":"E-clear-success / D-ratio-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"E-clear-both-facts","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"H-unreachable","previewValidity":"INVALID","inputs":[["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null]],"results":[[0,0,"UNREACHABLE_TARGET"],[1,0,"UNREACHABLE_TARGET"],[2,0,"UNREACHABLE_TARGET"],[3,0,"UNREACHABLE_TARGET"],[4,0,"UNREACHABLE_TARGET"],[5,0,"UNREACHABLE_TARGET"],[6,0,"UNREACHABLE_TARGET"],[7,0,"UNREACHABLE_TARGET"]],"machineError":""}
+{"testCase":"H-clear-unreachable","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"I-invalid-machine-with-no-targets","previewValidity":"INVALID","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":"Needle Type 4 exceeds camProgram.tracks length 3."}
+{"testCase":"L-reload-incomplete-after-machine-error","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"L-switch-to-direct-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null]],"results":[],"machineError":""}
+{"testCase":"L-reload-original-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"unused-feed-target","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["READY",23]],"results":[],"machineError":""}
+{"testCase":"A","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"B","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"C-NaN","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"C-Infinity","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"C--Infinity","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"negative-string","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"string-NaN","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"string-Infinity","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"object","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"boolean","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"typed-zero","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"string-zero","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"empty-draft","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"whitespace-draft","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"null-draft","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"undefined-draft","returned":{"ok":false,"reason":"INVALID_YARN_LENGTH","previousValue":23},"target":23,"previewValidity":"VALIDATED"}
+{"testCase":"D","target":0,"previewValidity":"DESIGN_PREVIEW"}
+{"testCase":"E","target":27,"solved":26.999994326440053}
+{"testCase":"F","targets":[23,18],"previewValidity":"VALIDATED"}
+{"testCase":"replacement-import","rawTypeRejections":4,"importRejections":8,"compatibleImportValues":[23,"23.14",0,"",null]}
+{"testCase":"P0-C2","normalizedModes":["directTarget","relaxedWithDraft"],"sopTarget":24,"parameterRevisionUnchanged":true,"invalidInputsPreserveState":true}
+{"testCase":"unset-original-A / D-ratio-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"A-legacy-direct-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null]],"results":[],"machineError":""}
+{"testCase":"B-relaxed-both-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"C-relaxed-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"F-main-23-relaxed-incomplete","previewValidity":"PARTIAL","inputs":[["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null]],"results":[[0,0,"CONVERGED"],[1,0,"CONVERGED"],[2,0,"CONVERGED"],[3,0,"CONVERGED"],[4,0,"CONVERGED"],[5,0,"CONVERGED"],[6,0,"CONVERGED"],[7,0,"CONVERGED"]],"machineError":""}
+{"testCase":"F-main-23-ratio-only","previewValidity":"PARTIAL","inputs":[["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null],["READY",23],["INCOMPLETE",null]],"results":[[0,0,"CONVERGED"],[1,0,"CONVERGED"],[2,0,"CONVERGED"],[3,0,"CONVERGED"],[4,0,"CONVERGED"],[5,0,"CONVERGED"],[6,0,"CONVERGED"],[7,0,"CONVERGED"]],"machineError":""}
+{"testCase":"G / K-complete-23-and-8-times-3","previewValidity":"VALIDATED","inputs":[["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24],["READY",23],["READY",24]],"results":[[0,0,"CONVERGED"],[0,1,"CONVERGED"],[1,0,"CONVERGED"],[1,1,"CONVERGED"],[2,0,"CONVERGED"],[2,1,"CONVERGED"],[3,0,"CONVERGED"],[3,1,"CONVERGED"],[4,0,"CONVERGED"],[4,1,"CONVERGED"],[5,0,"CONVERGED"],[5,1,"CONVERGED"],[6,0,"CONVERGED"],[6,1,"CONVERGED"],[7,0,"CONVERGED"],[7,1,"CONVERGED"]],"machineError":""}
+{"testCase":"E-clear-success / D-ratio-only","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"E-clear-both-facts","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"H-unreachable","previewValidity":"INVALID","inputs":[["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null],["READY",0.5],["INCOMPLETE",null]],"results":[[0,0,"UNREACHABLE_TARGET"],[1,0,"UNREACHABLE_TARGET"],[2,0,"UNREACHABLE_TARGET"],[3,0,"UNREACHABLE_TARGET"],[4,0,"UNREACHABLE_TARGET"],[5,0,"UNREACHABLE_TARGET"],[6,0,"UNREACHABLE_TARGET"],[7,0,"UNREACHABLE_TARGET"]],"machineError":""}
+{"testCase":"H-clear-unreachable","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"I-invalid-machine-with-no-targets","previewValidity":"INVALID","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":"Needle Type 4 exceeds camProgram.tracks length 3."}
+{"testCase":"L-reload-incomplete-after-machine-error","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"L-switch-to-direct-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null]],"results":[],"machineError":""}
+{"testCase":"L-reload-original-unset","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null]],"results":[],"machineError":""}
+{"testCase":"unused-feed-target","previewValidity":"DESIGN_PREVIEW","inputs":[["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["INCOMPLETE",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["NOT_SET",null],["READY",23]],"results":[],"machineError":""}
+PASS: P0-3 A–F, atomic rejection/clear/commit, raw normalization/legacy imports, unchanged Solver state and P0-1/P0-2 regressions.
+
+validate:yarn-length-batch-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+{"testCase":"A","lengths":[[27],[23],[27],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"B","lengths":[[25,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"C","lengths":[[25,18],[23],[23],[23]],"previewValidity":"VALIDATED","result":{"ok":false,"reason":"NO_TARGETS","updatedCount":0}}
+{"testCase":"E","lengths":[[23,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"F","lengths":[[27],[27],[27],[27]],"previewValidity":"VALIDATED","solved":[26.999994326440053,26.999992639583088,26.999993319385176,26.99999467898935]}
+{"testCase":"G-partial","lengths":[[100,18],[100],[100],[100]],"previewValidity":"PARTIAL"}
+{"testCase":"G-invalid","lengths":[[100,100],[100],[100],[100]],"previewValidity":"INVALID"}
+{"testCase":"H","lengths":[[25,18],[25],[25],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"P0-C2","mixedModesRejected":true,"sameModeAtomic":true,"selectedModeChangeRejected":true,"parameterRevisionUnchanged":true}
+PASS: P0-4 A–H, one atomic commit, final-target failure injection, sibling isolation and unchanged rejected results.
+
+validate:yarn-length-structure-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+{"testCase":"BLOCKER A: delete/recreate same slot/id","revision":8,"targets":[[23,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER B: selected slot shifts","revision":15,"targets":[[18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER B: unselected sibling occupies old slot","revision":22,"targets":[[18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER C","revision":29,"targets":[[23,18],[23,18],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER D","revision":35,"targets":[[27,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER E","revision":41,"targets":[[27,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER F","revision":48,"targets":[[23,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"testCase":"BLOCKER G","revision":62,"targets":[[23,18],[23],[23],[23]],"previewValidity":"VALIDATED"}
+{"checks":["same-ID complete replacement","same-ID reorder","same-ID reorder reverse","Feed resize","Track resize only","Cam operation","Gauge/arrangement","explicit Clear length","switch relaxed input mode","relaxed length edit","draft ratio edit","explicit Clear draft","switch direct input mode","solver/validity","failed full replacement","runtime field cannot be overwritten","legacy workspace load replacement","delete Cam","create Cam","recreate identical Cam",".knitscape manifest excludes runtime revisions; package import invalidates identical locators"]}
+PASS: P0-4B BLOCKER A–G; ABA/shift rejection, parameter validity, load boundary and runtime revision atomicity.
+
+validate:yarn-length-parameters
+PASS: Step 15 yarn length parameter chain is valid.
+
+validate:yarn-sequence-editor
+PASS: yarn sequence editor is row-aligned with the chart.
+
+validate:central-stitch-toolbar
+PASS: central stitch toolbar and original stitch icons are protected.
+
+validate:needle-arrangement
+PASS: needle arrangement affects only the approved post-arrangement machine preview path.
+
+validate:single-jersey-machine
+PASS: Single Jersey Cam Program and Needle Arrangement resolve to independent K/T/M machine operations.
+
+validate:single-jersey-simulation-input
+PASS: machine feed rows map directly to simulation courses without transposition or flipping.
+
+validate:single-jersey-cam-editor
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: Single Jersey Cam Program editor owns explicit, dynamic K/T/M machine data.
+
+validate:single-jersey-execution-integration
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: Single Jersey Cam Program and Needle Arrangement drive only the post-arrangement simulation preview.
+
+validate:workspace-mode
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: Pattern and Machine workspaces switch visibility without changing data ownership or core DOM identity.
+
+validate:yarn-library
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: Yarn Library supports 100 Assets, query, CRUD, N slots, safe references, binary PBR references, lazy access and project round-trip.
+
+validate:pbr-persistence
+PASS: .knitscape metadata/binary round-trip, range-based lazy reads, legacy migration and invalid-package checks.
+PASS: length-mode v3 capability, active-fact-only export, incomplete drafts and invalid input/version rejection.
+PASS: binary Registry reads lazily, deduplicates requests, retries and releases resources.
+
+validate:path-uv-yarn-texture
+PHYSICAL: 28G, 23cm/100 needles, 10mm => 22.999905 repeats
+PHYSICAL: 32G, 23cm/100 needles, 10mm => 22.999863 repeats
+PHYSICAL: 36G, 23cm/100 needles, 10mm => 23.000406 repeats
+PHYSICAL: 32G, 21cm/100 needles, 10mm => 20.999331 repeats
+PHYSICAL: 32G, 27cm/100 needles, 10mm => 27.000000 repeats
+PASS: path UV yarn texture checks passed.
+
+validate:feed-yarn-pbr-renderer
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: single-Yarn Feed PBR regression uses the existing UV renderer; 100 Assets stay lazy, selected 9/shared 6/full 20 and 30 maps decode once, zoom reuses GPU uploads, Solid/Auto/hidden/stopped work stays inactive, and Canvas/legacy/partial/failure/replacement/clear/reopen remain compatible.
+
+validate:multi-yarn-renderer
+PASS: 1/2/3/N Assignment geometry/material/UV, zero slot offsets, Canvas/WebGL Yarn ID selection without re-solving/rebuilding, own paths/buffers, duplicate/cross-slot/unused IDs, no-target/PARTIAL/Legacy, failure/cache/transform regressions.
+
+validate:event-driven-render
+PASS: root rendering is state-driven and frame-coalesced.
+
+validate:texture-cache-lifecycle
+PASS: yarn texture caches have bounded lifecycles.
+
+validate:yarn-simulation-characterization
+[{"cmPer100Needles":21,"loopHeight":0.3667083740234376,"measuredModelLengthPer100Needles":264.55848407606294,"error":0.008445057795370303},{"cmPer100Needles":23,"loopHeight":0.47929992675781247,"measuredModelLengthPer100Needles":289.7620645905616,"error":0.0017149369974731599},{"cmPer100Needles":27,"loopHeight":0.7258468627929688,"measuredModelLengthPer100Needles":340.1574557820884,"error":0.000024532872259896976}]
+PASS: yarn simulation preserves the original fixture and renders independent Feed Yarn paths.
+
+validate:yarn-simulation-modules
+PASS: yarn simulation responsibilities are separated.
+
+validate:left-sidebar-modules
+PASS: left sidebar modules have concrete owners.
+
+validate:shared-yarn-computation
+PASS: headless shared computation, detached readonly snapshot/maps, canonical occurrences, finalized solver results, shared assignment/material/visibility/mask/layer items, exact legacy metrics.
+
+validate:pbr-preview-lifecycle
+UV CACHE: 4 strips / 58912 bytes remain bounded across repeat, diameter and gauge edits.
+PASS: PBR mount/update/suspend/dispose, stale work, shared image ownership, re-entry, immutable UV inputs, shader bytes, active 30-map caches, failure and Canvas fallback.
+
+validate:classic-preview
+PASS: original SOLID traces, widths/colors, group masks, legacy/Asset rules, actual Yarn ID filters, mapped front/back, DEV trial, latest colors and lifecycle.
+PASS: immutable shared core paths/topology/SolverResult/metrics/validity/revision; six-map real package and original bytes survive Classic/save/reload.
+{"resourceCalls":{"image":0,"imageDecode":0,"fileReaderImage":0,"bitmap":0,"webgl":0,"shader":0,"texture":0,"uvStrip":0,"pbrModule":0,"sample":0,"objectUrl":0,"assetRead":0,"assetRelease":0},"binaryFileReads":0,"comparisons":"exact drawing traces and snapshot SHA-256"}
+
+validate:preview-mode-isolation
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+PASS: independent workbenches share immutable calculations; pending inputs, project identity, viewport and appearance stay isolated.
+
+47/47 validators passed.

@@ -6,8 +6,9 @@ function positiveInteger(value, name, minimum = 1) {
   }
 }
 
-/** Adapt resolved machine actions; do not interpret Cam/Needle rules here. */
-export function createPlainJerseyTopology({ m = 1, n = 1, nodesPerLoop = 32,
+/** Adapt resolved machine actions; do not interpret Cam/Needle rules here.
+ * Production defaults to N48; N32 is preview only (density error can exceed 0.5%). */
+export function createPlainJerseyTopology({ m = 1, n = 1, nodesPerLoop = 48,
   loopLengthMm = 3, camProgram = { tracks: [["K"]] }, needleArrangement = [1] } = {}) {
   positiveInteger(m, "m");
   positiveInteger(n, "n");

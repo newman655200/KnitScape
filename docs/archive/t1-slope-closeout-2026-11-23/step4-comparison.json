@@ -1,0 +1,1306 @@
+{
+  "rows": [
+    {
+      "lengthMm": 2.6,
+      "status": "CONVERGED",
+      "iterations": 2375,
+      "referenceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t1-convergence-2026-11-23\\case-2.6-N128.json",
+      "metricsN48": {
+        "W": 0.7222430575555258,
+        "H": 0.430136057372586,
+        "S": -3.2881386623816485e-8,
+        "waleDensityPerCm": 13.845754411050471,
+        "courseDensityPerCm": 23.248457850949126,
+        "averageNeedlePitchMm": 0.7222430575555258,
+        "averageFeedPitchMm": 0.430136057372586,
+        "kw": 3.5998961468731223,
+        "kc": 6.044599041246773,
+        "ks": 21.75992879797723,
+        "kcOverKw": 1.6791037281720265,
+        "TF": 1.7200522903844537,
+        "gsm": 167.38406767674792,
+        "gsmFromDensities": 167.38406767674795,
+        "actualLengthMm": 2.6000006389384502,
+        "targetLengthMm": 2.6,
+        "relativeLengthError": 2.457455576809764e-7,
+        "maxLoopLengthError": 2.457455576809764e-7,
+        "envelopeThicknessEstimateMm": 0.4457633012170752,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 2.6,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "metricsN128": {
+        "W": 0.723608102828177,
+        "H": 0.4309597530553434,
+        "S": -7.815679575007755e-8,
+        "waleDensityPerCm": 13.819635187770322,
+        "courseDensityPerCm": 23.20402294901958,
+        "averageNeedlePitchMm": 0.723608102828177,
+        "averageFeedPitchMm": 0.4309597530553434,
+        "kw": 3.593105148820284,
+        "kc": 6.033045966745091,
+        "ks": 21.677368526181237,
+        "kcOverKw": 1.679061902412154,
+        "TF": 1.7200522903844537,
+        "gsm": 166.74898866293256,
+        "gsmFromDensities": 166.74898866293256,
+        "actualLengthMm": 2.5999999996518572,
+        "targetLengthMm": 2.6,
+        "relativeLengthError": -1.339011124201761e-10,
+        "maxLoopLengthError": 1.339011124201761e-10,
+        "envelopeThicknessEstimateMm": 0.44448711017294223,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 2.6,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 0.18900081605095487,
+        "courseDensityPerCm": 0.19149654362595747
+      },
+      "withinHalfPercent": true
+    },
+    {
+      "lengthMm": 3,
+      "status": "CONVERGED",
+      "iterations": 1925,
+      "referenceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t1-convergence-2026-11-23\\case-3-N128.json",
+      "metricsN48": {
+        "W": 0.7709398275361398,
+        "H": 0.5459336633436238,
+        "S": -1.184594153491673e-9,
+        "waleDensityPerCm": 12.971180944120084,
+        "courseDensityPerCm": 18.317243781513724,
+        "averageNeedlePitchMm": 0.7709398275361398,
+        "averageFeedPitchMm": 0.5459336633436238,
+        "kw": 3.891354283236025,
+        "kc": 5.4951731344541175,
+        "ks": 21.38366551388156,
+        "kcOverKw": 1.412149276185762,
+        "TF": 1.4907119849998598,
+        "gsm": 142.55777009254376,
+        "gsmFromDensities": 142.55777009254376,
+        "actualLengthMm": 3.000000004424868,
+        "targetLengthMm": 3,
+        "relativeLengthError": 1.4749559351656671e-9,
+        "maxLoopLengthError": 1.4749559351656671e-9,
+        "envelopeThicknessEstimateMm": 0.4444243613099246,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 3,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "metricsN128": {
+        "W": 0.7713427014880954,
+        "H": 0.5470927290777033,
+        "S": 1.4656296225089343e-9,
+        "waleDensityPerCm": 12.964406068415151,
+        "courseDensityPerCm": 18.278437033623426,
+        "averageNeedlePitchMm": 0.7713427014880954,
+        "averageFeedPitchMm": 0.5470927290777033,
+        "kw": 3.8893218205245454,
+        "kc": 5.483531110087028,
+        "ks": 21.32721719998666,
+        "kcOverKw": 1.409893900049514,
+        "TF": 1.4907119849998598,
+        "gsm": 142.18144799991106,
+        "gsmFromDensities": 142.18144799991106,
+        "actualLengthMm": 3.0000000026617166,
+        "targetLengthMm": 3,
+        "relativeLengthError": 8.872389489766874e-10,
+        "maxLoopLengthError": 8.872389489766874e-10,
+        "envelopeThicknessEstimateMm": 0.44315662483362817,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 3,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 0.05225750928488093,
+        "courseDensityPerCm": 0.21230889609933357
+      },
+      "withinHalfPercent": true
+    },
+    {
+      "lengthMm": 3.5,
+      "status": "CONVERGED",
+      "iterations": 2275,
+      "referenceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t1-convergence-2026-11-23\\case-3.5-N128.json",
+      "metricsN48": {
+        "W": 0.9041658680186171,
+        "H": 0.6521559942753787,
+        "S": -7.741731358331224e-9,
+        "waleDensityPerCm": 11.059917603297647,
+        "courseDensityPerCm": 15.333754635056547,
+        "averageNeedlePitchMm": 0.9041658680186171,
+        "averageFeedPitchMm": 0.6521559942753787,
+        "kw": 3.870971161154176,
+        "kc": 5.366814122269791,
+        "ks": 20.774782694581326,
+        "kcOverKw": 1.3864257569590395,
+        "TF": 1.2777531299998799,
+        "gsm": 118.71304396903616,
+        "gsmFromDensities": 118.71304396903615,
+        "actualLengthMm": 3.4999999994352997,
+        "targetLengthMm": 3.5,
+        "relativeLengthError": -1.6134293900904595e-10,
+        "maxLoopLengthError": 1.6134293900904595e-10,
+        "envelopeThicknessEstimateMm": 0.44902775978096265,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 3.5,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "metricsN128": {
+        "W": 0.9045752468682033,
+        "H": 0.653665279293774,
+        "S": -1.319538958695841e-7,
+        "waleDensityPerCm": 11.054912274707645,
+        "courseDensityPerCm": 15.298349655046833,
+        "averageNeedlePitchMm": 0.9045752468682033,
+        "averageFeedPitchMm": 0.653665279293774,
+        "kw": 3.8692192961476755,
+        "kc": 5.354422379266391,
+        "ks": 20.71743438958247,
+        "kcOverKw": 1.3838508415890083,
+        "TF": 1.2777531299998799,
+        "gsm": 118.38533936904271,
+        "gsmFromDensities": 118.38533936904268,
+        "actualLengthMm": 3.499999997620468,
+        "targetLengthMm": 3.5,
+        "relativeLengthError": -6.798662743889849e-10,
+        "maxLoopLengthError": 6.798662743889849e-10,
+        "envelopeThicknessEstimateMm": 0.44806354397966264,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 3.5,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 0.045276963449580876,
+        "courseDensityPerCm": 0.23143006146439937
+      },
+      "withinHalfPercent": true
+    },
+    {
+      "lengthMm": 4,
+      "status": "CONVERGED",
+      "iterations": 1700,
+      "referenceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t1-convergence-2026-11-23\\case-4-N128.json",
+      "metricsN48": {
+        "W": 1.13961428775935,
+        "H": 0.7202377547675765,
+        "S": -6.466509927822693e-8,
+        "waleDensityPerCm": 8.774898759528083,
+        "courseDensityPerCm": 13.884304084041025,
+        "averageNeedlePitchMm": 1.13961428775935,
+        "averageFeedPitchMm": 0.7202377547675765,
+        "kw": 3.5099595038112334,
+        "kc": 5.55372163361641,
+        "ks": 19.493338029433968,
+        "kcOverKw": 1.5822751309768646,
+        "TF": 1.118033988749895,
+        "gsm": 97.46669014716983,
+        "gsmFromDensities": 97.46669014716983,
+        "actualLengthMm": 3.9999999974519107,
+        "targetLengthMm": 4,
+        "relativeLengthError": -6.370223237794903e-10,
+        "maxLoopLengthError": 6.370223237794903e-10,
+        "envelopeThicknessEstimateMm": 0.46095076397415247,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 4,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "metricsN128": {
+        "W": 1.1407425488109295,
+        "H": 0.7219753269151009,
+        "S": -8.714947229662719e-9,
+        "waleDensityPerCm": 8.766219871805127,
+        "courseDensityPerCm": 13.850888842321792,
+        "averageNeedlePitchMm": 1.1407425488109295,
+        "averageFeedPitchMm": 0.7219753269151009,
+        "kw": 3.506487948722051,
+        "kc": 5.5403555369287165,
+        "ks": 19.427189921876035,
+        "kcOverKw": 1.5800298241287025,
+        "TF": 1.118033988749895,
+        "gsm": 97.13594960938016,
+        "gsmFromDensities": 97.13594960938016,
+        "actualLengthMm": 3.999999999875564,
+        "targetLengthMm": 4,
+        "relativeLengthError": -3.11090042615092e-11,
+        "maxLoopLengthError": 3.11090042615092e-11,
+        "envelopeThicknessEstimateMm": 0.4615928517104814,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 20,
+              "unit": "tex",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.1394229955041348,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1971738911486305,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09858694557431524,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 44.07884733638547,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012624045801526722,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 4,
+            "unit": "mm/needle/feed",
+            "source": "T1 numerical reference case",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "ASSUMPTION",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 0.09900376501927877,
+        "courseDensityPerCm": 0.24124980064190726
+      },
+      "withinHalfPercent": true
+    }
+  ],
+  "allWithinHalfPercent": true,
+  "scope": "N48 rerun versus archived converged N128; N128 was not rerun in this task"
+}

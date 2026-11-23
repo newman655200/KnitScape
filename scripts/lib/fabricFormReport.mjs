@@ -55,7 +55,7 @@ export function writeT1Report(directory) {
     "});",
     "console.log(result.status, result.metrics, result.equilibrium);",
     "```", "",
-    `这条默认 N32/q12 调用已实际从头运行，没有传入保存的初值：${defaultEntry.status}，${f(defaultEntry.diagnostics.elapsedMs/1000,2)} s，${defaultEntry.iterations} 次迭代，节点残差比 ${e(defaultEntry.equilibrium.nodeRatio)}、最大段应变 ${e(defaultEntry.constraints.maxSegmentStrain)}。原始结果见 default-entry.json；该单次运行通过 30 s 目标，不能抵消 2.6 mm 的超时。`,"",
+    `这条归档默认入口 N${defaultEntry.settings.nodesPerLoop}/q${defaultEntry.settings.quadratureOrder} 调用已实际从头运行，没有传入保存的初值：${defaultEntry.status}，${f(defaultEntry.diagnostics.elapsedMs/1000,2)} s，${defaultEntry.iterations} 次迭代，节点残差比 ${e(defaultEntry.equilibrium.nodeRatio)}、最大段应变 ${e(defaultEntry.constraints.maxSegmentStrain)}。原始结果见 default-entry.json；30 s 目标须按该次实际耗时判断，不能抵消其他工况超时。`,"",
     table(["验收项","实际状态","证据与范围"],[
       ["A1 梯度","通过已覆盖检查","节点、闭合边及 W/H/S；接触支撑/最近特征边界另含在快检。完整参考相对误差 5.59e−9。"],
       ["A2 材料长度","通过","全部报告的收敛结果满足段应变和每圈长度门槛；未收敛尝试另存。"],

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
+import { createRefinedFabricCell } from "./lib/fabricFormRefinement.mjs";
 import { defaultMemorySize } from "../src/fabricForm/solveFabricCell.js";
 
 const output = path.resolve("docs/archive/t1-slope-closeout-2026-11-23");
@@ -68,4 +69,42 @@ if (mode === "prepare-hossain") {
     "diagnostics.elapsedMs 记录求解时间，不包含随后只读诊断的开销。", "",
   ].join("\n"));
   console.log(JSON.stringify(rows));
-} else throw new Error("Use prepare-hossain | hossain <length> before|after | compare-hossain");
+} else if (mode === "prepare-n48") {
+  for (const l of [2.6, 3, 3.5, 4]) {
+    const sourceFile = `C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22/case-${l}.json`;
+    const source = read(sourceFile);
+    assert.equal(source.status, "CONVERGED"); assert.equal(source.cell.topology.nodesPerLoop, 32);
+    const cell = createRefinedFabricCell(source.cell, 48, source.params);
+    write(`step4-case-${l}-N48-input.json`, { input: { topology: cell.topology, params: source.params,
+      initialCell: cell, maxIterations: 24000, innerIterations: 800 },
+      origin: { sourceFile, method: cell.refinement, memorySize: "Omitted to exercise public N48 default=180" } });
+  }
+} else if (mode === "n48") {
+  const { solveFabricCell } = await import("../src/fabricForm/solveFabricCell.js");
+  const result = solveFabricCell(read(path.join(output, `step4-case-${length}-N48-input.json`)).input);
+  write(`step4-case-${length}-N48.json`, result);
+  console.log(JSON.stringify({ status: result.status, iterations: result.iterations, settings: result.settings, metrics: result.metrics }));
+} else if (mode === "compare-n48") {
+  const rows = [2.6, 3, 3.5, 4].map(l => {
+    const result = read(path.join(output, `step4-case-${l}-N48.json`));
+    const referenceFile = path.join(previous, `case-${l}-N128.json`), reference = read(referenceFile);
+    assert.equal(result.status, "CONVERGED"); assert.equal(reference.status, "CONVERGED");
+    assert.equal(result.settings.memorySize, 180);
+    assert.deepEqual(result.params, reference.params);
+    const deviationPercent = Object.fromEntries(["waleDensityPerCm", "courseDensityPerCm"].map(key =>
+      [key, 100 * (result.metrics[key] / reference.metrics[key] - 1)]));
+    return { lengthMm: l, status: result.status, iterations: result.iterations, referenceFile,
+      metricsN48: result.metrics, metricsN128: reference.metrics, deviationPercent,
+      withinHalfPercent: Object.values(deviationPercent).every(value => Math.abs(value) < .5) };
+  });
+  write("step4-comparison.json", { rows, allWithinHalfPercent: rows.every(row => row.withinHalfPercent),
+    scope: "N48 rerun versus archived converged N128; N128 was not rerun in this task" });
+  fs.writeFileSync(path.join(output, "STEP4_N48.md"), ["# N48 默认网格验收", "",
+    "N32 仅作预览。其纵密误差约 0.49–0.71%，与 Hossain 计数标准误 0.2–0.5% 同量级。默认采用 N48；memorySize 分段规则不变，N48 默认 180。四工况沿用既有 N32 收敛分支和既有平滑延拓；未调整物性或容差。", "",
+    "误差=100×(N48/N128−1)。N128 使用归档收敛结果，本轮未重跑 N128。", "",
+    "| l/mm | 状态 | 迭代 | 横密 /cm | 纵密 /cm | 横密差 % | 纵密差 % | 均 <0.5% |",
+    "|---:|---|---:|---:|---:|---:|---:|---|",
+    ...rows.map(r => `| ${r.lengthMm} | ${r.status} | ${r.iterations} | ${r.metricsN48.waleDensityPerCm.toFixed(6)} | ${r.metricsN48.courseDensityPerCm.toFixed(6)} | ${r.deviationPercent.waleDensityPerCm.toFixed(6)} | ${r.deviationPercent.courseDensityPerCm.toFixed(6)} | ${r.withinHalfPercent} |`), "",
+  ].join("\n"));
+  console.log(JSON.stringify(rows));
+} else throw new Error("Use prepare-hossain | hossain <length> before|after | compare-hossain | prepare-n48 | n48 <length> | compare-n48");

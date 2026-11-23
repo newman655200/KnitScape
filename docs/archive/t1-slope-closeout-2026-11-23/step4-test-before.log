@@ -1,0 +1,15 @@
+node:internal/modules/run_main:129
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: production default is N48; N32 is preview only
+    at runFabricFormTopologyChecks (file:///C:/Users/liuchen/Desktop/KnitScape/scripts/lib/fabricFormTopologyChecks.mjs:20:10)
+    at async file:///C:/Users/liuchen/Desktop/KnitScape/[eval1]:1:89 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 32,
+  expected: 48,
+  operator: 'strictEqual'
+}
+
+Node.js v20.17.0

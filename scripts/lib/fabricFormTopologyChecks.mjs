@@ -17,6 +17,12 @@ export async function runFabricFormTopologyChecks() {
   const { actualEdgeVector, edgeEndpoints, createCellGradient, accumulateEndpointGradient,
     replicatePeriodicCell } = await import("../../src/fabricForm/periodicCell.js");
   const results = [];
+  assert.equal(createPlainJerseyTopology().nodesPerLoop, 48, "production default is N48; N32 is preview only");
+  const { defaultMemorySize } = await import("../../src/fabricForm/solveFabricCell.js");
+  assert.equal(defaultMemorySize(32), 60);
+  assert.equal(defaultMemorySize(48), 180);
+  assert.equal(defaultMemorySize(64), 180);
+  assert.equal(defaultMemorySize(128), 384);
 
   const params = createFabricFormParams();
   near(params.d_e, 0.1971738911486305);

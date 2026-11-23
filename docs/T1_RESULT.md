@@ -30,3 +30,5 @@ Hossain 正常样：tex=19.78，N128；其余独立材料参数冻结，派生 B
 完整输入、终态、失败/中止记录与验证日志见[本轮归档](C:/Users/liuchen/Documents/KnitScape/archives/t1-convergence-2026-11-23/)；数值汇总为 `mesh-results.json`、`hossain-comparison.json`。复跑使用现有 `node scripts/run-fabric-form-a14-closeout.mjs --solve <归档内的*-input.json> <新输出.json>`。停止于 T1。
 
 默认记忆长度补充：`solveFabricCell` 按 `nodesPerLoop ≤32 / ≤64 / 其余` 分别默认使用 `memorySize=60 / 180 / 384`，调用方显式传入的值仍优先；其他参数、容差与物理部分不变。
+
+2026-11-23 收尾补充：当前默认网格为 **N48**（memorySize=180），**N32 仅作预览**。N32 纵密误差约 0.49–0.71%，与 Hossain 计数标准误 0.2–0.5% 同量级。上文 N32 冷启动是历史运行记录，不是当前默认性能；四工况 N48 的实际密度比较见 [N48 验收](archive/t1-slope-closeout-2026-11-23/STEP4_N48.md)，三个 Hossain N64 的诊断与不变性检查见 [方向诊断](archive/t1-slope-closeout-2026-11-23/STEP3_DIAGNOSTICS.md)。

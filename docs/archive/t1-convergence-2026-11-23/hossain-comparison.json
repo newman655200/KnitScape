@@ -1,0 +1,106 @@
+{
+  "source": "User supplied Hossain et al. 2025, PLOS ONE 20(5):e0323572, doi:10.1371/journal.pone.0323572; no independent literature lookup",
+  "state": "Dry relaxed 48h at22C/67%RH; T1 frictionless equilibrium is a different state",
+  "formula": "100*(predicted/measured-1); density and kw/kc use unrounded per-inch/2.54 values; GSM uses reported GSM",
+  "rows": [
+    {
+      "lengthMm": 2.77,
+      "status": "CONVERGED",
+      "measured": {
+        "waleDensityPerCm": 12.67716535433071,
+        "courseDensityPerCm": 18.818897637795274,
+        "kw": 3.511574803149607,
+        "kc": 5.212834645669291,
+        "gsm": 130.1
+      },
+      "predicted": {
+        "waleDensityPerCm": 13.403927062007957,
+        "courseDensityPerCm": 20.724346334294243,
+        "kw": 3.7128877961762043,
+        "kc": 5.740643934599506,
+        "gsm": 152.20150737971707
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 5.732840799690098,
+        "courseDensityPerCm": 10.12518763411585,
+        "kw": 5.732840799690098,
+        "kc": 10.12518763411585,
+        "gsm": 16.988091759967006
+      },
+      "nodeRatio": 9.418106069116223e-7,
+      "q24NodeRatio": 9.417778624603255e-7,
+      "finalCodeRecheck": "CONVERGED",
+      "iterations": 11275,
+      "evaluations": 20307,
+      "elapsedMs": 2612848.8299000002,
+      "elapsedNote": "Wall time includes host interruption; not a CPU or cold-start performance benchmark",
+      "file": "hossain-2.77.json"
+    },
+    {
+      "lengthMm": 2.84,
+      "status": "CONVERGED",
+      "measured": {
+        "waleDensityPerCm": 12.125984251968504,
+        "courseDensityPerCm": 18.07086614173228,
+        "kw": 3.4437795275590544,
+        "kc": 5.132125984251968,
+        "gsm": 122.5
+      },
+      "predicted": {
+        "waleDensityPerCm": 13.268007418680426,
+        "courseDensityPerCm": 19.88306984479736,
+        "kw": 3.768114106905241,
+        "kc": 5.646791835922451,
+        "gsm": 148.1950750701695
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 9.41798325794898,
+        "courseDensityPerCm": 10.028316788203284,
+        "kw": 9.41798325794898,
+        "kc": 10.028316788203263,
+        "gsm": 20.97557148585265
+      },
+      "nodeRatio": 1.9525987743264777e-7,
+      "q24NodeRatio": 1.9525595916584531e-7,
+      "finalCodeRecheck": "CONVERGED",
+      "iterations": 9948,
+      "evaluations": 10470,
+      "elapsedMs": 2127443.3013,
+      "elapsedNote": "Wall time includes host interruption; not a CPU or cold-start performance benchmark",
+      "file": "hossain-2.84.json"
+    },
+    {
+      "lengthMm": 2.9,
+      "status": "CONVERGED",
+      "measured": {
+        "waleDensityPerCm": 11.535433070866143,
+        "courseDensityPerCm": 17.244094488188974,
+        "kw": 3.3452755905511813,
+        "kc": 5.000787401574803,
+        "gsm": 113.5
+      },
+      "predicted": {
+        "waleDensityPerCm": 13.165078398750717,
+        "courseDensityPerCm": 19.22059524624711,
+        "kw": 3.817872735637708,
+        "kc": 5.573972621411662,
+        "gsm": 145.14917380257492
+      },
+      "deviationPercent": {
+        "waleDensityPerCm": 14.12730079463078,
+        "courseDensityPerCm": 11.461899373213846,
+        "kw": 14.12730079463078,
+        "kc": 11.461899373213846,
+        "gsm": 27.884734627819306
+      },
+      "nodeRatio": 8.177542271090437e-7,
+      "q24NodeRatio": 8.17903355952006e-7,
+      "finalCodeRecheck": "CONVERGED",
+      "iterations": 9150,
+      "evaluations": 13962,
+      "elapsedMs": 2216717.0183,
+      "elapsedNote": "Wall time includes host interruption; not a CPU or cold-start performance benchmark",
+      "file": "hossain-2.9.json"
+    }
+  ]
+}

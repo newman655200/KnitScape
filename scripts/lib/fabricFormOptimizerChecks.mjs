@@ -22,6 +22,15 @@ export async function runOptimizerChecks() {
   assert.ok(circle.history.length > 0);
   assert.ok(circle.history.every(row => [row.energy, row.constraint, row.innerGrad, row.physicalResidual].every(Number.isFinite)));
 
+  const chunkedCircle = minimizeConstrained({
+    x0: [0.2, 0.9], evaluate: x => ({ energy: x[0], gradient: [1, 0] }),
+    constraints: circleConstraints, constraintTolerance: 1e-8, gradientTolerance: 1e-7,
+    innerIterations: 1,
+  });
+  assert.equal(chunkedCircle.status, "CONVERGED",
+    "an unfinished inner solve must retain its AL objective and curvature history, not escalate the penalty");
+  assert.ok(Math.hypot(...chunkedCircle.x.map((v, i) => v - circle.x[i])) < 1e-6);
+
   const surface = minimizeConstrained({
     x0: [0.5, -0.4, -0.5], evaluate: x => ({ energy: x[2], gradient: [0, 0, 1] }),
     constraints: x => ({ values: [x.reduce((sum, v) => sum + v * v, 0) - 1, x[0] + x[1]],
@@ -136,6 +145,16 @@ export async function runOptimizerChecks() {
     "equal rounded energies need a strictly smaller gradient, rather than oscillation across the minimum");
   assert.equal(roundedPlateau.x[0], 0);
   assert.equal(roundedPlateau.iterations, 1, "do not accept the equal-gradient reflected point on a rounded plateau");
+
+  const coupledPlateau = minimizeConstrained({ x0: [6.8, 2.9],
+    evaluate: ([x, y]) => ({ energy: 1e16 + 0.5 * (x*x - 4*x*y + 5*y*y),
+      gradient: [x - 2*y, -2*x + 5*y] }),
+    constraints: () => ({ values: [], jacobian: [] }), gradientTolerance: 1e-7,
+    maxIterations: 100, maxOuterIterations: 12,
+  });
+  assert.equal(coupledPlateau.status, "CONVERGED",
+    "a descent step may increase the largest gradient component on a rounded, coupled quadratic");
+  assert.ok(coupledPlateau.freeResidualNorm <= 1e-7);
 
   const earlyPhysical = minimizeConstrained({ x0: [0],
     evaluate: ([x]) => ({ energy: Math.exp(x), gradient: [Math.exp(x)] }),

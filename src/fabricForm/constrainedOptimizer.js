@@ -229,8 +229,8 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
     constraintValues: state.values, constraintNorm: normInf(state.values), ...reaction,
     iterations, evaluations, status, history, penalty, energyScale, freeIndices: free });
 
-  for (let outer = 0; outer < maxOuterIterations; outer++) {
-    const memory = [];
+  const memory = [];
+  for (let outer = 0; outer < maxOuterIterations;) {
     let current = augmented(state);
     if (assess()) {
       history.push({ outer, iterations, energy: state.energy, constraint: normInf(state.values),
@@ -262,9 +262,10 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
           const energyChange = candidateAugmented.energy - current.energy;
           const roundoff = Math.max(Number.MIN_VALUE, 4 * Number.EPSILON
             * Math.max(Math.abs(current.energy), Math.abs(candidateAugmented.energy)));
-          // At most eight ULPs of energy noise require a real augmented-gradient decrease.
+          // At most eight ULPs of energy noise require a real gradient-norm decrease.
+          // A coupled descent direction can increase the largest component.
           const sufficientDecrease = Math.abs(energyChange) <= roundoff
-            ? normInf(candidateAugmented.gradient) < normInf(current.gradient)
+            ? dot(candidateAugmented.gradient, candidateAugmented.gradient) < dot(current.gradient, current.gradient)
             : candidateAugmented.energy <= current.energy + 1e-4 * step * slope;
           if (sufficientDecrease) {
             accepted = true;
@@ -295,10 +296,15 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
     if (converged) return finish("CONVERGED");
     if (iterations >= maxIterations) return finish("MAX_ITERATIONS");
     if (innerStatus === "NO_SAFE_STEP") return finish("NO_SAFE_STEP");
+    // A work interval is not a solved AL subproblem. Exhausting this interval
+    // alone must not change the objective, multipliers, or L-BFGS history.
+    if (innerStatus === "INNER_LIMIT") continue;
+    memory.length = 0;
     for (let i = 0; i < alMultipliers.length; i++) alMultipliers[i] += penalty * state.values[i];
     if (constraintNorm > constraintTolerance && constraintNorm > previousConstraint * 0.25) penalty *= 10;
     if (!Number.isFinite(penalty) || penalty > 1e12) return finish("PENALTY_LIMIT");
     previousConstraint = constraintNorm;
+    outer++;
   }
   assess();
   return finish("MAX_OUTER_ITERATIONS");

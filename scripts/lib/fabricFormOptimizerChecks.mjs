@@ -31,6 +31,27 @@ export async function runOptimizerChecks() {
     "an unfinished inner solve must retain its AL objective and curvature history, not escalate the penalty");
   assert.ok(Math.hypot(...chunkedCircle.x.map((v, i) => v - circle.x[i])) < 1e-6);
 
+  // A linear free direction with an unsatisfied fixed-coordinate constraint
+  // keeps accepting steps without reducing the inner gradient norm.
+  const stalledProblem = { x0: [0, 0], freeIndices: [0],
+    evaluate: ([x]) => ({ energy: -x, gradient: [-1, 0] }),
+    constraints: ([, y]) => ({ values: [y - 1], jacobian: [[0, 1]] }),
+    innerIterations: 1, maxIterations: 20, maxOuterIterations: 2 };
+  const stalled = minimizeConstrained(stalledProblem);
+  assert.equal(stalled.forcedMultiplierUpdate, 2);
+  assert.equal(stalled.iterations, 6, "default K=3 must update after three nondecreasing chunks");
+  assert.equal(stalled.penalty, 100, "forced updates use the existing penalty growth rule");
+  assert.equal(stalled.history.filter(row => row.forcedMultiplierUpdate).length, 2);
+  assert.ok(stalled.history.every(row => row.innerGradL2 === 1));
+  const shorterWindow = minimizeConstrained({ ...stalledProblem, stagnationWindow: 2 });
+  assert.equal(shorterWindow.iterations, 4);
+  assert.equal(minimizeConstrained({ ...stalledProblem, maxIterations: 3 }).forcedMultiplierUpdate, 0,
+    "exhausting the total budget must not update multipliers");
+  const improving = minimizeConstrained({ ...stalledProblem,
+    evaluate: ([x]) => ({ energy: -Math.log(1 + x), gradient: [-1 / (1 + x), 0] }) });
+  assert.equal(improving.forcedMultiplierUpdate, 0, "improving chunks must reset the stall window");
+  assert.throws(() => minimizeConstrained({ ...stalledProblem, stagnationWindow: 0 }), RangeError);
+
   const surface = minimizeConstrained({
     x0: [0.5, -0.4, -0.5], evaluate: x => ({ energy: x[2], gradient: [0, 0, 1] }),
     constraints: x => ({ values: [x.reduce((sum, v) => sum + v * v, 0) - 1, x[0] + x[1]],

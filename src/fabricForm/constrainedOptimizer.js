@@ -166,7 +166,7 @@ function rememberStep(memory, maximum, s, y) {
 /** Equality AL + safeguarded L-BFGS. safeStep must cover the entire straight trial trajectory. */
 export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x, _d, limit) => limit,
   freeIndices, energyScale = 1, maxIterations = 2000, maxOuterIterations = 40,
-  innerIterations = 100, initialPenalty = 10, memorySize = 10,
+  innerIterations = 100, initialPenalty = 10, memorySize = 10, stagnationWindow = 3,
   constraintTolerance = 1e-4, gradientTolerance = 1e-6, convergenceCheck }) {
   if (!finiteVector(x0) || x0.length === 0 || typeof evaluate !== "function" || typeof constraints !== "function"
     || typeof safeStep !== "function") throw new TypeError("Invalid constrained optimizer inputs");
@@ -176,7 +176,7 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
   for (const value of [energyScale, initialPenalty, constraintTolerance, gradientTolerance]) {
     if (!(value > 0) || !Number.isFinite(value)) throw new RangeError("Optimizer scales and tolerances must be positive finite values");
   }
-  for (const value of [maxIterations, maxOuterIterations, innerIterations, memorySize]) {
+  for (const value of [maxIterations, maxOuterIterations, innerIterations, memorySize, stagnationWindow]) {
     if (!Number.isInteger(value) || value < 1) throw new RangeError("Optimizer iteration limits must be positive integers");
   }
   const free = checkedFreeIndices(x0.length, freeIndices);
@@ -200,6 +200,7 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
   let penalty = initialPenalty;
   let iterations = 0;
   let previousConstraint = Infinity;
+  let stagnantChunks = 0, forcedMultiplierUpdate = 0;
   const history = [];
   const augmented = current => {
     let energy = current.energy / energyScale;
@@ -227,11 +228,12 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
   };
   const finish = status => ({ x, energy: state.energy, gradient: state.gradient,
     constraintValues: state.values, constraintNorm: normInf(state.values), ...reaction,
-    iterations, evaluations, status, history, penalty, energyScale, freeIndices: free });
+    iterations, evaluations, status, history, penalty, energyScale, freeIndices: free, forcedMultiplierUpdate });
 
   const memory = [];
   for (let outer = 0; outer < maxOuterIterations;) {
     let current = augmented(state);
+    const startingGradL2 = Math.sqrt(dot(current.gradient, current.gradient));
     if (assess()) {
       history.push({ outer, iterations, energy: state.energy, constraint: normInf(state.values),
         physicalResidual: reaction.freeResidualNorm, innerGrad: normInf(current.gradient), penalty, innerStatus: "CONVERGED" });
@@ -291,14 +293,20 @@ export function minimizeConstrained({ x0, evaluate, constraints, safeStep = (_x,
     }
     const converged = assess();
     const constraintNorm = normInf(state.values);
+    const innerGradL2 = Math.sqrt(dot(current.gradient, current.gradient));
+    stagnantChunks = innerStatus === "INNER_LIMIT" && innerGradL2 >= startingGradL2 ? stagnantChunks + 1 : 0;
+    const forceUpdate = stagnantChunks >= stagnationWindow && !converged && iterations < maxIterations;
+    if (forceUpdate) forcedMultiplierUpdate++;
     history.push({ outer, iterations, energy: state.energy, constraint: constraintNorm,
-      physicalResidual: reaction.freeResidualNorm, innerGrad: normInf(current.gradient), penalty, innerStatus });
+      physicalResidual: reaction.freeResidualNorm, innerGrad: normInf(current.gradient), innerGradL2,
+      startingGradL2, penalty, innerStatus, forcedMultiplierUpdate: forceUpdate });
     if (converged) return finish("CONVERGED");
     if (iterations >= maxIterations) return finish("MAX_ITERATIONS");
     if (innerStatus === "NO_SAFE_STEP") return finish("NO_SAFE_STEP");
     // A work interval is not a solved AL subproblem. Exhausting this interval
     // alone must not change the objective, multipliers, or L-BFGS history.
-    if (innerStatus === "INNER_LIMIT") continue;
+    if (innerStatus === "INNER_LIMIT" && !forceUpdate) continue;
+    stagnantChunks = 0;
     memory.length = 0;
     for (let i = 0; i < alMultipliers.length; i++) alMultipliers[i] += penalty * state.values[i];
     if (constraintNorm > constraintTolerance && constraintNorm > previousConstraint * 0.25) penalty *= 10;

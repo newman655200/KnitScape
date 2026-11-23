@@ -1,0 +1,8 @@
+{
+  "status": "CONVERGED",
+  "iterationsBefore": 3067,
+  "iterationsAfter": 3067,
+  "forcedMultiplierUpdate": 0,
+  "cellBitwiseEqual": true,
+  "metricsBitwiseEqual": true
+}

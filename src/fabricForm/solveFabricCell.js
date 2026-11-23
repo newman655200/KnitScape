@@ -25,7 +25,7 @@ export function defaultMemorySize(nodesPerLoop) {
 
 /** Independent T1 entry. Material reference lengths belong to initialCell.topology. */
 export function solveFabricCell({ topology, params, initialCell, lockedDimensions,
-  quadratureOrder = 12, maxIterations = 6000, innerIterations = 800, memorySize,
+  quadratureOrder = 12, maxIterations = 6000, innerIterations = 800, memorySize, stagnationWindow = 3,
   gradientTolerance = 1e-6, constraintTolerance = 1e-6 }) {
   if (!topology || !params) throw new TypeError("topology and material params are required");
   if (memorySize === undefined) {
@@ -60,8 +60,8 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       clearance:{feasible:false,minDistance:contact.minDistance,minGap:contact.minDistance-params.r_c,
         distanceScope:"First violating pair; not a global minimum or a proof that no feasible seed exists"},
       iterations:0,evaluations:1,history:[],trajectory:{passed:false,protection:"Optimization not started"},
-      settings:{nodesPerLoop:topology.nodesPerLoop,quadratureOrder,maxIterations,innerIterations,memorySize},
-      diagnostics:{elapsedMs:performance.now()-start,reasons:contact.diagnostics,
+      settings:{nodesPerLoop:topology.nodesPerLoop,quadratureOrder,maxIterations,innerIterations,memorySize,stagnationWindow},
+      diagnostics:{elapsedMs:performance.now()-start,forcedMultiplierUpdate:0,reasons:contact.diagnostics,
         interpretation:"Initial geometry is infeasible; returned geometry and metrics are unoptimized"}};
   }
   let acceptedSafeBounds = 0, minimumSafeBound = 1;
@@ -70,7 +70,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
   const optimized = minimizeConstrained({
     x0: Float64Array.from(packFabricCell(initial), value => value/scale), freeIndices,
     energyScale: params.B/scale, maxIterations, innerIterations, maxOuterIterations: 60,
-    initialPenalty: 100, memorySize,
+    initialPenalty: 100, memorySize, stagnationWindow,
     gradientTolerance, constraintTolerance,
     convergenceCheck: ({ x, state, reaction }) => {
       if (Math.max(...Array.from(state.values, Math.abs)) > Math.min(1e-4,constraintTolerance)) return false;
@@ -130,7 +130,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
         scope:"If inactive at all widths, energy and force remain exactly zero at this branch; no claim about other equilibria"} },
     iterations: optimized.iterations, evaluations: optimized.evaluations, history: optimized.history,
     settings: { nodesPerLoop: topology.nodesPerLoop, quadratureOrder, gradientTolerance, constraintTolerance,
-      maxIterations, innerIterations, initialPenalty: 100, memorySize,
+      maxIterations, innerIterations, initialPenalty: 100, memorySize, stagnationWindow,
       initialMultipliers: "Free-direction least-squares physical reaction / energy scale",
       coordinateScale: scale, energyScale: params.B/scale },
     trajectory: { protection: "Swept periodic AABBs and segment-distance Lipschitz bound", acceptedSafeBounds, minimumSafeBound,
@@ -138,6 +138,6 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       minimumEvaluatedDistance, maximumEvaluatedBarrierEnergy,
       conservativeGapLowerBound:.2*(Math.min(minimumEvaluatedDistance,params.d_e)-params.r_c),
       scope:"All trial evaluations, including rejected backtracks; trajectory gap lower bound uses the 0.8 safety factor and full swept-image coverage" },
-    diagnostics: { elapsedMs: performance.now()-start },
+    diagnostics: { elapsedMs: performance.now()-start, forcedMultiplierUpdate: optimized.forcedMultiplierUpdate },
   };
 }

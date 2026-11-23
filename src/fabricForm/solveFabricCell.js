@@ -19,13 +19,17 @@ export function evaluateFabricCell(cell, params, quadratureOrder = 12) {
     bendingEnergy: bending.energy, contact };
 }
 
+export function defaultMemorySize(nodesPerLoop) {
+  return nodesPerLoop <= 32 ? 60 : nodesPerLoop <= 64 ? 180 : 384;
+}
+
 /** Independent T1 entry. Material reference lengths belong to initialCell.topology. */
 export function solveFabricCell({ topology, params, initialCell, lockedDimensions,
   quadratureOrder = 12, maxIterations = 6000, innerIterations = 800, memorySize,
   gradientTolerance = 1e-6, constraintTolerance = 1e-6 }) {
   if (!topology || !params) throw new TypeError("topology and material params are required");
   if (memorySize === undefined) {
-    memorySize = topology.nodesPerLoop <= 32 ? 60 : topology.nodesPerLoop <= 64 ? 180 : 384;
+    memorySize = defaultMemorySize(topology.nodesPerLoop);
   }
   if (!Number.isInteger(quadratureOrder) || quadratureOrder < 2 || quadratureOrder > 64) {
     throw new RangeError("quadratureOrder must be an integer from 2 to 64");

@@ -5,7 +5,7 @@ import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createPlainJerseyTopology } from "../src/fabricForm/fabricFormTopology.js";
 import { createFabricFormInitialGeometry } from "../src/fabricForm/fabricFormInitialGeometry.js";
-import { solveFabricCell, evaluateFabricCell } from "../src/fabricForm/solveFabricCell.js";
+import { solveFabricCell, evaluateFabricCell, defaultMemorySize } from "../src/fabricForm/solveFabricCell.js";
 import { evaluateLengthConstraints, evaluateRodBending } from "../src/fabricForm/rodBending.js";
 import { evaluateConstraintReaction } from "../src/fabricForm/constrainedOptimizer.js";
 import { evaluatePeriodicContact } from "../src/fabricForm/periodicContact.js";
@@ -170,12 +170,13 @@ async function run(stem, input, origin, resume = false, recovered = false) {
   if (resume) {
     assert.ok(priorFiles.length, "Resume requires an accepted state from a saved attempt");
     const prior = read(path.join(output, priorFiles.at(-1)));
-    input = { topology: prior.cell.topology, params: prior.params, initialCell: prior.cell, maxIterations: 24000, innerIterations: 3200 };
+    input = { topology: prior.cell.topology, params: prior.params, initialCell: prior.cell, maxIterations: 24000, innerIterations: 3200,
+      memorySize: defaultMemorySize(prior.cell.topology.nodesPerLoop) };
     origin = { ...prior.closeout?.origin, ...origin, resumeFrom: priorFiles.at(-1), priorElapsedMs: prior.closeout?.cumulativeElapsedMs ?? prior.diagnostics.elapsedMs,
       priorIterations: prior.closeout?.cumulativeIterations ?? prior.iterations,
-      settings: "Continuation from saved accepted state; maxIterations=24000 and innerIterations=3200; memorySize=60 and tolerances unchanged",
+      settings: `Continuation from saved accepted state; maxIterations=24000 and innerIterations=3200; memorySize=${input.memorySize}; tolerances unchanged`,
       mode: stem.includes("cold") ? "CONTINUED_PUBLIC_DEFAULT_COLD_PATH" : "CONTINUED_NESTED_BRANCH",
-      rationale: "Explicit continuation of the same accepted state; unchanged tolerances, memorySize=60 and model",
+      rationale: `Explicit continuation of the same accepted state; memorySize=${input.memorySize}; unchanged tolerances and model`,
       iterationBudget: { maxIterations: 24000, innerIterations: 3200,
         reason: "Uniform continuation budgets approved: 6000-step truncation reset AL progress; subsequent 4mm strict N64 run exhausted 800-step inner limits in every late outer iteration with oscillating residual. More inner iterations use the existing algorithm and accepted state; original defaults retained in prior attempts", perRunTimeLimitMs: 7200000 } };
   }
@@ -276,8 +277,10 @@ async function runCase(key) {
 
 async function runCold(key) {
   const production = old(cases[key]);
-  const result = await run(`case-${key}-cold-N64`, { topology: createPlainJerseyTopology({ nodesPerLoop: 64, loopLengthMm: production.cell.topology.loopLengthMm }), params: production.params },
-    { case: key, mode: "PUBLIC_DEFAULT_COLD", settings: "Only nodesPerLoop=64; no initialCell and all solver defaults unchanged" });
+  const topology = createPlainJerseyTopology({ nodesPerLoop: 64, loopLengthMm: production.cell.topology.loopLengthMm });
+  const input = { topology, params: production.params, memorySize: defaultMemorySize(topology.nodesPerLoop) };
+  const result = await run(`case-${key}-cold-N64`, input,
+    { case: key, mode: "PUBLIC_DEFAULT_COLD", settings: `nodesPerLoop=${topology.nodesPerLoop}; memorySize=${input.memorySize}; no initialCell and other solver defaults unchanged` });
   if (result) write(path.join(output, `case-${key}-cold-summary.json`), { status: result.status, metrics: result.metrics, energy: result.energy,
     branch: identity(result), constraints: result.constraints, equilibrium: result.equilibrium, closeout: result.closeout });
 }
@@ -401,10 +404,10 @@ function report() {
   lines.push("### 失败、续算与成本", "", "以下保留每次独立运行。续算只从同一已接受状态继续，未放宽容差、改变材料或修改模型；首次默认冷起步未收敛的事实不被后续续算覆盖。", "");
   const attemptRows = fs.readdirSync(output).filter(f => /^case-.*-attempt\d+\.json$/.test(f)).sort().map(file => {
     const r = read(path.join(output, file));
-    return [file, r.status, r.optimizerStatus, `${r.settings.maxIterations}/${r.settings.innerIterations}`, r.iterations, sci(r.equilibrium.nodeRatio), sci(r.constraints.maxSegmentStrain), number(r.diagnostics.elapsedMs / 1000, 3), cumulativeSeconds(r.closeout.cumulativeElapsedMs, r.closeout.cumulativeCostIsLowerBound)];
+    return [file, r.status, r.optimizerStatus, `${r.settings.maxIterations}/${r.settings.innerIterations}/${r.settings.memorySize}`, r.iterations, sci(r.equilibrium.nodeRatio), sci(r.constraints.maxSegmentStrain), number(r.diagnostics.elapsedMs / 1000, 3), cumulativeSeconds(r.closeout.cumulativeElapsedMs, r.closeout.cumulativeCostIsLowerBound)];
   });
-  lines.push(table(["结果文件", "状态", "终止原因", "总/内层预算", "本次迭代", "节点残差比", "最大段应变", "本次秒", "该级累计秒"], attemptRows), "",
-    "初次公开cold运行均保持默认maxIterations=6000、innerIterations=800。先因6000次截断重置AL进度，将后续续算总预算统一增至24000；4mm严格N64在此预算下末12层仍全部INNER_LIMIT、内层梯度振荡，随后批准把后续需要的续算内层预算统一增至3200。memorySize=60、原maxOuterIterations=60、容差和模型不变；已收敛级不重跑、运行中变量不改。每次input/settings记录实际采用的6000/800、24000/800或24000/3200，每个单次进程两小时上限。", "",
+  lines.push(table(["结果文件", "状态", "终止原因", "总/内层预算/memorySize", "本次迭代", "节点残差比", "最大段应变", "本次秒", "该级累计秒"], attemptRows), "",
+    "初次公开cold运行均保持默认maxIterations=6000、innerIterations=800。先因6000次截断重置AL进度，将后续续算总预算统一增至24000；4mm严格N64在此预算下末12层仍全部INNER_LIMIT、内层梯度振荡，随后批准把后续需要的续算内层预算统一增至3200。memorySize=60、原maxOuterIterations=60、容差和模型不变；已收敛级不重跑、运行中变量不改。每次input/settings记录实际采用的6000/800、24000/800或24000/3200，每个单次进程两小时上限。自 bf5f25d 起默认 memorySize 按 N 分配，见 settings。", "",
     "计算曾并发执行，环境恢复后的实际同时求解最多4个进程；各记录为对应进程的实际墙钟，包含竞争资源和只读调试开销，不作为独占机器性能基准。环境中断期间无法确认的求解时间未计入已知成本。", "",
     "2.6 mm严格N64的只读检查显示近势垒暂态：检查点距rc仅1.17549e-8 mm，一次固定几何总能量/力求值约43.377秒；反力CHOLESKY约16.7毫秒。五秒CPU采样主要在势垒的径向积分。线性细分初值满秩、间隙可行、势垒不激活，但曲率集中和较大初始反力乘子可能引发大应变暂态。此证据定位数值代价，不证明模型平衡错误或实现正确性bug，未因此修改初罚项、积分公式或初值。只读检查暂停及采样开销保留在求解墙钟耗时中，详见readonly-profiling-note.json及检查点文件。", "",
     "raw总梯度的相对∞范数差不是形态误差的严格上界；本次同时报告q24约束反力投影后的节点/格矢残差，以支持积分精度诊断。分支诊断保留原始固定XY投影穿套序列与周期切缝循环归一结果，并结合连续非局部间隙保护、能量及剪切；投影穿套字不是完整拓扑不变量，也不单独证明全局唯一分支。", "",
@@ -467,6 +470,8 @@ else if (mode === "--resume") {
   const values = Object.values(checkpoint.x).map(v => v * prepared.input.topology.loopLengthMm);
   assert.deepEqual([...prepared.input.initialCell.positions.flat(), prepared.input.initialCell.W, prepared.input.initialCell.H, prepared.input.initialCell.S], values);
   assert.equal(prepared.input.maxIterations, 24000); assert.equal(prepared.input.innerIterations, 3200);
+  if (prepared.input.memorySize === undefined) prepared.input.memorySize = defaultMemorySize(prepared.input.topology.nodesPerLoop);
+  assert.equal(prepared.input.memorySize, defaultMemorySize(prepared.input.topology.nodesPerLoop));
   prepared.origin.checkpointRecoveryVerification = path.basename(verificationFile);
   prepared.origin.mode = "CONTINUED_VERIFIED_ACCEPTED_CHECKPOINT";
   prepared.origin.resumptionNote = "Environment interrupted the original process; accepted coordinates/material state recovered exactly, optimizer internal history restarts via the existing public entry";
@@ -477,11 +482,12 @@ else if (mode === "--resume") {
   assert.equal(interruption.knownCheckpoint, null, "Use verified accepted-state recovery when a checkpoint exists");
   assert.ok(previousInput.input.initialCell, "This mode restarts the original refinement input, not a cold path");
   const stem = path.basename(argument).replace(/-attempt\d+-input\.json$/, "");
-  const input = { ...previousInput.input, maxIterations: 24000, innerIterations: 3200 };
+  const input = { ...previousInput.input, maxIterations: 24000, innerIterations: 3200,
+    memorySize: previousInput.input.memorySize === undefined ? defaultMemorySize(previousInput.input.topology.nodesPerLoop) : previousInput.input.memorySize };
   await run(stem, input, { ...previousInput.origin, sourceInput: path.basename(argument),
     mode: "RESTART_ORIGINAL_INPUT_AFTER_ENVIRONMENT_INTERRUPTION", priorElapsedMs: 0, priorIterations: 0,
     priorElapsedIsUnknown: true, resumptionNote: "No accepted checkpoint exists; this is a new attempt from the identical original N32-refined geometry/material input, not restoration of the interrupted optimizer state",
-    settings: "Uniform continuation budget maxIterations=24000, innerIterations=3200; model/material/memory/tolerances unchanged" }, false, true);
+    settings: `Uniform continuation budget maxIterations=24000, innerIterations=3200; memorySize=${input.memorySize}; model/material/tolerances unchanged` }, false, true);
 } else if (mode === "--self-check") {
   const source = old("reference.json"), before = JSON.stringify(source.cell);
   const rows = [];

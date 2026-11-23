@@ -1,0 +1,12 @@
+
+> knitscape@1.0.0 validate:fabric-form-solver-math
+> node scripts/validate-fabric-form-solver-math.mjs
+
+PASS fabric form topology
+PASS fabric form bending
+PASS fabric form contact
+PASS fabric form periodic
+PASS fabric form initialization
+PASS fabric form optimizer
+PASS fabric form metrics
+Fabric form math completed in 5.56 s; full equilibrium/branches are a separate run.

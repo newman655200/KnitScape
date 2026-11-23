@@ -198,7 +198,95 @@ export async function runPeriodicContactChecks() {
     close(measured.energy, brute.energy, 2e-8);
   }
   results.push({ name: "independent ordered-pair brute force validates deduplication, shear image bounds and unfolded neighbors", maxBruteEnergyError });
+  results.push(await runContactDiagnosticChecks());
   return results;
+}
+
+async function runContactDiagnosticChecks() {
+  const { diagnosePeriodicContact, evaluatePeriodicContact } = await import("../../src/fabricForm/periodicContact.js");
+  assert.equal(typeof diagnosePeriodicContact, "function", "Post-solve structural contact diagnostics must exist.");
+  const params = createFabricFormParams();
+  // Five short segments with independently known distances. Two wales and two
+  // courses are inside the cell, so image p/q alone cannot classify neighbors.
+  const starts = [[0,0,0], [.15,0,0], [0,.16,0], [.15,.16,0], [.03,0,.3]];
+  const cell = { W: 1, H: 1, S: 0, positions: starts.flatMap(a => [a, [a[0]+.01,a[1],a[2]]]),
+    topology: { m: 2, n: 2, nodesPerLoop: 8,
+      yarns: [{ id: 0, feed: 0, materialLength: 4 }, { id: 1, feed: 1, materialLength: 4 }],
+      edges: starts.map((_, i) => ({ id: 100+i, from: 2*i, to: 2*i+1, p: 0, q: 0,
+        yarnId: i === 2 || i === 3 ? 1 : 0, order: [0,8,0,8,4][i],
+        materialStart: [0,2,0,2,1][i], restLength: .02 })) } };
+  function freeze(value) {
+    if (value && typeof value === "object") { Object.values(value).forEach(freeze); Object.freeze(value); }
+    return value;
+  }
+  const original = structuredClone({ cell, params });
+  const evaluated = evaluatePeriodicContact(cell, params);
+  freeze(cell); freeze(params);
+  const diagnostic = diagnosePeriodicContact(cell, params);
+  assert.deepEqual({ cell, params }, original, "diagnostics cannot mutate geometry, topology or material inputs");
+  assert.deepEqual(evaluatePeriodicContact(cell, params), evaluated, "diagnostics cannot alter objective/gradient output");
+  assert.equal(diagnostic.available, true);
+  assert.equal(diagnostic.activePairs, 4);
+  assert.equal(diagnostic.groups.waleSpacing.activePairs, 2);
+  assert.equal(diagnostic.groups.courseSpacing.activePairs, 2);
+  const expected = { waleSpacing: .14, courseSpacing: .16,
+    diagonal: Math.hypot(.14,.16), sameLoop: Math.hypot(.02,.3) };
+  for (const [name, distance] of Object.entries(expected)) {
+    const group = diagnostic.groups[name];
+    close(group.minDistanceMm, distance, 1e-12);
+    close(group.minDistanceOverDe, distance/params.d_e, 1e-12);
+    assert.equal(group.minimumExact, true);
+    const pair = group.minimum;
+    assert.equal(pair.p, 0); assert.equal(pair.q, 0);
+    assert.ok(pair.edgeA >= 100 && pair.edgeB >= 100, "edge IDs are retained independently of array indices");
+    assert.ok(pair.s >= 0 && pair.s <= 1 && pair.t >= 0 && pair.t <= 1);
+    close(Math.hypot(...pair.pointA.map((x,k) => x-pair.pointB[k])), distance, 1e-12);
+    assert.equal(pair.deltaWale !== 0, name === "waleSpacing" || name === "diagonal");
+    assert.equal(pair.deltaCourse !== 0, name === "courseSpacing" || name === "diagonal");
+    assert.equal(group.multiplierSum, null); assert.equal(group.multiplierMax, null);
+  }
+  close(diagnostic.spacing.wale.periodMm, .5); close(diagnostic.spacing.course.periodMm, .5);
+  assert.equal(diagnostic.spacing.wale.densityMetric, "waleDensityPerCm");
+  assert.equal(diagnostic.spacing.course.densityMetric, "courseDensityPerCm");
+  const expectedForces = [[0,1],[2,3],[0,2],[1,3]].map(([a,b]) => {
+    const force = integrateSegmentContact(cell.positions[2*a],cell.positions[2*a+1],
+      cell.positions[2*b],cell.positions[2*b+1],params);
+    return Math.hypot(...force.gradient[0].map((x,k) => x+force.gradient[1][k]));
+  });
+  close(diagnostic.contactForceSumN, expectedForces.reduce((a,b) => a+b,0), 1e-12);
+  close(diagnostic.contactForceMaxN, Math.max(...expectedForces), 1e-12);
+  assert.equal(diagnostic.barrierForceSumN, 0);
+  assert.equal(diagnostic.constantDiameterParameters, true);
+  assert.equal(diagnostic.independentlySolvedDiameter, null);
+  for (const key of ["d_e","d_s","r_c"]) {
+    assert.equal(diagnostic.diameterParameters[key].value, params[key]);
+    assert.deepEqual(diagnostic.diameterParameters[key].provenance, params.provenance[key]);
+  }
+
+  const boundary = separateSegments([[0,0,0],[.01,0,0],[0,params.d_e+5e-10,0],[.01,params.d_e+5e-10,0]]);
+  Object.assign(boundary.topology, { m: 1, n: 2, nodesPerLoop: 8 });
+  boundary.topology.yarns.forEach((yarn,i) => { yarn.feed = i; });
+  boundary.topology.edges.forEach(edge => { edge.order = 0; });
+  const touching = diagnosePeriodicContact(boundary, params);
+  assert.equal(touching.activePairs, 1, "diagnostic tolerance includes the 5e-10 mm gap without changing contact support");
+  assert.equal(touching.contactForceSumN, 0);
+  assert.equal(touching.groups.sameLoop.minDistanceMm, null);
+  assert.equal(touching.groups.sameLoop.minimumExact, false);
+  assert.equal(touching.groups.sameLoop.minimumLowerBoundMm, 4);
+  boundary.positions[2][1] = boundary.positions[3][1] = params.d_e+2e-9;
+  assert.equal(diagnosePeriodicContact(boundary, params).activePairs, 0);
+
+  const topology = createPlainJerseyTopology({ nodesPerLoop: 8, loopLengthMm: .8 });
+  const base = { W: .7, H: .108, S: .035, topology,
+    positions: Array.from({ length: 8 }, (_, i) => [.7*i/8,.01*Math.sin(2*Math.PI*i/8),.025*Math.cos(2*Math.PI*i/8)]) };
+  const repeated = replicatePeriodicCell(base, 2, 2);
+  const copies = diagnosePeriodicContact(repeated, params);
+  assert.equal(copies.activePairs, evaluatePeriodicContact(repeated, params).activePairs,
+    "expanded diagnostic range must preserve the 2*d_e material exclusion");
+  assert.ok(copies.barrierForceSumN > 0 && copies.barrierForceMaxN > 0);
+  assert.ok(Object.values(copies.groups).some(group => group.minimum?.p || group.minimum?.q),
+    "periodic-image minima retain image offsets");
+  return { name: "post-solve structural contact diagnostics: interior m>1 neighbors, inactive minima, force units, tolerance and nonmutation" };
 }
 
 /** Full acceptance only: scalar straight-line reference, never builds a large solver mesh. */

@@ -1,0 +1,23 @@
+
+> knitscape@1.0.0 validate:fabric-form-solver-math
+> node scripts/validate-fabric-form-solver-math.mjs
+
+PASS fabric form topology
+PASS fabric form bending
+PASS fabric form contact
+node:internal/modules/run_main:129
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Post-solve structural contact diagnostics must exist.
+    at runContactDiagnosticChecks (file:///C:/Users/liuchen/Desktop/KnitScape/scripts/lib/fabricFormPeriodicContactChecks.mjs:207:10)
+    at async runPeriodicContactChecks (file:///C:/Users/liuchen/Desktop/KnitScape/scripts/lib/fabricFormPeriodicContactChecks.mjs:201:16)
+    at async file:///C:/Users/liuchen/Desktop/KnitScape/scripts/validate-fabric-form-solver-math.mjs:13:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'undefined',
+  expected: 'function',
+  operator: 'strictEqual'
+}
+
+Node.js v20.17.0

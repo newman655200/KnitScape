@@ -1,6 +1,6 @@
 import { createFabricFormInitialGeometry } from "./fabricFormInitialGeometry.js";
 import { evaluateRodBending, evaluateLengthConstraints } from "./rodBending.js";
-import { evaluatePeriodicContact, safePeriodicStep } from "./periodicContact.js";
+import { evaluatePeriodicContact, safePeriodicStep, diagnosePeriodicContact } from "./periodicContact.js";
 import { minimizeConstrained, evaluateConstraintReaction } from "./constrainedOptimizer.js";
 import { fabricFormMetrics } from "./fabricFormMetrics.js";
 
@@ -62,6 +62,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       iterations:0,evaluations:1,history:[],trajectory:{passed:false,protection:"Optimization not started"},
       settings:{nodesPerLoop:topology.nodesPerLoop,quadratureOrder,maxIterations,innerIterations,memorySize,stagnationWindow},
       diagnostics:{elapsedMs:performance.now()-start,forcedMultiplierUpdate:0,reasons:contact.diagnostics,
+        contact:{available:false,reason:"Initial geometry is infeasible; no optimized final geometry exists"},
         interpretation:"Initial geometry is infeasible; returned geometry and metrics are unoptimized"}};
   }
   let acceptedSafeBounds = 0, minimumSafeBound = 1;
@@ -138,6 +139,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       minimumEvaluatedDistance, maximumEvaluatedBarrierEnergy,
       conservativeGapLowerBound:.2*(Math.min(minimumEvaluatedDistance,params.d_e)-params.r_c),
       scope:"All trial evaluations, including rejected backtracks; trajectory gap lower bound uses the 0.8 safety factor and full swept-image coverage" },
-    diagnostics: { elapsedMs: performance.now()-start, forcedMultiplierUpdate: optimized.forcedMultiplierUpdate },
+    diagnostics: { elapsedMs: performance.now()-start, forcedMultiplierUpdate: optimized.forcedMultiplierUpdate,
+      contact: diagnosePeriodicContact(cell, params, { quadratureOrder }) },
   };
 }

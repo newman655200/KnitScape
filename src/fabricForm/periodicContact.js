@@ -59,8 +59,7 @@ function visitGrid({ low, high }, callback) {
 }
 
 /** Broad phase for the entire linear motion, not only the final configuration. */
-function candidatePairs(cell, params, finalCell = cell) {
-  const range = params.d_e;
+function candidatePairs(cell, params, finalCell = cell, range = params.d_e) {
   const entries = cell.topology.edges.map((edge, index) => {
     const points = edgeEndpoints(cell, edge);
     const finalPoints = edgeEndpoints(finalCell, edge);
@@ -104,7 +103,7 @@ function candidatePairs(cell, params, finalCell = cell) {
           if (index > target.index || (index === target.index && !(q > 0 || (q === 0 && p > 0)))) continue;
           const origin = entries[index];
           if (!boxesNear(origin.box, box, range) ||
-              isLocalMaterialPair(cell.topology, origin.edge, target.edge, p, q, 2 * range)) continue;
+              isLocalMaterialPair(cell.topology, origin.edge, target.edge, p, q, 2 * params.d_e)) continue;
           candidateCount++;
           if (callback(origin, target, p, q, points) === false) return candidateCount;
         }
@@ -157,6 +156,88 @@ export function evaluatePeriodicContact(cell, params, { quadratureOrder = 12 } =
   } else {
     gradient.fill(NaN);
     barrierGradient.fill(NaN);
+  }
+  return result;
+}
+
+/** Read-only final-geometry diagnostics; never part of objective/CCD evaluation. */
+export function diagnosePeriodicContact(cell, params, { quadratureOrder = 12 } = {}) {
+  validate(cell, params);
+  if (!Number.isInteger(quadratureOrder) || quadratureOrder < 2 || quadratureOrder > 64) {
+    throw new RangeError("quadratureOrder must be an integer from 2 to 64.");
+  }
+  const { m, n, nodesPerLoop } = cell.topology;
+  const yarns = new Map(cell.topology.yarns.map(yarn => [yarn.id, yarn]));
+  if (![m, n, nodesPerLoop].every(value => Number.isInteger(value) && value > 0) ||
+      cell.topology.edges.some(edge => !Number.isInteger(edge.order) || edge.order < 0 ||
+        !Number.isInteger(yarns.get(edge.yarnId)?.feed))) {
+    throw new RangeError("Structural diagnostics require m/n, nodesPerLoop, edge order and yarn feed.");
+  }
+  const activeToleranceMm = 1e-9;
+  // Include tolerance-only pairs even when d_e is larger than both periods.
+  const searchRangeMm = Math.max(cell.W, cell.H, params.d_e + activeToleranceMm);
+  const candidates = candidatePairs(cell, params, cell, searchRangeMm);
+  const summary = () => ({ minDistanceMm: null, minDistanceOverDe: null, minimum: null,
+    minimumExact: false, minimumLowerBoundMm: searchRangeMm, activePairs: 0,
+    contactForceSumN: 0, contactForceMaxN: 0, barrierForceSumN: 0, barrierForceMaxN: 0,
+    multiplierSum: null, multiplierMax: null });
+  const groups = Object.fromEntries(["waleSpacing", "courseSpacing", "diagonal", "sameLoop"]
+    .map(name => [name, summary()]));
+  const result = { available: true, feasible: true, ...summary(), groups,
+    units: { distance: "mm", force: "N" }, quadratureOrder, searchRangeMm,
+    localExclusionLengthMm: 2 * params.d_e, activeToleranceMm,
+    activeDefinition: "segmentDistance - d_e <= 1e-9 mm; diagnostic tolerance does not extend energy support",
+    distanceScope: "All eligible periodic pairs within searchRangeMm; null minima are bounded below by that range",
+    grouping: "deltaWale=floor(orderB/N)-floor(orderA/N)+p*m; deltaCourse=feedB-feedA+q*n",
+    spacing: { wale: { periodMm: cell.W/m, densityMetric: "waleDensityPerCm" },
+      course: { periodMm: cell.H/n, densityMetric: "courseDensityPerCm" } },
+    multiplierReason: "No contact multipliers exist: contact is a soft double-line energy plus barrier; AL multipliers constrain segment lengths only",
+    forceDefinition: "Sum/max of each active pair's norm(gradient[0]+gradient[1]); contact and barrier reported separately in N, not multipliers or stress",
+    pairCountScope: "Unique segment/image pairs per periodic cell; counts and sums depend on discretization and cell size",
+    diameterParameters: Object.fromEntries(["d_e", "d_s", "r_c"].map(key => [key,
+      { value: params[key], unit: "mm", provenance: structuredClone(params.provenance?.[key] ?? null) }])),
+    constantDiameterParameters: true, independentlySolvedDiameter: null,
+    diameterInterpretation: "Fixed material parameters throughout the solve; centerline gaps do not define an independent solved or measured diameter",
+    imageBounds: candidates.imageBounds };
+  const at = (points, fraction) => points[0].map((x, k) => x + fraction*(points[1][k]-x));
+  result.candidatePairs = candidates.forEach((origin, target, p, q, points) => {
+    const closest = segmentDistance(...origin.points, ...points);
+    if (closest.distance > searchRangeMm) return;
+    const deltaWale = Math.floor(target.edge.order/nodesPerLoop) - Math.floor(origin.edge.order/nodesPerLoop) + p*m;
+    const deltaCourse = yarns.get(target.edge.yarnId).feed - yarns.get(origin.edge.yarnId).feed + q*n;
+    const name = deltaWale !== 0 ? (deltaCourse !== 0 ? "diagonal" : "waleSpacing") :
+      (deltaCourse !== 0 ? "courseSpacing" : "sameLoop");
+    const summaries = [result, groups[name]];
+    for (const group of summaries) {
+      if (group.minDistanceMm !== null && group.minDistanceMm <= closest.distance) continue;
+      group.minDistanceMm = closest.distance;
+      group.minDistanceOverDe = closest.distance/params.d_e;
+      group.minimumExact = true;
+      group.minimumLowerBoundMm = closest.distance;
+      group.minimum = { edgeA: origin.edge.id, edgeB: target.edge.id,
+        edgeIndexA: origin.index, edgeIndexB: target.index, p, q, s: closest.s, t: closest.t,
+        pointA: at(origin.points, closest.s), pointB: at(points, closest.t), deltaWale, deltaCourse };
+    }
+    if (closest.distance-params.d_e > activeToleranceMm) return;
+    for (const group of summaries) group.activePairs++;
+    if (closest.distance <= params.r_c) { result.feasible = false; return; }
+    const contact = integrateSegmentContact(...origin.points, ...points, params, quadratureOrder);
+    const barrier = integrateSegmentBarrier(...origin.points, ...points, params, quadratureOrder);
+    const force = integral => Math.hypot(...integral.gradient[0].map((x, k) => x+integral.gradient[1][k]));
+    const contactForce = force(contact), barrierForce = force(barrier);
+    for (const group of summaries) {
+      group.contactForceSumN += contactForce;
+      group.contactForceMaxN = Math.max(group.contactForceMaxN, contactForce);
+      group.barrierForceSumN += barrierForce;
+      group.barrierForceMaxN = Math.max(group.barrierForceMaxN, barrierForce);
+    }
+  });
+  if (!result.feasible) {
+    result.available = false;
+    result.reason = "Geometry violates r_c; finite force statistics are unavailable";
+    for (const group of [result, ...Object.values(groups)]) {
+      group.contactForceSumN = group.contactForceMaxN = group.barrierForceSumN = group.barrierForceMaxN = null;
+    }
   }
   return result;
 }

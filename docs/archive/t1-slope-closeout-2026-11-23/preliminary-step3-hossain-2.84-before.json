@@ -1,0 +1,2509 @@
+{
+  "status": "CONVERGED",
+  "optimizerStatus": "CONVERGED",
+  "mode": "FREE",
+  "cell": {
+    "positions": [
+      [
+        -0.22536313374786218,
+        -0.4148026417418302,
+        0.08749513837787191
+      ],
+      [
+        -0.1925897916662065,
+        -0.39206453372137795,
+        0.06807803315491283
+      ],
+      [
+        -0.16552193502532822,
+        -0.36515025939215534,
+        0.045477813091750655
+      ],
+      [
+        -0.14524858070069718,
+        -0.33454808228796223,
+        0.020575901632367083
+      ],
+      [
+        -0.1323969443251267,
+        -0.3009270626174493,
+        -0.005371680258248041
+      ],
+      [
+        -0.1270209927174099,
+        -0.2650526546595997,
+        -0.03091707422128507
+      ],
+      [
+        -0.1286928896158157,
+        -0.22761624002999908,
+        -0.05468918289304802
+      ],
+      [
+        -0.1367771934228201,
+        -0.1892703962543405,
+        -0.07550165272526231
+      ],
+      [
+        -0.15039771657837536,
+        -0.15059374294171893,
+        -0.09250829892406062
+      ],
+      [
+        -0.1683397990595886,
+        -0.11205573279918166,
+        -0.10527395335547676
+      ],
+      [
+        -0.18928093310363725,
+        -0.07382899639435364,
+        -0.11373875121039305
+      ],
+      [
+        -0.21195560594325585,
+        -0.03588957888175621,
+        -0.11794548308320907
+      ],
+      [
+        -0.235195855273479,
+        0.0019405587408185807,
+        -0.11793414299544655
+      ],
+      [
+        -0.257865703944671,
+        0.039883257128634414,
+        -0.11370426073915554
+      ],
+      [
+        -0.2787869096142198,
+        0.07809788651348047,
+        -0.10522002109526069
+      ],
+      [
+        -0.29671282758357287,
+        0.11664258353936369,
+        -0.09243045612686482
+      ],
+      [
+        -0.310302625607087,
+        0.15530205193070748,
+        -0.07541081472276358
+      ],
+      [
+        -0.3183588603363373,
+        0.19364950617269536,
+        -0.05457917739390401
+      ],
+      [
+        -0.31999816827383226,
+        0.23107084637711406,
+        -0.030801467798407558
+      ],
+      [
+        -0.3145875324407854,
+        0.26693965728786556,
+        -0.0052485093572374256
+      ],
+      [
+        -0.30170533080461776,
+        0.3005383437642817,
+        0.020689520115941714
+      ],
+      [
+        -0.281399014516546,
+        0.33112715529456577,
+        0.045584985103400526
+      ],
+      [
+        -0.25430059007367645,
+        0.3580259277693102,
+        0.06817428535820245
+      ],
+      [
+        -0.22150631293260553,
+        0.3807434827954693,
+        0.08757450303716587
+      ],
+      [
+        -0.18428921209087312,
+        0.3990529782041703,
+        0.10334223486786463
+      ],
+      [
+        -0.14384967194290427,
+        0.4128774506536111,
+        0.11526970449092645
+      ],
+      [
+        -0.10119279964947187,
+        0.4221355189168168,
+        0.12325729319716691
+      ],
+      [
+        -0.057242888423692184,
+        0.4267698827503329,
+        0.12725556114827125
+      ],
+      [
+        -0.012868851798700637,
+        0.4267590495146889,
+        0.12724596296005342
+      ],
+      [
+        0.031077717803037468,
+        0.4221029508471713,
+        0.12322843809120648
+      ],
+      [
+        0.07372213004693424,
+        0.41282449774515384,
+        0.11522275255949459
+      ],
+      [
+        0.11415143289457752,
+        0.3989783553099858,
+        0.1032760699485744
+      ],
+      [
+        0.15134105110025642,
+        0.38065365609448254,
+        0.08749513663570303
+      ],
+      [
+        0.1841143935346824,
+        0.35791554808338677,
+        0.06807803159770986
+      ],
+      [
+        0.2111822505344391,
+        0.3310012736067186,
+        0.04547781173111566
+      ],
+      [
+        0.23145560510830562,
+        0.300399096271451,
+        0.020575900495680005
+      ],
+      [
+        0.2443072416227622,
+        0.2667780761899985,
+        -0.005371681199903197
+      ],
+      [
+        0.24968319331113753,
+        0.23090366778243013,
+        -0.030917074777479948
+      ],
+      [
+        0.24801129643362757,
+        0.1934672526360032,
+        -0.05468918302846252
+      ],
+      [
+        0.2399269925390946,
+        0.15512140848652844,
+        -0.07550165251592217
+      ],
+      [
+        0.2263064693114198,
+        0.11644475491336319,
+        -0.0925082985493673
+      ],
+      [
+        0.2083643869369102,
+        0.07790674456081696,
+        -0.1052739530532624
+      ],
+      [
+        0.1874232531422691,
+        0.039680007991364966,
+        -0.11373875132530505
+      ],
+      [
+        0.1647485805434574,
+        0.001740590247375249,
+        -0.1179454838848544
+      ],
+      [
+        0.1415083314592931,
+        -0.03608954771669604,
+        -0.11793414441834825
+      ],
+      [
+        0.11883848292315993,
+        -0.07403224647493152,
+        -0.11370426249541274
+      ],
+      [
+        0.09791727717785079,
+        -0.11224687604700657,
+        -0.105220023008532
+      ],
+      [
+        0.0799913588816783,
+        -0.15079157323612016,
+        -0.09243045813034478
+      ],
+      [
+        0.06640156060593927,
+        -0.18945104170512386,
+        -0.07541081677120805
+      ],
+      [
+        0.05834532570849481,
+        -0.22779849602140237,
+        -0.0545791792468558
+      ],
+      [
+        0.056706017682009516,
+        -0.2652198360588044,
+        -0.0308014692195056
+      ],
+      [
+        0.06211665351465455,
+        -0.3010886466361767,
+        -0.005248510145334702
+      ],
+      [
+        0.07499885533413099,
+        -0.3346873326654689,
+        0.02068951993855169
+      ],
+      [
+        0.09530517189995714,
+        -0.3652761437357417,
+        0.04558498537590433
+      ],
+      [
+        0.12240359662691842,
+        -0.3921749157538917,
+        0.06817428595657651
+      ],
+      [
+        0.1551978739742168,
+        -0.41489247026430426,
+        0.08757450401291278
+      ],
+      [
+        0.1924149749434176,
+        -0.43320196518614773,
+        0.10334223642781673
+      ],
+      [
+        0.23285451522195688,
+        -0.44702643727000674,
+        0.1152697066891178
+      ],
+      [
+        0.27551138763966365,
+        -0.4562845052301802,
+        0.1232572957866692
+      ],
+      [
+        0.3194612989411375,
+        -0.4609188687636183,
+        0.1272555638301081
+      ],
+      [
+        0.3638353356285509,
+        -0.4609080353606789,
+        0.12724596564287943
+      ],
+      [
+        0.40778190521609126,
+        -0.45625193669887665,
+        0.12322844072539374
+      ],
+      [
+        0.45042631750672474,
+        -0.44697348362642336,
+        0.11522275500829424
+      ],
+      [
+        0.490855620303724,
+        -0.4331273411182777,
+        0.10327607207652482
+      ]
+    ],
+    "W": 0.7534083721886886,
+    "H": 0.5024151437792043,
+    "S": 2.414423060127245e-10,
+    "topology": {
+      "m": 1,
+      "n": 1,
+      "nodesPerLoop": 64,
+      "loopLengthMm": 2.84,
+      "nodeCount": 64,
+      "operations": [
+        [
+          "K"
+        ]
+      ],
+      "yarns": [
+        {
+          "id": 0,
+          "feed": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ],
+          "materialLength": 2.84
+        }
+      ],
+      "edges": [
+        {
+          "id": 0,
+          "from": 0,
+          "to": 1,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 0,
+          "restLength": 0.0443636964735736,
+          "materialStart": 0
+        },
+        {
+          "id": 1,
+          "from": 1,
+          "to": 2,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 1,
+          "restLength": 0.044360083413358696,
+          "materialStart": 0.0443636964735736
+        },
+        {
+          "id": 2,
+          "from": 2,
+          "to": 3,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 2,
+          "restLength": 0.04435771934866987,
+          "materialStart": 0.0887237798869323
+        },
+        {
+          "id": 3,
+          "from": 3,
+          "to": 4,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 3,
+          "restLength": 0.04437132421767282,
+          "materialStart": 0.13308149923560217
+        },
+        {
+          "id": 4,
+          "from": 4,
+          "to": 5,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 4,
+          "restLength": 0.04436711585714307,
+          "materialStart": 0.177452823453275
+        },
+        {
+          "id": 5,
+          "from": 5,
+          "to": 6,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 5,
+          "restLength": 0.044377849885193756,
+          "materialStart": 0.22181993931041807
+        },
+        {
+          "id": 6,
+          "from": 6,
+          "to": 7,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 6,
+          "restLength": 0.04437249881232322,
+          "materialStart": 0.2661977891956118
+        },
+        {
+          "id": 7,
+          "from": 7,
+          "to": 8,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 7,
+          "restLength": 0.04439175640963836,
+          "materialStart": 0.31057028800793507
+        },
+        {
+          "id": 8,
+          "from": 8,
+          "to": 9,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 8,
+          "restLength": 0.0443853391283606,
+          "materialStart": 0.35496204441757345
+        },
+        {
+          "id": 9,
+          "from": 9,
+          "to": 10,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 9,
+          "restLength": 0.04440120819303795,
+          "materialStart": 0.3993473835459341
+        },
+        {
+          "id": 10,
+          "from": 10,
+          "to": 11,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 10,
+          "restLength": 0.044398612633412396,
+          "materialStart": 0.443748591738972
+        },
+        {
+          "id": 11,
+          "from": 11,
+          "to": 12,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 11,
+          "restLength": 0.04439852083583888,
+          "materialStart": 0.48814720437238435
+        },
+        {
+          "id": 12,
+          "from": 12,
+          "to": 13,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 12,
+          "restLength": 0.04440115231995918,
+          "materialStart": 0.5325457252082233
+        },
+        {
+          "id": 13,
+          "from": 13,
+          "to": 14,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 13,
+          "restLength": 0.04438509986850262,
+          "materialStart": 0.5769468775281824
+        },
+        {
+          "id": 14,
+          "from": 14,
+          "to": 15,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 14,
+          "restLength": 0.044391501055390394,
+          "materialStart": 0.6213319773966851
+        },
+        {
+          "id": 15,
+          "from": 15,
+          "to": 16,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 15,
+          "restLength": 0.044372350316842016,
+          "materialStart": 0.6657234784520755
+        },
+        {
+          "id": 16,
+          "from": 16,
+          "to": 17,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 16,
+          "restLength": 0.044377778988787475,
+          "materialStart": 0.7100958287689175
+        },
+        {
+          "id": 17,
+          "from": 17,
+          "to": 18,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 17,
+          "restLength": 0.044366919161879,
+          "materialStart": 0.754473607757705
+        },
+        {
+          "id": 18,
+          "from": 18,
+          "to": 19,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 18,
+          "restLength": 0.04437116724055519,
+          "materialStart": 0.798840526919584
+        },
+        {
+          "id": 19,
+          "from": 19,
+          "to": 20,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 19,
+          "restLength": 0.04435768678138397,
+          "materialStart": 0.8432116941601392
+        },
+        {
+          "id": 20,
+          "from": 20,
+          "to": 21,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 20,
+          "restLength": 0.04435996111906738,
+          "materialStart": 0.8875693809415232
+        },
+        {
+          "id": 21,
+          "from": 21,
+          "to": 22,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 21,
+          "restLength": 0.04436378099946995,
+          "materialStart": 0.9319293420605905
+        },
+        {
+          "id": 22,
+          "from": 22,
+          "to": 23,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 22,
+          "restLength": 0.04436124793073376,
+          "materialStart": 0.9762931230600606
+        },
+        {
+          "id": 23,
+          "from": 23,
+          "to": 24,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 23,
+          "restLength": 0.044373095066919645,
+          "materialStart": 1.0206543709907943
+        },
+        {
+          "id": 24,
+          "from": 24,
+          "to": 25,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 24,
+          "restLength": 0.04437045286022398,
+          "materialStart": 1.0650274660577141
+        },
+        {
+          "id": 25,
+          "from": 25,
+          "to": 26,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 25,
+          "restLength": 0.04437479194255705,
+          "materialStart": 1.109397918917938
+        },
+        {
+          "id": 26,
+          "from": 26,
+          "to": 27,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 26,
+          "restLength": 0.044374070966271266,
+          "materialStart": 1.1537727108604952
+        },
+        {
+          "id": 27,
+          "from": 27,
+          "to": 28,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 27,
+          "restLength": 0.04437403901662838,
+          "materialStart": 1.1981467818267664
+        },
+        {
+          "id": 28,
+          "from": 28,
+          "to": 29,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 28,
+          "restLength": 0.04437477597454975,
+          "materialStart": 1.2425208208433949
+        },
+        {
+          "id": 29,
+          "from": 29,
+          "to": 30,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 29,
+          "restLength": 0.044370334651913236,
+          "materialStart": 1.2868955968179447
+        },
+        {
+          "id": 30,
+          "from": 30,
+          "to": 31,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 30,
+          "restLength": 0.04437304731011989,
+          "materialStart": 1.3312659314698578
+        },
+        {
+          "id": 31,
+          "from": 31,
+          "to": 32,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 31,
+          "restLength": 0.044361021212121675,
+          "materialStart": 1.3756389787799777
+        },
+        {
+          "id": 32,
+          "from": 32,
+          "to": 33,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 32,
+          "restLength": 0.04436369647735755,
+          "materialStart": 1.4199999999920994
+        },
+        {
+          "id": 33,
+          "from": 33,
+          "to": 34,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 33,
+          "restLength": 0.044360083404166306,
+          "materialStart": 1.4643636964694569
+        },
+        {
+          "id": 34,
+          "from": 34,
+          "to": 35,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 34,
+          "restLength": 0.04435771934488735,
+          "materialStart": 1.5087237798736233
+        },
+        {
+          "id": 35,
+          "from": 35,
+          "to": 36,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 35,
+          "restLength": 0.044371324214366695,
+          "materialStart": 1.5530814992185107
+        },
+        {
+          "id": 36,
+          "from": 36,
+          "to": 37,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 36,
+          "restLength": 0.0443671158550232,
+          "materialStart": 1.5974528234328775
+        },
+        {
+          "id": 37,
+          "from": 37,
+          "to": 38,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 37,
+          "restLength": 0.044377849886022405,
+          "materialStart": 1.6418199392879007
+        },
+        {
+          "id": 38,
+          "from": 38,
+          "to": 39,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 38,
+          "restLength": 0.04437249881389679,
+          "materialStart": 1.686197789173923
+        },
+        {
+          "id": 39,
+          "from": 39,
+          "to": 40,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 39,
+          "restLength": 0.04439175641359877,
+          "materialStart": 1.7305702879878198
+        },
+        {
+          "id": 40,
+          "from": 40,
+          "to": 41,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 40,
+          "restLength": 0.044385339136400165,
+          "materialStart": 1.7749620444014187
+        },
+        {
+          "id": 41,
+          "from": 41,
+          "to": 42,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 41,
+          "restLength": 0.04440120819074646,
+          "materialStart": 1.8193473835378189
+        },
+        {
+          "id": 42,
+          "from": 42,
+          "to": 43,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 42,
+          "restLength": 0.044398612638830576,
+          "materialStart": 1.8637485917285652
+        },
+        {
+          "id": 43,
+          "from": 43,
+          "to": 44,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 43,
+          "restLength": 0.044398520828256564,
+          "materialStart": 1.908147204367396
+        },
+        {
+          "id": 44,
+          "from": 44,
+          "to": 45,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 44,
+          "restLength": 0.044401152318168775,
+          "materialStart": 1.9525457251956526
+        },
+        {
+          "id": 45,
+          "from": 45,
+          "to": 46,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 45,
+          "restLength": 0.044385099854290365,
+          "materialStart": 1.9969468775138213
+        },
+        {
+          "id": 46,
+          "from": 46,
+          "to": 47,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 46,
+          "restLength": 0.04439150105287611,
+          "materialStart": 2.041331977368112
+        },
+        {
+          "id": 47,
+          "from": 47,
+          "to": 48,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 47,
+          "restLength": 0.04437235032180266,
+          "materialStart": 2.085723478420988
+        },
+        {
+          "id": 48,
+          "from": 48,
+          "to": 49,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 48,
+          "restLength": 0.044377778986596964,
+          "materialStart": 2.1300958287427907
+        },
+        {
+          "id": 49,
+          "from": 49,
+          "to": 50,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 49,
+          "restLength": 0.04436691916787344,
+          "materialStart": 2.174473607729387
+        },
+        {
+          "id": 50,
+          "from": 50,
+          "to": 51,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 50,
+          "restLength": 0.0443711672479154,
+          "materialStart": 2.2188405268972606
+        },
+        {
+          "id": 51,
+          "from": 51,
+          "to": 52,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 51,
+          "restLength": 0.044357686786128864,
+          "materialStart": 2.263211694145176
+        },
+        {
+          "id": 52,
+          "from": 52,
+          "to": 53,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 52,
+          "restLength": 0.04435996112329068,
+          "materialStart": 2.3075693809313047
+        },
+        {
+          "id": 53,
+          "from": 53,
+          "to": 54,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 53,
+          "restLength": 0.04436378100559592,
+          "materialStart": 2.3519293420545955
+        },
+        {
+          "id": 54,
+          "from": 54,
+          "to": 55,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 54,
+          "restLength": 0.04436124793375487,
+          "materialStart": 2.3962931230601914
+        },
+        {
+          "id": 55,
+          "from": 55,
+          "to": 56,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 55,
+          "restLength": 0.04437309506350248,
+          "materialStart": 2.440654370993946
+        },
+        {
+          "id": 56,
+          "from": 56,
+          "to": 57,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 56,
+          "restLength": 0.04437045285953443,
+          "materialStart": 2.4850274660574487
+        },
+        {
+          "id": 57,
+          "from": 57,
+          "to": 58,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 57,
+          "restLength": 0.04437479193939863,
+          "materialStart": 2.5293979189169833
+        },
+        {
+          "id": 58,
+          "from": 58,
+          "to": 59,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 58,
+          "restLength": 0.044374070960210094,
+          "materialStart": 2.573772710856382
+        },
+        {
+          "id": 59,
+          "from": 59,
+          "to": 60,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 59,
+          "restLength": 0.04437403901634544,
+          "materialStart": 2.618146781816592
+        },
+        {
+          "id": 60,
+          "from": 60,
+          "to": 61,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 60,
+          "restLength": 0.044374775968297225,
+          "materialStart": 2.6625208208329374
+        },
+        {
+          "id": 61,
+          "from": 61,
+          "to": 62,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 61,
+          "restLength": 0.04437033465820164,
+          "materialStart": 2.7068955968012345
+        },
+        {
+          "id": 62,
+          "from": 62,
+          "to": 63,
+          "p": 0,
+          "q": 0,
+          "yarnId": 0,
+          "order": 62,
+          "restLength": 0.04437304730907394,
+          "materialStart": 2.7512659314594363
+        },
+        {
+          "id": 63,
+          "from": 63,
+          "to": 0,
+          "p": 1,
+          "q": 0,
+          "yarnId": 0,
+          "order": 63,
+          "restLength": 0.04436102123148963,
+          "materialStart": 2.79563897876851
+        }
+      ],
+      "bends": [
+        {
+          "node": 0,
+          "prevEdge": 63,
+          "nextEdge": 0
+        },
+        {
+          "node": 1,
+          "prevEdge": 0,
+          "nextEdge": 1
+        },
+        {
+          "node": 2,
+          "prevEdge": 1,
+          "nextEdge": 2
+        },
+        {
+          "node": 3,
+          "prevEdge": 2,
+          "nextEdge": 3
+        },
+        {
+          "node": 4,
+          "prevEdge": 3,
+          "nextEdge": 4
+        },
+        {
+          "node": 5,
+          "prevEdge": 4,
+          "nextEdge": 5
+        },
+        {
+          "node": 6,
+          "prevEdge": 5,
+          "nextEdge": 6
+        },
+        {
+          "node": 7,
+          "prevEdge": 6,
+          "nextEdge": 7
+        },
+        {
+          "node": 8,
+          "prevEdge": 7,
+          "nextEdge": 8
+        },
+        {
+          "node": 9,
+          "prevEdge": 8,
+          "nextEdge": 9
+        },
+        {
+          "node": 10,
+          "prevEdge": 9,
+          "nextEdge": 10
+        },
+        {
+          "node": 11,
+          "prevEdge": 10,
+          "nextEdge": 11
+        },
+        {
+          "node": 12,
+          "prevEdge": 11,
+          "nextEdge": 12
+        },
+        {
+          "node": 13,
+          "prevEdge": 12,
+          "nextEdge": 13
+        },
+        {
+          "node": 14,
+          "prevEdge": 13,
+          "nextEdge": 14
+        },
+        {
+          "node": 15,
+          "prevEdge": 14,
+          "nextEdge": 15
+        },
+        {
+          "node": 16,
+          "prevEdge": 15,
+          "nextEdge": 16
+        },
+        {
+          "node": 17,
+          "prevEdge": 16,
+          "nextEdge": 17
+        },
+        {
+          "node": 18,
+          "prevEdge": 17,
+          "nextEdge": 18
+        },
+        {
+          "node": 19,
+          "prevEdge": 18,
+          "nextEdge": 19
+        },
+        {
+          "node": 20,
+          "prevEdge": 19,
+          "nextEdge": 20
+        },
+        {
+          "node": 21,
+          "prevEdge": 20,
+          "nextEdge": 21
+        },
+        {
+          "node": 22,
+          "prevEdge": 21,
+          "nextEdge": 22
+        },
+        {
+          "node": 23,
+          "prevEdge": 22,
+          "nextEdge": 23
+        },
+        {
+          "node": 24,
+          "prevEdge": 23,
+          "nextEdge": 24
+        },
+        {
+          "node": 25,
+          "prevEdge": 24,
+          "nextEdge": 25
+        },
+        {
+          "node": 26,
+          "prevEdge": 25,
+          "nextEdge": 26
+        },
+        {
+          "node": 27,
+          "prevEdge": 26,
+          "nextEdge": 27
+        },
+        {
+          "node": 28,
+          "prevEdge": 27,
+          "nextEdge": 28
+        },
+        {
+          "node": 29,
+          "prevEdge": 28,
+          "nextEdge": 29
+        },
+        {
+          "node": 30,
+          "prevEdge": 29,
+          "nextEdge": 30
+        },
+        {
+          "node": 31,
+          "prevEdge": 30,
+          "nextEdge": 31
+        },
+        {
+          "node": 32,
+          "prevEdge": 31,
+          "nextEdge": 32
+        },
+        {
+          "node": 33,
+          "prevEdge": 32,
+          "nextEdge": 33
+        },
+        {
+          "node": 34,
+          "prevEdge": 33,
+          "nextEdge": 34
+        },
+        {
+          "node": 35,
+          "prevEdge": 34,
+          "nextEdge": 35
+        },
+        {
+          "node": 36,
+          "prevEdge": 35,
+          "nextEdge": 36
+        },
+        {
+          "node": 37,
+          "prevEdge": 36,
+          "nextEdge": 37
+        },
+        {
+          "node": 38,
+          "prevEdge": 37,
+          "nextEdge": 38
+        },
+        {
+          "node": 39,
+          "prevEdge": 38,
+          "nextEdge": 39
+        },
+        {
+          "node": 40,
+          "prevEdge": 39,
+          "nextEdge": 40
+        },
+        {
+          "node": 41,
+          "prevEdge": 40,
+          "nextEdge": 41
+        },
+        {
+          "node": 42,
+          "prevEdge": 41,
+          "nextEdge": 42
+        },
+        {
+          "node": 43,
+          "prevEdge": 42,
+          "nextEdge": 43
+        },
+        {
+          "node": 44,
+          "prevEdge": 43,
+          "nextEdge": 44
+        },
+        {
+          "node": 45,
+          "prevEdge": 44,
+          "nextEdge": 45
+        },
+        {
+          "node": 46,
+          "prevEdge": 45,
+          "nextEdge": 46
+        },
+        {
+          "node": 47,
+          "prevEdge": 46,
+          "nextEdge": 47
+        },
+        {
+          "node": 48,
+          "prevEdge": 47,
+          "nextEdge": 48
+        },
+        {
+          "node": 49,
+          "prevEdge": 48,
+          "nextEdge": 49
+        },
+        {
+          "node": 50,
+          "prevEdge": 49,
+          "nextEdge": 50
+        },
+        {
+          "node": 51,
+          "prevEdge": 50,
+          "nextEdge": 51
+        },
+        {
+          "node": 52,
+          "prevEdge": 51,
+          "nextEdge": 52
+        },
+        {
+          "node": 53,
+          "prevEdge": 52,
+          "nextEdge": 53
+        },
+        {
+          "node": 54,
+          "prevEdge": 53,
+          "nextEdge": 54
+        },
+        {
+          "node": 55,
+          "prevEdge": 54,
+          "nextEdge": 55
+        },
+        {
+          "node": 56,
+          "prevEdge": 55,
+          "nextEdge": 56
+        },
+        {
+          "node": 57,
+          "prevEdge": 56,
+          "nextEdge": 57
+        },
+        {
+          "node": 58,
+          "prevEdge": 57,
+          "nextEdge": 58
+        },
+        {
+          "node": 59,
+          "prevEdge": 58,
+          "nextEdge": 59
+        },
+        {
+          "node": 60,
+          "prevEdge": 59,
+          "nextEdge": 60
+        },
+        {
+          "node": 61,
+          "prevEdge": 60,
+          "nextEdge": 61
+        },
+        {
+          "node": 62,
+          "prevEdge": 61,
+          "nextEdge": 62
+        },
+        {
+          "node": 63,
+          "prevEdge": 62,
+          "nextEdge": 63
+        }
+      ],
+      "loops": [
+        {
+          "id": 0,
+          "feed": 0,
+          "needle": 0,
+          "yarnId": 0,
+          "nodeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ],
+          "edgeIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ],
+          "passesThrough": {
+            "loopId": 0,
+            "p": 0,
+            "q": -1,
+            "crossings": [
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": -1,
+                "orientation": 1
+              },
+              {
+                "loopId": 0,
+                "p": 0,
+                "q": -1,
+                "over": 1,
+                "orientation": -1
+              },
+              {
+                "loopId": 0,
+                "p": 1,
+                "q": -1,
+                "over": 1,
+                "orientation": 1
+              }
+            ]
+          }
+        }
+      ],
+      "crossingConvention": {
+        "projection": "XY",
+        "normal": "+Z",
+        "order": "increasing-material-order",
+        "over": "sign(z_self - z_target)",
+        "orientation": "sign((t_self cross t_target).z); both tangents follow increasing material order",
+        "source": "sabetta/stitch-by-stitch@0ed27f35dcf5c3bda874f214bbcab0455055edf0 stockinette initial geometry",
+        "scope": "Seed embedding signature, not a complete topological invariant of deformed curves"
+      }
+    }
+  },
+  "params": {
+    "provenance": {
+      "tex": {
+        "value": 19.78,
+        "unit": "tex",
+        "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+        "principle": "Measured yarn linear density reported by user from study; no fitting",
+        "confidence": "REPORTED_MEASUREMENT",
+        "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+      },
+      "densityGPerCm3": {
+        "value": 1.31,
+        "unit": "g/cm^3",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "fiberDiameterMm": {
+        "value": 0.021,
+        "unit": "mm",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "E_f": {
+        "value": 3000,
+        "unit": "N/mm^2",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "K": {
+        "value": 0.01,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "phi0": {
+        "value": 0.5,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "d_s": {
+        "value": 0.13865404857744756,
+        "unit": "mm",
+        "source": "Derived from tex, densityGPerCm3",
+        "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "tex",
+          "densityGPerCm3"
+        ]
+      },
+      "fiberTex": {
+        "value": 0.4537323729763399,
+        "unit": "tex",
+        "source": "Derived from densityGPerCm3, fiberDiameterMm",
+        "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "densityGPerCm3",
+          "fiberDiameterMm"
+        ]
+      },
+      "d_e": {
+        "value": 0.1960864359761643,
+        "unit": "mm",
+        "source": "Derived from d_s, phi0",
+        "principle": "d_s / sqrt(phi0)",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "d_s",
+          "phi0"
+        ]
+      },
+      "r_c": {
+        "value": 0.09804321798808215,
+        "unit": "mm",
+        "source": "Derived from phi0, d_e",
+        "principle": "phi0 * d_e; uniaxial compaction model",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "phi0",
+          "d_e"
+        ]
+      },
+      "N_f": {
+        "value": 43.59398001568523,
+        "unit": "1",
+        "source": "Derived from tex, fiberTex",
+        "principle": "tex / fiberTex; continuum fiber count estimate",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "tex",
+          "fiberTex"
+        ]
+      },
+      "B": {
+        "value": 0.0012485181297709927,
+        "unit": "N*mm^2",
+        "source": "Derived from N_f, E_f, fiberDiameterMm",
+        "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+        "confidence": "DERIVED",
+        "applicableState": "Inherits the states and uncertainty of all dependencies",
+        "dependencies": [
+          "N_f",
+          "E_f",
+          "fiberDiameterMm"
+        ]
+      }
+    },
+    "tex": 19.78,
+    "densityGPerCm3": 1.31,
+    "fiberDiameterMm": 0.021,
+    "E_f": 3000,
+    "K": 0.01,
+    "phi0": 0.5,
+    "d_s": 0.13865404857744756,
+    "fiberTex": 0.4537323729763399,
+    "d_e": 0.1960864359761643,
+    "r_c": 0.09804321798808215,
+    "N_f": 43.59398001568523,
+    "B": 0.0012485181297709927
+  },
+  "metrics": {
+    "W": 0.7534083721886886,
+    "H": 0.5024151437792043,
+    "S": 2.414423060127245e-10,
+    "waleDensityPerCm": 13.273014170189674,
+    "courseDensityPerCm": 19.903858639250505,
+    "averageNeedlePitchMm": 0.7534083721886886,
+    "averageFeedPitchMm": 0.5024151437792043,
+    "kw": 3.769536024333867,
+    "kc": 5.652695853547143,
+    "ks": 21.30804065454863,
+    "kcOverKw": 1.499573373767149,
+    "TF": 1.566010982953316,
+    "gsm": 148.40600146020145,
+    "gsmFromDensities": 148.4060014602014,
+    "actualLengthMm": 2.8399999930086923,
+    "targetLengthMm": 2.84,
+    "relativeLengthError": -2.4617280436345368e-9,
+    "maxLoopLengthError": 2.4617280436345368e-9,
+    "envelopeThicknessEstimateMm": 0.4412874836911268,
+    "provenance": {
+      "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+      "parameters": {
+        "tex": {
+          "value": 19.78,
+          "unit": "tex",
+          "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+          "principle": "Measured yarn linear density reported by user from study; no fitting",
+          "confidence": "REPORTED_MEASUREMENT",
+          "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.13865404857744756,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1960864359761643,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09804321798808215,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 43.59398001568523,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012485181297709927,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "length": {
+        "value": 2.84,
+        "unit": "mm/needle/feed",
+        "source": "T1 numerical reference case",
+        "principle": "Prescribed material length; not fitted to density",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+      },
+      "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+      "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+    }
+  },
+  "energy": {
+    "total": 0.021207309652142344,
+    "bending": 0.020767397009820235,
+    "contact": 0.00043991264232211047,
+    "barrier": 0,
+    "barrierFraction": 0
+  },
+  "constraints": {
+    "maxSegmentStrain": 5.610625908314404e-8,
+    "maxLoopLengthError": 2.4617280436345368e-9,
+    "values": [
+      -2.0834144298653712e-8,
+      -7.04765590331391e-9,
+      1.7179254907517816e-8,
+      2.9041651306016547e-8,
+      4.705763201329205e-8,
+      -7.660330259007253e-9,
+      -1.2042558283908988e-8,
+      3.559630878946507e-8,
+      3.883938748394655e-8,
+      -3.819969118801225e-9,
+      -5.362906785322252e-9,
+      -5.66624835940388e-9,
+      -6.014475251170381e-9,
+      -5.6631453970723555e-9,
+      -4.8210770819956394e-8,
+      -4.38048298745386e-8,
+      2.7108941758058336e-9,
+      -2.3115362957071284e-9,
+      -5.610625908314404e-8,
+      -3.855156893717293e-8,
+      -2.5794444580284903e-8,
+      -2.7013657977192906e-9,
+      1.2091716294904131e-8,
+      4.685660304204475e-9,
+      -2.7816757564025352e-8,
+      -1.2139390603849165e-9,
+      -6.641585059696808e-10,
+      -7.031175641714071e-10,
+      -5.478596465380292e-10,
+      -2.208625726751734e-9,
+      2.206774585289395e-8,
+      -1.0959444574076826e-8,
+      -1.6978041750270734e-8,
+      -2.144885047350442e-9,
+      2.0592169081012912e-8,
+      3.4469898491096274e-8,
+      5.0519422201134034e-8,
+      -2.9514808375097346e-9,
+      -8.082574720624791e-9,
+      3.9692135800351025e-8,
+      4.22642829622788e-8,
+      -1.4345394871995154e-9,
+      -2.3358656120464616e-9,
+      -1.8463011119962403e-9,
+      -1.1133424182574458e-9,
+      -1.5827392729761414e-9,
+      -4.257387975492577e-8,
+      -4.103954642786789e-8,
+      6.962729726112116e-9,
+      -3.3105140850864245e-10,
+      -5.4131263804713114e-8,
+      -3.704277173888215e-8,
+      -2.4482353921939648e-8,
+      -1.4280757687501477e-9,
+      1.3226759909557018e-8,
+      7.323133655035008e-9,
+      -2.38195719814982e-8,
+      1.7119576867230535e-9,
+      6.4317640102729e-10,
+      7.108944544143014e-10,
+      -6.380989070464693e-10,
+      -7.234598475847065e-10,
+      2.3511371294304695e-8,
+      -8.099679038586771e-9
+    ],
+    "passed": true
+  },
+  "equilibrium": {
+    "passed": true,
+    "nodeResidual": 4.2428653567946895e-9,
+    "nodeRatio": 5.68187941372359e-7,
+    "latticeResidual": [
+      -2.699519722343391e-10,
+      7.277493598657802e-10,
+      1.4812446782430476e-9
+    ],
+    "latticeRatios": [
+      9.590281808784444e-9,
+      1.7240862007937623e-8,
+      5.262252309007601e-8
+    ],
+    "freeResidual": [
+      -9.718902072020086e-11,
+      1.4607559675750004e-9,
+      1.546554832115854e-9,
+      -6.355428050150436e-10,
+      1.094020684808128e-9,
+      4.6503895699545605e-10,
+      -1.2462904727325586e-9,
+      4.1069718632880114e-10,
+      -8.719303178778004e-10,
+      1.9623174420026895e-9,
+      6.460314991296734e-10,
+      1.022197687605697e-9,
+      5.2127464345887164e-11,
+      9.161664083628951e-10,
+      9.995650730731942e-10,
+      -1.76300230881124e-9,
+      -2.851336961678941e-10,
+      -7.645888479637653e-10,
+      -3.135895969980096e-11,
+      6.741569802404257e-11,
+      -7.87667657660418e-10,
+      2.8530775979598855e-9,
+      1.768211800937114e-9,
+      7.701683778574275e-10,
+      1.2014690718015197e-9,
+      5.689263556790669e-10,
+      -5.290034191945958e-10,
+      -7.753086592870995e-10,
+      -8.923855196463215e-10,
+      -2.237870715127155e-9,
+      4.527273556043099e-10,
+      5.750570158946644e-12,
+      -7.570430100197465e-10,
+      4.040701766239163e-10,
+      -2.4943625290263505e-11,
+      1.920258958136925e-9,
+      -2.047184227693677e-9,
+      -1.3097902536868267e-9,
+      3.0815304951845035e-10,
+      -2.639651092324613e-9,
+      -1.2185351287025137e-9,
+      -1.5638357770200728e-9,
+      1.796689651223371e-9,
+      5.993157133760141e-10,
+      -8.24407137174632e-10,
+      2.109404670901094e-9,
+      -1.0824333963876942e-10,
+      1.0324821891546931e-9,
+      -1.319503759511162e-9,
+      -9.27428413580178e-10,
+      1.2143964011473996e-9,
+      -1.8278925992178813e-9,
+      -6.593010755395756e-10,
+      7.573679339928363e-10,
+      1.0270943652870845e-9,
+      -3.482948148642029e-10,
+      -2.8371384928893573e-10,
+      1.1973348701399544e-9,
+      -5.7509653289544715e-11,
+      -7.449313214891173e-10,
+      1.6043078567007374e-9,
+      -1.0692805668677252e-10,
+      -1.0161643280298671e-9,
+      1.1899216958988212e-9,
+      -7.753210625599527e-10,
+      2.768444432033057e-10,
+      -1.1783206355087117e-9,
+      9.914883749087555e-10,
+      2.211214730415967e-9,
+      -1.9537940588315594e-9,
+      3.267025120053113e-9,
+      1.399236369131751e-9,
+      -3.308108492000583e-10,
+      7.408420309509833e-10,
+      -1.1754543918079952e-9,
+      4.948675635940702e-10,
+      -3.116958072505935e-9,
+      -1.113493525465789e-9,
+      8.708351054154129e-11,
+      -1.0737207255644425e-9,
+      1.0006639195839052e-9,
+      8.760027425669392e-11,
+      2.0856355301655805e-9,
+      -1.761047627168999e-10,
+      -1.173599134540737e-10,
+      6.857269977539326e-10,
+      -7.956864542246755e-10,
+      -3.636041624038855e-10,
+      -1.6787635309656324e-9,
+      6.330323400888238e-10,
+      4.925801433408594e-10,
+      3.3060343958973837e-10,
+      1.2016381379514884e-9,
+      1.2334373279687671e-10,
+      1.8278535629523418e-9,
+      -1.407106113918144e-9,
+      -8.020795538160597e-10,
+      1.235953214773211e-10,
+      -9.733445386489459e-10,
+      -6.314893738132432e-10,
+      -1.3186498629136345e-9,
+      9.485170114620356e-10,
+      7.474811915264556e-10,
+      -4.019413274436445e-12,
+      4.5561527987902917e-10,
+      -3.796498319712238e-10,
+      1.026113546562235e-9,
+      -1.437416592003915e-9,
+      -5.11450728773663e-10,
+      7.581505562237467e-11,
+      -1.3061187895124782e-10,
+      5.311452822703844e-10,
+      -6.886113519677384e-10,
+      9.998840522912333e-10,
+      4.161007883737855e-10,
+      -2.1003352529413988e-10,
+      1.6281779483678926e-10,
+      -5.3411788880630695e-12,
+      -2.5168972808686796e-10,
+      5.950830756981662e-10,
+      4.1111234989205103e-10,
+      -9.449208950018662e-10,
+      2.1025425159595934e-9,
+      3.4618770350380856e-10,
+      -5.973307889983737e-10,
+      6.934552476516032e-10,
+      -1.8791721963229424e-9,
+      1.096077806642115e-9,
+      -2.5840598162666666e-9,
+      -4.1023118929617297e-10,
+      1.936214227143962e-10,
+      -2.7158357756695145e-9,
+      8.606359557308818e-10,
+      -3.154393794779775e-10,
+      -4.710390510802298e-10,
+      8.664774314715018e-10,
+      9.655846434919457e-11,
+      1.3990820958362238e-9,
+      -8.001258215012408e-10,
+      8.717271574726349e-10,
+      1.3993361165989815e-9,
+      6.990163695271001e-10,
+      -4.0594297021079306e-11,
+      5.240636978195989e-10,
+      -4.1156603982055867e-10,
+      -6.052281835422502e-10,
+      -9.448263491029785e-10,
+      -7.178338665668471e-10,
+      -6.427663037239517e-10,
+      -1.0250188614557842e-9,
+      -1.4513782883862625e-9,
+      2.4121796227127845e-10,
+      3.711562602398688e-10,
+      1.229397915934738e-9,
+      1.7858515308916134e-9,
+      1.0405732560336833e-9,
+      1.6002345126081563e-9,
+      1.5052819320876543e-9,
+      3.933623843321854e-10,
+      7.46592253297873e-10,
+      -5.380804395799244e-10,
+      -1.0157816575720457e-9,
+      2.426466336885591e-10,
+      -1.8839135772219517e-9,
+      -1.7398717327976598e-9,
+      -4.691820265634306e-10,
+      -1.8997646710969263e-9,
+      -7.812526840733636e-11,
+      -5.219275289736203e-10,
+      -2.0698065613874994e-10,
+      2.062718416212528e-9,
+      -4.462476360655998e-10,
+      5.100026262850471e-10,
+      2.4895822246188276e-9,
+      9.288488381220539e-11,
+      2.305528809075392e-9,
+      -1.3555089816722929e-9,
+      9.329739758534572e-11,
+      2.8171326534563723e-10,
+      -1.7326751324941297e-9,
+      3.1763669298967567e-10,
+      -3.969110960039268e-10,
+      -6.518069591010534e-11,
+      8.222753554443241e-10,
+      -8.776386501221922e-10,
+      2.0657561685538672e-9,
+      3.2637310909411354e-10,
+      -2.6395763092629254e-10,
+      1.0988042992848834e-9,
+      -2.699519722343391e-10,
+      7.277493598657802e-10,
+      1.4812446782430476e-9
+    ],
+    "multipliers": [
+      0.0006990276980172838,
+      0.0006942826980808296,
+      0.0006930471047934865,
+      0.0006951572785677643,
+      0.0007016549832159131,
+      0.0007028345205276376,
+      0.000698291637456928,
+      0.0007006374025729149,
+      0.0007059566510325983,
+      0.0007095664986501742,
+      0.0007094965213979179,
+      0.0007094678476517968,
+      0.000709538040384637,
+      0.0007093051703460638,
+      0.0007060195912655957,
+      0.0007003036864339533,
+      0.0006983787325898928,
+      0.0007026638498826801,
+      0.0007016788615618203,
+      0.0006949235499669015,
+      0.0006930645070402074,
+      0.0006943385866474655,
+      0.0006990006222325381,
+      0.0007062388948425969,
+      0.0007059605080339473,
+      0.0007049315102123062,
+      0.0007050162838413139,
+      0.0007050449238847475,
+      0.0007050273188936706,
+      0.0007048599892754977,
+      0.0007060217435473881,
+      0.0007060391678661473,
+      0.0006990276779825106,
+      0.0006942826848319482,
+      0.0006930470964978972,
+      0.0006951572849241422,
+      0.0007016550042357373,
+      0.0007028345505500675,
+      0.0006982916823951842,
+      0.0007006374652786353,
+      0.0007059567233303056,
+      0.0007095665684562415,
+      0.000709496578294476,
+      0.0007094678873643615,
+      0.0007095380772106348,
+      0.0007093052151987039,
+      0.0007060196310598186,
+      0.0007003037071547311,
+      0.0006983787419656699,
+      0.000702663855535598,
+      0.0007016788621458588,
+      0.0006949235512417901,
+      0.0006930645172919166,
+      0.0006943386039577291,
+      0.00069900064845936,
+      0.0007062389222143394,
+      0.0007059605190482308,
+      0.000704931503532781,
+      0.0007050162785273838,
+      0.0007050449260168941,
+      0.0007050273120081565,
+      0.0007048599659308089,
+      0.0007060217142492364,
+      0.0007060391429968919
+    ],
+    "rank": 64,
+    "multiplierSolveThreshold": 0,
+    "multiplierSolveMethod": "CHOLESKY",
+    "multiplierConditionEstimate": 201.6449391104275,
+    "R_W": -2.699519722343391e-10,
+    "R_H": 7.277493598657802e-10,
+    "R_S": 1.4812446782430476e-9
+  },
+  "clearance": {
+    "feasible": true,
+    "minDistance": 0.1837271228328715,
+    "minGap": 0.08568390484478934,
+    "ratioToCompaction": 1.8739401521398944,
+    "ratioToSolidDiameter": 1.32507578911587,
+    "distanceScope": "support-AABB candidates; distances outside d_e are only bounded below by d_e",
+    "imageBounds": {
+      "pMax": 2,
+      "qMax": 3,
+      "minW": 0.7534083721886886,
+      "minH": 0.5024151437792043,
+      "maxAbsS": 2.414423060127245e-10,
+      "range": 0.1960864359761643
+    },
+    "activePairs": 146,
+    "barrierPairs": 0
+  },
+  "barrier": {
+    "maxGradient": 0,
+    "latticeGradient": [
+      0,
+      0,
+      0
+    ],
+    "measure": "(K*E_f/d_e) integral integral b(distance-r_c) ds dt",
+    "activationWidth": 0.009804321798808215,
+    "widthSensitivity": {
+      "multipliers": [
+        0.5,
+        1,
+        2
+      ],
+      "inactiveAtAllWidths": true,
+      "scope": "If inactive at all widths, energy and force remain exactly zero at this branch; no claim about other equilibria"
+    }
+  },
+  "iterations": 3800,
+  "evaluations": 4130,
+  "history": [
+    {
+      "outer": 0,
+      "iterations": 591,
+      "energy": 0.022111900483825702,
+      "constraint": 0.02857318226066241,
+      "physicalResidual": 0.000003697762494347598,
+      "innerGrad": 0.009047662447777327,
+      "innerGradL2": 0.04200026117365365,
+      "startingGradL2": 228.11028021678362,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 1,
+      "iterations": 1229,
+      "energy": 0.021290489740179094,
+      "constraint": 0.0018709339642485334,
+      "physicalResidual": 0.0000034193067349475026,
+      "innerGrad": 0.007627253086745611,
+      "innerGradL2": 0.03184117986204468,
+      "startingGradL2": 173.01598906098582,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 2,
+      "iterations": 1582,
+      "energy": 0.021215072965462517,
+      "constraint": 0.0001703695994889065,
+      "physicalResidual": 0.000003654808855311359,
+      "innerGrad": 0.008239482684558652,
+      "innerGradL2": 0.04161113985849475,
+      "startingGradL2": 16.947822533235435,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 3,
+      "iterations": 2326,
+      "energy": 0.021207964731795325,
+      "constraint": 0.00011057002570280527,
+      "physicalResidual": 4.0727747580363016e-7,
+      "innerGrad": 0.0009460292387082347,
+      "innerGradL2": 0.004964520741130341,
+      "startingGradL2": 1.5306733375059574,
+      "penalty": 100,
+      "innerStatus": "INNER_STATIONARY",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 4,
+      "iterations": 2946,
+      "energy": 0.021207315664018067,
+      "constraint": 1.5387208651684858e-7,
+      "physicalResidual": 3.0335209575196864e-8,
+      "innerGrad": 0.0001252046317716804,
+      "innerGradL2": 0.0005173795024974438,
+      "startingGradL2": 24.046953847624135,
+      "penalty": 1000,
+      "innerStatus": "LINE_SEARCH_FAILED",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 5,
+      "iterations": 3746,
+      "energy": 0.021207309534187573,
+      "constraint": 5.125666235894499e-8,
+      "physicalResidual": 2.744990523985587e-7,
+      "innerGrad": 0.001021453277388673,
+      "innerGradL2": 0.0045498749072738895,
+      "startingGradL2": 0.013047614387347502,
+      "penalty": 1000,
+      "innerStatus": "INNER_LIMIT",
+      "forcedMultiplierUpdate": false
+    },
+    {
+      "outer": 5,
+      "iterations": 3800,
+      "energy": 0.021207309652142344,
+      "constraint": 5.610625908314404e-8,
+      "physicalResidual": 9.27835134070798e-9,
+      "innerGrad": 0.000033980029868985184,
+      "innerGradL2": 0.00015315804147823762,
+      "startingGradL2": 0.0045498749072738895,
+      "penalty": 1000,
+      "innerStatus": "CONVERGED",
+      "forcedMultiplierUpdate": false
+    }
+  ],
+  "settings": {
+    "nodesPerLoop": 64,
+    "quadratureOrder": 12,
+    "gradientTolerance": 0.000001,
+    "constraintTolerance": 0.000001,
+    "maxIterations": 24000,
+    "innerIterations": 800,
+    "initialPenalty": 100,
+    "memorySize": 180,
+    "stagnationWindow": 3,
+    "initialMultipliers": "Free-direction least-squares physical reaction / energy scale",
+    "coordinateScale": 2.84,
+    "energyScale": 0.0004396190597785186
+  },
+  "trajectory": {
+    "protection": "Swept periodic AABBs and segment-distance Lipschitz bound",
+    "acceptedSafeBounds": 3800,
+    "minimumSafeBound": 0.00006924628806412058,
+    "passed": true,
+    "minimumEvaluatedDistance": 0.1254006069049468,
+    "maximumEvaluatedBarrierEnergy": 0,
+    "conservativeGapLowerBound": 0.005471477783372933,
+    "scope": "All trial evaluations, including rejected backtracks; trajectory gap lower bound uses the 0.8 safety factor and full swept-image coverage"
+  },
+  "diagnostics": {
+    "elapsedMs": 83351.5927,
+    "forcedMultiplierUpdate": 0
+  }
+}

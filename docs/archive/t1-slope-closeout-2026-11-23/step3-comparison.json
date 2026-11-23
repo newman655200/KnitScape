@@ -1,0 +1,1310 @@
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "lengthMm": 2.77,
+      "densityRelativeDifference": {
+        "waleDensityPerCm": 0,
+        "courseDensityPerCm": 0
+      },
+      "cellBitwiseEqual": true,
+      "iterations": 3746,
+      "metrics": {
+        "W": 0.7456805844947066,
+        "H": 0.48201750245433816,
+        "S": 1.140033802667931e-9,
+        "waleDensityPerCm": 13.410567752379219,
+        "courseDensityPerCm": 20.74613463013681,
+        "averageNeedlePitchMm": 0.7456805844947066,
+        "averageFeedPitchMm": 0.48201750245433816,
+        "kw": 3.7147272674090437,
+        "kc": 5.746679292547897,
+        "ks": 21.34734626508258,
+        "kcOverKw": 1.5469989797006292,
+        "TF": 1.6055852677210893,
+        "gsm": 152.43700690373052,
+        "gsmFromDensities": 152.43700690373052,
+        "actualLengthMm": 2.7700000185040334,
+        "targetLengthMm": 2.77,
+        "relativeLengthError": 6.680156428018336e-9,
+        "maxLoopLengthError": 6.680156428018336e-9,
+        "envelopeThicknessEstimateMm": 0.44185723972757346,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 19.78,
+              "unit": "tex",
+              "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+              "principle": "Measured yarn linear density reported by user from study; no fitting",
+              "confidence": "REPORTED_MEASUREMENT",
+              "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 43.59398001568523,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012485181297709927,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 2.77,
+            "unit": "mm/needle/feed",
+            "source": "Hossain2025 normal sinker timing, positive-feed setting, user supplied; relaxed remeasurement unknown",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "REPORTED_SETTING",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "diagnostics": {
+        "elapsedMs": 101288.1013,
+        "forcedMultiplierUpdate": 0,
+        "contact": {
+          "available": true,
+          "feasible": true,
+          "minDistanceMm": 0.18145632683214505,
+          "minDistanceOverDe": 0.9253894892260797,
+          "minimum": {
+            "edgeA": 16,
+            "edgeB": 35,
+            "edgeIndexA": 16,
+            "edgeIndexB": 35,
+            "p": -1,
+            "q": 0,
+            "s": 1,
+            "t": 1,
+            "pointA": [
+              -0.344524734402477,
+              0.19434705522839707,
+              -0.014463908735803829
+            ],
+            "pointB": [
+              -0.5259808721821864,
+              0.1945600060492019,
+              -0.014311391742334562
+            ],
+            "deltaWale": -1,
+            "deltaCourse": 0
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.18145632683214505,
+          "activePairs": 170,
+          "contactForceSumN": 0.16112130242653622,
+          "contactForceMaxN": 0.002954224911733084,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null,
+          "groups": {
+            "waleSpacing": {
+              "minDistanceMm": 0.18145632683214505,
+              "minDistanceOverDe": 0.9253894892260797,
+              "minimum": {
+                "edgeA": 16,
+                "edgeB": 35,
+                "edgeIndexA": 16,
+                "edgeIndexB": 35,
+                "p": -1,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.344524734402477,
+                  0.19434705522839707,
+                  -0.014463908735803829
+                ],
+                "pointB": [
+                  -0.5259808721821864,
+                  0.1945600060492019,
+                  -0.014311391742334562
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.18145632683214505,
+              "activePairs": 14,
+              "contactForceSumN": 0.012840047558333442,
+              "contactForceMaxN": 0.002954224911733084,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "courseSpacing": {
+              "minDistanceMm": 0.1869782257266884,
+              "minDistanceOverDe": 0.9535500239772675,
+              "minimum": {
+                "edgeA": 1,
+                "edgeB": 15,
+                "edgeIndexA": 1,
+                "edgeIndexB": 15,
+                "p": 0,
+                "q": -1,
+                "s": 0.45493694065423806,
+                "t": 0.48019984960325607,
+                "pointA": [
+                  -0.18320776829710533,
+                  -0.366617796906046,
+                  0.051378198148652195
+                ],
+                "pointB": [
+                  -0.3388739387372703,
+                  -0.34285089724548046,
+                  -0.049438639517079865
+                ],
+                "deltaWale": 0,
+                "deltaCourse": -1
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.1869782257266884,
+              "activePairs": 123,
+              "contactForceSumN": 0.12640738419961217,
+              "contactForceMaxN": 0.0022466063994560307,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "diagonal": {
+              "minDistanceMm": 0.188654396093144,
+              "minDistanceOverDe": 0.9620981438822025,
+              "minimum": {
+                "edgeA": 22,
+                "edgeB": 62,
+                "edgeIndexA": 22,
+                "edgeIndexB": 62,
+                "p": -1,
+                "q": 2,
+                "s": 0.9665991404324179,
+                "t": 0.05126470661044198,
+                "pointA": [
+                  -0.20980324402299955,
+                  0.3509582067459663,
+                  0.11953747699770326
+                ],
+                "pointB": [
+                  -0.28742953538014665,
+                  0.5229018109773105,
+                  0.11934507289419549
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 2
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.188654396093144,
+              "activePairs": 19,
+              "contactForceSumN": 0.009033823718472495,
+              "contactForceMaxN": 0.0015552720652953656,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "sameLoop": {
+              "minDistanceMm": 0.1814563272654413,
+              "minDistanceOverDe": 0.9253894914358004,
+              "minimum": {
+                "edgeA": 3,
+                "edgeB": 48,
+                "edgeIndexA": 3,
+                "edgeIndexB": 48,
+                "p": 0,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.15314058120667237,
+                  -0.28494136248652047,
+                  -0.01431139118572748
+                ],
+                "pointB": [
+                  0.028315557004193453,
+                  -0.2847284110876198,
+                  -0.014463909918359073
+                ],
+                "deltaWale": 0,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.1814563272654413,
+              "activePairs": 14,
+              "contactForceSumN": 0.012840046950118133,
+              "contactForceMaxN": 0.0029542248394756913,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            }
+          },
+          "units": {
+            "distance": "mm",
+            "force": "N"
+          },
+          "quadratureOrder": 12,
+          "searchRangeMm": 0.7456805844947066,
+          "localExclusionLengthMm": 0.3921728719523286,
+          "activeToleranceMm": 1e-9,
+          "activeDefinition": "segmentDistance - d_e <= 1e-9 mm; diagnostic tolerance does not extend energy support",
+          "distanceScope": "All eligible periodic pairs within searchRangeMm; null minima are bounded below by that range",
+          "grouping": "deltaWale=floor(orderB/N)-floor(orderA/N)+p*m; deltaCourse=feedB-feedA+q*n",
+          "spacing": {
+            "wale": {
+              "periodMm": 0.7456805844947066,
+              "densityMetric": "waleDensityPerCm"
+            },
+            "course": {
+              "periodMm": 0.48201750245433816,
+              "densityMetric": "courseDensityPerCm"
+            }
+          },
+          "multiplierReason": "No contact multipliers exist: contact is a soft double-line energy plus barrier; AL multipliers constrain segment lengths only",
+          "forceDefinition": "Sum/max of each active pair's norm(gradient[0]+gradient[1]); contact and barrier reported separately in N, not multipliers or stress",
+          "pairCountScope": "Unique segment/image pairs per periodic cell; counts and sums depend on discretization and cell size",
+          "diameterParameters": {
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.1960864359761643,
+                "unit": "mm",
+                "source": "Derived from d_s, phi0",
+                "principle": "d_s / sqrt(phi0)",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "d_s",
+                  "phi0"
+                ]
+              }
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.13865404857744756,
+                "unit": "mm",
+                "source": "Derived from tex, densityGPerCm3",
+                "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "tex",
+                  "densityGPerCm3"
+                ]
+              }
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.09804321798808215,
+                "unit": "mm",
+                "source": "Derived from phi0, d_e",
+                "principle": "phi0 * d_e; uniaxial compaction model",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "phi0",
+                  "d_e"
+                ]
+              }
+            }
+          },
+          "constantDiameterParameters": true,
+          "independentlySolvedDiameter": null,
+          "diameterInterpretation": "Fixed material parameters throughout the solve; centerline gaps do not define an independent solved or measured diameter",
+          "imageBounds": {
+            "pMax": 3,
+            "qMax": 4,
+            "minW": 0.7456805844947066,
+            "minH": 0.48201750245433816,
+            "maxAbsS": 1.140033802667931e-9,
+            "range": 0.7456805844947066
+          },
+          "candidatePairs": 9913
+        }
+      }
+    },
+    {
+      "lengthMm": 2.84,
+      "densityRelativeDifference": {
+        "waleDensityPerCm": 0,
+        "courseDensityPerCm": 0
+      },
+      "cellBitwiseEqual": true,
+      "iterations": 3800,
+      "metrics": {
+        "W": 0.7534083721886886,
+        "H": 0.5024151437792043,
+        "S": 2.414423060127245e-10,
+        "waleDensityPerCm": 13.273014170189674,
+        "courseDensityPerCm": 19.903858639250505,
+        "averageNeedlePitchMm": 0.7534083721886886,
+        "averageFeedPitchMm": 0.5024151437792043,
+        "kw": 3.769536024333867,
+        "kc": 5.652695853547143,
+        "ks": 21.30804065454863,
+        "kcOverKw": 1.499573373767149,
+        "TF": 1.566010982953316,
+        "gsm": 148.40600146020145,
+        "gsmFromDensities": 148.4060014602014,
+        "actualLengthMm": 2.8399999930086923,
+        "targetLengthMm": 2.84,
+        "relativeLengthError": -2.4617280436345368e-9,
+        "maxLoopLengthError": 2.4617280436345368e-9,
+        "envelopeThicknessEstimateMm": 0.4412874836911268,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 19.78,
+              "unit": "tex",
+              "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+              "principle": "Measured yarn linear density reported by user from study; no fitting",
+              "confidence": "REPORTED_MEASUREMENT",
+              "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 43.59398001568523,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012485181297709927,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 2.84,
+            "unit": "mm/needle/feed",
+            "source": "Hossain2025 normal sinker timing, positive-feed setting, user supplied; relaxed remeasurement unknown",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "REPORTED_SETTING",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "diagnostics": {
+        "elapsedMs": 99180.0289,
+        "forcedMultiplierUpdate": 0,
+        "contact": {
+          "available": true,
+          "feasible": true,
+          "minDistanceMm": 0.1837271228328715,
+          "minDistanceOverDe": 0.9369700760699472,
+          "minimum": {
+            "edgeA": 4,
+            "edgeB": 49,
+            "edgeIndexA": 4,
+            "edgeIndexB": 49,
+            "p": 0,
+            "q": 0,
+            "s": 1,
+            "t": 1,
+            "pointA": [
+              -0.1270209927174099,
+              -0.2650526546595997,
+              -0.03091707422128507
+            ],
+            "pointB": [
+              0.056706017682009516,
+              -0.2652198360588044,
+              -0.0308014692195056
+            ],
+            "deltaWale": 0,
+            "deltaCourse": 0
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.1837271228328715,
+          "activePairs": 146,
+          "contactForceSumN": 0.1308767677142918,
+          "contactForceMaxN": 0.0026499856981016968,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null,
+          "groups": {
+            "waleSpacing": {
+              "minDistanceMm": 0.183727123035863,
+              "minDistanceOverDe": 0.9369700771051617,
+              "minimum": {
+                "edgeA": 17,
+                "edgeB": 36,
+                "edgeIndexA": 17,
+                "edgeIndexB": 36,
+                "p": -1,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.31999816827383226,
+                  0.23107084637711406,
+                  -0.030801467798407558
+                ],
+                "pointB": [
+                  -0.5037251788775511,
+                  0.23090366778243013,
+                  -0.030917074777479948
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.183727123035863,
+              "activePairs": 14,
+              "contactForceSumN": 0.009828010312841586,
+              "contactForceMaxN": 0.0026499856773823014,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "courseSpacing": {
+              "minDistanceMm": 0.1879845627875643,
+              "minDistanceOverDe": 0.9586821334771732,
+              "minimum": {
+                "edgeA": 38,
+                "edgeB": 52,
+                "edgeIndexA": 38,
+                "edgeIndexB": 52,
+                "p": 0,
+                "q": 1,
+                "s": 0.5570514512877275,
+                "t": 0.5705027651527853,
+                "pointA": [
+                  0.24350792321652695,
+                  0.17210664450168528,
+                  -0.06628279936133347
+                ],
+                "pointB": [
+                  0.08658366532644493,
+                  0.1502768098154086,
+                  0.03489245181032696
+                ],
+                "deltaWale": 0,
+                "deltaCourse": 1
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.1879845627875643,
+              "activePairs": 109,
+              "contactForceSumN": 0.10782252663589605,
+              "contactForceMaxN": 0.002160814623006934,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "diagonal": {
+              "minDistanceMm": 0.18956053781024673,
+              "minDistanceOverDe": 0.9667192779886579,
+              "minimum": {
+                "edgeA": 23,
+                "edgeB": 62,
+                "edgeIndexA": 23,
+                "edgeIndexB": 62,
+                "p": -1,
+                "q": 2,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.18428921209087312,
+                  0.3990529782041703,
+                  0.10334223486786463
+                ],
+                "pointB": [
+                  -0.26255275140208,
+                  0.5717029464401309,
+                  0.10327607207652482
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 2
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.18956053781024673,
+              "activePairs": 9,
+              "contactForceSumN": 0.003398220230663087,
+              "contactForceMaxN": 0.0010874516731660103,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "sameLoop": {
+              "minDistanceMm": 0.1837271228328715,
+              "minDistanceOverDe": 0.9369700760699472,
+              "minimum": {
+                "edgeA": 4,
+                "edgeB": 49,
+                "edgeIndexA": 4,
+                "edgeIndexB": 49,
+                "p": 0,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.1270209927174099,
+                  -0.2650526546595997,
+                  -0.03091707422128507
+                ],
+                "pointB": [
+                  0.056706017682009516,
+                  -0.2652198360588044,
+                  -0.0308014692195056
+                ],
+                "deltaWale": 0,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.1837271228328715,
+              "activePairs": 14,
+              "contactForceSumN": 0.009828010534891025,
+              "contactForceMaxN": 0.0026499856981016968,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            }
+          },
+          "units": {
+            "distance": "mm",
+            "force": "N"
+          },
+          "quadratureOrder": 12,
+          "searchRangeMm": 0.7534083721886886,
+          "localExclusionLengthMm": 0.3921728719523286,
+          "activeToleranceMm": 1e-9,
+          "activeDefinition": "segmentDistance - d_e <= 1e-9 mm; diagnostic tolerance does not extend energy support",
+          "distanceScope": "All eligible periodic pairs within searchRangeMm; null minima are bounded below by that range",
+          "grouping": "deltaWale=floor(orderB/N)-floor(orderA/N)+p*m; deltaCourse=feedB-feedA+q*n",
+          "spacing": {
+            "wale": {
+              "periodMm": 0.7534083721886886,
+              "densityMetric": "waleDensityPerCm"
+            },
+            "course": {
+              "periodMm": 0.5024151437792043,
+              "densityMetric": "courseDensityPerCm"
+            }
+          },
+          "multiplierReason": "No contact multipliers exist: contact is a soft double-line energy plus barrier; AL multipliers constrain segment lengths only",
+          "forceDefinition": "Sum/max of each active pair's norm(gradient[0]+gradient[1]); contact and barrier reported separately in N, not multipliers or stress",
+          "pairCountScope": "Unique segment/image pairs per periodic cell; counts and sums depend on discretization and cell size",
+          "diameterParameters": {
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.1960864359761643,
+                "unit": "mm",
+                "source": "Derived from d_s, phi0",
+                "principle": "d_s / sqrt(phi0)",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "d_s",
+                  "phi0"
+                ]
+              }
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.13865404857744756,
+                "unit": "mm",
+                "source": "Derived from tex, densityGPerCm3",
+                "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "tex",
+                  "densityGPerCm3"
+                ]
+              }
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.09804321798808215,
+                "unit": "mm",
+                "source": "Derived from phi0, d_e",
+                "principle": "phi0 * d_e; uniaxial compaction model",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "phi0",
+                  "d_e"
+                ]
+              }
+            }
+          },
+          "constantDiameterParameters": true,
+          "independentlySolvedDiameter": null,
+          "diameterInterpretation": "Fixed material parameters throughout the solve; centerline gaps do not define an independent solved or measured diameter",
+          "imageBounds": {
+            "pMax": 3,
+            "qMax": 4,
+            "minW": 0.7534083721886886,
+            "minH": 0.5024151437792043,
+            "maxAbsS": 2.414423060127245e-10,
+            "range": 0.7534083721886886
+          },
+          "candidatePairs": 9674
+        }
+      }
+    },
+    {
+      "lengthMm": 2.9,
+      "densityRelativeDifference": {
+        "waleDensityPerCm": 0,
+        "courseDensityPerCm": 0
+      },
+      "cellBitwiseEqual": true,
+      "iterations": 3575,
+      "metrics": {
+        "W": 0.7593735260851388,
+        "H": 0.5196924331440606,
+        "S": -4.093858944096145e-9,
+        "waleDensityPerCm": 13.168749839823661,
+        "courseDensityPerCm": 19.24215047639142,
+        "averageNeedlePitchMm": 0.7593735260851388,
+        "averageFeedPitchMm": 0.5196924331440606,
+        "kw": 3.8189374535488616,
+        "kc": 5.5802236381535115,
+        "ks": 21.310525050923133,
+        "kcOverKw": 1.4611979656718184,
+        "TF": 1.533610755719799,
+        "gsm": 145.35247776112402,
+        "gsmFromDensities": 145.35247776112402,
+        "actualLengthMm": 2.8999998706950523,
+        "targetLengthMm": 2.9,
+        "relativeLengthError": -4.458791302841547e-8,
+        "maxLoopLengthError": 4.458791302841547e-8,
+        "envelopeThicknessEstimateMm": 0.44083263842661735,
+        "provenance": {
+          "mode": "PREDICTED_WITH_INPUT_DEPENDENCIES",
+          "parameters": {
+            "tex": {
+              "value": 19.78,
+              "unit": "tex",
+              "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+              "principle": "Measured yarn linear density reported by user from study; no fitting",
+              "confidence": "REPORTED_MEASUREMENT",
+              "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+            },
+            "densityGPerCm3": {
+              "value": 1.31,
+              "unit": "g/cm^3",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "fiberDiameterMm": {
+              "value": 0.021,
+              "unit": "mm",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "E_f": {
+              "value": 3000,
+              "unit": "N/mm^2",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "K": {
+              "value": 0.01,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "phi0": {
+              "value": 0.5,
+              "unit": "1",
+              "source": "docs/LAYER3_STEP1_TASK.md section 2",
+              "principle": "Model reference assumption; no material measurement asserted",
+              "confidence": "ASSUMPTION",
+              "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "source": "Derived from tex, densityGPerCm3",
+              "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "densityGPerCm3"
+              ]
+            },
+            "fiberTex": {
+              "value": 0.4537323729763399,
+              "unit": "tex",
+              "source": "Derived from densityGPerCm3, fiberDiameterMm",
+              "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "densityGPerCm3",
+                "fiberDiameterMm"
+              ]
+            },
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "source": "Derived from d_s, phi0",
+              "principle": "d_s / sqrt(phi0)",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "d_s",
+                "phi0"
+              ]
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "source": "Derived from phi0, d_e",
+              "principle": "phi0 * d_e; uniaxial compaction model",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "phi0",
+                "d_e"
+              ]
+            },
+            "N_f": {
+              "value": 43.59398001568523,
+              "unit": "1",
+              "source": "Derived from tex, fiberTex",
+              "principle": "tex / fiberTex; continuum fiber count estimate",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "tex",
+                "fiberTex"
+              ]
+            },
+            "B": {
+              "value": 0.0012485181297709927,
+              "unit": "N*mm^2",
+              "source": "Derived from N_f, E_f, fiberDiameterMm",
+              "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+              "confidence": "DERIVED",
+              "applicableState": "Inherits the states and uncertainty of all dependencies",
+              "dependencies": [
+                "N_f",
+                "E_f",
+                "fiberDiameterMm"
+              ]
+            }
+          },
+          "length": {
+            "value": 2.9,
+            "unit": "mm/needle/feed",
+            "source": "Hossain2025 normal sinker timing, positive-feed setting, user supplied; relaxed remeasurement unknown",
+            "principle": "Prescribed material length; not fitted to density",
+            "confidence": "REPORTED_SETTING",
+            "applicableState": "Given frictionless model; no physical relaxed-state equivalence asserted"
+          },
+          "thickness": "z span + d_e assumes a uniform undeformed circular envelope; not pressure-measured thickness",
+          "gsm": "Material mass / predicted area; dependent on both density outputs, not a third shape observation"
+        }
+      },
+      "diagnostics": {
+        "elapsedMs": 88466.4446,
+        "forcedMultiplierUpdate": 0,
+        "contact": {
+          "available": true,
+          "feasible": true,
+          "minDistanceMm": 0.18550427530884667,
+          "minDistanceOverDe": 0.9460331837098412,
+          "minimum": {
+            "edgeA": 4,
+            "edgeB": 49,
+            "edgeIndexA": 4,
+            "edgeIndexB": 49,
+            "p": 0,
+            "q": 0,
+            "s": 1,
+            "t": 1,
+            "pointA": [
+              -0.13299457420095512,
+              -0.26598294521879157,
+              -0.02871840995452215
+            ],
+            "pointB": [
+              0.05250692553739371,
+              -0.2668306513275745,
+              -0.028160604399802093
+            ],
+            "deltaWale": 0,
+            "deltaCourse": 0
+          },
+          "minimumExact": true,
+          "minimumLowerBoundMm": 0.18550427530884667,
+          "activePairs": 126,
+          "contactForceSumN": 0.10983559882759499,
+          "contactForceMaxN": 0.002380569991489567,
+          "barrierForceSumN": 0,
+          "barrierForceMaxN": 0,
+          "multiplierSum": null,
+          "multiplierMax": null,
+          "groups": {
+            "waleSpacing": {
+              "minDistanceMm": 0.18550427642081818,
+              "minDistanceOverDe": 0.9460331893806645,
+              "minimum": {
+                "edgeA": 17,
+                "edgeB": 36,
+                "edgeIndexA": 17,
+                "edgeIndexB": 36,
+                "p": -1,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.3271798417694845,
+                  0.24458165121693665,
+                  -0.028160599729983474
+                ],
+                "pointB": [
+                  -0.5126813426224031,
+                  0.24373394976730225,
+                  -0.028718411506710256
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.18550427642081818,
+              "activePairs": 13,
+              "contactForceSumN": 0.007674977856937466,
+              "contactForceMaxN": 0.002380569891909725,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "courseSpacing": {
+              "minDistanceMm": 0.18853473522852066,
+              "minDistanceOverDe": 0.9614878983849673,
+              "minimum": {
+                "edgeA": 1,
+                "edgeB": 15,
+                "edgeIndexA": 1,
+                "edgeIndexB": 15,
+                "p": 0,
+                "q": -1,
+                "s": 0.5615803242661377,
+                "t": 0.5923143910437346,
+                "pointA": [
+                  -0.18226062259886516,
+                  -0.38313003324426415,
+                  0.05704848721796332
+                ],
+                "pointB": [
+                  -0.31176928998389825,
+                  -0.3694834055292089,
+                  -0.0792842711779847
+                ],
+                "deltaWale": 0,
+                "deltaCourse": -1
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.18853473522852066,
+              "activePairs": 94,
+              "contactForceSumN": 0.09193436239918085,
+              "contactForceMaxN": 0.0021315857169264046,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "diagonal": {
+              "minDistanceMm": 0.19029733283487146,
+              "minDistanceOverDe": 0.9704767792199736,
+              "minimum": {
+                "edgeA": 23,
+                "edgeB": 62,
+                "edgeIndexA": 23,
+                "edgeIndexB": 62,
+                "p": -1,
+                "q": 2,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.19172417690848118,
+                  0.42150172027999044,
+                  0.10567001824143438
+                ],
+                "pointB": [
+                  -0.267591706677798,
+                  0.5960213180887846,
+                  0.10534940722414192
+                ],
+                "deltaWale": -1,
+                "deltaCourse": 2
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.19029733283487146,
+              "activePairs": 6,
+              "contactForceSumN": 0.0025512798613983676,
+              "contactForceMaxN": 0.0008473146186583662,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            },
+            "sameLoop": {
+              "minDistanceMm": 0.18550427530884667,
+              "minDistanceOverDe": 0.9460331837098412,
+              "minimum": {
+                "edgeA": 4,
+                "edgeB": 49,
+                "edgeIndexA": 4,
+                "edgeIndexB": 49,
+                "p": 0,
+                "q": 0,
+                "s": 1,
+                "t": 1,
+                "pointA": [
+                  -0.13299457420095512,
+                  -0.26598294521879157,
+                  -0.02871840995452215
+                ],
+                "pointB": [
+                  0.05250692553739371,
+                  -0.2668306513275745,
+                  -0.028160604399802093
+                ],
+                "deltaWale": 0,
+                "deltaCourse": 0
+              },
+              "minimumExact": true,
+              "minimumLowerBoundMm": 0.18550427530884667,
+              "activePairs": 13,
+              "contactForceSumN": 0.007674978710078314,
+              "contactForceMaxN": 0.002380569991489567,
+              "barrierForceSumN": 0,
+              "barrierForceMaxN": 0,
+              "multiplierSum": null,
+              "multiplierMax": null
+            }
+          },
+          "units": {
+            "distance": "mm",
+            "force": "N"
+          },
+          "quadratureOrder": 12,
+          "searchRangeMm": 0.7593735260851388,
+          "localExclusionLengthMm": 0.3921728719523286,
+          "activeToleranceMm": 1e-9,
+          "activeDefinition": "segmentDistance - d_e <= 1e-9 mm; diagnostic tolerance does not extend energy support",
+          "distanceScope": "All eligible periodic pairs within searchRangeMm; null minima are bounded below by that range",
+          "grouping": "deltaWale=floor(orderB/N)-floor(orderA/N)+p*m; deltaCourse=feedB-feedA+q*n",
+          "spacing": {
+            "wale": {
+              "periodMm": 0.7593735260851388,
+              "densityMetric": "waleDensityPerCm"
+            },
+            "course": {
+              "periodMm": 0.5196924331440606,
+              "densityMetric": "courseDensityPerCm"
+            }
+          },
+          "multiplierReason": "No contact multipliers exist: contact is a soft double-line energy plus barrier; AL multipliers constrain segment lengths only",
+          "forceDefinition": "Sum/max of each active pair's norm(gradient[0]+gradient[1]); contact and barrier reported separately in N, not multipliers or stress",
+          "pairCountScope": "Unique segment/image pairs per periodic cell; counts and sums depend on discretization and cell size",
+          "diameterParameters": {
+            "d_e": {
+              "value": 0.1960864359761643,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.1960864359761643,
+                "unit": "mm",
+                "source": "Derived from d_s, phi0",
+                "principle": "d_s / sqrt(phi0)",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "d_s",
+                  "phi0"
+                ]
+              }
+            },
+            "d_s": {
+              "value": 0.13865404857744756,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.13865404857744756,
+                "unit": "mm",
+                "source": "Derived from tex, densityGPerCm3",
+                "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "tex",
+                  "densityGPerCm3"
+                ]
+              }
+            },
+            "r_c": {
+              "value": 0.09804321798808215,
+              "unit": "mm",
+              "provenance": {
+                "value": 0.09804321798808215,
+                "unit": "mm",
+                "source": "Derived from phi0, d_e",
+                "principle": "phi0 * d_e; uniaxial compaction model",
+                "confidence": "DERIVED",
+                "applicableState": "Inherits the states and uncertainty of all dependencies",
+                "dependencies": [
+                  "phi0",
+                  "d_e"
+                ]
+              }
+            }
+          },
+          "constantDiameterParameters": true,
+          "independentlySolvedDiameter": null,
+          "diameterInterpretation": "Fixed material parameters throughout the solve; centerline gaps do not define an independent solved or measured diameter",
+          "imageBounds": {
+            "pMax": 3,
+            "qMax": 4,
+            "minW": 0.7593735260851388,
+            "minH": 0.5196924331440606,
+            "maxAbsS": 4.093858944096145e-9,
+            "range": 0.7593735260851388
+          },
+          "candidatePairs": 9414
+        }
+      }
+    }
+  ]
+}

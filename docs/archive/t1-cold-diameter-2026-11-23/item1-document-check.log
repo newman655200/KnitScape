@@ -1,0 +1,1 @@
+{"status":"PASS","file":"docs/archive/t1-convergence-2026-11-23/REFERENCE_DATA_HOSSAIN2025.md","expected":"推测：如果放松状态的影响对不同 l 大致成同一比例，它只能解释偏差水平，不能解释斜率。该前提未经验证。","source":"User requested wording,2026-11-23 Asia/Shanghai","validation":"Exact requested text present; prior unconditional claim absent","npmValidate":"NOT_RUN_DOCUMENT_ONLY","npmBuild":"NOT_RUN_DOCUMENT_ONLY"}

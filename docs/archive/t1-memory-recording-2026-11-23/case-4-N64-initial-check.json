@@ -1,0 +1,33 @@
+{
+  "feasible": true,
+  "minDistance": 0.18711923775401748,
+  "diagnostics": [],
+  "strain": 0,
+  "bendingEnergy": 0.012793061408012533,
+  "signature": [
+    {
+      "p": 0,
+      "q": -1,
+      "over": -1,
+      "orientation": -1
+    },
+    {
+      "p": 0,
+      "q": -1,
+      "over": -1,
+      "orientation": 1
+    },
+    {
+      "p": 0,
+      "q": -1,
+      "over": 1,
+      "orientation": -1
+    },
+    {
+      "p": 1,
+      "q": -1,
+      "over": 1,
+      "orientation": 1
+    }
+  ]
+}

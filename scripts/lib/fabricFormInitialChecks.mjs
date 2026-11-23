@@ -53,6 +53,17 @@ export async function runFabricFormInitialChecks() {
     "the solver result exposes the multiplier fit method");
   assert.ok(Number.isFinite(diagnostic.equilibrium.multiplierSolveThreshold));
   assert.ok(Number.isFinite(diagnostic.equilibrium.multiplierConditionEstimate));
+  const { resolveCloseoutMemorySize } = await import("./fabricFormCloseoutSettings.mjs");
+  const recoveryInput = { topology: diagnostic.cell.topology, params: diagnostic.params,
+    initialCell: diagnostic.cell, maxIterations: 1, memorySize: 7 };
+  recoveryInput.memorySize = resolveCloseoutMemorySize(recoveryInput, { settings: { memorySize: 7 } });
+  assert.equal(solveFabricCell(recoveryInput).settings.memorySize, 7,
+    "verified checkpoint geometry can restart with an explicit non-default memory size");
+  assert.throws(() => resolveCloseoutMemorySize(recoveryInput, { settings: { memorySize: 8 } }), /memorySize/);
+  assert.throws(() => resolveCloseoutMemorySize(recoveryInput, { memorySize: 8 }), /memorySize/);
+  assert.equal(resolveCloseoutMemorySize({ topology: { nodesPerLoop: 64 } }), 180);
+  assert.equal(resolveCloseoutMemorySize(recoveryInput, {}), 7, "legacy checkpoints may lack recorded settings");
+  assert.throws(() => resolveCloseoutMemorySize({ ...recoveryInput, memorySize: 0 }), /memorySize/);
   assert.throws(() => solveFabricCell({topology:createPlainJerseyTopology({nodesPerLoop:24}),
     params:createFabricFormParams(),initialCell:diagnostic.cell,maxIterations:1}),
   /Initial cell and input topology disagree/, "reject mislabeled rod discretization at the input boundary");

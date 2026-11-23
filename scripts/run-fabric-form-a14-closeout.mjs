@@ -11,6 +11,7 @@ import { evaluateConstraintReaction } from "../src/fabricForm/constrainedOptimiz
 import { evaluatePeriodicContact } from "../src/fabricForm/periodicContact.js";
 import { edgeEndpoints } from "../src/fabricForm/periodicCell.js";
 import { describeRefinementGeometry } from "./lib/fabricFormRefinement.mjs";
+import { resolveCloseoutMemorySize } from "./lib/fabricFormCloseoutSettings.mjs";
 
 const archive = "C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-2026-11-22";
 const output = "C:/Users/liuchen/Documents/KnitScape/archives/fabric-form-step1-closeout-2026-11-22/a14";
@@ -171,7 +172,7 @@ async function run(stem, input, origin, resume = false, recovered = false) {
     assert.ok(priorFiles.length, "Resume requires an accepted state from a saved attempt");
     const prior = read(path.join(output, priorFiles.at(-1)));
     input = { topology: prior.cell.topology, params: prior.params, initialCell: prior.cell, maxIterations: 24000, innerIterations: 3200,
-      memorySize: defaultMemorySize(prior.cell.topology.nodesPerLoop) };
+      memorySize: resolveCloseoutMemorySize({ topology: prior.cell.topology, memorySize: prior.settings?.memorySize }, prior) };
     origin = { ...prior.closeout?.origin, ...origin, resumeFrom: priorFiles.at(-1), priorElapsedMs: prior.closeout?.cumulativeElapsedMs ?? prior.diagnostics.elapsedMs,
       priorIterations: prior.closeout?.cumulativeIterations ?? prior.iterations,
       settings: `Continuation from saved accepted state; maxIterations=24000 and innerIterations=3200; memorySize=${input.memorySize}; tolerances unchanged`,
@@ -470,8 +471,7 @@ else if (mode === "--resume") {
   const values = Object.values(checkpoint.x).map(v => v * prepared.input.topology.loopLengthMm);
   assert.deepEqual([...prepared.input.initialCell.positions.flat(), prepared.input.initialCell.W, prepared.input.initialCell.H, prepared.input.initialCell.S], values);
   assert.equal(prepared.input.maxIterations, 24000); assert.equal(prepared.input.innerIterations, 3200);
-  if (prepared.input.memorySize === undefined) prepared.input.memorySize = defaultMemorySize(prepared.input.topology.nodesPerLoop);
-  assert.equal(prepared.input.memorySize, defaultMemorySize(prepared.input.topology.nodesPerLoop));
+  prepared.input.memorySize = resolveCloseoutMemorySize(prepared.input, checkpoint);
   prepared.origin.checkpointRecoveryVerification = path.basename(verificationFile);
   prepared.origin.mode = "CONTINUED_VERIFIED_ACCEPTED_CHECKPOINT";
   prepared.origin.resumptionNote = "Environment interrupted the original process; accepted coordinates/material state recovered exactly, optimizer internal history restarts via the existing public entry";
@@ -483,7 +483,7 @@ else if (mode === "--resume") {
   assert.ok(previousInput.input.initialCell, "This mode restarts the original refinement input, not a cold path");
   const stem = path.basename(argument).replace(/-attempt\d+-input\.json$/, "");
   const input = { ...previousInput.input, maxIterations: 24000, innerIterations: 3200,
-    memorySize: previousInput.input.memorySize === undefined ? defaultMemorySize(previousInput.input.topology.nodesPerLoop) : previousInput.input.memorySize };
+    memorySize: resolveCloseoutMemorySize(previousInput.input) };
   await run(stem, input, { ...previousInput.origin, sourceInput: path.basename(argument),
     mode: "RESTART_ORIGINAL_INPUT_AFTER_ENVIRONMENT_INTERRUPTION", priorElapsedMs: 0, priorIterations: 0,
     priorElapsedIsUnknown: true, resumptionNote: "No accepted checkpoint exists; this is a new attempt from the identical original N32-refined geometry/material input, not restoration of the interrupted optimizer state",

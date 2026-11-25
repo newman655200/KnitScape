@@ -1000,6 +1000,103 @@
         },
         "minDistanceOverDeChange": 0.014379779288783756
       }
+    },
+    {
+      "id": "q3-2.84-minus-0.02",
+      "l": 2.84,
+      "delta": -0.02,
+      "status": "CONVERGED",
+      "iterations": 4150,
+      "W": 0.7383402047449148,
+      "H": 0.5056108806331452,
+      "S": 0.0034306069284542043,
+      "waleDensityPerCm": 13.543892010397627,
+      "courseDensityPerCm": 19.778055384167406,
+      "energy": {
+        "total": 0.0212559006208729,
+        "bending": 0.02072526277470818,
+        "contact": 0.0005306378461647182,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9278357146521079,
+      "activePairs": 146,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 21,
+          "minDistanceOverDe": 0.9278357146521079
+        },
+        "courseSpacing": {
+          "activePairs": 76,
+          "minDistanceOverDe": 0.9563783190351559
+        },
+        "diagonal": {
+          "activePairs": 40,
+          "minDistanceOverDe": 0.95666940441632
+        },
+        "sameLoop": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9278655581357307
+        }
+      },
+      "F_W": -0.004298823534763533,
+      "elapsedMs": 177158.4203,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-minus-0.02",
+        "question": "q3",
+        "l": 2.84,
+        "delta": -0.02,
+        "head": "47b7980590bd83f10dddacaeaa466faa9e7bfc66",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "inputFile": "R2-2/continuation-2026-11-25/q3-2.84-minus-0.02-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7383402047449148
+        },
+        "resultFile": "R2-2/continuation-2026-11-25/q3-2.84-minus-0.02-result.json",
+        "startedAt": "2026-11-25T14:22:16.783Z",
+        "status": "CONVERGED",
+        "elapsedMs": 177158.4203,
+        "finishedAt": "2026-11-25T14:25:13.943Z",
+        "file": "R2-2/continuation-2026-11-25/q3-2.84-minus-0.02-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2026-11-25/q3-2.84-minus-0.02-result.json",
+      "reactionDecomposition": {
+        "bending": -0.011658953386477516,
+        "contact": 0.005545053618104582,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.0018150762336094017,
+        "sum": -0.004298823534763533,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.5,
+            "minDistanceOverDeChange": -0.009134362453053768
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.30275229357798167,
+            "minDistanceOverDeChange": -0.0023038144420173268
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 3.4444444444444446,
+            "minDistanceOverDeChange": -0.010049873572337886
+          }
+        },
+        "minDistanceOverDeChange": -0.009134361417839298
+      }
     }
   ],
   "analysis": {
@@ -1027,14 +1124,501 @@
           "baseline": 0,
           "plus": 0
         }
+      },
+      {
+        "l": 2.84,
+        "delta": 0.01,
+        "WStar": 0.7534083721886886,
+        "displacementMm": 0.007534083721886887,
+        "k": {
+          "total": 0.5734939771770321,
+          "bending": 0.29379681993258144,
+          "contact": 0.2796971572444163,
+          "barrier": 0
+        },
+        "s_c": 0.48770722688527285,
+        "stiffnessSumDifference": 3.430589146091734e-14,
+        "stiffnessSumRelativeDifference": 5.981909632213528e-14,
+        "reactionStiffness": 0.547573143671112,
+        "reactionStiffnessDifference": -0.025920833505920116,
+        "reactionStiffnessRelativeDifference": 0.04519809193727348,
+        "interpretation": "不确定",
+        "energySumDifferences": {
+          "minus": 0,
+          "baseline": 0,
+          "plus": 0
+        }
       }
     ],
-    "primary": null,
+    "primary": {
+      "l": 2.84,
+      "delta": 0.01,
+      "WStar": 0.7534083721886886,
+      "displacementMm": 0.007534083721886887,
+      "k": {
+        "total": 0.5734939771770321,
+        "bending": 0.29379681993258144,
+        "contact": 0.2796971572444163,
+        "barrier": 0
+      },
+      "s_c": 0.48770722688527285,
+      "stiffnessSumDifference": 3.430589146091734e-14,
+      "stiffnessSumRelativeDifference": 5.981909632213528e-14,
+      "reactionStiffness": 0.547573143671112,
+      "reactionStiffnessDifference": -0.025920833505920116,
+      "reactionStiffnessRelativeDifference": 0.04519809193727348,
+      "interpretation": "不确定",
+      "energySumDifferences": {
+        "minus": 0,
+        "baseline": 0,
+        "plus": 0
+      }
+    },
     "completePrimarySteps": false,
     "stepSensitive": null,
     "interpretation": null,
     "stopReasons": []
   },
-  "error": "STOP #6: q3-2.84-plus-0.01: contact branch change exceeds registered guard",
-  "finishedAt": "2026-11-25T14:06:17.043Z"
+  "continuation": {
+    "head": "47b7980590bd83f10dddacaeaa466faa9e7bfc66",
+    "runtime": {
+      "node": "v20.17.0",
+      "platform": "win32",
+      "arch": "x64",
+      "endianness": "LE"
+    },
+    "startedAt": "2026-11-25T14:22:16.773Z",
+    "verificationPolicy": "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+    "ruling": "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师裁定原文（2026-11-25）",
+    "priorSummaryFile": "R2-2/continuation-2026-11-25/prior-summary.json",
+    "previousStudyFile": "R2-2/study-manifest.json",
+    "acceptedRun": "q3-2.84-plus-0.01",
+    "reusedRuns": [
+      "q3-2.84-minus-0.005",
+      "q3-2.84-plus-0.005",
+      "q3-2.84-minus-0.01",
+      "q3-2.84-plus-0.01"
+    ]
+  },
+  "descriptiveOneSided": {
+    "l": 2.84,
+    "WStar": 0.7534083721886886,
+    "displacementMm": 0.0037670418609434433,
+    "units": {
+      "stiffness": "N/mm",
+      "contactShare": "1"
+    },
+    "method": "[E_X(outer delta) - 2 E_X(inner delta) + E_X(0)] / (0.005 W*)^2; descriptive only; excluded from Q3 primary and step-size verdicts",
+    "descriptiveOnly": true,
+    "compression": {
+      "outerDelta": -0.01,
+      "innerDelta": -0.005,
+      "baselineDelta": 0,
+      "k": {
+        "total": 0.595738077661044,
+        "bending": 0.8905986086007194,
+        "contact": -0.29486053093971737,
+        "barrier": 0
+      },
+      "s_c": -0.4949499486374675,
+      "descriptiveOnly": true
+    },
+    "tension": {
+      "outerDelta": 0.01,
+      "innerDelta": 0.005,
+      "baselineDelta": 0,
+      "k": {
+        "total": 0.5476981600669123,
+        "bending": 0.0930105338638841,
+        "contact": 0.45468762620318104,
+        "barrier": 0
+      },
+      "s_c": 0.8301792106579869,
+      "descriptiveOnly": true
+    }
+  },
+  "continuationChecks": {
+    "stopReasons": [
+      "q3-2.84-minus-0.02: courseSpacing activePairs=76, baseline=109, absoluteChange=33, relativeChange=0.30275229357798167; exceeds 0.30",
+      "q3-2.84-minus-0.02: diagonal activePairs=40, baseline=9, absoluteChange=31, relativeChange=3.4444444444444446; exceeds 0.30"
+    ],
+    "checks": [
+      {
+        "l": 2.84,
+        "points": [
+          {
+            "id": "q3-2.84-minus-0.02",
+            "l": 2.84,
+            "delta": -0.02,
+            "baseline": false,
+            "pointGuardExemption": null,
+            "W": 0.7383402047449148,
+            "H": 0.5056108806331452,
+            "F_W": -0.004298823534763533,
+            "E_total": 0.0212559006208729,
+            "minDistanceOverDe": 0.9278357146521079,
+            "minDistanceOverDeChange": -0.009134361417839298,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 21,
+                "baselineActivePairs": 14,
+                "absoluteChange": 7,
+                "relativeChange": 0.5,
+                "usedForStop": false,
+                "exceeds30Percent": true
+              },
+              "courseSpacing": {
+                "activePairs": 76,
+                "baselineActivePairs": 109,
+                "absoluteChange": 33,
+                "relativeChange": 0.30275229357798167,
+                "usedForStop": true,
+                "exceeds30Percent": true
+              },
+              "diagonal": {
+                "activePairs": 40,
+                "baselineActivePairs": 9,
+                "absoluteChange": 31,
+                "relativeChange": 3.4444444444444446,
+                "usedForStop": true,
+                "exceeds30Percent": true
+              }
+            }
+          },
+          {
+            "id": "q3-2.84-minus-0.01",
+            "l": 2.84,
+            "delta": -0.01,
+            "baseline": false,
+            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "W": 0.7458742884668017,
+            "H": 0.5049114784927015,
+            "F_W": -0.004123665024132235,
+            "E_total": 0.021224060394646794,
+            "minDistanceOverDe": 0.9251361699336274,
+            "minDistanceOverDeChange": -0.01183390613631985,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "courseSpacing": {
+                "activePairs": 114,
+                "baselineActivePairs": 109,
+                "absoluteChange": 5,
+                "relativeChange": 0.045871559633027525,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "diagonal": {
+                "activePairs": 4,
+                "baselineActivePairs": 9,
+                "absoluteChange": 5,
+                "relativeChange": 0.5555555555555556,
+                "usedForStop": false,
+                "exceeds30Percent": true
+              }
+            }
+          },
+          {
+            "id": "q3-2.84-minus-0.005",
+            "l": 2.84,
+            "delta": -0.005,
+            "baseline": false,
+            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "W": 0.7496413303277452,
+            "H": 0.503772594319078,
+            "F_W": -0.0022247808097477263,
+            "E_total": 0.02121145808170685,
+            "minDistanceOverDe": 0.9300482393534685,
+            "minDistanceOverDeChange": -0.006921836716478724,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "courseSpacing": {
+                "activePairs": 110,
+                "baselineActivePairs": 109,
+                "absoluteChange": 1,
+                "relativeChange": 0.009174311926605505,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "diagonal": {
+                "activePairs": 8,
+                "baselineActivePairs": 9,
+                "absoluteChange": 1,
+                "relativeChange": 0.1111111111111111,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              }
+            }
+          },
+          {
+            "id": "l=2.84, delta=0",
+            "l": 2.84,
+            "delta": 0,
+            "baseline": true,
+            "pointGuardExemption": null,
+            "W": 0.7534083721886886,
+            "H": 0.5024151437792043,
+            "F_W": -2.699519722343391e-10,
+            "E_total": 0.021207309652142344,
+            "minDistanceOverDe": 0.9369700760699472,
+            "minDistanceOverDeChange": 0,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "courseSpacing": {
+                "activePairs": 109,
+                "baselineActivePairs": 109,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": true,
+                "exceeds30Percent": false
+              },
+              "diagonal": {
+                "activePairs": 9,
+                "baselineActivePairs": 9,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": true,
+                "exceeds30Percent": false
+              }
+            }
+          },
+          {
+            "id": "q3-2.84-plus-0.005",
+            "l": 2.84,
+            "delta": 0.005,
+            "baseline": false,
+            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "W": 0.757175414049632,
+            "H": 0.5010545865781588,
+            "F_W": 0.0021138614732358237,
+            "E_total": 0.021211324649226235,
+            "minDistanceOverDe": 0.9440729831906323,
+            "minDistanceOverDeChange": 0.007102907120685065,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 13,
+                "baselineActivePairs": 14,
+                "absoluteChange": 1,
+                "relativeChange": 0.07142857142857142,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "courseSpacing": {
+                "activePairs": 111,
+                "baselineActivePairs": 109,
+                "absoluteChange": 2,
+                "relativeChange": 0.01834862385321101,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "diagonal": {
+                "activePairs": 9,
+                "baselineActivePairs": 9,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              }
+            }
+          },
+          {
+            "id": "q3-2.84-plus-0.01",
+            "l": 2.84,
+            "delta": 0.01,
+            "baseline": false,
+            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "W": 0.7609424559105755,
+            "H": 0.4996916905656615,
+            "F_W": 0.004127258792417673,
+            "E_total": 0.02122311181422044,
+            "minDistanceOverDe": 0.951349855358731,
+            "minDistanceOverDeChange": 0.014379779288783756,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 9,
+                "baselineActivePairs": 14,
+                "absoluteChange": 5,
+                "relativeChange": 0.35714285714285715,
+                "usedForStop": false,
+                "exceeds30Percent": true
+              },
+              "courseSpacing": {
+                "activePairs": 113,
+                "baselineActivePairs": 109,
+                "absoluteChange": 4,
+                "relativeChange": 0.03669724770642202,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              },
+              "diagonal": {
+                "activePairs": 9,
+                "baselineActivePairs": 9,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "exceeds30Percent": false
+              }
+            }
+          }
+        ],
+        "energy": {
+          "compression": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": -0.005,
+                "fromValue": 0.021207309652142344,
+                "toValue": 0.02121145808170685,
+                "change": 0.000004148429564504452
+              },
+              {
+                "fromDelta": -0.005,
+                "toDelta": -0.01,
+                "fromValue": 0.02121145808170685,
+                "toValue": 0.021224060394646794,
+                "change": 0.000012602312939945237
+              },
+              {
+                "fromDelta": -0.01,
+                "toDelta": -0.02,
+                "fromValue": 0.021224060394646794,
+                "toValue": 0.0212559006208729,
+                "change": 0.00003184022622610555
+              }
+            ]
+          },
+          "tension": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": 0.005,
+                "fromValue": 0.021207309652142344,
+                "toValue": 0.021211324649226235,
+                "change": 0.0000040149970838912474
+              },
+              {
+                "fromDelta": 0.005,
+                "toDelta": 0.01,
+                "fromValue": 0.021211324649226235,
+                "toValue": 0.02122311181422044,
+                "change": 0.000011787164994205013
+              }
+            ]
+          }
+        },
+        "F_W": {
+          "nondecreasing": true,
+          "nonincreasing": false,
+          "monotonic": true,
+          "steps": [
+            {
+              "fromDelta": -0.02,
+              "toDelta": -0.01,
+              "fromValue": -0.004298823534763533,
+              "toValue": -0.004123665024132235,
+              "change": 0.00017515851063129844
+            },
+            {
+              "fromDelta": -0.01,
+              "toDelta": -0.005,
+              "fromValue": -0.004123665024132235,
+              "toValue": -0.0022247808097477263,
+              "change": 0.0018988842143845084
+            },
+            {
+              "fromDelta": -0.005,
+              "toDelta": 0,
+              "fromValue": -0.0022247808097477263,
+              "toValue": -2.699519722343391e-10,
+              "change": 0.002224780539795754
+            },
+            {
+              "fromDelta": 0,
+              "toDelta": 0.005,
+              "fromValue": -2.699519722343391e-10,
+              "toValue": 0.0021138614732358237,
+              "change": 0.002113861743187796
+            },
+            {
+              "fromDelta": 0.005,
+              "toDelta": 0.01,
+              "fromValue": 0.0021138614732358237,
+              "toValue": 0.004127258792417673,
+              "change": 0.0020133973191818495
+            }
+          ]
+        },
+        "H": {
+          "nondecreasing": false,
+          "nonincreasing": true,
+          "monotonic": true,
+          "steps": [
+            {
+              "fromDelta": -0.02,
+              "toDelta": -0.01,
+              "fromValue": 0.5056108806331452,
+              "toValue": 0.5049114784927015,
+              "change": -0.0006994021404437278
+            },
+            {
+              "fromDelta": -0.01,
+              "toDelta": -0.005,
+              "fromValue": 0.5049114784927015,
+              "toValue": 0.503772594319078,
+              "change": -0.0011388841736235111
+            },
+            {
+              "fromDelta": -0.005,
+              "toDelta": 0,
+              "fromValue": 0.503772594319078,
+              "toValue": 0.5024151437792043,
+              "change": -0.0013574505398736836
+            },
+            {
+              "fromDelta": 0,
+              "toDelta": 0.005,
+              "fromValue": 0.5024151437792043,
+              "toValue": 0.5010545865781588,
+              "change": -0.0013605572010454425
+            },
+            {
+              "fromDelta": 0.005,
+              "toDelta": 0.01,
+              "fromValue": 0.5010545865781588,
+              "toValue": 0.4996916905656615,
+              "change": -0.0013628960124973388
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "error": "STOP #6: q3-2.84-minus-0.02: courseSpacing activePairs=76, baseline=109, absoluteChange=33, relativeChange=0.30275229357798167; exceeds 0.30; q3-2.84-minus-0.02: diagonal activePairs=40, baseline=9, absoluteChange=31, relativeChange=3.4444444444444446; exceeds 0.30",
+  "finishedAt": "2026-11-25T14:25:13.982Z"
 }

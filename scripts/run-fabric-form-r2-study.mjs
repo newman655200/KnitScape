@@ -6,25 +6,26 @@ import { solveFabricCell } from "../src/fabricForm/solveFabricCell.js";
 import { createDofLayout } from "../src/fabricForm/model/dofLayout.js";
 import { createT1PlainJerseyModel } from "../src/fabricForm/model/t1PlainJerseyModel.js";
 import { evaluateConstraintReaction } from "../src/fabricForm/constrainedOptimizer.js";
-import { currentHead, readJson, repositoryRoot, runtime, sha256, writeJson } from "./lib/fabricFormGolden.mjs";
+import { currentHead, readJson, repositoryRoot, runtime, writeJson } from "./lib/fabricFormGolden.mjs";
 import { analyzeQ2, analyzeQ3, analyzeQC } from "./lib/fabricFormR2Analysis.mjs";
+import { checkQ3Continuation, analyzeQ3OneSided } from "./lib/fabricFormR2Continuation.mjs";
 
 // Registered in R2 §5: intentionally no command-line overrides for cases or settings.
 const args = process.argv.slice(2);
-assert.ok(args.length === 2 && args[0] === "--question" && ["q2", "q3", "qc"].includes(args[1]),
-  "Usage: npm run study:fabric-form-r2 -- --question q2|q3|qc");
+const resuming = args.length === 3 && args[1] === "q3" && args[2] === "--resume-q3";
+assert.ok((args.length === 2 || resuming) && args[0] === "--question" && ["q2", "q3", "qc"].includes(args[1]),
+  "Usage: npm run study:fabric-form-r2 -- --question q2|q3|qc [--resume-q3 for the architect-accepted stop]");
 const question = args[1], step = { q2: "R2-1", q3: "R2-2", qc: "R2-3" }[question];
 const archiveRoot = "C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25";
-const directory = path.join(archiveRoot, step);
+const runPrefix = resuming ? `${step}/continuation-2026-11-25` : step;
+const directory = path.join(archiveRoot, runPrefix);
 const sourceDirectory = "docs/archive/t1-slope-closeout-2026-11-23";
 const summaryFile = path.join(repositoryRoot, `docs/archive/t1-slope-r2-2026-11-25/${question}-summary.json`);
 const studyFile = path.join(directory, "study-manifest.json");
-assert.ok(!fs.existsSync(studyFile) && !fs.existsSync(summaryFile), "Refusing to overwrite an existing study or summary");
-const hashFile = file => sha256(fs.readFileSync(file));
+assert.ok(!fs.existsSync(studyFile) && (resuming || !fs.existsSync(summaryFile)), "Refusing to overwrite an existing study or summary");
 const materialKeys = ["tex", "densityGPerCm3", "fiberDiameterMm", "E_f", "K", "phi0"];
 const head = currentHead(), environment = runtime();
-const codeHashes = Object.fromEntries(["scripts/run-fabric-form-r2-study.mjs", "scripts/lib/fabricFormR2Analysis.mjs",
-  "src/fabricForm/solveFabricCell.js"].map(file => [file, hashFile(path.join(repositoryRoot, file))]));
+const verificationPolicy = "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing";
 const sources = Object.fromEntries([2.77, 2.84, 2.9].map(l => {
   const inputFile = `${sourceDirectory}/step3-hossain-${l}-input.json`;
   const initialCellSourceFile = `${sourceDirectory}/step3-hossain-${l}-after.json`;
@@ -39,8 +40,7 @@ const sources = Object.fromEntries([2.77, 2.84, 2.9].map(l => {
   assert.equal(input.maxIterations, 24000);
   assert.equal(input.innerIterations, 800);
   assert.equal(input.memorySize, 180);
-  return [l, { input, reference, params, inputFile, inputSha256: hashFile(path.join(repositoryRoot, inputFile)),
-    initialCellSourceFile, initialCellSourceSha256: hashFile(path.join(repositoryRoot, initialCellSourceFile)) }];
+  return [l, { input, reference, params, inputFile, initialCellSourceFile }];
 }));
 
 function scalars(result) {
@@ -55,9 +55,11 @@ function scalars(result) {
 const baselines = Object.fromEntries(Object.entries(sources).map(([l, source]) => [l, {
   l: Number(l), KScale: 1, scale: 1, delta: 0, ...scalars(source.reference),
   source: { kind: "REUSED_AFTER_JSON_NOT_A_NEW_SOLVE", file: source.initialCellSourceFile,
-    sha256: source.initialCellSourceSha256, inputFile: source.inputFile, inputSha256: source.inputSha256 },
+    inputFile: source.inputFile, verificationPolicy },
 }]));
-const summary = { schemaVersion: 1, question, step, head, runtime: environment, codeHashes,
+const monitoringBaselines = Object.fromEntries(Object.entries(baselines).map(([l, baseline]) =>
+  [l, { ...baseline, F_W: sources[l].reference.equilibrium.R_W }]));
+const summary = resuming ? readJson(summaryFile) : { schemaVersion: 1, question, step, head, runtime: environment, verificationPolicy,
   startedAt: new Date().toISOString(), status: "RUNNING", archiveRoot,
   provenance: { values: "Each run and baseline row; unrounded JSON scalars", units: {
     l: "mm", W: "mm", H: "mm", S: "mm", energy: "N*mm", F_W: "N", stiffness: "N/mm",
@@ -67,6 +69,20 @@ const summary = { schemaVersion: 1, question, step, head, runtime: environment, 
     confidence: "MODEL_DERIVED_DIAGNOSTIC; not physical measurement or causal verification",
     applicableState: "T1 N64 frictionless plain-jersey branch; no material calibration" },
   baselines, materialParameters: Object.fromEntries(Object.entries(sources).map(([l, s]) => [l, s.params])), runs: [], analysis: null };
+if (resuming) {
+  assert.equal(summary.status, "STOPPED");
+  assert.equal(summary.error, "STOP #6: q3-2.84-plus-0.01: contact branch change exceeds registered guard");
+  assert.deepEqual(summary.runs.map(row => row.id), ["q3-2.84-minus-0.005", "q3-2.84-plus-0.005", "q3-2.84-minus-0.01", "q3-2.84-plus-0.01"]);
+  assert.ok(summary.runs.every(row => row.status === "CONVERGED"));
+  writeJson(path.join(directory, "prior-summary.json"), summary, { exclusive: true });
+  summary.continuation = { head, runtime: environment, startedAt: new Date().toISOString(), verificationPolicy,
+    ruling: "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师裁定原文（2026-11-25）",
+    priorSummaryFile: `${runPrefix}/prior-summary.json`, previousStudyFile: `${step}/study-manifest.json`,
+    acceptedRun: "q3-2.84-plus-0.01", reusedRuns: summary.runs.map(row => row.id) };
+  summary.status = "RUNNING";
+  delete summary.error;
+  delete summary.finishedAt;
+}
 writeJson(studyFile, { ...summary, summaryFile }, { exclusive: true });
 const save = () => { writeJson(summaryFile, summary); writeJson(studyFile, { ...summary, summaryFile }); };
 
@@ -108,16 +124,15 @@ function reactionDecomposition(result, input) {
 
 function checkContactBranch(row) {
   const base = baselines[row.l], changes = {};
-  for (const name of ["waleSpacing", "courseSpacing"]) {
+  for (const name of ["waleSpacing", "courseSpacing", "diagonal"]) {
     const count = base.groups[name].activePairs;
     changes[name] = { activePairsRelativeChange: Math.abs(row.groups[name].activePairs - count) / count,
       minDistanceOverDeChange: row.groups[name].minDistanceOverDe - base.groups[name].minDistanceOverDe };
   }
   row.branchChanges = { groups: changes, minDistanceOverDeChange: row.minDistanceOverDe - base.minDistanceOverDe };
-  if (Object.values(changes).some(c => c.activePairsRelativeChange > 0.30) ||
-      Math.abs(row.branchChanges.minDistanceOverDeChange) > 0.02) {
-    throw new Error(`STOP #6: ${row.id}: contact branch change exceeds registered guard`);
-  }
+  summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines,
+    { acceptedRunIds: summary.continuation?.reusedRuns ?? [] });
+  if (summary.continuationChecks.stopReasons.length) throw new Error(`STOP #6: ${summary.continuationChecks.stopReasons.join("; ")}`);
 }
 
 function run(scenario, initialOverride) {
@@ -127,15 +142,13 @@ function run(scenario, initialOverride) {
   const source = sources[scenario.l], { params, overrides } = overrideParameters(source.params, scenario);
   const input = { ...source.input, params, initialCell: initialOverride?.cell ?? source.reference.cell };
   if (question === "q3") input.lockedLattice = { W: source.reference.cell.W * (1 + scenario.delta) };
-  const inputFile = `${step}/${scenario.id}-input.json`, resultFile = `${step}/${scenario.id}-result.json`;
-  const manifestFile = `${step}/${scenario.id}-manifest.json`;
+  const inputFile = `${runPrefix}/${scenario.id}-input.json`, resultFile = `${runPrefix}/${scenario.id}-result.json`;
+  const manifestFile = `${runPrefix}/${scenario.id}-manifest.json`;
   for (const file of [inputFile, resultFile, manifestFile]) assert.ok(!fs.existsSync(path.join(archiveRoot, file)), `Refusing overwrite: ${file}`);
   writeJson(path.join(archiveRoot, inputFile), { input }, { exclusive: true });
-  const manifest = { id: scenario.id, question, ...scenario, head, runtime: environment, codeHashes,
-    sourceInputFile: source.inputFile, sourceInputSha256: source.inputSha256,
-    inputFile, inputSha256: hashFile(path.join(archiveRoot, inputFile)),
+  const manifest = { id: scenario.id, question, ...scenario, head, runtime: environment, verificationPolicy,
+    sourceInputFile: source.inputFile, inputFile,
     initialCellSourceFile: initialOverride?.file ?? source.initialCellSourceFile,
-    initialCellSourceSha256: initialOverride ? hashFile(path.join(archiveRoot, initialOverride.file)) : source.initialCellSourceSha256,
     overrides, overrideProvenance: Object.fromEntries(Object.keys(overrides).map(key => [key, params.provenance[key]])),
     lockedLattice: input.lockedLattice ?? null, resultFile, startedAt: new Date().toISOString(), status: "RUNNING" };
   writeJson(path.join(archiveRoot, manifestFile), manifest, { exclusive: true });
@@ -148,7 +161,6 @@ function run(scenario, initialOverride) {
     manifest.status = result.status;
     manifest.finishedAt = new Date().toISOString();
     writeJson(path.join(archiveRoot, resultFile), result, { exclusive: true });
-    manifest.resultSha256 = hashFile(path.join(archiveRoot, resultFile));
   } catch (error) {
     manifest.status = "ERROR"; manifest.error = error.message; manifest.finishedAt = new Date().toISOString();
     manifest.elapsedMs = performance.now() - started;
@@ -179,14 +191,27 @@ try {
     for (const variant of ["A", "B"]) for (const scale of [0.95, 1.05]) run({ id: `q2-${variant}-${scale}`, l: 2.84, variant, scale });
     summary.analysis = analyzeQ2(summary.runs);
   } else if (question === "q3") {
+    if (resuming) {
+      summary.descriptiveOneSided = analyzeQ3OneSided(summary.runs, baselines);
+      summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines,
+        { acceptedRunIds: summary.continuation.reusedRuns });
+      save();
+      if (summary.continuationChecks.stopReasons.length) throw new Error(`STOP #6: ${summary.continuationChecks.stopReasons.join("; ")}`);
+    }
     for (const [l, deltas] of [[2.84, [0.005, 0.01, 0.02]], [2.77, [0.01]], [2.9, [0.01]]]) {
       for (const magnitude of deltas) {
-        for (const sign of [-1, 1]) run({ id: `q3-${l}-${sign < 0 ? "minus" : "plus"}-${magnitude}`, l, delta: sign * magnitude });
+        for (const sign of [-1, 1]) {
+          const id = `q3-${l}-${sign < 0 ? "minus" : "plus"}-${magnitude}`;
+          if (resuming && summary.continuation.reusedRuns.includes(id)) {
+            console.log(`REUSE ${id} accepted existing result; no solve`);
+          } else run({ id, l, delta: sign * magnitude });
+        }
         summary.analysis = analyzeQ3(summary.runs, baselines);
         save();
         if (summary.analysis.stopReasons?.length) throw new Error(`STOP #5: ${summary.analysis.stopReasons.join("; ")}`);
       }
     }
+    summary.descriptiveOneSided = analyzeQ3OneSided(summary.runs, baselines);
   } else {
     for (const KScale of [0.5, 2]) for (const l of [2.77, 2.84, 2.9]) {
       const id = `qc-${l}-K${KScale}`;

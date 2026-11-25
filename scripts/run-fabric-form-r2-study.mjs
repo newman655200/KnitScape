@@ -8,7 +8,7 @@ import { createT1PlainJerseyModel } from "../src/fabricForm/model/t1PlainJerseyM
 import { evaluateConstraintReaction } from "../src/fabricForm/constrainedOptimizer.js";
 import { currentHead, readJson, repositoryRoot, runtime, writeJson } from "./lib/fabricFormGolden.mjs";
 import { analyzeQ2, analyzeQ3, analyzeQC } from "./lib/fabricFormR2Analysis.mjs";
-import { checkQ3Continuation, analyzeQ3OneSided } from "./lib/fabricFormR2Continuation.mjs";
+import { checkQ3Continuation, analyzeQ3OneSided, shearBranchFor } from "./lib/fabricFormR2Continuation.mjs";
 
 // Registered in R2 §5: intentionally no command-line overrides for cases or settings.
 const args = process.argv.slice(2);
@@ -17,7 +17,7 @@ assert.ok((args.length === 2 || resuming) && args[0] === "--question" && ["q2", 
   "Usage: npm run study:fabric-form-r2 -- --question q2|q3|qc [--resume-q3 for the architect-accepted stop]");
 const question = args[1], step = { q2: "R2-1", q3: "R2-2", qc: "R2-3" }[question];
 const archiveRoot = "C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25";
-const runPrefix = resuming ? `${step}/continuation-2026-11-25` : step;
+const runPrefix = resuming ? `${step}/continuation-2-2026-11-25` : step;
 const directory = path.join(archiveRoot, runPrefix);
 const sourceDirectory = "docs/archive/t1-slope-closeout-2026-11-23";
 const summaryFile = path.join(repositoryRoot, `docs/archive/t1-slope-r2-2026-11-25/${question}-summary.json`);
@@ -25,7 +25,7 @@ const studyFile = path.join(directory, "study-manifest.json");
 assert.ok(!fs.existsSync(studyFile) && (resuming || !fs.existsSync(summaryFile)), "Refusing to overwrite an existing study or summary");
 const materialKeys = ["tex", "densityGPerCm3", "fiberDiameterMm", "E_f", "K", "phi0"];
 const head = currentHead(), environment = runtime();
-const verificationPolicy = "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing";
+const verificationPolicy = "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing";
 const sources = Object.fromEntries([2.77, 2.84, 2.9].map(l => {
   const inputFile = `${sourceDirectory}/step3-hossain-${l}-input.json`;
   const initialCellSourceFile = `${sourceDirectory}/step3-hossain-${l}-after.json`;
@@ -48,6 +48,7 @@ function scalars(result) {
   const groups = Object.fromEntries(Object.entries(contact.groups ?? {}).map(([key, group]) => [key,
     { activePairs: group.activePairs, minDistanceOverDe: group.minDistanceOverDe }]));
   return { status: result.status, iterations: result.iterations, W: result.cell.W, H: result.cell.H, S: result.cell.S,
+    shearBranch: shearBranchFor(result.cell),
     waleDensityPerCm: result.metrics.waleDensityPerCm, courseDensityPerCm: result.metrics.courseDensityPerCm,
     energy: result.energy, minDistanceOverDe: contact.minDistanceOverDe ?? null,
     activePairs: contact.activePairs ?? null, groups, F_W: result.equilibrium.F_W ?? null };
@@ -71,18 +72,22 @@ const summary = resuming ? readJson(summaryFile) : { schemaVersion: 1, question,
   baselines, materialParameters: Object.fromEntries(Object.entries(sources).map(([l, s]) => [l, s.params])), runs: [], analysis: null };
 if (resuming) {
   assert.equal(summary.status, "STOPPED");
-  assert.equal(summary.error, "STOP #6: q3-2.84-plus-0.01: contact branch change exceeds registered guard");
-  assert.deepEqual(summary.runs.map(row => row.id), ["q3-2.84-minus-0.005", "q3-2.84-plus-0.005", "q3-2.84-minus-0.01", "q3-2.84-plus-0.01"]);
+  assert.ok(summary.error.startsWith("STOP #6: q3-2.84-minus-0.02: courseSpacing activePairs=76"));
+  assert.deepEqual(summary.runs.map(row => row.id), ["q3-2.84-minus-0.005", "q3-2.84-plus-0.005", "q3-2.84-minus-0.01", "q3-2.84-plus-0.01", "q3-2.84-minus-0.02"]);
   assert.ok(summary.runs.every(row => row.status === "CONVERGED"));
   writeJson(path.join(directory, "prior-summary.json"), summary, { exclusive: true });
+  summary.continuationHistory = [...(summary.continuationHistory ?? []), summary.continuation];
   summary.continuation = { head, runtime: environment, startedAt: new Date().toISOString(), verificationPolicy,
-    ruling: "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师裁定原文（2026-11-25）",
-    priorSummaryFile: `${runPrefix}/prior-summary.json`, previousStudyFile: `${step}/study-manifest.json`,
-    acceptedRun: "q3-2.84-plus-0.01", reusedRuns: summary.runs.map(row => row.id) };
+    ruling: "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师第二次裁定原文（2026-11-25）",
+    priorSummaryFile: `${runPrefix}/prior-summary.json`, previousStudyFile: `${step}/continuation-2026-11-25/study-manifest.json`,
+    acceptedRun: "q3-2.84-minus-0.02", reusedRuns: summary.runs.map(row => row.id) };
+  for (const row of [...Object.values(summary.baselines), ...summary.runs]) row.shearBranch = shearBranchFor(row);
   summary.status = "RUNNING";
   delete summary.error;
   delete summary.finishedAt;
 }
+summary.shearBranchDefinition = { formula: "abs(S) / W > 1e-4", threshold: 1e-4,
+  source: "R2 §10 second architect ruling; diagnostic branch flag, not a primary verdict", unit: "1" };
 writeJson(studyFile, { ...summary, summaryFile }, { exclusive: true });
 const save = () => { writeJson(summaryFile, summary); writeJson(studyFile, { ...summary, summaryFile }); };
 
@@ -130,8 +135,7 @@ function checkContactBranch(row) {
       minDistanceOverDeChange: row.groups[name].minDistanceOverDe - base.groups[name].minDistanceOverDe };
   }
   row.branchChanges = { groups: changes, minDistanceOverDeChange: row.minDistanceOverDe - base.minDistanceOverDe };
-  summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines,
-    { acceptedRunIds: summary.continuation?.reusedRuns ?? [] });
+  summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines);
   if (summary.continuationChecks.stopReasons.length) throw new Error(`STOP #6: ${summary.continuationChecks.stopReasons.join("; ")}`);
 }
 
@@ -177,7 +181,7 @@ function run(scenario, initialOverride) {
   summary.runs.push(row);
   save();
   console.log(`DONE ${scenario.id} ${row.status} iter=${row.iterations} ${(row.elapsedMs / 1000).toFixed(3)}s`);
-  if (question !== "qc" && result.status !== "CONVERGED") throw new Error(`STOP #3: ${scenario.id} ${result.status}`);
+  if (question !== "qc" && result.status !== "CONVERGED") throw new Error(`STOP #${question === "q3" ? "6" : "3"}: ${scenario.id} ${result.status}`);
   if (question === "q3") {
     row.reactionDecomposition = reactionDecomposition(result, input);
     checkContactBranch(row);
@@ -193,8 +197,7 @@ try {
   } else if (question === "q3") {
     if (resuming) {
       summary.descriptiveOneSided = analyzeQ3OneSided(summary.runs, baselines);
-      summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines,
-        { acceptedRunIds: summary.continuation.reusedRuns });
+      summary.continuationChecks = checkQ3Continuation(summary.runs, monitoringBaselines);
       save();
       if (summary.continuationChecks.stopReasons.length) throw new Error(`STOP #6: ${summary.continuationChecks.stopReasons.join("; ")}`);
     }

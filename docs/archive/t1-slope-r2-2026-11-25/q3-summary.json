@@ -15,7 +15,7 @@
     "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
   },
   "startedAt": "2026-11-25T13:58:28.670Z",
-  "status": "STOPPED",
+  "status": "COMPLETE",
   "archiveRoot": "C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25",
   "provenance": {
     "values": "Each run and baseline row; unrounded JSON scalars",
@@ -84,7 +84,8 @@
         "sha256": "6e4ff60aa6bf4886cfb2659a3da39e115fc023869bde822f19adfef0da5cee03",
         "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
         "inputSha256": "d757ad1444d76ff4e07e8689e364c9f8ecd831c9c240bd4343d2b6073b473541"
-      }
+      },
+      "shearBranch": false
     },
     "2.84": {
       "l": 2.84,
@@ -132,7 +133,8 @@
         "sha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
         "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
         "inputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414"
-      }
+      },
+      "shearBranch": false
     },
     "2.9": {
       "l": 2.9,
@@ -180,7 +182,8 @@
         "sha256": "ce49d1b2d3c38dfcd6b5b25da5453bebe4ab736e41b53bb4d2b9080d2a612679",
         "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
         "inputSha256": "bf9e1b15ddec5c8429fa81135c7d3abb88acc09c6239ce8d4f7e4b51e3cdc3e6"
-      }
+      },
+      "shearBranch": false
     }
   },
   "materialParameters": {
@@ -696,7 +699,8 @@
           }
         },
         "minDistanceOverDeChange": -0.006921836716478724
-      }
+      },
+      "shearBranch": false
     },
     {
       "id": "q3-2.84-plus-0.005",
@@ -797,7 +801,8 @@
           }
         },
         "minDistanceOverDeChange": 0.007102907120685065
-      }
+      },
+      "shearBranch": false
     },
     {
       "id": "q3-2.84-minus-0.01",
@@ -898,7 +903,8 @@
           }
         },
         "minDistanceOverDeChange": -0.01183390613631985
-      }
+      },
+      "shearBranch": true
     },
     {
       "id": "q3-2.84-plus-0.01",
@@ -999,7 +1005,8 @@
           }
         },
         "minDistanceOverDeChange": 0.014379779288783756
-      }
+      },
+      "shearBranch": false
     },
     {
       "id": "q3-2.84-minus-0.02",
@@ -1096,11 +1103,526 @@
           }
         },
         "minDistanceOverDeChange": -0.009134361417839298
+      },
+      "shearBranch": true
+    },
+    {
+      "id": "q3-2.84-plus-0.02",
+      "l": 2.84,
+      "delta": 0.02,
+      "status": "CONVERGED",
+      "iterations": 4700,
+      "W": 0.7684765396324624,
+      "H": 0.49687438920185695,
+      "S": -7.184161042665612e-8,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.012758990382032,
+      "courseDensityPerCm": 20.125810903764382,
+      "energy": {
+        "total": 0.02126783964326801,
+        "bending": 0.02095061545092339,
+        "contact": 0.00031722419234461746,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9593067717488442,
+      "activePairs": 130,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 7,
+          "minDistanceOverDe": 0.9637933354828608
+        },
+        "courseSpacing": {
+          "activePairs": 104,
+          "minDistanceOverDe": 0.9593067717488442
+        },
+        "diagonal": {
+          "activePairs": 12,
+          "minDistanceOverDe": 0.9715756358396721
+        },
+        "sameLoop": {
+          "activePairs": 7,
+          "minDistanceOverDe": 0.9637933633976163
+        }
+      },
+      "F_W": 0.007621324189913451,
+      "elapsedMs": 148175.9769,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-plus-0.02",
+        "question": "q3",
+        "l": 2.84,
+        "delta": 0.02,
+        "head": "505afdaac357add731ca6f63e11284aa2f032fae",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "inputFile": "R2-2/continuation-2-2026-11-25/q3-2.84-plus-0.02-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7684765396324624
+        },
+        "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.84-plus-0.02-result.json",
+        "startedAt": "2026-11-25T14:38:45.368Z",
+        "status": "CONVERGED",
+        "elapsedMs": 148175.9769,
+        "finishedAt": "2026-11-25T14:41:13.545Z",
+        "file": "R2-2/continuation-2-2026-11-25/q3-2.84-plus-0.02-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.84-plus-0.02-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0014118894175942434,
+        "contact": -0.0044189331464184875,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.013452146753926182,
+        "sum": 0.007621324189913451,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.5,
+            "minDistanceOverDeChange": 0.026823258377699166
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.045871559633027525,
+            "minDistanceOverDeChange": 0.0006246382716709187
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 0.3333333333333333,
+            "minDistanceOverDeChange": 0.004856357851014237
+          }
+        },
+        "minDistanceOverDeChange": 0.022336695678896956
+      }
+    },
+    {
+      "id": "q3-2.77-minus-0.01",
+      "l": 2.77,
+      "delta": -0.01,
+      "status": "CONVERGED",
+      "iterations": 3975,
+      "W": 0.7382237786497595,
+      "H": 0.48443517939056335,
+      "S": 0.00034271782989010415,
+      "shearBranch": true,
+      "waleDensityPerCm": 13.546028032706282,
+      "courseDensityPerCm": 20.642596626818793,
+      "energy": {
+        "total": 0.022423178828361513,
+        "bending": 0.021693508603029998,
+        "contact": 0.0007296702253315172,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9145083133611571,
+      "activePairs": 165,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 16,
+          "minDistanceOverDe": 0.9150883091045621
+        },
+        "courseSpacing": {
+          "activePairs": 131,
+          "minDistanceOverDe": 0.9514768573842344
+        },
+        "diagonal": {
+          "activePairs": 2,
+          "minDistanceOverDe": 0.9694912107170511
+        },
+        "sameLoop": {
+          "activePairs": 16,
+          "minDistanceOverDe": 0.9145083133611571
+        }
+      },
+      "F_W": -0.004226010866452377,
+      "elapsedMs": 88069.84210000001,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.77-minus-0.01",
+        "question": "q3",
+        "l": 2.77,
+        "delta": -0.01,
+        "head": "505afdaac357add731ca6f63e11284aa2f032fae",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "inputFile": "R2-2/continuation-2-2026-11-25/q3-2.77-minus-0.01-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7382237786497595
+        },
+        "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.77-minus-0.01-result.json",
+        "startedAt": "2026-11-25T14:41:13.571Z",
+        "status": "CONVERGED",
+        "elapsedMs": 88069.84210000001,
+        "finishedAt": "2026-11-25T14:42:41.640Z",
+        "file": "R2-2/continuation-2-2026-11-25/q3-2.77-minus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.77-minus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.005126844979557978,
+        "contact": -0.016268834739206196,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.017169668852311797,
+        "sum": -0.004226010866452377,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.14285714285714285,
+            "minDistanceOverDeChange": -0.010301180121517595
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.06504065040650407,
+            "minDistanceOverDeChange": -0.0020731665930331378
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 0.8947368421052632,
+            "minDistanceOverDeChange": 0.007393066834848638
+          }
+        },
+        "minDistanceOverDeChange": -0.010881175864922543
+      }
+    },
+    {
+      "id": "q3-2.77-plus-0.01",
+      "l": 2.77,
+      "delta": 0.01,
+      "status": "CONVERGED",
+      "iterations": 2950,
+      "W": 0.7531373903396538,
+      "H": 0.4792087759044222,
+      "S": 1.0455217905084188e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.27778985384081,
+      "courseDensityPerCm": 20.867731358063637,
+      "energy": {
+        "total": 0.02242254711983672,
+        "bending": 0.021893361582692856,
+        "contact": 0.0005291855371438639,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.939519180888329,
+      "activePairs": 164,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.939519180888329
+        },
+        "courseSpacing": {
+          "activePairs": 119,
+          "minDistanceOverDe": 0.9554443247149809
+        },
+        "diagonal": {
+          "activePairs": 19,
+          "minDistanceOverDe": 0.9626266299316909
+        },
+        "sameLoop": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9395192043015816
+        }
+      },
+      "F_W": 0.004544675811050263,
+      "elapsedMs": 72844.0712,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.77-plus-0.01",
+        "question": "q3",
+        "l": 2.77,
+        "delta": 0.01,
+        "head": "505afdaac357add731ca6f63e11284aa2f032fae",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "inputFile": "R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7531373903396538
+        },
+        "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-result.json",
+        "startedAt": "2026-11-25T14:42:41.667Z",
+        "status": "CONVERGED",
+        "elapsedMs": 72844.0712,
+        "finishedAt": "2026-11-25T14:43:54.513Z",
+        "file": "R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0004271292158711387,
+        "contact": -0.009513151814303027,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.014484956841224429,
+        "sum": 0.004544675811050263,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.07142857142857142,
+            "minDistanceOverDeChange": 0.01412969166224931
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.032520325203252036,
+            "minDistanceOverDeChange": 0.0018943007377133503
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 0,
+            "minDistanceOverDeChange": 0.000528486049488408
+          }
+        },
+        "minDistanceOverDeChange": 0.01412969166224931
+      }
+    },
+    {
+      "id": "q3-2.9-minus-0.01",
+      "l": 2.9,
+      "delta": -0.01,
+      "status": "CONVERGED",
+      "iterations": 3675,
+      "W": 0.7517797908242874,
+      "H": 0.5223536946389211,
+      "S": -0.0001242330199610479,
+      "shearBranch": true,
+      "waleDensityPerCm": 13.301767514973395,
+      "courseDensityPerCm": 19.14411652991664,
+      "energy": {
+        "total": 0.02033129121973115,
+        "bending": 0.01992672054434802,
+        "contact": 0.00040457067538313146,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9351175519856343,
+      "activePairs": 133,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9351175519856343
+        },
+        "courseSpacing": {
+          "activePairs": 104,
+          "minDistanceOverDe": 0.9596994137173479
+        },
+        "diagonal": {
+          "activePairs": 3,
+          "minDistanceOverDe": 0.9774920768746723
+        },
+        "sameLoop": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9351990276914047
+        }
+      },
+      "F_W": -0.004209065052278652,
+      "elapsedMs": 76489.2574,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.9-minus-0.01",
+        "question": "q3",
+        "l": 2.9,
+        "delta": -0.01,
+        "head": "505afdaac357add731ca6f63e11284aa2f032fae",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "inputFile": "R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7517797908242874
+        },
+        "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-result.json",
+        "startedAt": "2026-11-25T14:43:54.541Z",
+        "status": "CONVERGED",
+        "elapsedMs": 76489.2574,
+        "finishedAt": "2026-11-25T14:45:11.031Z",
+        "file": "R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.005533306726637023,
+        "contact": -0.011289158734145911,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.012613400408504283,
+        "sum": -0.004209065052278652,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0,
+            "minDistanceOverDeChange": -0.010915637395030209
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.10638297872340426,
+            "minDistanceOverDeChange": -0.0017884846676193833
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 0.5,
+            "minDistanceOverDeChange": 0.007015297654698771
+          }
+        },
+        "minDistanceOverDeChange": -0.010915631724206953
+      }
+    },
+    {
+      "id": "q3-2.9-plus-0.01",
+      "l": 2.9,
+      "delta": 0.01,
+      "status": "CONVERGED",
+      "iterations": 2800,
+      "W": 0.7669672613459901,
+      "H": 0.5170294489828314,
+      "S": 1.0360735953410209e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.03836617804323,
+      "courseDensityPerCm": 19.341258065035404,
+      "energy": {
+        "total": 0.020330373666952877,
+        "bending": 0.020059967880290783,
+        "contact": 0.0002704057866620935,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9606825135486982,
+      "activePairs": 120,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9606825458844287
+        },
+        "courseSpacing": {
+          "activePairs": 96,
+          "minDistanceOverDe": 0.9617872248659299
+        },
+        "diagonal": {
+          "activePairs": 6,
+          "minDistanceOverDe": 0.9707085802162209
+        },
+        "sameLoop": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9606825135486982
+        }
+      },
+      "F_W": 0.003793349391030869,
+      "elapsedMs": 54341.77119999996,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.9-plus-0.01",
+        "question": "q3",
+        "l": 2.9,
+        "delta": 0.01,
+        "head": "505afdaac357add731ca6f63e11284aa2f032fae",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "inputFile": "R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-input.json",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7669672613459901
+        },
+        "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-result.json",
+        "startedAt": "2026-11-25T14:45:11.054Z",
+        "status": "CONVERGED",
+        "elapsedMs": 54341.77119999996,
+        "finishedAt": "2026-11-25T14:46:05.396Z",
+        "file": "R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0029744942439722324,
+        "contact": -0.0052199037022209425,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.011987747337224044,
+        "sum": 0.003793349391030869,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.3076923076923077,
+            "minDistanceOverDeChange": 0.0146493565037642
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.02127659574468085,
+            "minDistanceOverDeChange": 0.00029932648096264725
+          },
+          "diagonal": {
+            "activePairsRelativeChange": 0,
+            "minDistanceOverDeChange": 0.0002318009962473111
+          }
+        },
+        "minDistanceOverDeChange": 0.014649329838856917
       }
     }
   ],
   "analysis": {
     "pairs": [
+      {
+        "l": 2.77,
+        "delta": 0.01,
+        "WStar": 0.7456805844947066,
+        "displacementMm": 0.007456805844947067,
+        "k": {
+          "total": 0.6306545474111708,
+          "bending": 0.4781464979254562,
+          "contact": 0.15250804948575353,
+          "barrier": 0
+        },
+        "s_c": 0.24182502149837373,
+        "stiffnessSumDifference": -3.8968828164342995e-14,
+        "stiffnessSumRelativeDifference": 6.17910840797225e-14,
+        "reactionStiffness": 0.5880994396176947,
+        "reactionStiffnessDifference": -0.042555107793476044,
+        "reactionStiffnessRelativeDifference": 0.06747768325490436,
+        "interpretation": "横向刚度以弯曲为主，与推测矛盾",
+        "energySumDifferences": {
+          "minus": 0,
+          "baseline": 0,
+          "plus": 0
+        }
+      },
       {
         "l": 2.84,
         "delta": 0.005,
@@ -1148,6 +1670,54 @@
           "baseline": 0,
           "plus": 0
         }
+      },
+      {
+        "l": 2.84,
+        "delta": 0.02,
+        "WStar": 0.7534083721886886,
+        "displacementMm": 0.015068167443773773,
+        "k": {
+          "total": 0.4806039127985568,
+          "bending": 0.6213803610483605,
+          "contact": -0.1407764482498151,
+          "barrier": 0
+        },
+        "s_c": -0.2929157347681041,
+        "stiffnessSumDifference": 1.1435297153639112e-14,
+        "stiffnessSumRelativeDifference": 2.3793599779600985e-14,
+        "reactionStiffness": 0.3955407241509795,
+        "reactionStiffnessDifference": -0.08506318864757728,
+        "reactionStiffnessRelativeDifference": 0.17699229320097354,
+        "interpretation": "横向刚度以弯曲为主，与推测矛盾",
+        "energySumDifferences": {
+          "minus": 0,
+          "baseline": 0,
+          "plus": 0
+        }
+      },
+      {
+        "l": 2.9,
+        "delta": 0.01,
+        "WStar": 0.7593735260851388,
+        "displacementMm": 0.007593735260851387,
+        "k": {
+          "total": 0.5284302916797723,
+          "bending": 0.12907587310698063,
+          "contact": 0.399354418572739,
+          "barrier": 0
+        },
+        "s_c": 0.7557371802121197,
+        "stiffnessSumDifference": 5.262457136723242e-14,
+        "stiffnessSumRelativeDifference": 9.958659107135895e-14,
+        "reactionStiffness": 0.5269089695926741,
+        "reactionStiffnessDifference": -0.0015213220870982092,
+        "reactionStiffnessRelativeDifference": 0.0028789456453418598,
+        "interpretation": "横向刚度以接触为主，与推测一致",
+        "energySumDifferences": {
+          "minus": 0,
+          "baseline": 0,
+          "plus": 0
+        }
       }
     ],
     "primary": {
@@ -1174,30 +1744,31 @@
         "plus": 0
       }
     },
-    "completePrimarySteps": false,
-    "stepSensitive": null,
-    "interpretation": null,
+    "completePrimarySteps": true,
+    "stepSensitive": true,
+    "interpretation": "不确定（步长敏感）",
     "stopReasons": []
   },
   "continuation": {
-    "head": "47b7980590bd83f10dddacaeaa466faa9e7bfc66",
+    "head": "505afdaac357add731ca6f63e11284aa2f032fae",
     "runtime": {
       "node": "v20.17.0",
       "platform": "win32",
       "arch": "x64",
       "endianness": "LE"
     },
-    "startedAt": "2026-11-25T14:22:16.773Z",
-    "verificationPolicy": "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
-    "ruling": "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师裁定原文（2026-11-25）",
-    "priorSummaryFile": "R2-2/continuation-2026-11-25/prior-summary.json",
-    "previousStudyFile": "R2-2/study-manifest.json",
-    "acceptedRun": "q3-2.84-plus-0.01",
+    "startedAt": "2026-11-25T14:38:45.356Z",
+    "verificationPolicy": "Second architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+    "ruling": "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师第二次裁定原文（2026-11-25）",
+    "priorSummaryFile": "R2-2/continuation-2-2026-11-25/prior-summary.json",
+    "previousStudyFile": "R2-2/continuation-2026-11-25/study-manifest.json",
+    "acceptedRun": "q3-2.84-minus-0.02",
     "reusedRuns": [
       "q3-2.84-minus-0.005",
       "q3-2.84-plus-0.005",
       "q3-2.84-minus-0.01",
-      "q3-2.84-plus-0.01"
+      "q3-2.84-plus-0.01",
+      "q3-2.84-minus-0.02"
     ]
   },
   "descriptiveOneSided": {
@@ -1221,7 +1792,31 @@
         "barrier": 0
       },
       "s_c": -0.4949499486374675,
-      "descriptiveOnly": true
+      "descriptiveOnly": true,
+      "pointIds": [
+        "baseline-l=2.84",
+        "q3-2.84-minus-0.005",
+        "q3-2.84-minus-0.01"
+      ],
+      "points": [
+        {
+          "id": "baseline-l=2.84",
+          "delta": 0,
+          "shearBranch": false
+        },
+        {
+          "id": "q3-2.84-minus-0.005",
+          "delta": -0.005,
+          "shearBranch": false
+        },
+        {
+          "id": "q3-2.84-minus-0.01",
+          "delta": -0.01,
+          "shearBranch": true
+        }
+      ],
+      "containsShearBranch": true,
+      "note": "含剪切分支点，不代表对称分支刚度"
     },
     "tension": {
       "outerDelta": 0.01,
@@ -1234,15 +1829,274 @@
         "barrier": 0
       },
       "s_c": 0.8301792106579869,
-      "descriptiveOnly": true
+      "descriptiveOnly": true,
+      "pointIds": [
+        "baseline-l=2.84",
+        "q3-2.84-plus-0.005",
+        "q3-2.84-plus-0.01"
+      ],
+      "points": [
+        {
+          "id": "baseline-l=2.84",
+          "delta": 0,
+          "shearBranch": false
+        },
+        {
+          "id": "q3-2.84-plus-0.005",
+          "delta": 0.005,
+          "shearBranch": false
+        },
+        {
+          "id": "q3-2.84-plus-0.01",
+          "delta": 0.01,
+          "shearBranch": false
+        }
+      ],
+      "containsShearBranch": false,
+      "note": null
     }
   },
   "continuationChecks": {
-    "stopReasons": [
-      "q3-2.84-minus-0.02: courseSpacing activePairs=76, baseline=109, absoluteChange=33, relativeChange=0.30275229357798167; exceeds 0.30",
-      "q3-2.84-minus-0.02: diagonal activePairs=40, baseline=9, absoluteChange=31, relativeChange=3.4444444444444446; exceeds 0.30"
-    ],
+    "stopReasons": [],
     "checks": [
+      {
+        "l": 2.77,
+        "points": [
+          {
+            "id": "q3-2.77-minus-0.01",
+            "l": 2.77,
+            "delta": -0.01,
+            "baseline": false,
+            "status": "CONVERGED",
+            "W": 0.7382237786497595,
+            "H": 0.48443517939056335,
+            "S": 0.00034271782989010415,
+            "shearRatio": 0.0004642465330999614,
+            "shearBranch": true,
+            "F_W": -0.004226010866452377,
+            "forceSignConsistent": true,
+            "E_total": 0.022423178828361513,
+            "minDistanceOverDe": 0.9145083133611571,
+            "minDistanceOverDeChange": -0.010881175864922543,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 16,
+                "baselineActivePairs": 14,
+                "absoluteChange": 2,
+                "relativeChange": 0.14285714285714285,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9150883091045621,
+                "baselineMinDistanceOverDe": 0.9253894892260797,
+                "minDistanceOverDeChange": -0.010301180121517595
+              },
+              "courseSpacing": {
+                "activePairs": 131,
+                "baselineActivePairs": 123,
+                "absoluteChange": 8,
+                "relativeChange": 0.06504065040650407,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9514768573842344,
+                "baselineMinDistanceOverDe": 0.9535500239772675,
+                "minDistanceOverDeChange": -0.0020731665930331378
+              },
+              "diagonal": {
+                "activePairs": 2,
+                "baselineActivePairs": 19,
+                "absoluteChange": 17,
+                "relativeChange": 0.8947368421052632,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9694912107170511,
+                "baselineMinDistanceOverDe": 0.9620981438822025,
+                "minDistanceOverDeChange": 0.007393066834848638
+              },
+              "sameLoop": {
+                "activePairs": 16,
+                "baselineActivePairs": 14,
+                "absoluteChange": 2,
+                "relativeChange": 0.14285714285714285,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9145083133611571,
+                "baselineMinDistanceOverDe": 0.9253894914358004,
+                "minDistanceOverDeChange": -0.010881178074643283
+              }
+            }
+          },
+          {
+            "id": "baseline-l=2.77",
+            "l": 2.77,
+            "delta": 0,
+            "baseline": true,
+            "status": "CONVERGED",
+            "W": 0.7456805844947066,
+            "H": 0.48201750245433816,
+            "S": 1.140033802667931e-9,
+            "shearRatio": 1.528850055068081e-9,
+            "shearBranch": false,
+            "F_W": -1.5803952591042503e-10,
+            "forceSignConsistent": null,
+            "E_total": 0.02240532953106333,
+            "minDistanceOverDe": 0.9253894892260797,
+            "minDistanceOverDeChange": 0,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9253894892260797,
+                "baselineMinDistanceOverDe": 0.9253894892260797,
+                "minDistanceOverDeChange": 0
+              },
+              "courseSpacing": {
+                "activePairs": 123,
+                "baselineActivePairs": 123,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9535500239772675,
+                "baselineMinDistanceOverDe": 0.9535500239772675,
+                "minDistanceOverDeChange": 0
+              },
+              "diagonal": {
+                "activePairs": 19,
+                "baselineActivePairs": 19,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9620981438822025,
+                "baselineMinDistanceOverDe": 0.9620981438822025,
+                "minDistanceOverDeChange": 0
+              },
+              "sameLoop": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9253894914358004,
+                "baselineMinDistanceOverDe": 0.9253894914358004,
+                "minDistanceOverDeChange": 0
+              }
+            }
+          },
+          {
+            "id": "q3-2.77-plus-0.01",
+            "l": 2.77,
+            "delta": 0.01,
+            "baseline": false,
+            "status": "CONVERGED",
+            "W": 0.7531373903396538,
+            "H": 0.4792087759044222,
+            "S": 1.0455217905084188e-7,
+            "shearRatio": 1.388221862198216e-7,
+            "shearBranch": false,
+            "F_W": 0.004544675811050263,
+            "forceSignConsistent": true,
+            "E_total": 0.02242254711983672,
+            "minDistanceOverDe": 0.939519180888329,
+            "minDistanceOverDeChange": 0.01412969166224931,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 13,
+                "baselineActivePairs": 14,
+                "absoluteChange": 1,
+                "relativeChange": 0.07142857142857142,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.939519180888329,
+                "baselineMinDistanceOverDe": 0.9253894892260797,
+                "minDistanceOverDeChange": 0.01412969166224931
+              },
+              "courseSpacing": {
+                "activePairs": 119,
+                "baselineActivePairs": 123,
+                "absoluteChange": 4,
+                "relativeChange": 0.032520325203252036,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9554443247149809,
+                "baselineMinDistanceOverDe": 0.9535500239772675,
+                "minDistanceOverDeChange": 0.0018943007377133503
+              },
+              "diagonal": {
+                "activePairs": 19,
+                "baselineActivePairs": 19,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9626266299316909,
+                "baselineMinDistanceOverDe": 0.9620981438822025,
+                "minDistanceOverDeChange": 0.000528486049488408
+              },
+              "sameLoop": {
+                "activePairs": 13,
+                "baselineActivePairs": 14,
+                "absoluteChange": 1,
+                "relativeChange": 0.07142857142857142,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9395192043015816,
+                "baselineMinDistanceOverDe": 0.9253894914358004,
+                "minDistanceOverDeChange": 0.014129712865781241
+              }
+            }
+          }
+        ],
+        "energy": {
+          "compression": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": -0.01,
+                "fromValue": 0.02240532953106333,
+                "toValue": 0.022423178828361513,
+                "change": 0.000017849297298182937
+              }
+            ]
+          },
+          "tension": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": 0.01,
+                "fromValue": 0.02240532953106333,
+                "toValue": 0.02242254711983672,
+                "change": 0.00001721758877339108
+              }
+            ]
+          }
+        },
+        "F_W": {
+          "signConsistent": true,
+          "baselineIgnored": true,
+          "monotonicityRequired": false
+        },
+        "H": {
+          "nondecreasing": false,
+          "nonincreasing": true,
+          "monotonic": true,
+          "steps": [
+            {
+              "fromDelta": -0.01,
+              "toDelta": 0,
+              "fromValue": 0.48443517939056335,
+              "toValue": 0.48201750245433816,
+              "change": -0.002417676936225188
+            },
+            {
+              "fromDelta": 0,
+              "toDelta": 0.01,
+              "fromValue": 0.48201750245433816,
+              "toValue": 0.4792087759044222,
+              "change": -0.0028087265499159852
+            }
+          ]
+        }
+      },
       {
         "l": 2.84,
         "points": [
@@ -1251,10 +2105,14 @@
             "l": 2.84,
             "delta": -0.02,
             "baseline": false,
-            "pointGuardExemption": null,
+            "status": "CONVERGED",
             "W": 0.7383402047449148,
             "H": 0.5056108806331452,
+            "S": 0.0034306069284542043,
+            "shearRatio": 0.004646376976910564,
+            "shearBranch": true,
             "F_W": -0.004298823534763533,
+            "forceSignConsistent": true,
             "E_total": 0.0212559006208729,
             "minDistanceOverDe": 0.9278357146521079,
             "minDistanceOverDeChange": -0.009134361417839298,
@@ -1265,23 +2123,39 @@
                 "absoluteChange": 7,
                 "relativeChange": 0.5,
                 "usedForStop": false,
-                "exceeds30Percent": true
+                "minDistanceOverDe": 0.9278357146521079,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": -0.009134362453053768
               },
               "courseSpacing": {
                 "activePairs": 76,
                 "baselineActivePairs": 109,
                 "absoluteChange": 33,
                 "relativeChange": 0.30275229357798167,
-                "usedForStop": true,
-                "exceeds30Percent": true
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9563783190351559,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": -0.0023038144420173268
               },
               "diagonal": {
                 "activePairs": 40,
                 "baselineActivePairs": 9,
                 "absoluteChange": 31,
                 "relativeChange": 3.4444444444444446,
-                "usedForStop": true,
-                "exceeds30Percent": true
+                "usedForStop": false,
+                "minDistanceOverDe": 0.95666940441632,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": -0.010049873572337886
+              },
+              "sameLoop": {
+                "activePairs": 9,
+                "baselineActivePairs": 14,
+                "absoluteChange": 5,
+                "relativeChange": 0.35714285714285715,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9278655581357307,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": -0.009104517934216516
               }
             }
           },
@@ -1290,10 +2164,14 @@
             "l": 2.84,
             "delta": -0.01,
             "baseline": false,
-            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "status": "CONVERGED",
             "W": 0.7458742884668017,
             "H": 0.5049114784927015,
+            "S": 0.0009549676603291615,
+            "shearRatio": 0.0012803332613759435,
+            "shearBranch": true,
             "F_W": -0.004123665024132235,
+            "forceSignConsistent": true,
             "E_total": 0.021224060394646794,
             "minDistanceOverDe": 0.9251361699336274,
             "minDistanceOverDeChange": -0.01183390613631985,
@@ -1304,7 +2182,9 @@
                 "absoluteChange": 0,
                 "relativeChange": 0,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.925250372959678,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": -0.011719704145483623
               },
               "courseSpacing": {
                 "activePairs": 114,
@@ -1312,7 +2192,9 @@
                 "absoluteChange": 5,
                 "relativeChange": 0.045871559633027525,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9564948490432033,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": -0.0021872844339699826
               },
               "diagonal": {
                 "activePairs": 4,
@@ -1320,7 +2202,19 @@
                 "absoluteChange": 5,
                 "relativeChange": 0.5555555555555556,
                 "usedForStop": false,
-                "exceeds30Percent": true
+                "minDistanceOverDe": 0.9662420712251957,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": -0.00047720676346219015
+              },
+              "sameLoop": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9251361699336274,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": -0.01183390613631985
               }
             }
           },
@@ -1329,10 +2223,14 @@
             "l": 2.84,
             "delta": -0.005,
             "baseline": false,
-            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "status": "CONVERGED",
             "W": 0.7496413303277452,
             "H": 0.503772594319078,
+            "S": -2.8566582298975954e-10,
+            "shearRatio": 3.8107000165647975e-10,
+            "shearBranch": false,
             "F_W": -0.0022247808097477263,
+            "forceSignConsistent": true,
             "E_total": 0.02121145808170685,
             "minDistanceOverDe": 0.9300482393534685,
             "minDistanceOverDeChange": -0.006921836716478724,
@@ -1343,7 +2241,9 @@
                 "absoluteChange": 0,
                 "relativeChange": 0,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9300482473553262,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": -0.006921829749835462
               },
               "courseSpacing": {
                 "activePairs": 110,
@@ -1351,7 +2251,9 @@
                 "absoluteChange": 1,
                 "relativeChange": 0.009174311926605505,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9576860765276387,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": -0.0009960569495345295
               },
               "diagonal": {
                 "activePairs": 8,
@@ -1359,19 +2261,35 @@
                 "absoluteChange": 1,
                 "relativeChange": 0.1111111111111111,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9665098842211683,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": -0.00020939376748951855
+              },
+              "sameLoop": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9300482393534685,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": -0.006921836716478724
               }
             }
           },
           {
-            "id": "l=2.84, delta=0",
+            "id": "baseline-l=2.84",
             "l": 2.84,
             "delta": 0,
             "baseline": true,
-            "pointGuardExemption": null,
+            "status": "CONVERGED",
             "W": 0.7534083721886886,
             "H": 0.5024151437792043,
+            "S": 2.414423060127245e-10,
+            "shearRatio": 3.2046671489901637e-10,
+            "shearBranch": false,
             "F_W": -2.699519722343391e-10,
+            "forceSignConsistent": null,
             "E_total": 0.021207309652142344,
             "minDistanceOverDe": 0.9369700760699472,
             "minDistanceOverDeChange": 0,
@@ -1382,23 +2300,39 @@
                 "absoluteChange": 0,
                 "relativeChange": 0,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9369700771051617,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": 0
               },
               "courseSpacing": {
                 "activePairs": 109,
                 "baselineActivePairs": 109,
                 "absoluteChange": 0,
                 "relativeChange": 0,
-                "usedForStop": true,
-                "exceeds30Percent": false
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9586821334771732,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": 0
               },
               "diagonal": {
                 "activePairs": 9,
                 "baselineActivePairs": 9,
                 "absoluteChange": 0,
                 "relativeChange": 0,
-                "usedForStop": true,
-                "exceeds30Percent": false
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9667192779886579,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": 0
+              },
+              "sameLoop": {
+                "activePairs": 14,
+                "baselineActivePairs": 14,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9369700760699472,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": 0
               }
             }
           },
@@ -1407,10 +2341,14 @@
             "l": 2.84,
             "delta": 0.005,
             "baseline": false,
-            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "status": "CONVERGED",
             "W": 0.757175414049632,
             "H": 0.5010545865781588,
+            "S": 1.0474798674218244e-7,
+            "shearRatio": 1.3834044898784356e-7,
+            "shearBranch": false,
             "F_W": 0.0021138614732358237,
+            "forceSignConsistent": true,
             "E_total": 0.021211324649226235,
             "minDistanceOverDe": 0.9440729831906323,
             "minDistanceOverDeChange": 0.007102907120685065,
@@ -1421,7 +2359,9 @@
                 "absoluteChange": 1,
                 "relativeChange": 0.07142857142857142,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.944072985344551,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": 0.007102908239389305
               },
               "courseSpacing": {
                 "activePairs": 111,
@@ -1429,7 +2369,9 @@
                 "absoluteChange": 2,
                 "relativeChange": 0.01834862385321101,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9595755452908535,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": 0.0008934118136803004
               },
               "diagonal": {
                 "activePairs": 9,
@@ -1437,7 +2379,19 @@
                 "absoluteChange": 0,
                 "relativeChange": 0,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9670555853687617,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": 0.00033630738010381744
+              },
+              "sameLoop": {
+                "activePairs": 13,
+                "baselineActivePairs": 14,
+                "absoluteChange": 1,
+                "relativeChange": 0.07142857142857142,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9440729831906323,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": 0.007102907120685065
               }
             }
           },
@@ -1446,10 +2400,14 @@
             "l": 2.84,
             "delta": 0.01,
             "baseline": false,
-            "pointGuardExemption": "ARCHITECT_ACCEPTED_EXISTING_POINT",
+            "status": "CONVERGED",
             "W": 0.7609424559105755,
             "H": 0.4996916905656615,
+            "S": 6.612896650510774e-9,
+            "shearRatio": 8.690403064181122e-9,
+            "shearBranch": false,
             "F_W": 0.004127258792417673,
+            "forceSignConsistent": true,
             "E_total": 0.02122311181422044,
             "minDistanceOverDe": 0.951349855358731,
             "minDistanceOverDeChange": 0.014379779288783756,
@@ -1460,7 +2418,9 @@
                 "absoluteChange": 5,
                 "relativeChange": 0.35714285714285715,
                 "usedForStop": false,
-                "exceeds30Percent": true
+                "minDistanceOverDe": 0.951349855358731,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": 0.014379778253569286
               },
               "courseSpacing": {
                 "activePairs": 113,
@@ -1468,7 +2428,9 @@
                 "absoluteChange": 4,
                 "relativeChange": 0.03669724770642202,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9597429812231112,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": 0.001060847745937954
               },
               "diagonal": {
                 "activePairs": 9,
@@ -1476,7 +2438,78 @@
                 "absoluteChange": 0,
                 "relativeChange": 0,
                 "usedForStop": false,
-                "exceeds30Percent": false
+                "minDistanceOverDe": 0.9675217082846559,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": 0.0008024302959980245
+              },
+              "sameLoop": {
+                "activePairs": 9,
+                "baselineActivePairs": 14,
+                "absoluteChange": 5,
+                "relativeChange": 0.35714285714285715,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9513498664933784,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": 0.014379790423431182
+              }
+            }
+          },
+          {
+            "id": "q3-2.84-plus-0.02",
+            "l": 2.84,
+            "delta": 0.02,
+            "baseline": false,
+            "status": "CONVERGED",
+            "W": 0.7684765396324624,
+            "H": 0.49687438920185695,
+            "S": -7.184161042665612e-8,
+            "shearRatio": 9.348575619629931e-8,
+            "shearBranch": false,
+            "F_W": 0.007621324189913451,
+            "forceSignConsistent": true,
+            "E_total": 0.02126783964326801,
+            "minDistanceOverDe": 0.9593067717488442,
+            "minDistanceOverDeChange": 0.022336695678896956,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 7,
+                "baselineActivePairs": 14,
+                "absoluteChange": 7,
+                "relativeChange": 0.5,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9637933354828608,
+                "baselineMinDistanceOverDe": 0.9369700771051617,
+                "minDistanceOverDeChange": 0.026823258377699166
+              },
+              "courseSpacing": {
+                "activePairs": 104,
+                "baselineActivePairs": 109,
+                "absoluteChange": 5,
+                "relativeChange": 0.045871559633027525,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9593067717488442,
+                "baselineMinDistanceOverDe": 0.9586821334771732,
+                "minDistanceOverDeChange": 0.0006246382716709187
+              },
+              "diagonal": {
+                "activePairs": 12,
+                "baselineActivePairs": 9,
+                "absoluteChange": 3,
+                "relativeChange": 0.3333333333333333,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9715756358396721,
+                "baselineMinDistanceOverDe": 0.9667192779886579,
+                "minDistanceOverDeChange": 0.004856357851014237
+              },
+              "sameLoop": {
+                "activePairs": 7,
+                "baselineActivePairs": 14,
+                "absoluteChange": 7,
+                "relativeChange": 0.5,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9637933633976163,
+                "baselineMinDistanceOverDe": 0.9369700760699472,
+                "minDistanceOverDeChange": 0.026823287327669143
               }
             }
           }
@@ -1528,51 +2561,21 @@
                 "fromValue": 0.021211324649226235,
                 "toValue": 0.02122311181422044,
                 "change": 0.000011787164994205013
+              },
+              {
+                "fromDelta": 0.01,
+                "toDelta": 0.02,
+                "fromValue": 0.02122311181422044,
+                "toValue": 0.02126783964326801,
+                "change": 0.00004472782904756806
               }
             ]
           }
         },
         "F_W": {
-          "nondecreasing": true,
-          "nonincreasing": false,
-          "monotonic": true,
-          "steps": [
-            {
-              "fromDelta": -0.02,
-              "toDelta": -0.01,
-              "fromValue": -0.004298823534763533,
-              "toValue": -0.004123665024132235,
-              "change": 0.00017515851063129844
-            },
-            {
-              "fromDelta": -0.01,
-              "toDelta": -0.005,
-              "fromValue": -0.004123665024132235,
-              "toValue": -0.0022247808097477263,
-              "change": 0.0018988842143845084
-            },
-            {
-              "fromDelta": -0.005,
-              "toDelta": 0,
-              "fromValue": -0.0022247808097477263,
-              "toValue": -2.699519722343391e-10,
-              "change": 0.002224780539795754
-            },
-            {
-              "fromDelta": 0,
-              "toDelta": 0.005,
-              "fromValue": -2.699519722343391e-10,
-              "toValue": 0.0021138614732358237,
-              "change": 0.002113861743187796
-            },
-            {
-              "fromDelta": 0.005,
-              "toDelta": 0.01,
-              "fromValue": 0.0021138614732358237,
-              "toValue": 0.004127258792417673,
-              "change": 0.0020133973191818495
-            }
-          ]
+          "signConsistent": true,
+          "baselineIgnored": true,
+          "monotonicityRequired": false
         },
         "H": {
           "nondecreasing": false,
@@ -1613,12 +2616,285 @@
               "fromValue": 0.5010545865781588,
               "toValue": 0.4996916905656615,
               "change": -0.0013628960124973388
+            },
+            {
+              "fromDelta": 0.01,
+              "toDelta": 0.02,
+              "fromValue": 0.4996916905656615,
+              "toValue": 0.49687438920185695,
+              "change": -0.0028173013638045363
+            }
+          ]
+        }
+      },
+      {
+        "l": 2.9,
+        "points": [
+          {
+            "id": "q3-2.9-minus-0.01",
+            "l": 2.9,
+            "delta": -0.01,
+            "baseline": false,
+            "status": "CONVERGED",
+            "W": 0.7517797908242874,
+            "H": 0.5223536946389211,
+            "S": -0.0001242330199610479,
+            "shearRatio": 0.00016525187492049084,
+            "shearBranch": true,
+            "F_W": -0.004209065052278652,
+            "forceSignConsistent": true,
+            "E_total": 0.02033129121973115,
+            "minDistanceOverDe": 0.9351175519856343,
+            "minDistanceOverDeChange": -0.010915631724206953,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 13,
+                "baselineActivePairs": 13,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9351175519856343,
+                "baselineMinDistanceOverDe": 0.9460331893806645,
+                "minDistanceOverDeChange": -0.010915637395030209
+              },
+              "courseSpacing": {
+                "activePairs": 104,
+                "baselineActivePairs": 94,
+                "absoluteChange": 10,
+                "relativeChange": 0.10638297872340426,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9596994137173479,
+                "baselineMinDistanceOverDe": 0.9614878983849673,
+                "minDistanceOverDeChange": -0.0017884846676193833
+              },
+              "diagonal": {
+                "activePairs": 3,
+                "baselineActivePairs": 6,
+                "absoluteChange": 3,
+                "relativeChange": 0.5,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9774920768746723,
+                "baselineMinDistanceOverDe": 0.9704767792199736,
+                "minDistanceOverDeChange": 0.007015297654698771
+              },
+              "sameLoop": {
+                "activePairs": 13,
+                "baselineActivePairs": 13,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9351990276914047,
+                "baselineMinDistanceOverDe": 0.9460331837098412,
+                "minDistanceOverDeChange": -0.010834156018436514
+              }
+            }
+          },
+          {
+            "id": "baseline-l=2.9",
+            "l": 2.9,
+            "delta": 0,
+            "baseline": true,
+            "status": "CONVERGED",
+            "W": 0.7593735260851388,
+            "H": 0.5196924331440606,
+            "S": -4.093858944096145e-9,
+            "shearRatio": 5.391100431432677e-9,
+            "shearBranch": false,
+            "F_W": -1.8493450694434532e-10,
+            "forceSignConsistent": null,
+            "E_total": 0.020315596525780973,
+            "minDistanceOverDe": 0.9460331837098412,
+            "minDistanceOverDeChange": 0,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 13,
+                "baselineActivePairs": 13,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9460331893806645,
+                "baselineMinDistanceOverDe": 0.9460331893806645,
+                "minDistanceOverDeChange": 0
+              },
+              "courseSpacing": {
+                "activePairs": 94,
+                "baselineActivePairs": 94,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9614878983849673,
+                "baselineMinDistanceOverDe": 0.9614878983849673,
+                "minDistanceOverDeChange": 0
+              },
+              "diagonal": {
+                "activePairs": 6,
+                "baselineActivePairs": 6,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9704767792199736,
+                "baselineMinDistanceOverDe": 0.9704767792199736,
+                "minDistanceOverDeChange": 0
+              },
+              "sameLoop": {
+                "activePairs": 13,
+                "baselineActivePairs": 13,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9460331837098412,
+                "baselineMinDistanceOverDe": 0.9460331837098412,
+                "minDistanceOverDeChange": 0
+              }
+            }
+          },
+          {
+            "id": "q3-2.9-plus-0.01",
+            "l": 2.9,
+            "delta": 0.01,
+            "baseline": false,
+            "status": "CONVERGED",
+            "W": 0.7669672613459901,
+            "H": 0.5170294489828314,
+            "S": 1.0360735953410209e-7,
+            "shearRatio": 1.3508706923458015e-7,
+            "shearBranch": false,
+            "F_W": 0.003793349391030869,
+            "forceSignConsistent": true,
+            "E_total": 0.020330373666952877,
+            "minDistanceOverDe": 0.9606825135486982,
+            "minDistanceOverDeChange": 0.014649329838856917,
+            "groups": {
+              "waleSpacing": {
+                "activePairs": 9,
+                "baselineActivePairs": 13,
+                "absoluteChange": 4,
+                "relativeChange": 0.3076923076923077,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9606825458844287,
+                "baselineMinDistanceOverDe": 0.9460331893806645,
+                "minDistanceOverDeChange": 0.0146493565037642
+              },
+              "courseSpacing": {
+                "activePairs": 96,
+                "baselineActivePairs": 94,
+                "absoluteChange": 2,
+                "relativeChange": 0.02127659574468085,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9617872248659299,
+                "baselineMinDistanceOverDe": 0.9614878983849673,
+                "minDistanceOverDeChange": 0.00029932648096264725
+              },
+              "diagonal": {
+                "activePairs": 6,
+                "baselineActivePairs": 6,
+                "absoluteChange": 0,
+                "relativeChange": 0,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9707085802162209,
+                "baselineMinDistanceOverDe": 0.9704767792199736,
+                "minDistanceOverDeChange": 0.0002318009962473111
+              },
+              "sameLoop": {
+                "activePairs": 9,
+                "baselineActivePairs": 13,
+                "absoluteChange": 4,
+                "relativeChange": 0.3076923076923077,
+                "usedForStop": false,
+                "minDistanceOverDe": 0.9606825135486982,
+                "baselineMinDistanceOverDe": 0.9460331837098412,
+                "minDistanceOverDeChange": 0.014649329838856917
+              }
+            }
+          }
+        ],
+        "energy": {
+          "compression": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": -0.01,
+                "fromValue": 0.020315596525780973,
+                "toValue": 0.02033129121973115,
+                "change": 0.000015694693950178695
+              }
+            ]
+          },
+          "tension": {
+            "nondecreasing": true,
+            "nonincreasing": false,
+            "monotonic": true,
+            "steps": [
+              {
+                "fromDelta": 0,
+                "toDelta": 0.01,
+                "fromValue": 0.020315596525780973,
+                "toValue": 0.020330373666952877,
+                "change": 0.000014777141171904568
+              }
+            ]
+          }
+        },
+        "F_W": {
+          "signConsistent": true,
+          "baselineIgnored": true,
+          "monotonicityRequired": false
+        },
+        "H": {
+          "nondecreasing": false,
+          "nonincreasing": true,
+          "monotonic": true,
+          "steps": [
+            {
+              "fromDelta": -0.01,
+              "toDelta": 0,
+              "fromValue": 0.5223536946389211,
+              "toValue": 0.5196924331440606,
+              "change": -0.0026612614948605673
+            },
+            {
+              "fromDelta": 0,
+              "toDelta": 0.01,
+              "fromValue": 0.5196924331440606,
+              "toValue": 0.5170294489828314,
+              "change": -0.0026629841612291205
             }
           ]
         }
       }
     ]
   },
-  "error": "STOP #6: q3-2.84-minus-0.02: courseSpacing activePairs=76, baseline=109, absoluteChange=33, relativeChange=0.30275229357798167; exceeds 0.30; q3-2.84-minus-0.02: diagonal activePairs=40, baseline=9, absoluteChange=31, relativeChange=3.4444444444444446; exceeds 0.30",
-  "finishedAt": "2026-11-25T14:25:13.982Z"
+  "continuationHistory": [
+    {
+      "head": "47b7980590bd83f10dddacaeaa466faa9e7bfc66",
+      "runtime": {
+        "node": "v20.17.0",
+        "platform": "win32",
+        "arch": "x64",
+        "endianness": "LE"
+      },
+      "startedAt": "2026-11-25T14:22:16.773Z",
+      "verificationPolicy": "Architect ruling in R2 §10 (2026-11-25): no golden runs, performance measurement or file hashing",
+      "ruling": "docs/R2_SLOPE_SENSITIVITY_TASK.md §10 架构师裁定原文（2026-11-25）",
+      "priorSummaryFile": "R2-2/continuation-2026-11-25/prior-summary.json",
+      "previousStudyFile": "R2-2/study-manifest.json",
+      "acceptedRun": "q3-2.84-plus-0.01",
+      "reusedRuns": [
+        "q3-2.84-minus-0.005",
+        "q3-2.84-plus-0.005",
+        "q3-2.84-minus-0.01",
+        "q3-2.84-plus-0.01"
+      ]
+    }
+  ],
+  "shearBranchDefinition": {
+    "formula": "abs(S) / W > 1e-4",
+    "threshold": 0.0001,
+    "source": "R2 §10 second architect ruling; diagnostic branch flag, not a primary verdict",
+    "unit": "1"
+  },
+  "finishedAt": "2026-11-25T14:46:05.421Z"
 }

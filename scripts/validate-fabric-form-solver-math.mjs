@@ -6,9 +6,10 @@ import { runFabricFormInitialChecks } from "./lib/fabricFormInitialChecks.mjs";
 import { runOptimizerChecks } from "./lib/fabricFormOptimizerChecks.mjs";
 import { runMetricsChecks } from "./lib/fabricFormMetricsChecks.mjs";
 import { runDofLayoutChecks } from "./lib/fabricFormDofLayoutChecks.mjs";
+import { runFabricFormModelChecks } from "./lib/fabricFormModelChecks.mjs";
 
 const start = performance.now();
-for (const [name, check] of Object.entries({ dofLayout: runDofLayoutChecks, topology: runFabricFormTopologyChecks,
+for (const [name, check] of Object.entries({ dofLayout: runDofLayoutChecks, model: runFabricFormModelChecks, topology: runFabricFormTopologyChecks,
   bending: runRodChecks, contact: runContactChecks, periodic: runPeriodicContactChecks,
   initialization: runFabricFormInitialChecks, optimizer: runOptimizerChecks, metrics: runMetricsChecks })) {
   await check();

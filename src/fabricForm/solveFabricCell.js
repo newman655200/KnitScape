@@ -3,12 +3,11 @@ import { evaluateRodBending, evaluateLengthConstraints } from "./rodBending.js";
 import { evaluatePeriodicContact, safePeriodicStep, diagnosePeriodicContact } from "./periodicContact.js";
 import { minimizeConstrained, evaluateConstraintReaction } from "./constrainedOptimizer.js";
 import { fabricFormMetrics } from "./fabricFormMetrics.js";
+import { createDofLayout } from "./model/dofLayout.js";
 
-export const packFabricCell = cell => Float64Array.from([...cell.positions.flat(), cell.W, cell.H, cell.S]);
+export const packFabricCell = cell => createDofLayout(cell).pack(cell);
 export function unpackFabricCell(values, template) {
-  const count = template.positions.length;
-  return { ...template, positions: Array.from({ length: count }, (_, i) => Array.from(values.slice(3*i, 3*i+3))),
-    W: values[3*count], H: values[3*count+1], S: values[3*count+2] };
+  return createDofLayout(template).unpack(values, template);
 }
 
 export function evaluateFabricCell(cell, params, quadratureOrder = 12) {
@@ -44,11 +43,13 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
     initial = { ...initial, W: lockedDimensions.W, H: lockedDimensions.H };
   }
   const start = performance.now(), scale = topology.loopLengthMm;
-  const lattice = initial.positions.length*3;
+  const layout = createDofLayout(initial);
+  const positionsBlock = layout.blocks.find(block => block.name === "positions");
+  const latticeComponents = layout.blocks.find(block => block.name === "lattice").components;
+  const latticeIndex = Object.fromEntries(latticeComponents.map(component => [component, layout.index("lattice", component)]));
   // Remove translation. W/H are excluded from the multiplier fit when locked.
-  const freeIndices = Array.from({ length: lattice }, (_, i) => i+3)
-    .filter(i => !lockedDimensions || (i !== lattice && i !== lattice+1));
-  const toCell = x => unpackFabricCell(Float64Array.from(x, value => value*scale), initial);
+  const freeIndices = layout.freeIndices({ fixTranslation: true, locked: lockedDimensions ? ["W", "H"] : [] });
+  const toCell = x => layout.unpack(Float64Array.from(x, value => value*scale), initial);
   const initialEvaluation = evaluateFabricCell(initial, params, quadratureOrder);
   if (!initialEvaluation.contact.feasible) {
     const contact=initialEvaluation.contact,constraint=evaluateLengthConstraints(initial);
@@ -69,16 +70,16 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
   let minimumEvaluatedDistance = initialEvaluation.contact.minDistance;
   let maximumEvaluatedBarrierEnergy = initialEvaluation.contact.barrierEnergy;
   const optimized = minimizeConstrained({
-    x0: Float64Array.from(packFabricCell(initial), value => value/scale), freeIndices,
+    x0: Float64Array.from(layout.pack(initial), value => value/scale), freeIndices,
     energyScale: params.B/scale, maxIterations, innerIterations, maxOuterIterations: 60,
     initialPenalty: 100, memorySize, stagnationWindow,
     gradientTolerance, constraintTolerance,
     convergenceCheck: ({ x, state, reaction }) => {
       if (Math.max(...Array.from(state.values, Math.abs)) > Math.min(1e-4,constraintTolerance)) return false;
       const residual = reaction.fullResidual;
-      if (Math.max(...Array.from(residual.slice(0,lattice), Math.abs)) > 1e-6*state.energy) return false;
-      return [0,1,2].every(i => lockedDimensions && i<2 ||
-        Math.abs(residual[lattice+i])*x[lattice+(i===1?1:0)] <= 1e-6*state.energy);
+      if (Math.max(...Array.from(residual.slice(positionsBlock.offset, positionsBlock.offset + positionsBlock.length), Math.abs)) > 1e-6*state.energy) return false;
+      return latticeComponents.every(component => lockedDimensions && component !== "S" ||
+        Math.abs(residual[latticeIndex[component]])*x[latticeIndex[component === "H" ? "H" : "W"]] <= 1e-6*state.energy);
     },
     evaluate: x => {
       const value = evaluateFabricCell(toCell(x), params, quadratureOrder);
@@ -99,8 +100,8 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
   const cell = toCell(optimized.x), evaluation = evaluateFabricCell(cell, params, quadratureOrder);
   const constraint = evaluateLengthConstraints(cell), metrics = fabricFormMetrics(cell, params);
   const reaction = evaluateConstraintReaction({ gradient: evaluation.gradient, jacobian: constraint.jacobian, freeIndices });
-  const nodeResidual = Math.max(...Array.from(reaction.fullResidual.slice(0, lattice), Math.abs));
-  const latticeResidual = Array.from(reaction.fullResidual.slice(lattice));
+  const nodeResidual = Math.max(...Array.from(reaction.fullResidual.slice(positionsBlock.offset, positionsBlock.offset + positionsBlock.length), Math.abs));
+  const latticeResidual = latticeComponents.map(component => reaction.fullResidual[latticeIndex[component]]);
   const nodeRatio = nodeResidual/(evaluation.energy/scale);
   const latticeRatios = latticeResidual.map((r,i) => Math.abs(r)*[cell.W,cell.H,cell.W][i]/evaluation.energy);
   const equilibriumPassed = nodeRatio <= 1e-6 && latticeRatios.every((r,i) => lockedDimensions && i < 2 || r <= 1e-6);
@@ -125,7 +126,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       ratioToSolidDiameter: contact.minDistance/params.d_s, distanceScope: contact.distanceScope,
       imageBounds: contact.imageBounds, activePairs: contact.activePairs, barrierPairs: contact.barrierPairs },
     barrier: { maxGradient: Math.max(...Array.from(contact.barrierGradient, Math.abs)),
-      latticeGradient: Array.from(contact.barrierGradient.slice(lattice)), measure: "(K*E_f/d_e) integral integral b(distance-r_c) ds dt",
+      latticeGradient: latticeComponents.map(component => contact.barrierGradient[latticeIndex[component]]), measure: "(K*E_f/d_e) integral integral b(distance-r_c) ds dt",
       activationWidth: .1*(params.d_e-params.r_c),
       widthSensitivity: {multipliers:[.5,1,2],inactiveAtAllWidths:contact.minDistance>params.r_c+.2*(params.d_e-params.r_c),
         scope:"If inactive at all widths, energy and force remain exactly zero at this branch; no claim about other equilibria"} },

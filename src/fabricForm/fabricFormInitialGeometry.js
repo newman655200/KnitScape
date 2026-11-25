@@ -1,3 +1,5 @@
+import { stockinetteSabetta } from "./topology/stitchTemplates.js";
+
 /**
  * Initial geometry only, derived from stockinette.py/CrossOver5/ConnectingCurve5
  * and Init_stockinette.dat in https://github.com/sabetta/stitch-by-stitch
@@ -95,6 +97,10 @@ const REFERENCE_CURVES = [
   ],
 ];
 
+const REFERENCE_SEEDS = {
+  [stockinetteSabetta.id]: { curves: REFERENCE_CURVES, width: REFERENCE_WIDTH, height: REFERENCE_HEIGHT },
+};
+
 function pointOnCurve(points, t) {
   const coefficients = [1, 5, 10, 10, 5, 1];
   const result = [0, 0, 0];
@@ -105,15 +111,15 @@ function pointOnCurve(points, t) {
   return result;
 }
 
-function sampleReference(count, shapeScale) {
+function sampleReference(count, shapeScale, curves) {
   const dense = [], arc = [];
   const resolution = Math.max(256, count * 8);
-  for (let curve = 0; curve < REFERENCE_CURVES.length; curve++) {
+  for (let curve = 0; curve < curves.length; curve++) {
     for (let step = 0; step < resolution; step++) {
-      dense.push(pointOnCurve(REFERENCE_CURVES[curve], step / resolution).map((value, axis) => value * shapeScale[axis]));
+      dense.push(pointOnCurve(curves[curve], step / resolution).map((value, axis) => value * shapeScale[axis]));
     }
   }
-  dense.push(REFERENCE_CURVES.at(-1).at(-1).map((value, axis) => value * shapeScale[axis]));
+  dense.push(curves.at(-1).at(-1).map((value, axis) => value * shapeScale[axis]));
   arc.push(0);
   for (let i = 1; i < dense.length; i++) arc.push(arc[i - 1] + Math.hypot(...dense[i].map((value, axis) => value - dense[i - 1][axis])));
   const points = [];
@@ -140,11 +146,13 @@ export function createFabricFormInitialGeometry(topology, params = {}, options =
   if (shapeScale.length !== 3 || !shapeScale.every(value => Number.isFinite(value) && value > 0)) {
     throw new RangeError("shapeScale must contain three finite positive factors.");
   }
-  const samples = sampleReference(count, shapeScale);
+  const template = stockinetteSabetta;
+  const reference = REFERENCE_SEEDS[template.id];
+  const samples = sampleReference(count, shapeScale, reference.curves);
   const lengths = samples.slice(0, -1).map((point, i) => Math.hypot(...point.map((value, axis) => samples[i + 1][axis] - value)));
   const scale = target / lengths.reduce((sum, value) => sum + value, 0);
-  const width = REFERENCE_WIDTH * shapeScale[0] * scale;
-  const height = REFERENCE_HEIGHT * shapeScale[1] * scale;
+  const width = reference.width * shapeScale[0] * scale;
+  const height = reference.height * shapeScale[1] * scale;
   const centroid = [0, 1, 2].map(axis => samples.slice(0, -1).reduce((sum, point) => sum + point[axis], 0) / count);
   const positions = [];
   for (let feed = 0; feed < n; feed++) {
@@ -168,7 +176,7 @@ export function createFabricFormInitialGeometry(topology, params = {}, options =
     yarn.materialLength = m * target;
   }
   return { positions, W: m * width, H: n * height, S: 0, topology: materialTopology,
-    initialization: { source: "sabetta/stitch-by-stitch", commit: "0ed27f35dcf5c3bda874f214bbcab0455055edf0",
+    initialization: { source: template.seed.source, commit: template.seed.commit,
       method: "Periodic quintic stockinette seed, arclength resampling, exact polygonal material-length normalization",
       shapeScale: Array.from(shapeScale), contactFeasibility: "REQUIRES_CONTACT_CHECK" } };
 }

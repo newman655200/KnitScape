@@ -1,0 +1,1040 @@
+{
+  "schemaVersion": 1,
+  "question": "q3",
+  "step": "R2-2",
+  "head": "690b323c2854ace25f776ffbbe505b491e427388",
+  "runtime": {
+    "node": "v20.17.0",
+    "platform": "win32",
+    "arch": "x64",
+    "endianness": "LE"
+  },
+  "codeHashes": {
+    "scripts/run-fabric-form-r2-study.mjs": "2909f0387346b036f1b598e2a8f3d4fdf6c23f712cba81c3f28c99112f690af4",
+    "scripts/lib/fabricFormR2Analysis.mjs": "8761252868b3098ecb98d013575235d05c934d99139a3c0444a04bfd46effbd9",
+    "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
+  },
+  "startedAt": "2026-11-25T13:58:28.670Z",
+  "status": "STOPPED",
+  "archiveRoot": "C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25",
+  "provenance": {
+    "values": "Each run and baseline row; unrounded JSON scalars",
+    "units": {
+      "l": "mm",
+      "W": "mm",
+      "H": "mm",
+      "S": "mm",
+      "energy": "N*mm",
+      "F_W": "N",
+      "stiffness": "N/mm",
+      "waleDensityPerCm": "1/cm",
+      "courseDensityPerCm": "1/cm",
+      "sensitivity": "1",
+      "contactShare": "1"
+    },
+    "source": "R2 task §5 and the input/after files listed in each manifest",
+    "principle": "T1 equilibrium continuation; registered central differences and equal-weight log OLS",
+    "confidence": "MODEL_DERIVED_DIAGNOSTIC; not physical measurement or causal verification",
+    "applicableState": "T1 N64 frictionless plain-jersey branch; no material calibration"
+  },
+  "baselines": {
+    "2.77": {
+      "l": 2.77,
+      "KScale": 1,
+      "scale": 1,
+      "delta": 0,
+      "status": "CONVERGED",
+      "iterations": 3746,
+      "W": 0.7456805844947066,
+      "H": 0.48201750245433816,
+      "S": 1.140033802667931e-9,
+      "waleDensityPerCm": 13.410567752379219,
+      "courseDensityPerCm": 20.74613463013681,
+      "energy": {
+        "total": 0.02240532953106333,
+        "bending": 0.02178014167506471,
+        "contact": 0.0006251878559986209,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9253894892260797,
+      "activePairs": 170,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9253894892260797
+        },
+        "courseSpacing": {
+          "activePairs": 123,
+          "minDistanceOverDe": 0.9535500239772675
+        },
+        "diagonal": {
+          "activePairs": 19,
+          "minDistanceOverDe": 0.9620981438822025
+        },
+        "sameLoop": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9253894914358004
+        }
+      },
+      "F_W": null,
+      "source": {
+        "kind": "REUSED_AFTER_JSON_NOT_A_NEW_SOLVE",
+        "file": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json",
+        "sha256": "6e4ff60aa6bf4886cfb2659a3da39e115fc023869bde822f19adfef0da5cee03",
+        "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "inputSha256": "d757ad1444d76ff4e07e8689e364c9f8ecd831c9c240bd4343d2b6073b473541"
+      }
+    },
+    "2.84": {
+      "l": 2.84,
+      "KScale": 1,
+      "scale": 1,
+      "delta": 0,
+      "status": "CONVERGED",
+      "iterations": 3800,
+      "W": 0.7534083721886886,
+      "H": 0.5024151437792043,
+      "S": 2.414423060127245e-10,
+      "waleDensityPerCm": 13.273014170189674,
+      "courseDensityPerCm": 19.903858639250505,
+      "energy": {
+        "total": 0.021207309652142344,
+        "bending": 0.020767397009820235,
+        "contact": 0.00043991264232211047,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9369700760699472,
+      "activePairs": 146,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9369700771051617
+        },
+        "courseSpacing": {
+          "activePairs": 109,
+          "minDistanceOverDe": 0.9586821334771732
+        },
+        "diagonal": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9667192779886579
+        },
+        "sameLoop": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9369700760699472
+        }
+      },
+      "F_W": null,
+      "source": {
+        "kind": "REUSED_AFTER_JSON_NOT_A_NEW_SOLVE",
+        "file": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "sha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
+        "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "inputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414"
+      }
+    },
+    "2.9": {
+      "l": 2.9,
+      "KScale": 1,
+      "scale": 1,
+      "delta": 0,
+      "status": "CONVERGED",
+      "iterations": 3575,
+      "W": 0.7593735260851388,
+      "H": 0.5196924331440606,
+      "S": -4.093858944096145e-9,
+      "waleDensityPerCm": 13.168749839823661,
+      "courseDensityPerCm": 19.24215047639142,
+      "energy": {
+        "total": 0.020315596525780973,
+        "bending": 0.019989622644133887,
+        "contact": 0.00032597388164708657,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9460331837098412,
+      "activePairs": 126,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9460331893806645
+        },
+        "courseSpacing": {
+          "activePairs": 94,
+          "minDistanceOverDe": 0.9614878983849673
+        },
+        "diagonal": {
+          "activePairs": 6,
+          "minDistanceOverDe": 0.9704767792199736
+        },
+        "sameLoop": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9460331837098412
+        }
+      },
+      "F_W": null,
+      "source": {
+        "kind": "REUSED_AFTER_JSON_NOT_A_NEW_SOLVE",
+        "file": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json",
+        "sha256": "ce49d1b2d3c38dfcd6b5b25da5453bebe4ab736e41b53bb4d2b9080d2a612679",
+        "inputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "inputSha256": "bf9e1b15ddec5c8429fa81135c7d3abb88acc09c6239ce8d4f7e4b51e3cdc3e6"
+      }
+    }
+  },
+  "materialParameters": {
+    "2.77": {
+      "provenance": {
+        "tex": {
+          "value": 19.78,
+          "unit": "tex",
+          "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+          "principle": "Measured yarn linear density reported by user from study; no fitting",
+          "confidence": "REPORTED_MEASUREMENT",
+          "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.13865404857744756,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1960864359761643,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09804321798808215,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 43.59398001568523,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012485181297709927,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "tex": 19.78,
+      "densityGPerCm3": 1.31,
+      "fiberDiameterMm": 0.021,
+      "E_f": 3000,
+      "K": 0.01,
+      "phi0": 0.5,
+      "d_s": 0.13865404857744756,
+      "fiberTex": 0.4537323729763399,
+      "d_e": 0.1960864359761643,
+      "r_c": 0.09804321798808215,
+      "N_f": 43.59398001568523,
+      "B": 0.0012485181297709927
+    },
+    "2.84": {
+      "provenance": {
+        "tex": {
+          "value": 19.78,
+          "unit": "tex",
+          "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+          "principle": "Measured yarn linear density reported by user from study; no fitting",
+          "confidence": "REPORTED_MEASUREMENT",
+          "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.13865404857744756,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1960864359761643,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09804321798808215,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 43.59398001568523,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012485181297709927,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "tex": 19.78,
+      "densityGPerCm3": 1.31,
+      "fiberDiameterMm": 0.021,
+      "E_f": 3000,
+      "K": 0.01,
+      "phi0": 0.5,
+      "d_s": 0.13865404857744756,
+      "fiberTex": 0.4537323729763399,
+      "d_e": 0.1960864359761643,
+      "r_c": 0.09804321798808215,
+      "N_f": 43.59398001568523,
+      "B": 0.0012485181297709927
+    },
+    "2.9": {
+      "provenance": {
+        "tex": {
+          "value": 19.78,
+          "unit": "tex",
+          "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+          "principle": "Measured yarn linear density reported by user from study; no fitting",
+          "confidence": "REPORTED_MEASUREMENT",
+          "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+        },
+        "densityGPerCm3": {
+          "value": 1.31,
+          "unit": "g/cm^3",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "fiberDiameterMm": {
+          "value": 0.021,
+          "unit": "mm",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "E_f": {
+          "value": 3000,
+          "unit": "N/mm^2",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "K": {
+          "value": 0.01,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "phi0": {
+          "value": 0.5,
+          "unit": "1",
+          "source": "docs/LAYER3_STEP1_TASK.md section 2",
+          "principle": "Model reference assumption; no material measurement asserted",
+          "confidence": "ASSUMPTION",
+          "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+        },
+        "d_s": {
+          "value": 0.13865404857744756,
+          "unit": "mm",
+          "source": "Derived from tex, densityGPerCm3",
+          "principle": "sqrt(4 * tex / (pi * densityGPerCm3 * 1000))",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "densityGPerCm3"
+          ]
+        },
+        "fiberTex": {
+          "value": 0.4537323729763399,
+          "unit": "tex",
+          "source": "Derived from densityGPerCm3, fiberDiameterMm",
+          "principle": "densityGPerCm3 * 1000 * pi * fiberDiameterMm^2 / 4",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "densityGPerCm3",
+            "fiberDiameterMm"
+          ]
+        },
+        "d_e": {
+          "value": 0.1960864359761643,
+          "unit": "mm",
+          "source": "Derived from d_s, phi0",
+          "principle": "d_s / sqrt(phi0)",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "d_s",
+            "phi0"
+          ]
+        },
+        "r_c": {
+          "value": 0.09804321798808215,
+          "unit": "mm",
+          "source": "Derived from phi0, d_e",
+          "principle": "phi0 * d_e; uniaxial compaction model",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "phi0",
+            "d_e"
+          ]
+        },
+        "N_f": {
+          "value": 43.59398001568523,
+          "unit": "1",
+          "source": "Derived from tex, fiberTex",
+          "principle": "tex / fiberTex; continuum fiber count estimate",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "tex",
+            "fiberTex"
+          ]
+        },
+        "B": {
+          "value": 0.0012485181297709927,
+          "unit": "N*mm^2",
+          "source": "Derived from N_f, E_f, fiberDiameterMm",
+          "principle": "N_f * E_f * pi * fiberDiameterMm^4 / 64; freely sliding fibers",
+          "confidence": "DERIVED",
+          "applicableState": "Inherits the states and uncertainty of all dependencies",
+          "dependencies": [
+            "N_f",
+            "E_f",
+            "fiberDiameterMm"
+          ]
+        }
+      },
+      "tex": 19.78,
+      "densityGPerCm3": 1.31,
+      "fiberDiameterMm": 0.021,
+      "E_f": 3000,
+      "K": 0.01,
+      "phi0": 0.5,
+      "d_s": 0.13865404857744756,
+      "fiberTex": 0.4537323729763399,
+      "d_e": 0.1960864359761643,
+      "r_c": 0.09804321798808215,
+      "N_f": 43.59398001568523,
+      "B": 0.0012485181297709927
+    }
+  },
+  "runs": [
+    {
+      "id": "q3-2.84-minus-0.005",
+      "l": 2.84,
+      "delta": -0.005,
+      "status": "CONVERGED",
+      "iterations": 3035,
+      "W": 0.7496413303277452,
+      "H": 0.503772594319078,
+      "S": -2.8566582298975954e-10,
+      "waleDensityPerCm": 13.339712733858969,
+      "courseDensityPerCm": 19.85022629807097,
+      "energy": {
+        "total": 0.02121145808170685,
+        "bending": 0.02072499187795955,
+        "contact": 0.0004864662037472985,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9300482393534685,
+      "activePairs": 146,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9300482473553262
+        },
+        "courseSpacing": {
+          "activePairs": 110,
+          "minDistanceOverDe": 0.9576860765276387
+        },
+        "diagonal": {
+          "activePairs": 8,
+          "minDistanceOverDe": 0.9665098842211683
+        },
+        "sameLoop": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9300482393534685
+        }
+      },
+      "F_W": -0.0022247808097477263,
+      "elapsedMs": 82166.96239999999,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-minus-0.005",
+        "question": "q3",
+        "l": 2.84,
+        "delta": -0.005,
+        "head": "690b323c2854ace25f776ffbbe505b491e427388",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "codeHashes": {
+          "scripts/run-fabric-form-r2-study.mjs": "2909f0387346b036f1b598e2a8f3d4fdf6c23f712cba81c3f28c99112f690af4",
+          "scripts/lib/fabricFormR2Analysis.mjs": "8761252868b3098ecb98d013575235d05c934d99139a3c0444a04bfd46effbd9",
+          "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
+        },
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "sourceInputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414",
+        "inputFile": "R2-2/q3-2.84-minus-0.005-input.json",
+        "inputSha256": "33539c6b8f77d91c227ee5b904f12b1c8489071775cf081b559344258356b58d",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "initialCellSourceSha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7496413303277452
+        },
+        "resultFile": "R2-2/q3-2.84-minus-0.005-result.json",
+        "startedAt": "2026-11-25T13:58:28.673Z",
+        "status": "CONVERGED",
+        "elapsedMs": 82166.96239999999,
+        "finishedAt": "2026-11-25T13:59:50.842Z",
+        "resultSha256": "eed9fb27a534f8d4ea49f5b39cde80a6487793c8d6a3a0e6d7625f975f96f7a0",
+        "file": "R2-2/q3-2.84-minus-0.005-manifest.json"
+      },
+      "resultFile": "R2-2/q3-2.84-minus-0.005-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0027216146108866787,
+        "contact": -0.01261571066228181,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.013112544463420762,
+        "sum": -0.0022247808097477263,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0,
+            "minDistanceOverDeChange": -0.006921829749835462
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.009174311926605505,
+            "minDistanceOverDeChange": -0.0009960569495345295
+          }
+        },
+        "minDistanceOverDeChange": -0.006921836716478724
+      }
+    },
+    {
+      "id": "q3-2.84-plus-0.005",
+      "l": 2.84,
+      "delta": 0.005,
+      "status": "CONVERGED",
+      "iterations": 3050,
+      "W": 0.757175414049632,
+      "H": 0.5010545865781588,
+      "S": 1.0474798674218244e-7,
+      "waleDensityPerCm": 13.206979273820574,
+      "courseDensityPerCm": 19.957905321838847,
+      "energy": {
+        "total": 0.021211324649226235,
+        "bending": 0.020811161446458018,
+        "contact": 0.00040016320276821756,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9440729831906323,
+      "activePairs": 146,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.944072985344551
+        },
+        "courseSpacing": {
+          "activePairs": 111,
+          "minDistanceOverDe": 0.9595755452908535
+        },
+        "diagonal": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9670555853687617
+        },
+        "sameLoop": {
+          "activePairs": 13,
+          "minDistanceOverDe": 0.9440729831906323
+        }
+      },
+      "F_W": 0.0021138614732358237,
+      "elapsedMs": 112273.3786,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-plus-0.005",
+        "question": "q3",
+        "l": 2.84,
+        "delta": 0.005,
+        "head": "690b323c2854ace25f776ffbbe505b491e427388",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "codeHashes": {
+          "scripts/run-fabric-form-r2-study.mjs": "2909f0387346b036f1b598e2a8f3d4fdf6c23f712cba81c3f28c99112f690af4",
+          "scripts/lib/fabricFormR2Analysis.mjs": "8761252868b3098ecb98d013575235d05c934d99139a3c0444a04bfd46effbd9",
+          "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
+        },
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "sourceInputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414",
+        "inputFile": "R2-2/q3-2.84-plus-0.005-input.json",
+        "inputSha256": "66324a519c165c9fc48ec3c485831e85cdb226e0d37b895ebe040067d574fb6b",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "initialCellSourceSha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.757175414049632
+        },
+        "resultFile": "R2-2/q3-2.84-plus-0.005-result.json",
+        "startedAt": "2026-11-25T13:59:50.871Z",
+        "status": "CONVERGED",
+        "elapsedMs": 112273.3786,
+        "finishedAt": "2026-11-25T14:01:43.146Z",
+        "resultSha256": "76f9a8c5e85459e63f83c58f791f5020795c726c4bad7517f6b6961f85a20215",
+        "file": "R2-2/q3-2.84-plus-0.005-manifest.json"
+      },
+      "resultFile": "R2-2/q3-2.84-plus-0.005-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0025422429273197836,
+        "contact": -0.008920069277875723,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.01357617367843133,
+        "sum": 0.0021138614732358237,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.07142857142857142,
+            "minDistanceOverDeChange": 0.007102908239389305
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.01834862385321101,
+            "minDistanceOverDeChange": 0.0008934118136803004
+          }
+        },
+        "minDistanceOverDeChange": 0.007102907120685065
+      }
+    },
+    {
+      "id": "q3-2.84-minus-0.01",
+      "l": 2.84,
+      "delta": -0.01,
+      "status": "CONVERGED",
+      "iterations": 3525,
+      "W": 0.7458742884668017,
+      "H": 0.5049114784927015,
+      "S": 0.0009549676603291615,
+      "waleDensityPerCm": 13.40708502039361,
+      "courseDensityPerCm": 19.805451897930165,
+      "energy": {
+        "total": 0.021224060394646794,
+        "bending": 0.020695224878616768,
+        "contact": 0.000528835516030025,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.9251361699336274,
+      "activePairs": 146,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.925250372959678
+        },
+        "courseSpacing": {
+          "activePairs": 114,
+          "minDistanceOverDe": 0.9564948490432033
+        },
+        "diagonal": {
+          "activePairs": 4,
+          "minDistanceOverDe": 0.9662420712251957
+        },
+        "sameLoop": {
+          "activePairs": 14,
+          "minDistanceOverDe": 0.9251361699336274
+        }
+      },
+      "F_W": -0.004123665024132235,
+      "elapsedMs": 142635.1175,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-minus-0.01",
+        "question": "q3",
+        "l": 2.84,
+        "delta": -0.01,
+        "head": "690b323c2854ace25f776ffbbe505b491e427388",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "codeHashes": {
+          "scripts/run-fabric-form-r2-study.mjs": "2909f0387346b036f1b598e2a8f3d4fdf6c23f712cba81c3f28c99112f690af4",
+          "scripts/lib/fabricFormR2Analysis.mjs": "8761252868b3098ecb98d013575235d05c934d99139a3c0444a04bfd46effbd9",
+          "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
+        },
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "sourceInputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414",
+        "inputFile": "R2-2/q3-2.84-minus-0.01-input.json",
+        "inputSha256": "c79dfca99cbf3f2eaa56e1cfa64b99ae70fbde98a0d3c0e04638f916efbf3126",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "initialCellSourceSha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7458742884668017
+        },
+        "resultFile": "R2-2/q3-2.84-minus-0.01-result.json",
+        "startedAt": "2026-11-25T14:01:43.196Z",
+        "status": "CONVERGED",
+        "elapsedMs": 142635.1175,
+        "finishedAt": "2026-11-25T14:04:05.833Z",
+        "resultSha256": "b06aaa0ca3322fa317135073729f938403549bf480d0d4bbe972e461e5040a1d",
+        "file": "R2-2/q3-2.84-minus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/q3-2.84-minus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.004875893201853346,
+        "contact": -0.013428000503820446,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.014180228681541557,
+        "sum": -0.004123665024132235,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0,
+            "minDistanceOverDeChange": -0.011719704145483623
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.045871559633027525,
+            "minDistanceOverDeChange": -0.0021872844339699826
+          }
+        },
+        "minDistanceOverDeChange": -0.01183390613631985
+      }
+    },
+    {
+      "id": "q3-2.84-plus-0.01",
+      "l": 2.84,
+      "delta": 0.01,
+      "status": "CONVERGED",
+      "iterations": 2925,
+      "W": 0.7609424559105755,
+      "H": 0.4996916905656615,
+      "S": 6.612896650510774e-9,
+      "waleDensityPerCm": 13.141598188306608,
+      "courseDensityPerCm": 20.01233998644202,
+      "energy": {
+        "total": 0.02122311181422044,
+        "bending": 0.02085624575878523,
+        "contact": 0.0003668660554352103,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "minDistanceOverDe": 0.951349855358731,
+      "activePairs": 140,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.951349855358731
+        },
+        "courseSpacing": {
+          "activePairs": 113,
+          "minDistanceOverDe": 0.9597429812231112
+        },
+        "diagonal": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9675217082846559
+        },
+        "sameLoop": {
+          "activePairs": 9,
+          "minDistanceOverDe": 0.9513498664933784
+        }
+      },
+      "F_W": 0.004127258792417673,
+      "elapsedMs": 131124.03859999997,
+      "overrides": {},
+      "manifest": {
+        "id": "q3-2.84-plus-0.01",
+        "question": "q3",
+        "l": 2.84,
+        "delta": 0.01,
+        "head": "690b323c2854ace25f776ffbbe505b491e427388",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "codeHashes": {
+          "scripts/run-fabric-form-r2-study.mjs": "2909f0387346b036f1b598e2a8f3d4fdf6c23f712cba81c3f28c99112f690af4",
+          "scripts/lib/fabricFormR2Analysis.mjs": "8761252868b3098ecb98d013575235d05c934d99139a3c0444a04bfd46effbd9",
+          "src/fabricForm/solveFabricCell.js": "ee4d0c035c9d22789d76c81b612b8eabfc6e5e6ea55e83e03aeb6ac082bd3c9e"
+        },
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "sourceInputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414",
+        "inputFile": "R2-2/q3-2.84-plus-0.01-input.json",
+        "inputSha256": "2c6841d921fe50ae08a4d3af13cb619f94a169780885792b41e3614ad00a9693",
+        "initialCellSourceFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json",
+        "initialCellSourceSha256": "cccc47499771d366bfaaa656097f91e3fce7c91d7d6fe2f67fb2c95c7af9c14a",
+        "overrides": {},
+        "overrideProvenance": {},
+        "lockedLattice": {
+          "W": 0.7609424559105755
+        },
+        "resultFile": "R2-2/q3-2.84-plus-0.01-result.json",
+        "startedAt": "2026-11-25T14:04:05.879Z",
+        "status": "CONVERGED",
+        "elapsedMs": 131124.03859999997,
+        "finishedAt": "2026-11-25T14:06:17.005Z",
+        "resultSha256": "da91d58f1059b48e4ea10e74b0ad403e8314ee4694f1d0debb3926815cd8f54c",
+        "file": "R2-2/q3-2.84-plus-0.01-manifest.json"
+      },
+      "resultFile": "R2-2/q3-2.84-plus-0.01-result.json",
+      "reactionDecomposition": {
+        "bending": -0.0024567473505445123,
+        "contact": -0.00722759375312922,
+        "barrierIncludedInContact": 0,
+        "constraintReaction": 0.013811599896091405,
+        "sum": 0.004127258792417673,
+        "differenceFromFW": 0,
+        "convention": "F_W = g_bending,W + g_contact(including barrier),W + (J^T lambda)_W; N"
+      },
+      "branchChanges": {
+        "groups": {
+          "waleSpacing": {
+            "activePairsRelativeChange": 0.35714285714285715,
+            "minDistanceOverDeChange": 0.014379778253569286
+          },
+          "courseSpacing": {
+            "activePairsRelativeChange": 0.03669724770642202,
+            "minDistanceOverDeChange": 0.001060847745937954
+          }
+        },
+        "minDistanceOverDeChange": 0.014379779288783756
+      }
+    }
+  ],
+  "analysis": {
+    "pairs": [
+      {
+        "l": 2.84,
+        "delta": 0.005,
+        "WStar": 0.7534083721886886,
+        "displacementMm": 0.0037670418609434433,
+        "k": {
+          "total": 0.575269835490086,
+          "bending": 0.09578906863286113,
+          "contact": 0.47948076685709884,
+          "barrier": 0
+        },
+        "s_c": 0.8334884558106854,
+        "stiffnessSumDifference": 1.2612133559741778e-13,
+        "stiffnessSumRelativeDifference": 2.1923856913160069e-13,
+        "reactionStiffness": 0.5758686050142473,
+        "reactionStiffnessDifference": 0.0005987695241612689,
+        "reactionStiffnessRelativeDifference": 0.0010408498537928083,
+        "interpretation": "横向刚度以接触为主，与推测一致",
+        "energySumDifferences": {
+          "minus": 0,
+          "baseline": 0,
+          "plus": 0
+        }
+      }
+    ],
+    "primary": null,
+    "completePrimarySteps": false,
+    "stepSensitive": null,
+    "interpretation": null,
+    "stopReasons": []
+  },
+  "error": "STOP #6: q3-2.84-plus-0.01: contact branch change exceeds registered guard",
+  "finishedAt": "2026-11-25T14:06:17.043Z"
+}

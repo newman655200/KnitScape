@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "head": "a2c280b840807041b7dd9b2f5c1ad81977080e25",
+  "sourceHead": "a2c280b840807041b7dd9b2f5c1ad81977080e25",
+  "runtime": {
+    "node": "v20.17.0",
+    "platform": "win32",
+    "arch": "x64",
+    "endianness": "LE"
+  },
+  "mode": "ESTABLISH_BASELINE",
+  "direction": "negative evaluateFabricCell gradient for each evaluated cell; safePeriodicStep limit=1",
+  "status": "PASS",
+  "cases": [
+    {
+      "id": "case-2.6-N48",
+      "inputSha256": "32a1459b832070d9d1c632d250391bdd2743b5cdeddfcda6bda8de9dbe93f455",
+      "initial": {
+        "sha256": "4f2631b85eeb5e51b0e8af2ad73ab1be8cb608d9bd1e93c507059b8897bdd5ae",
+        "components": {
+          "evaluateFabricCell": "154156bb6168a6ae406d7b9bcaf52b6d5f8a2681ae39da7fca7a0cf0cebdfe4d",
+          "evaluateLengthConstraints": "ba3e038f1d6869ce7f9c3bce7e7d9e36626c7979464550b8e86b69726da340e7",
+          "safePeriodicStep": "f0b02b02ca88a50d1ef8514da991e4ffdba885658695be52eb8db0e5c4b8dd39",
+          "diagnosePeriodicContact": "d9f6c6fa8a4cada2fbb21ba7397fb74cc8256e5ce642b0fc3c3136c109cf2a7a",
+          "fabricFormMetrics": "c94eaf2049c714f67a78960e2ec03574ceeab52ad11cb08d9da27f7be0af7feb"
+        }
+      },
+      "final": {
+        "sha256": "00e567acd6bd4c44054d88ee18e90afc95f38ad35d261967a9d9c6b1b1654a30",
+        "components": {
+          "evaluateFabricCell": "928c4d6436f4661da8ca4e67e68c32f0e10ba71ccdf9c04ea7660a90a22bdda3",
+          "evaluateLengthConstraints": "5dcbcd6654c8d24068f896b26aee1169220f5b3fe6114df4515b2660235cf12c",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "7a220e120ffc077d9983aa5503df1bb34beb398ebff4b73d841383be248f4653",
+          "fabricFormMetrics": "10bcb1500ee3cc9b85f07f680c9bc0859234d10dbaa764a95c61435773432796"
+        }
+      }
+    },
+    {
+      "id": "case-3-N48",
+      "inputSha256": "3b5bcd717f53062d68523f930638c238d64fc3c68ae913b21bdd18592b4e2c07",
+      "initial": {
+        "sha256": "9e0357cb6542cfcee2e5ebef1a77bb81f25f13d8744358f169e1d26b6f53def8",
+        "components": {
+          "evaluateFabricCell": "7cbdc6c0a45f9a51847e080de8fd045e95585c5c0aef6d9e00af04dfdd49f90f",
+          "evaluateLengthConstraints": "23823441263ce6371fe4f63a815ae2109203d3df6246b95805c0f5e226974da3",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "80a6304ef7f545bea4ee9f95f245f6225d30f2b65545f999e5b794b11318daa6",
+          "fabricFormMetrics": "ca16cbcf4d9bd1d6995fa90c2b81de8240e7fd7b15f20a5979ba02cc25bc3b3b"
+        }
+      },
+      "final": {
+        "sha256": "15046954afc4c6fd77f5752f7c9009daba63dd568fc881aacb48b52bcb71c320",
+        "components": {
+          "evaluateFabricCell": "9971018f4e2e60dede21d76a0c2c11d722a280b3c9107151b29c248724c8cfff",
+          "evaluateLengthConstraints": "9e940f6ee2cf1f22f4bfef32108a5e315ec3d078df82c28d9d85ddfd0ec72b56",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "c12989a72bf16e3331838ef7712d7ad7622ee35f60a4e1126ed48ae51b44e629",
+          "fabricFormMetrics": "5e370ae37005321c46a078a8fd86d1ed9f96920c151cee9e07ac3e09fe310aa4"
+        }
+      }
+    },
+    {
+      "id": "case-3.5-N48",
+      "inputSha256": "df77c9972dd63738aed03eaf0c1a6f695daba1c9133f3eab390471c4523a82e2",
+      "initial": {
+        "sha256": "c734443a929c2b6c44741325cbd692a8de569ff6d060bab240876e43e3dd200f",
+        "components": {
+          "evaluateFabricCell": "3e3cf3848d3241bd0f9d553a06cfb23352283641eab028f34a7cdc6dfbe7bf37",
+          "evaluateLengthConstraints": "44827e7f6184657cd013cc451540c2bf8390a8fd255b9ceaf7fccf91accc4b6a",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "e665c9a923b1bd76eb61463ef36b5bd4b5fae7eb3294cca3c43168895b00827c",
+          "fabricFormMetrics": "7278f3487ab4719103ebe0b4190b441acf6e50c5e140e58d684761763bbb0867"
+        }
+      },
+      "final": {
+        "sha256": "03aa9f3613fec26a6003269cae7f5b375feeaefd067deefb66183e47a0e275ab",
+        "components": {
+          "evaluateFabricCell": "4e32971a2f1be947f400f541377a96161c7a8d18d78fb1251af03521992d6116",
+          "evaluateLengthConstraints": "f597bce796ad6c8022cc7f13bebe75a0b108e74f708ee5bc5e4b4a8cf7768aa8",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "303a70cc96d6c3014845caa41e604f3eef58518901373c653df4cfd005432bf9",
+          "fabricFormMetrics": "429fd0a26046bc519b2870450a1240a5cfbdae2f5206afb44f2da913f075aaa1"
+        }
+      }
+    },
+    {
+      "id": "case-4-N48",
+      "inputSha256": "62f4f12867e6327e9970ce331a4f820665706776da78b134cd5dae32594373b6",
+      "initial": {
+        "sha256": "a0b3e17c2a4c30d4e10df60dfcf3cd9b7477fac63b44c088b02bac210310f2db",
+        "components": {
+          "evaluateFabricCell": "d589435fabd34c9d9f2716a75d2c88ae095b11def824c63887c072c08a0f86bc",
+          "evaluateLengthConstraints": "71d282c72e31770838957fa49a6f94213b80916c6afd0404a07d7dc933784df4",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "3f25e1f3c801cc96b9fe503eaff37bc427ebedeb9ef587a10c4d9a5ee10f678a",
+          "fabricFormMetrics": "2755638d950c8d189c86f258298313b8e73b9479744ad2398b07ecdc5853fcef"
+        }
+      },
+      "final": {
+        "sha256": "cbab5a68ccbc02719cafb6506d6c070d84897d49769c80a96e4b16d29fdf3fa7",
+        "components": {
+          "evaluateFabricCell": "9dd1862372a79caf654e1d85f3f35c6b5c3a04041e99f5c01910e163e0bd2b3b",
+          "evaluateLengthConstraints": "a5955dd6edeb6bbcae5a0b5def5de2ed264cd2295a3a00b2021a42761cbc97c1",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "f59777d838b6e4e283efe783631d393d2a116b6246f86595cf4a754e6a9213e1",
+          "fabricFormMetrics": "42d36741ca0756fc4050cb0f1009c6cdc3b636ccaf4dec3ecb3e7c6372524e37"
+        }
+      }
+    },
+    {
+      "id": "hossain-2.77",
+      "inputSha256": "d757ad1444d76ff4e07e8689e364c9f8ecd831c9c240bd4343d2b6073b473541",
+      "initial": {
+        "sha256": "27a895f249dd70adaddebc8d6d32c345ba85bfcdc9d425d5bdf0e47f6f25a7b8",
+        "components": {
+          "evaluateFabricCell": "11cc9cec8a89d366182825bf2edb9c678709ef6abc866df9e5a6ea1357fdb145",
+          "evaluateLengthConstraints": "f3e6cfe398950cf0745bb9634217c536b96273bdbe63cb8bebe9b5d882d34609",
+          "safePeriodicStep": "19b5a21a6b2973f5da626bfc47e6e7f9923256a9b681476ec7a5a949295f08f4",
+          "diagnosePeriodicContact": "66c8e53528f54b99ee54be5f1888e649369344d7d081a285da6f1ce52de9a9d9",
+          "fabricFormMetrics": "ad0856ff4a479b535bcaf15e466f406f086ceb379639519b43f14aa8f6789240"
+        }
+      },
+      "final": {
+        "sha256": "8780f69b1bc46b5f2b14f2ff70c15f519b9921c85adba5aa6c02ff1e7a683dbb",
+        "components": {
+          "evaluateFabricCell": "88785fe1039df470a7de5e61ef7da0d9f9be66776e1533e75586a02a1844d998",
+          "evaluateLengthConstraints": "3cbf1ce8be557a21d48744824674a9191eec48b285a28d8ee0b572bf58481fb7",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "3f3e6cbc74462617c1dede98dbb93e7323e8ff5957a6dafef78b780162abc698",
+          "fabricFormMetrics": "a0636b6ed36f1c801fa4d7e93d43de848f44efd256b442014c8737cfd528ea5d"
+        }
+      }
+    },
+    {
+      "id": "hossain-2.84",
+      "inputSha256": "068b21392e10d3f001161f50909593953406207bd31f1e1b008d329f77f38414",
+      "initial": {
+        "sha256": "933dd634687243a6d6244e8ce22d4e481bd611f79c03a6ffe25586e6fc633f96",
+        "components": {
+          "evaluateFabricCell": "58ee1e73c741ad92f04eb2c902a331b71c2733683dfc2dd847b690cce65b8a21",
+          "evaluateLengthConstraints": "c5d1b44ee4ba4bc619502ebc5fd6e77175750069a2d98439a8215407f9b8154c",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "e39d372f753ffc51c892813103dd8ead17e1f734a5e862338d45b5cc22b2c995",
+          "fabricFormMetrics": "9279300b07da4f459345c6d70b0514ce86159ab6ec2747324d3fce2f05b4b5b0"
+        }
+      },
+      "final": {
+        "sha256": "87a82f061e1bd45c65bb264278ff04796b92e320cb3b752ad83fb002c23f57a0",
+        "components": {
+          "evaluateFabricCell": "820c7fdba8136ff48b3879452276b7fc55938b300d822eb18e4a822f85db198f",
+          "evaluateLengthConstraints": "1a2050c67155be65dbe48ac7b605c50ee50e12a8cbd6cf252b25ac9bdff1fb62",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "7853d03fc1989c8138e4b4f06cbdf1a0cd77e35d3b16d437e03e5e51f7a0e653",
+          "fabricFormMetrics": "85f9bf156f01c775c9bf5d3831f6ecb732de2057bd9b5f6c891f793837c616b7"
+        }
+      }
+    },
+    {
+      "id": "hossain-2.9",
+      "inputSha256": "bf9e1b15ddec5c8429fa81135c7d3abb88acc09c6239ce8d4f7e4b51e3cdc3e6",
+      "initial": {
+        "sha256": "24aa31e7922354ea06937fc8d4eacdfb49736e8f757924a4f4918f301e510e1f",
+        "components": {
+          "evaluateFabricCell": "98eef8fa2c63dea7a97253fe7429da61efa90a2fd85f0c2fe93c31677fecdac7",
+          "evaluateLengthConstraints": "c6aa845bfe45c0dbdb4d660f8a3c755a2abb2be913778bc564aece88ff3822fb",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "42376c2b997f62fe1d9aa448585d7bd6807738b1e0002feeb22a6b065bce303f",
+          "fabricFormMetrics": "6ae49afe2b2cf849c9bb1faafea5c5a1c44ccde99adb278ca26598f375c0f7ed"
+        }
+      },
+      "final": {
+        "sha256": "6fc74a51f875e21046082ae4e59cf626a59fe9ca579df56c40c7d2b045927154",
+        "components": {
+          "evaluateFabricCell": "1ac0b035021b43762a5bdcf308081565d05040b1810d3c95ff1d4c129f27fdc1",
+          "evaluateLengthConstraints": "319c2b492c707bc95317d057b690987220c6f7d83f06a44b8c975bf4fab3ef50",
+          "safePeriodicStep": "d9f9b683ee8fc02ddf936cf55a3b431b3916d44a46dcff70843a8a845acd4989",
+          "diagnosePeriodicContact": "f20f41f5fe189931d300124268d0115f93b058feaffb98eb5f430068417a96cc",
+          "fabricFormMetrics": "f08cf20ef88bb3d525e51d4b06d5e60f1170b57c1f913d22205659c87a313bb2"
+        }
+      }
+    }
+  ],
+  "elapsedMs": 672.9526000000001
+}

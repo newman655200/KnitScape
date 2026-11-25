@@ -171,7 +171,7 @@ Model = { id: "T1_PLAIN_JERSEY", terms: EnergyTerm[], constraints: Constraint[],
 
 **R1-0 建立基线（不改 src）**
 
-1. 核对 HEAD、`git status`。工作区不干净就停下报告。
+1. 核对 HEAD、`git status`。工作区不干净就停下报告，但豁免任务书文件 `docs/R1_REFACTOR_TASK.md` 本身（包括尚未跟踪或按用户指示更新的情况）；其他文件的已有未提交改动仍须停下报告。此豁免由用户于 2026-11-25 明确补充，仓库内本文件为执行依据。
 2. 先做两件文档准备，和本步其余内容放在同一个提交里：
    - 把本文件原样放到 `docs/R1_REFACTOR_TASK.md`。
    - 在 `AGENTS.md` 末尾追加附录 A 的“§8 协作流程”整节，原文照抄。

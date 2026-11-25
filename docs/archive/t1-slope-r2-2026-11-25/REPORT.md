@@ -1,6 +1,6 @@
 # R2 T1 横密斜率机制诊断
 
-日期：2026-11-25。任务依据：[R2 任务书](../../R2_SLOPE_SENSITIVITY_TASK.md)。Q2 已完成；Q3 已完成；QC 与 R2-4 尚未执行。
+日期：2026-11-25。任务依据：[R2 任务书](../../R2_SLOPE_SENSITIVITY_TASK.md)。Q2 已完成；Q3 已完成；QC 已完成；R2-4 待完成。
 
 l=2.77/2.84/2.90 mm 是原资料的给纱设定值，不是放松后复测值；原输入的 REPORTED_SETTING 来源标签保持不变。所有覆盖只用于诊断，不是材料标定，也不形成参数取值建议。
 
@@ -241,3 +241,140 @@ l=2.9 mm：压缩侧 E 非递减=true；拉伸侧 E 非递减=true；H 单调=tr
 | q3-2.77-plus-0.01 | R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-manifest.json | R2-2/continuation-2-2026-11-25/q3-2.77-plus-0.01-result.json |
 | q3-2.9-minus-0.01 | R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-manifest.json | R2-2/continuation-2-2026-11-25/q3-2.9-minus-0.01-result.json |
 | q3-2.9-plus-0.01 | R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-manifest.json | R2-2/continuation-2-2026-11-25/q3-2.9-plus-0.01-result.json |
+
+## QC：接触刚度比与密度斜率
+
+保持 B、E_f、tex 及其余材料参数不变，K 取原输入的 0.5、1、2 倍；每档采用 l=2.77、2.84、2.90 mm。K×1 的三个基准直接复用原 after.json，未重算。每次新尝试都为自由解，W、H、S 均记录。
+初值取对应 l 的 after.json。目标点若直接求解未收敛，按预登记的两步延续规则记录中间 K 和目标重试；下表保留全部尝试，仅成功目标点与三份基准参与拟合。数值设置保持 N64、q=12、maxIterations=24000、innerIterations=800、memorySize=180。
+QC 只报告模型诊断数据，不设通过或失败，不外推，不形成参数取值建议。
+
+### 全部基准与运行尝试
+
+| 运行 | K倍数 | l/mm | 尝试 | 用于拟合 | 状态 | 迭代 | 耗时/s | W/mm | H/mm | S/mm | shearBranch | 横密/cm⁻¹ | 纵密/cm⁻¹ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| baseline-l=2.77 | 1 | 2.77 | 基准复用 | 是 | CONVERGED | 3746 | 未重算 | 0.745680584495 | 0.482017502454 | 1.14003380267e-9 | false | 13.4105677524 | 20.7461346301 |
+| baseline-l=2.84 | 1 | 2.84 | 基准复用 | 是 | CONVERGED | 3800 | 未重算 | 0.753408372189 | 0.502415143779 | 2.41442306013e-10 | false | 13.2730141702 | 19.9038586393 |
+| baseline-l=2.9 | 1 | 2.9 | 基准复用 | 是 | CONVERGED | 3575 | 未重算 | 0.759373526085 | 0.519692433144 | -4.0938589441e-9 | false | 13.1687498398 | 19.2421504764 |
+| qc-2.77-K0.5 | 0.5 | 2.77 | direct | 是 | CONVERGED | 4350 | 106.222725 | 0.728416715736 | 0.493937553618 | 1.09172036037e-9 | false | 13.728405436 | 20.2454742037 |
+| qc-2.84-K0.5 | 0.5 | 2.84 | direct | 是 | CONVERGED | 2867 | 63.9124897 | 0.738415638732 | 0.512511543946 | -3.15361026169e-10 | false | 13.5425084132 | 19.5117556241 |
+| qc-2.9-K0.5 | 0.5 | 2.9 | direct | 是 | CONVERGED | 3075 | 148.9542233 | 0.746468051723 | 0.528376769451 | 2.76436181546e-8 | false | 13.3964206196 | 18.9258888319 |
+| qc-2.77-K2 | 2 | 2.77 | direct | 是 | CONVERGED | 3400 | 130.9789478 | 0.759827832757 | 0.473012852764 | -6.48542624199e-10 | false | 13.1608761471 | 21.1410745851 |
+| qc-2.84-K2 | 2 | 2.84 | direct | 是 | CONVERGED | 3275 | 92.768394 | 0.765297784297 | 0.49493931442 | -2.04115302094e-9 | false | 13.066809032 | 20.2044972154 |
+| qc-2.9-K2 | 2 | 2.9 | direct | 是 | CONVERGED | 3214 | 61.3250126 | 0.769419401921 | 0.513360584617 | 2.6215171013e-9 | false | 12.9968128891 | 19.4794853747 |
+
+| 运行 | E_total/N·mm | E_bending/N·mm | E_contact/N·mm | E_barrier/N·mm | 全局 min/d_e | 总激活段对 | 纵行间激活段对 | 横列间激活段对 | 斜向激活段对 | 同线圈内激活段对 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| baseline-l=2.77 | 0.0224053295311 | 0.0217801416751 | 0.000625187855999 | 0 | 0.925389489226 | 170 | 14 | 123 | 19 | 14 |
+| baseline-l=2.84 | 0.0212073096521 | 0.0207673970098 | 0.000439912642322 | 0 | 0.93697007607 | 146 | 14 | 109 | 9 | 14 |
+| baseline-l=2.9 | 0.0203155965258 | 0.0199896226441 | 0.000325973881647 | 0 | 0.94603318371 | 126 | 13 | 94 | 6 | 13 |
+| qc-2.77-K0.5 | 0.0219150149395 | 0.0211330334601 | 0.0007819814794 | 0 | 0.907812608887 | 196 | 18 | 137 | 23 | 18 |
+| qc-2.84-K0.5 | 0.0208567612168 | 0.0202888742229 | 0.000567886993847 | 0 | 0.920761708733 | 182 | 14 | 140 | 14 | 14 |
+| qc-2.9-K0.5 | 0.0200528545488 | 0.0196216593867 | 0.000431195162096 | 0 | 0.931904496977 | 166 | 14 | 126 | 12 | 14 |
+| qc-2.77-K2 | 0.0227755829088 | 0.022331192388 | 0.000444390520807 | 0 | 0.944508532019 | 124 | 13 | 86 | 12 | 13 |
+| qc-2.84-K2 | 0.0214648377462 | 0.0211574460008 | 0.000307391745408 | 0 | 0.953471726695 | 110 | 9 | 86 | 6 | 9 |
+| qc-2.9-K2 | 0.0205053509036 | 0.0202800274127 | 0.000225323490925 | 0 | 0.960184446911 | 96 | 9 | 74 | 4 | 9 |
+
+各分组最小间距与 d_e 之比保留于 [qc-summary.json](qc-summary.json) 的 `baselines[l].groups.*.minDistanceOverDe` 和 `runs[].groups.*.minDistanceOverDe`；同层 `activePairs` 为对应分组计数。分组包括纵行间、横列间、斜向与同线圈内。`shearBranch` 按 |S|/W>1e-4 作描述性标记，不用于 QC 判定。
+
+### 双方向对数拟合与残差
+
+对每个 K 的三个点独立作含截距、等权最小二乘：ln(密度/[cm⁻¹])=a+b·ln(l/[mm])。下表的 a 是截距、b 是斜率，残差定义为观测对数密度减拟合对数密度，SSE 为三个对数残差的平方和。
+
+| K倍数 | 方向 | 截距 a | 斜率 b | SSE（对数空间） |
+| --- | --- | --- | --- | --- |
+| 0.5 | 横密 | 3.16358850158 | -0.534149007172 | 6.51232790137e-8 |
+| 0.5 | 纵密 | 4.50545933015 | -1.46989656347 | 3.76405699803e-8 |
+| 1 | 横密 | 3.00068270752 | -0.397275881101 | 1.10911934152e-7 |
+| 1 | 纵密 | 4.70467019859 | -1.64152203848 | 1.63009922676e-7 |
+| 2 | 横密 | 2.85626614554 | -0.273959454665 | 8.01129187465e-8 |
+| 2 | 纵密 | 4.87040360967 | -1.78576248255 | 3.94669606034e-7 |
+
+| K倍数 | 方向 | l/mm | 密度/cm⁻¹ | ln(l/mm) | 观测 ln(密度/cm⁻¹) | 拟合 ln(密度/cm⁻¹) | 残差（观测−拟合） |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 0.5 | 横密 | 2.77 | 13.728405436 | 1.0188473202 | 2.61946707582 | 2.61937221703 | 0.0000948587844039 |
+| 0.5 | 横密 | 2.84 | 13.5425084132 | 1.04380405217 | 2.6058335098 | 2.60604160343 | -0.000208093631449 |
+| 0.5 | 横密 | 2.9 | 13.3964206196 | 1.06471073699 | 2.59498755334 | 2.59487431849 | 0.000113234847045 |
+| 0.5 | 纵密 | 2.77 | 20.2454742037 | 1.0188473202 | 3.00793127246 | 3.00785915548 | 0.0000721169781817 |
+| 0.5 | 纵密 | 2.84 | 19.5117556241 | 1.04380405217 | 2.97101713644 | 2.97117534092 | -0.000158204471766 |
+| 0.5 | 纵密 | 2.9 | 18.9258888319 | 1.06471073699 | 2.94053076424 | 2.94044467675 | 0.0000860874935835 |
+| 1 | 横密 | 2.77 | 13.4105677524 | 1.0188473202 | 2.59604303438 | 2.59591924068 | 0.000123793706015 |
+| 1 | 横密 | 2.84 | 13.2730141702 | 1.04380405217 | 2.58573296424 | 2.58600453299 | -0.00027156875346 |
+| 1 | 横密 | 2.9 | 13.1687498398 | 1.06471073699 | 2.57784658641 | 2.57769881136 | 0.000147775047444 |
+| 1 | 纵密 | 2.77 | 20.7461346301 | 1.0188473202 | 3.03235994644 | 3.03220986864 | 0.000150077796946 |
+| 1 | 纵密 | 2.84 | 19.9038586393 | 1.04380405217 | 2.9909136144 | 2.9912428431 | -0.00032922869466 |
+| 1 | 纵密 | 2.9 | 19.2421504764 | 1.06471073699 | 2.95710321011 | 2.95692405922 | 0.000179150897714 |
+| 2 | 横密 | 2.77 | 13.1608761471 | 1.0188473202 | 2.57724850021 | 2.57714328931 | 0.000105210891963 |
+| 2 | 横密 | 2.84 | 13.066809032 | 1.04380405217 | 2.57007535337 | 2.57030615663 | -0.00023080325891 |
+| 2 | 横密 | 2.9 | 12.9968128891 | 1.06471073699 | 2.56470416503 | 2.56457857266 | 0.000125592366946 |
+| 2 | 纵密 | 2.77 | 21.1410745851 | 1.0188473202 | 3.05121781099 | 3.05098428982 | 0.000233521174493 |
+| 2 | 纵密 | 2.84 | 20.2044972154 | 1.04380405217 | 3.00590521405 | 3.00641749417 | -0.000512280117503 |
+| 2 | 纵密 | 2.9 | 19.4794853747 | 1.06471073699 | 2.96936187973 | 2.96908312079 | 0.00027875894301 |
+
+### 横密斜率对 ln K 的有限差分
+
+| 估计 | 计算口径 | db_wale/dlnK |
+| --- | --- | --- |
+| 中央 | [b_wale(2K)−b_wale(0.5K)]/ln(4) | 0.187687088547 |
+| 0.5→1 区间 | [b_wale(K)−b_wale(0.5K)]/ln(2) | 0.197466180213 |
+| 1→2 区间 | [b_wale(2K)−b_wale(K)]/ln(2) | 0.17790799688 |
+
+三档 K 上的横密斜率 b_wale(K)：**单调**（monotonicWaleSlope=true）。这里只陈述离散扫描数据，不外推至目标斜率，不作材料参数选择。
+
+局限：每档斜率只有三个给纱设定长度点，描述该窄区间内的模型响应，不是普适幂律。各点都是无摩擦模型平衡解；S 和剪切标记保留为分支信息，未据此另选对称分支或剔除点。接触能量占比不能代替有效刚度份额，QC 扫描也不证明真实干放松状态下的因果机制。
+
+### QC 六字段来源及 K 覆盖
+
+| 字段 | 记录 |
+| --- | --- |
+| Value | 上表显示至多 12 位有效数字；qc-summary.json 保留三基准、全部尝试、拟合和残差的完整精度标量 |
+| Unit | l/W/H/S：mm；密度：1/cm；能量：N·mm；K及其倍数、min/d_e、对数斜率和灵敏度：无量纲；接触段对：计数；shearBranch：布尔值 |
+| Source | R2任务书§5.4；原三份 input/after.json；下表列出的逐次 input/result/manifest；本轮 qc-summary.json |
+| Measurement / derivation principle | T1自由平衡延续；密度=10m/W、10n/H，本组三基准拓扑m=n=1；含截距等权对数OLS及上述有限差分；不是新增实物测量 |
+| Confidence | MODEL_DERIVED_DIAGNOSTIC; not physical measurement or causal verification |
+| Applicable state | T1 N64无摩擦纬平针分支；l为给纱设定值，未作放松后复测；真实纱径及其他未知物性仍为UNKNOWN |
+
+原材料的六字段来源见本报告 Q2 数据来源与复现节，以及 `qc-summary.json.materialParameters[l].provenance`。本步只覆盖 K，逐项来源如下；诊断覆盖保持 `DIAGNOSTIC_OVERRIDE` 标签，不升级为实测。
+
+| 运行 / K | Value | Unit | Source | Measurement / derivation principle | Confidence | Applicable state |
+| --- | --- | --- | --- | --- | --- | --- |
+| baseline-l=2.77 | 0.01 | 1 | docs/LAYER3_STEP1_TASK.md section 2 | Model reference assumption; no material measurement asserted | ASSUMPTION | Uncalibrated T1 model reference; physical specimen state unknown |
+| baseline-l=2.84 | 0.01 | 1 | docs/LAYER3_STEP1_TASK.md section 2 | Model reference assumption; no material measurement asserted | ASSUMPTION | Uncalibrated T1 model reference; physical specimen state unknown |
+| baseline-l=2.9 | 0.01 | 1 | docs/LAYER3_STEP1_TASK.md section 2 | Model reference assumption; no material measurement asserted | ASSUMPTION | Uncalibrated T1 model reference; physical specimen state unknown |
+| qc-2.77-K0.5 | 0.005 | 1 | R2 task §5 | K scaled by 0.5; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+| qc-2.84-K0.5 | 0.005 | 1 | R2 task §5 | K scaled by 0.5; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+| qc-2.9-K0.5 | 0.005 | 1 | R2 task §5 | K scaled by 0.5; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+| qc-2.77-K2 | 0.02 | 1 | R2 task §5 | K scaled by 2; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+| qc-2.84-K2 | 0.02 | 1 | R2 task §5 | K scaled by 2; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+| qc-2.9-K2 | 0.02 | 1 | R2 task §5 | K scaled by 2; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R2 mechanism diagnosis; not a material value |
+
+本步基线 HEAD：2c06d54874aeb50ff6a96c074fb325b0b328f9fc。开始：2026-11-25T14:47:23.579Z；结束：2026-11-25T14:57:27.795Z。运行环境：{"node":"v20.17.0","platform":"win32","arch":"x64","endianness":"LE"}。完整归档根：C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25。
+
+| 运行 | 原始输入或本次输入 | 初值来源 | manifest（相对归档根） | result（新运行相对归档根；基准相对仓库根） |
+| --- | --- | --- | --- | --- |
+| baseline-l=2.77 | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json | 基准复用，无新运行 manifest | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json |
+| baseline-l=2.84 | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json | 基准复用，无新运行 manifest | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json |
+| baseline-l=2.9 | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json | 基准复用，无新运行 manifest | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json |
+| qc-2.77-K0.5 | R2-3/qc-2.77-K0.5-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json | R2-3/qc-2.77-K0.5-manifest.json | R2-3/qc-2.77-K0.5-result.json |
+| qc-2.84-K0.5 | R2-3/qc-2.84-K0.5-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json | R2-3/qc-2.84-K0.5-manifest.json | R2-3/qc-2.84-K0.5-result.json |
+| qc-2.9-K0.5 | R2-3/qc-2.9-K0.5-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json | R2-3/qc-2.9-K0.5-manifest.json | R2-3/qc-2.9-K0.5-result.json |
+| qc-2.77-K2 | R2-3/qc-2.77-K2-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-after.json | R2-3/qc-2.77-K2-manifest.json | R2-3/qc-2.77-K2-result.json |
+| qc-2.84-K2 | R2-3/qc-2.84-K2-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json | R2-3/qc-2.84-K2-manifest.json | R2-3/qc-2.84-K2-result.json |
+| qc-2.9-K2 | R2-3/qc-2.9-K2-input.json | docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-after.json | R2-3/qc-2.9-K2-manifest.json | R2-3/qc-2.9-K2-result.json |
+
+输入列：基准路径相对仓库根，新运行路径相对归档根；初值列中的 `docs/...` 相对仓库根，延续中间结果的 `R2-3/...` 相对归档根。
+
+### 本轮简化验证
+
+以下逐项引用 C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25/R2-3/verification.json，记录时间 2026-11-25T14:48:41.752Z；未沿用历史验证结果。
+
+| 检查 | 实际退出码 | 证据（相对本步归档目录） |
+| --- | --- | --- |
+| analysis-check | 0 | verification.json |
+| continuation-check | 0 | verification.json |
+| syntax-check | 0 | verification.json |
+| npm run build | 0 | verification.json |
+| six registered K-only inputs, saved results and all S fields | 0 | result-review.json |
+| independent raw-result OLS and S review | 0 | independent-review.json |
+
+验证策略原文：No golden runs, performance benchmarks or file hashes; full validate omitted because it includes golden checks。
+本步未运行金标准、性能基准或文件哈希；全量 validate 含金标准，未运行。表中求解耗时来自运行记录，不能作为同期性能对照。

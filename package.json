@@ -8,6 +8,7 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "validate:fabric-form-locked-lattice": "node scripts/validate-fabric-form-locked-lattice.mjs",
     "validate:fabric-form-golden-eval": "node scripts/validate-fabric-form-golden-eval.mjs",
     "validate:fabric-form-topology-equivalence": "node scripts/validate-fabric-form-topology-equivalence.mjs",
     "golden:fabric-form-solve": "node scripts/golden-fabric-form-solve.mjs",

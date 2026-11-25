@@ -24,10 +24,24 @@ export function defaultMemorySize(nodesPerLoop) {
  * An optional FabricModel may extend the T1 registries; bending/contact details
  * remain required by the unchanged T1 result and physical diagnostic fields.
  */
-export function solveFabricCell({ topology, params, initialCell, lockedDimensions, model,
+export function solveFabricCell({ topology, params, initialCell, lockedDimensions, lockedLattice, model,
   quadratureOrder = 12, maxIterations = 6000, innerIterations = 800, memorySize, stagnationWindow = 3,
   gradientTolerance = 1e-6, constraintTolerance = 1e-6 }) {
   if (!topology || !params) throw new TypeError("topology and material params are required");
+  if (lockedLattice !== undefined && lockedDimensions !== undefined) {
+    throw new TypeError("lockedLattice and lockedDimensions cannot be combined");
+  }
+  let lockedComponents;
+  if (lockedLattice !== undefined) {
+    if (!lockedLattice || typeof lockedLattice !== "object" || Array.isArray(lockedLattice) ||
+        !Object.keys(lockedLattice).length || Object.keys(lockedLattice).some(key => key !== "W" && key !== "H")) {
+      throw new TypeError("lockedLattice must contain W and/or H only; S cannot be locked");
+    }
+    lockedComponents = ["W", "H"].filter(component => Object.hasOwn(lockedLattice, component));
+    if (lockedComponents.some(component => !Number.isFinite(lockedLattice[component]) || lockedLattice[component] <= 0)) {
+      throw new RangeError("Locked W/H must be positive finite mm");
+    }
+  }
   if (memorySize === undefined) {
     memorySize = defaultMemorySize(topology.nodesPerLoop);
   }
@@ -43,6 +57,8 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
         !Number.isFinite(lockedDimensions.W + lockedDimensions.H)) throw new RangeError("Locked W/H must be positive finite mm");
     initial = { ...initial, W: lockedDimensions.W, H: lockedDimensions.H };
   }
+  if (lockedComponents) initial = { ...initial,
+    ...Object.fromEntries(lockedComponents.map(component => [component, lockedLattice[component]])) };
   const start = performance.now(), scale = topology.loopLengthMm;
   const layout = createDofLayout(initial);
   model ??= createT1PlainJerseyModel(params, { quadratureOrder });
@@ -50,13 +66,19 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
   const latticeComponents = layout.blocks.find(block => block.name === "lattice").components;
   const latticeIndex = Object.fromEntries(latticeComponents.map(component => [component, layout.index("lattice", component)]));
   // Remove translation. W/H are excluded from the multiplier fit when locked.
-  const freeIndices = layout.freeIndices({ fixTranslation: true, locked: lockedDimensions ? ["W", "H"] : [] });
-  const toCell = x => layout.unpack(Float64Array.from(x, value => value*scale), initial);
+  const freeIndices = layout.freeIndices({ fixTranslation: true, locked: lockedComponents ?? (lockedDimensions ? ["W", "H"] : []) });
+  const toCell = x => {
+    const cell = layout.unpack(Float64Array.from(x, value => value*scale), initial);
+    // Partial locks retain the exact supplied mm value; W/H locks preserve the legacy round trip.
+    if (lockedComponents?.length === 1) cell[lockedComponents[0]] = lockedLattice[lockedComponents[0]];
+    return cell;
+  };
   const initialEvaluation = model.evaluate(initial);
   if (!initialEvaluation.feasible) {
     const contact=initialEvaluation.details.contact,constraint=model.constraintsAt(initial);
     return {status:"INFEASIBLE_INITIAL_GEOMETRY",optimizerStatus:"NOT_STARTED",
-      mode:lockedDimensions?"LOCKED_DIMENSIONS":"FREE",cell:initial,params,metrics:fabricFormMetrics(initial,params),
+      mode:lockedComponents?"LOCKED_LATTICE":lockedDimensions?"LOCKED_DIMENSIONS":"FREE",
+      ...(lockedComponents ? { lockedComponents } : {}),cell:initial,params,metrics:fabricFormMetrics(initial,params),
       energy:{total:null,bending:initialEvaluation.details.bending.energy,contact:null,barrier:null,barrierFraction:null},
       constraints:{maxSegmentStrain:constraint.maxStrain,values:Array.from(constraint.values)},
       equilibrium:{passed:false,nodeRatio:null,latticeRatios:[null,null,null]},
@@ -81,7 +103,7 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       if (Math.max(...Array.from(state.values, Math.abs)) > Math.min(1e-4,constraintTolerance)) return false;
       const residual = reaction.fullResidual;
       if (Math.max(...Array.from(residual.slice(positionsBlock.offset, positionsBlock.offset + positionsBlock.length), Math.abs)) > 1e-6*state.energy) return false;
-      return latticeComponents.every(component => lockedDimensions && component !== "S" ||
+      return latticeComponents.every(component => (lockedComponents ? lockedComponents.includes(component) : lockedDimensions && component !== "S") ||
         Math.abs(residual[latticeIndex[component]])*x[latticeIndex[component === "H" ? "H" : "W"]] <= 1e-6*state.energy);
     },
     evaluate: x => {
@@ -108,12 +130,14 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
   const latticeResidual = latticeComponents.map(component => reaction.fullResidual[latticeIndex[component]]);
   const nodeRatio = nodeResidual/(evaluation.energy/scale);
   const latticeRatios = latticeResidual.map((r,i) => Math.abs(r)*[cell.W,cell.H,cell.W][i]/evaluation.energy);
-  const equilibriumPassed = nodeRatio <= 1e-6 && latticeRatios.every((r,i) => lockedDimensions && i < 2 || r <= 1e-6);
+  const equilibriumPassed = nodeRatio <= 1e-6 && latticeRatios.every((r,i) =>
+    (lockedComponents ? lockedComponents.includes(latticeComponents[i]) : lockedDimensions && i < 2) || r <= 1e-6);
   const lengthPassed = constraint.maxStrain <= 1e-4 && metrics.maxLoopLengthError <= 1e-4;
   const contact = evaluation.details.contact;
   const trajectoryPassed = minimumEvaluatedDistance > params.r_c;
   return { status: equilibriumPassed && lengthPassed && evaluation.feasible && trajectoryPassed ? "CONVERGED" : "NOT_CONVERGED",
-    optimizerStatus: optimized.status, mode: lockedDimensions ? "LOCKED_DIMENSIONS" : "FREE",
+    optimizerStatus: optimized.status, mode: lockedComponents ? "LOCKED_LATTICE" : lockedDimensions ? "LOCKED_DIMENSIONS" : "FREE",
+    ...(lockedComponents ? { lockedComponents } : {}),
     cell, params, metrics, energy: { total: evaluation.energy, bending: evaluation.details.bending.energy,
       contact: contact.contactEnergy, barrier: contact.barrierEnergy, barrierFraction: contact.barrierEnergy/evaluation.energy },
     constraints: { maxSegmentStrain: constraint.maxStrain, maxLoopLengthError: metrics.maxLoopLengthError,
@@ -123,7 +147,9 @@ export function solveFabricCell({ topology, params, initialCell, lockedDimension
       multiplierSolveThreshold: reaction.multiplierSolveThreshold,
       multiplierSolveMethod: reaction.multiplierSolveMethod,
       multiplierConditionEstimate: reaction.multiplierConditionEstimate,
-      ...(lockedDimensions ? { F_W: latticeResidual[0], F_H: latticeResidual[1] } :
+      ...(lockedComponents ? Object.fromEntries(latticeComponents.map((component, i) =>
+        [`${lockedComponents.includes(component) ? "F" : "R"}_${component}`, latticeResidual[i]])) :
+        lockedDimensions ? { F_W: latticeResidual[0], F_H: latticeResidual[1] } :
         { R_W: latticeResidual[0], R_H: latticeResidual[1], R_S: latticeResidual[2] }) },
     clearance: { feasible: contact.feasible, minDistance: contact.minDistance,
       minGap: contact.minDistance-params.r_c, ratioToCompaction: contact.minDistance/params.r_c,

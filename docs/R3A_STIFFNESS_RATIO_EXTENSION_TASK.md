@@ -238,3 +238,11 @@ golden:fabric-form-solve：未运行（本任务不改 src）
 - 恢复脚本变更后的本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0；证据为 R3a-2/resumption-2026-11-26/。未运行 golden:fabric-form-solve、性能测量或额外文件哈希。
 - 偏离任务书：外部进程中断后按用户继续指示增加一次同输入重启和定点恢复入口；未增减目标工况、未改变阈值或设置、未重算已完成点，未触发 §8 数值停止条件。未处理事项：原进程中断原因未知；D0 与 S1 File 等外部资料仍待用户侧核对，不作为本次扫描阻塞。
 - 完整逐次结果、迭代/耗时、输入与 manifest 见 r3a-summary.json、REPORT.md 及 C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26/R3a-2/。本判读只说明模型能否到达约 −1，不说明真实面料斜率，不作参数取值建议。
+
+### R3a-3（2026-11-26）：完成
+
+- 基线：main @ 4bf2022c03bfaa83259c146a648daf149203820f，R3a-2 已提交推送。本步只补 REPORT 开头总表、8行综合说明、固定阈值判读与 NEXT_TASK 交接，并追加本记录。
+- 本步研究求解0次；全任务仍为14/37次尝试，12个目标与B×4点收敛，另1次中断无终态。两份汇总JSON、原始结果及已登记判据未改。
+- 主判据“一致”：b_wale(K×1/44)=−1.1695062585885128≤−0.9，三个目标无剪切标记；b_course=−0.8471710745652153。报告明确非单调性、K×1/16较大的拟合残差、干放松参照状态及D0前提，不形成参数建议。
+- 本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出0；完整日志与退出码为 C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26/R3a-3/。未运行 golden:fabric-form-solve、额外性能测量或文件哈希。
+- 范围核对：相对72435ba，src、R1金标准及R2三份summary JSON无改动；R3a-3本步仅允许的三份文档变更。无本步偏离或新增未处理问题；R3a-2外部中断的原因未知及恢复记录原样保留。

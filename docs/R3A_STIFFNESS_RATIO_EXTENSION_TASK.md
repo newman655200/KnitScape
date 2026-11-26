@@ -199,3 +199,19 @@ golden:fabric-form-solve：未运行（本任务不改 src）
 - 按 §6 完成 Hossain 文末四条更正及三处复测说明的行末提示、R2 Q3 补注、§1 实物对照状态决定、NEXT_TASK 验证口径更正与 R3-a 立项记录。
 - 本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0；研究求解 0 次。未运行 golden:fabric-form-solve、额外性能测量或文件哈希。
 - 无偏离、无未处理问题。完整日志及退出码：C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26/R3a-0/。
+
+### R3a-1 运行前实现口径（2026-11-26）
+
+- 原预登记阈值、工况和数值设置不变。跨 equivalence / chain 累计所有实际求解尝试（含失败、异常），上限 37；复用已收敛点不重算、不重复计数。
+- 等价性中 W/H 相对差及 |ΔS|/W 以 (i) 为基准。能量四倍门槛用等价代数形式 `abs(E_ii - 4*E_i) <= abs(4*E_i)*1e-5`；两项严格为零时比值与相对差记 null，另存绝对残差 0，说明严格满足零项齐次式，不将 0/0 伪记为比值 4；零到非零不通过。检查 total、bending、contact、barrier；barrierFraction 为占比，不按能量分项乘四。
+- 初值不可行的现有返回名为 INFEASIBLE_INITIAL_GEOMETRY，保存结果后立即按 #2 停止，不把 null 能量作为零或普通未收敛进入重试。
+- §4.3 的两次等价性求解必须使用同一 R2 K×0.5 初值，因此等价性 (i) 不用改变初值的中点重试结果替代；任一等价性直接解未收敛则无法通过该检查，按 #3 停止（初值不可行优先 #2）。延续链仍保留 §4.2 的中点加一次重试规则，累计上限保持 37，不另设更小次数上限。
+
+### R3a-1（2026-11-26）：完成
+
+- 基线：main @ 52699ef719eaaaad897f933cd55ad8b2f36b691c，R3a-0 已推送；本步仅研究脚本、允许的 lib 新导出、命令及研究文档/标量汇总。未改 src 或既有 R2 行为。
+- 两次实际求解均直接 CONVERGED：r3a-2.84-K0.25，2975 iter，140.9223804 s；equivalence-2.84-B4，2975 iter，113.1351788 s。两者 shearBranch=false、势垒支撑区=false；累计 2/37，无重试。
+- W/H 相对差、|ΔS|/W、两方向密度相对差均为 0；total/bending/contact 能量之比均严格为 4、距 4 相对差为 0；barrier 双零、比值 null、绝对残差 0。两点能量分项和相对差均为 0，等价性通过。
+- 亲自核对两份运行输入：初值与同一 R2 K×0.5 cell 结构完全相同、数值设置原样保留，仅 K/4 或 B×4 诊断覆盖。合成自检覆盖阈值、零项、全局 37 边界、重试、复用、拒绝覆盖和停止锁定，不消耗研究求解次数。
+- 本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0；golden:fabric-form-solve 未运行。无额外性能测量或文件哈希；逐次 manifest 保留登记的输入 SHA-256。
+- 主扫描判读不适用，待 R3a-2 完成。无偏离、无未处理问题。结果见 equivalence-summary.json 与 REPORT.md；完整归档 C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26/R3a-1/，全局账本位于归档根 study-ledger.json。

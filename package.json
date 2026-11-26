@@ -8,6 +8,7 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "study:fabric-form-r3b": "node scripts/run-fabric-form-r3b-study.mjs",
     "study:fabric-form-r3a": "node scripts/run-fabric-form-r3a-study.mjs",
     "study:fabric-form-r2": "node scripts/run-fabric-form-r2-study.mjs",
     "validate:fabric-form-locked-lattice": "node scripts/validate-fabric-form-locked-lattice.mjs",

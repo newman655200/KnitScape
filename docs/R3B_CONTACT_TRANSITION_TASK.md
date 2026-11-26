@@ -212,3 +212,18 @@ golden:fabric-form-solve：未运行（本任务不改 src）
 - 本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0；本步研究求解 0 次。未运行 golden:fabric-form-solve、额外性能测量或额外文件哈希。
 - §5 的 validate 失败交叉引用写为 #6；执行以 §8 明确枚举为准（validate/build 失败为 #5，现有代码疑似缺陷为 #6），原文未改。无执行偏离、无未处理问题。
 - 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26/R3b-0/（validate.log、build.log 及实际退出码）。
+
+### R3b-1 运行前实现口径（2026-11-26）
+
+- 原判读阈值、15 个目标、初值链、数值设置及 45 次上限保持不变。§2.1 的混合/剪切档斜率只作描述；§2.3 的全部六个几何与签名配对仍保留，不使用斜率。迟滞肯定条件只为 W 相对差至少 1e-2 或签名不同，不额外加入 H 门槛。
+- 中点普通未收敛且有可用终态时，仍执行已授权的唯一目标重试；初值不可行立即按 #2 停止。仅按登记规则记录剪切、势垒支撑与接触签名变化，不据此停止。
+- 跨正反向累计预算 45。无终态外部中断保留原 input、RUNNING manifest 和快照；按 §4.3 使用原保存输入另起运行编号，summary.recovery 登记，中断不占预算；已经完成的点不重算。STOPPED 不自动恢复。
+- 实现者亲自重跑合成自检通过（真实物理求解调用 0 次），含固定链、判读边界、45 次、重试、拒绝覆盖和直接/中点/重试/反向中断恢复。证据：R3b-1/self-check/root-check/self-check-result.json。
+
+### R3b-1（2026-11-26）：完成
+
+- 基线：06ea441；新增研究脚本与固定分析、报告渲染和合成自检，package仅新增study:fabric-form-r3b。未改src或已有R2/R3-a模块。
+- 正向9个目标全部直接CONVERGED，累计9/45，无中点重试或中断。每点签名均为courseSpacing+diagonal，无剪切；K×1/64的l=2.77、2.84进入势垒支撑区，只记录。
+- 各档拟合见summary与REPORT正向链；平台三档Δb=0.16260850286851491，按原规则为“不确定”，未报告平台平均值；迟滞待R3b-2。旧1/16仍标状态混合，仅描述。
+- 实现者逐点核对保存输入、初值来源、原参数/设置、结果标量、签名与manifest通过；最大能量和相对差1.9411494896311907e-16。
+- 本轮全量validate 50/50（含golden-eval 7/7），build退出0；未运行golden:fabric-form-solve、额外性能测量或额外文件哈希。完整证据：C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26/R3b-1/。无偏离、无未处理问题。

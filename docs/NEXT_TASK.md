@@ -89,3 +89,7 @@ QC 的 K×0.5 / 1 / 2 横密斜率为 −0.5341490071719582 / −0.3972758811011
 R2-0 的完整金标准和入口检查属于当步历史验收。后续按用户裁定采用简化验证：研究分析/监测自检、语法、存档结果核对与 npm run build；不运行金标准、性能基准或文件哈希，全量 validate 含金标准因此未运行。R2-4 本轮检查与 build 的实际记录位于归档 R2-4/verification.json，不沿用旧的 50/50。原始证据与全部日志位于 C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25/。
 
 本研究在 R2 任务范围内结束。未继续改 T1 物理模型或数值设置，未进入 T2/T3，也未将模型诊断升级为真实干放松验证；后续方向由用户决定并由架构师另行提供任务书。
+
+验证口径更正：全量 validate 不含完整求解金标准；`validate:fabric-form-golden-eval` 只比对求值输出，应每步运行。R2-2 至 R2-4 未跑全量 validate，已在 R2-4b 补跑（50/50）。
+
+2026-11-26：R3-a 刚度比延伸扫描已立项，依据 [R3A_STIFFNESS_RATIO_EXTENSION_TASK](R3A_STIFFNESS_RATIO_EXTENSION_TASK.md)，从 main @ 72435ba 按 R3a-0 → R3a-3 执行；仅作诊断，不标定或推荐参数。

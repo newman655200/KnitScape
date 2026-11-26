@@ -116,3 +116,5 @@ K×{2,1,0.5,1/4,1/8,1/16,1/44} 的 b_wale 依次为 −0.273959、−0.397276、
 没有修改 src、默认值、R1金标准或R2汇总JSON，未进入新的模型开发。完整证据根目录为 C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26/；恢复后的R3a-2验收在 R3a-2/resumption-2026-11-26/，中断快照在 R3a-2/interruption-2026-11-26/。后续方向由用户决定，并由架构师另立任务书。
 
 R3a-0、R3a-1、恢复变更后的R3a-2及本轮R3a-3均实际运行全量 validate 50/50（各含 golden-eval 7/7）和 build 退出0；本轮R3a-3日志在归档 R3a-3/。完整求解金标准、额外性能测量和额外文件哈希均未运行。R3-a在本任务范围内完成。
+
+R3-a 机制限定见 R3-a REPORT 审查补注；R3-b 已立项

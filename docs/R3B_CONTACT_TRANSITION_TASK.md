@@ -227,3 +227,10 @@ golden:fabric-form-solve：未运行（本任务不改 src）
 - 各档拟合见summary与REPORT正向链；平台三档Δb=0.16260850286851491，按原规则为“不确定”，未报告平台平均值；迟滞待R3b-2。旧1/16仍标状态混合，仅描述。
 - 实现者逐点核对保存输入、初值来源、原参数/设置、结果标量、签名与manifest通过；最大能量和相对差1.9411494896311907e-16。
 - 本轮全量validate 50/50（含golden-eval 7/7），build退出0；未运行golden:fabric-form-solve、额外性能测量或额外文件哈希。完整证据：C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26/R3b-1/。无偏离、无未处理问题。
+
+### R3b-2（2026-11-26）：完成
+
+- 基线：7d375c7；反向6个目标全部直接CONVERGED，全任务15/45，无重试或中断。反向1/24三点签名均为courseSpacing+diagonal；反向1/16中l=2.77/2.84恢复四组接触（waleSpacing=11/4），l=2.90仍为courseSpacing+diagonal，整档状态混合、斜率仅描述。
+- 六对正反向签名全部相同；max|ΔW|/W=1.2528862372022645e-6，max|ΔH|/H=2.3570487280864132e-6，全部满足1e-4门槛。按§2.3为“无迟滞（同一平衡）”。双方能量、差值及较低者全部报告，未替换任何点。
+- 实现者亲自核对全部15份保存输入、初值来源、参数/数值设置、原始结果与标量、签名、manifest及分析通过；能量和最大相对差1.9411494896311907e-16。
+- 本轮全量validate 50/50（含golden-eval 7/7），build退出0。未运行完整求解金标准、额外性能测量或额外文件哈希。完整证据：C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26/R3b-2/。无偏离、无未处理问题。

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "status": "FORWARD_COMPLETE",
-  "part": "forward",
-  "step": "R3b-1",
-  "head": "06ea441df3f8718d1a3a13916536d5107e1def9d",
+  "status": "COMPLETE",
+  "part": "reverse",
+  "step": "R3b-2",
+  "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
   "runtime": {
     "node": "v20.17.0",
     "platform": "win32",
@@ -21,8 +21,8 @@
     "energySum": 0.000001,
     "maxSolves": 45
   },
-  "totalSolveCount": 9,
-  "totalInvocationCount": 9,
+  "totalSolveCount": 15,
+  "totalInvocationCount": 15,
   "recovery": [],
   "verificationPolicy": "Per-input SHA-256 only; no additional file hashes, duplicate solves or performance measurements",
   "shearBranchDefinition": "abs(S)/W > 1e-4 (R2 helper)",
@@ -2943,6 +2943,728 @@
         "file": "R3b-1/r3b-2.9-K0.015625-manifest.json"
       },
       "resultFile": "R3b-1/r3b-2.9-K0.015625-result.json"
+    },
+    {
+      "l": 2.77,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.77-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.77-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 3487,
+      "W": 0.7484690945759104,
+      "H": 0.5269216576220295,
+      "S": 5.025150252374627e-9,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.360605097082992,
+      "courseDensityPerCm": 18.97815330865216,
+      "kw": 3.7008876118919884,
+      "kc": 5.256948466496649,
+      "energy": {
+        "total": 0.019744924210755115,
+        "bending": 0.01866712891925231,
+        "contact": 0.001077795291502804,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019744924210755115,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7292646998578995,
+      "activePairs": 300,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1402547761469497
+        },
+        "courseSpacing": {
+          "activePairs": 247,
+          "minDistanceOverDe": 0.7292646998578995
+        },
+        "diagonal": {
+          "activePairs": 53,
+          "minDistanceOverDe": 0.7317062172391002
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1402547556013496
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 193032.19470000002,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.77-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.77,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.77-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.77-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:22:24.761Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.77-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "5868db97e2718e8d0990f9e1b25d9acc49eb0f0ce493523b2734edf53f68753f",
+        "resultFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 10,
+        "invocationNumber": 10,
+        "countedAgainstBudget": true,
+        "elapsedMs": 193032.19470000002,
+        "finishedAt": "2026-11-26T13:25:37.802Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.77,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.77-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.77-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 3425,
+      "W": 0.704428813104534,
+      "H": 0.5309545565136495,
+      "S": -2.8896753268843997e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 14.195898597515269,
+      "courseDensityPerCm": 18.834003545730802,
+      "kw": 3.93226391151173,
+      "kc": 5.217018982167432,
+      "energy": {
+        "total": 0.020134730284569087,
+        "bending": 0.019251905200741895,
+        "contact": 0.0008828250838271919,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.020134730284569087,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7884812010939821,
+      "activePairs": 290,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 11,
+          "minDistanceOverDe": 0.962370198359055
+        },
+        "courseSpacing": {
+          "activePairs": 225,
+          "minDistanceOverDe": 0.7884812010939821
+        },
+        "diagonal": {
+          "activePairs": 43,
+          "minDistanceOverDe": 0.7931930645365393
+        },
+        "sameLoop": {
+          "activePairs": 11,
+          "minDistanceOverDe": 0.9623699768781055
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 205771.90350000001,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "waleSpacing",
+        "courseSpacing",
+        "diagonal",
+        "sameLoop"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.77-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.77,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.77-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.77-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:25:37.821Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.77-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.77-K0.0625-reverse-input.json",
+        "inputSha256": "7a1ada55a891610d7080028fce20138bc2e83940ee0e4ec9c8c30743fa38dc07",
+        "resultFile": "R3b-2/r3b-2.77-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 11,
+        "invocationNumber": 11,
+        "countedAgainstBudget": true,
+        "elapsedMs": 205771.90350000001,
+        "finishedAt": "2026-11-26T13:29:03.603Z",
+        "contactSignature": [
+          "waleSpacing",
+          "courseSpacing",
+          "diagonal",
+          "sameLoop"
+        ],
+        "file": "R3b-2/r3b-2.77-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.77-K0.0625-reverse-result.json"
+    },
+    {
+      "l": 2.84,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.84-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.84-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 4150,
+      "W": 0.774447408236043,
+      "H": 0.5380066836726922,
+      "S": -2.9364433585813525e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 12.912432650238932,
+      "courseDensityPerCm": 18.587129683473805,
+      "kw": 3.667130872667857,
+      "kc": 5.27874483010656,
+      "energy": {
+        "total": 0.019105493225163424,
+        "bending": 0.018115893746974844,
+        "contact": 0.000989599478188578,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019105493225163424,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7379103622765547,
+      "activePairs": 280,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1976650006524836
+        },
+        "courseSpacing": {
+          "activePairs": 236,
+          "minDistanceOverDe": 0.7379103622765547
+        },
+        "diagonal": {
+          "activePairs": 44,
+          "minDistanceOverDe": 0.7429042250180189
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1976648245403618
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 272372.83890000003,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.84-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.84,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.84-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.84-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:29:03.623Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.84-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "3508ceec6d970056f1ab269bd3e655a5e4c6199d08efb570e30bc58d76bd311e",
+        "resultFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 12,
+        "invocationNumber": 12,
+        "countedAgainstBudget": true,
+        "elapsedMs": 272372.83890000003,
+        "finishedAt": "2026-11-26T13:33:36.002Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.84,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.84-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.84-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 3175,
+      "W": 0.7228916964961153,
+      "H": 0.5442694793947794,
+      "S": -3.3045584392815024e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.833330841217842,
+      "courseDensityPerCm": 18.37325144727915,
+      "kw": 3.9286659589058672,
+      "kc": 5.2180034110272775,
+      "energy": {
+        "total": 0.019459616370876676,
+        "bending": 0.018697380329975234,
+        "contact": 0.0007622360409014427,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019459616370876676,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.799983144436606,
+      "activePairs": 266,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 4,
+          "minDistanceOverDe": 0.9924056024635494
+        },
+        "courseSpacing": {
+          "activePairs": 219,
+          "minDistanceOverDe": 0.799983144436606
+        },
+        "diagonal": {
+          "activePairs": 39,
+          "minDistanceOverDe": 0.8042436924707445
+        },
+        "sameLoop": {
+          "activePairs": 4,
+          "minDistanceOverDe": 0.9924061656037062
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 88795.75910000002,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "waleSpacing",
+        "courseSpacing",
+        "diagonal",
+        "sameLoop"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.84-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.84,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.84-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.84-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:33:36.013Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.84-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.84-K0.0625-reverse-input.json",
+        "inputSha256": "57ba4a062dc92c44154baeab934043acc0fdc17fc388f6b83bd09e19f15c09a1",
+        "resultFile": "R3b-2/r3b-2.84-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 13,
+        "invocationNumber": 13,
+        "countedAgainstBudget": true,
+        "elapsedMs": 88795.75910000002,
+        "finishedAt": "2026-11-26T13:35:04.815Z",
+        "contactSignature": [
+          "waleSpacing",
+          "courseSpacing",
+          "diagonal",
+          "sameLoop"
+        ],
+        "file": "R3b-2/r3b-2.84-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.84-K0.0625-reverse-result.json"
+    },
+    {
+      "l": 2.9,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.9-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.9-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 3475,
+      "W": 0.7970265796500684,
+      "H": 0.5474208139393211,
+      "S": 2.5330215096779915e-8,
+      "shearBranch": false,
+      "waleDensityPerCm": 12.546633017421406,
+      "courseDensityPerCm": 18.26748224649794,
+      "kw": 3.638523575052208,
+      "kc": 5.297569851484402,
+      "energy": {
+        "total": 0.018586004920430842,
+        "bending": 0.01766482719171026,
+        "contact": 0.0009211777287205827,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.018586004920430842,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7463308026416428,
+      "activePairs": 262,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.2435492941279538
+        },
+        "courseSpacing": {
+          "activePairs": 220,
+          "minDistanceOverDe": 0.7463308026416428
+        },
+        "diagonal": {
+          "activePairs": 42,
+          "minDistanceOverDe": 0.7480330218493503
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.2435492814520335
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 95263.5081000001,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.9-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.9,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.9-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.9-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:35:04.826Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.9-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "83e315320fed9102d4a0514915ae4421df60648f3ea05196e55513b43a06d7fb",
+        "resultFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 14,
+        "invocationNumber": 14,
+        "countedAgainstBudget": true,
+        "elapsedMs": 95263.5081000001,
+        "finishedAt": "2026-11-26T13:36:40.095Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.9,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.9-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.9-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 5225,
+      "W": 0.7462243559430044,
+      "H": 0.5538217530645866,
+      "S": -3.302252037643965e-8,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.400795511911415,
+      "courseDensityPerCm": 18.056351063613427,
+      "kw": 3.8862306984543102,
+      "kc": 5.236341808447894,
+      "energy": {
+        "total": 0.018914952369761994,
+        "bending": 0.018209830154638448,
+        "contact": 0.0007051222151235475,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.018914952369761994,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.8057194148004307,
+      "activePairs": 242,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.0446901205488601
+        },
+        "courseSpacing": {
+          "activePairs": 207,
+          "minDistanceOverDe": 0.8057194148004307
+        },
+        "diagonal": {
+          "activePairs": 35,
+          "minDistanceOverDe": 0.8109268982134163
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.0446901551077652
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 226246.69219999993,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.9-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.9,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.9-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.9-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:36:40.106Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.9-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.9-K0.0625-reverse-input.json",
+        "inputSha256": "9956cf4bcf5eaf91bf160903b947718dce4f17b94f42da52525ba8f00c968de6",
+        "resultFile": "R3b-2/r3b-2.9-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 15,
+        "invocationNumber": 15,
+        "countedAgainstBudget": true,
+        "elapsedMs": 226246.69219999993,
+        "finishedAt": "2026-11-26T13:40:26.360Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.9-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.9-K0.0625-reverse-result.json"
     }
   ],
   "targets": [
@@ -4016,6 +4738,728 @@
         "file": "R3b-1/r3b-2.9-K0.015625-manifest.json"
       },
       "resultFile": "R3b-1/r3b-2.9-K0.015625-result.json"
+    },
+    {
+      "l": 2.77,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.77-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.77-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 3487,
+      "W": 0.7484690945759104,
+      "H": 0.5269216576220295,
+      "S": 5.025150252374627e-9,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.360605097082992,
+      "courseDensityPerCm": 18.97815330865216,
+      "kw": 3.7008876118919884,
+      "kc": 5.256948466496649,
+      "energy": {
+        "total": 0.019744924210755115,
+        "bending": 0.01866712891925231,
+        "contact": 0.001077795291502804,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019744924210755115,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7292646998578995,
+      "activePairs": 300,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1402547761469497
+        },
+        "courseSpacing": {
+          "activePairs": 247,
+          "minDistanceOverDe": 0.7292646998578995
+        },
+        "diagonal": {
+          "activePairs": 53,
+          "minDistanceOverDe": 0.7317062172391002
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1402547556013496
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 193032.19470000002,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.77-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.77,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.77-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.77-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:22:24.761Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.77-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "5868db97e2718e8d0990f9e1b25d9acc49eb0f0ce493523b2734edf53f68753f",
+        "resultFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 10,
+        "invocationNumber": 10,
+        "countedAgainstBudget": true,
+        "elapsedMs": 193032.19470000002,
+        "finishedAt": "2026-11-26T13:25:37.802Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.77-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.77,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.77-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.77-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 3425,
+      "W": 0.704428813104534,
+      "H": 0.5309545565136495,
+      "S": -2.8896753268843997e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 14.195898597515269,
+      "courseDensityPerCm": 18.834003545730802,
+      "kw": 3.93226391151173,
+      "kc": 5.217018982167432,
+      "energy": {
+        "total": 0.020134730284569087,
+        "bending": 0.019251905200741895,
+        "contact": 0.0008828250838271919,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.020134730284569087,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7884812010939821,
+      "activePairs": 290,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 11,
+          "minDistanceOverDe": 0.962370198359055
+        },
+        "courseSpacing": {
+          "activePairs": 225,
+          "minDistanceOverDe": 0.7884812010939821
+        },
+        "diagonal": {
+          "activePairs": 43,
+          "minDistanceOverDe": 0.7931930645365393
+        },
+        "sameLoop": {
+          "activePairs": 11,
+          "minDistanceOverDe": 0.9623699768781055
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 205771.90350000001,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "waleSpacing",
+        "courseSpacing",
+        "diagonal",
+        "sameLoop"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.77-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.77,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.77-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.77-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:25:37.821Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.77-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.77-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.77-K0.0625-reverse-input.json",
+        "inputSha256": "7a1ada55a891610d7080028fce20138bc2e83940ee0e4ec9c8c30743fa38dc07",
+        "resultFile": "R3b-2/r3b-2.77-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 11,
+        "invocationNumber": 11,
+        "countedAgainstBudget": true,
+        "elapsedMs": 205771.90350000001,
+        "finishedAt": "2026-11-26T13:29:03.603Z",
+        "contactSignature": [
+          "waleSpacing",
+          "courseSpacing",
+          "diagonal",
+          "sameLoop"
+        ],
+        "file": "R3b-2/r3b-2.77-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.77-K0.0625-reverse-result.json"
+    },
+    {
+      "l": 2.84,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.84-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.84-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 4150,
+      "W": 0.774447408236043,
+      "H": 0.5380066836726922,
+      "S": -2.9364433585813525e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 12.912432650238932,
+      "courseDensityPerCm": 18.587129683473805,
+      "kw": 3.667130872667857,
+      "kc": 5.27874483010656,
+      "energy": {
+        "total": 0.019105493225163424,
+        "bending": 0.018115893746974844,
+        "contact": 0.000989599478188578,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019105493225163424,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7379103622765547,
+      "activePairs": 280,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1976650006524836
+        },
+        "courseSpacing": {
+          "activePairs": 236,
+          "minDistanceOverDe": 0.7379103622765547
+        },
+        "diagonal": {
+          "activePairs": 44,
+          "minDistanceOverDe": 0.7429042250180189
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.1976648245403618
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 272372.83890000003,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.84-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.84,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.84-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.84-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:29:03.623Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.84-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "3508ceec6d970056f1ab269bd3e655a5e4c6199d08efb570e30bc58d76bd311e",
+        "resultFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 12,
+        "invocationNumber": 12,
+        "countedAgainstBudget": true,
+        "elapsedMs": 272372.83890000003,
+        "finishedAt": "2026-11-26T13:33:36.002Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.84-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.84,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.84-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.84-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 3175,
+      "W": 0.7228916964961153,
+      "H": 0.5442694793947794,
+      "S": -3.3045584392815024e-7,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.833330841217842,
+      "courseDensityPerCm": 18.37325144727915,
+      "kw": 3.9286659589058672,
+      "kc": 5.2180034110272775,
+      "energy": {
+        "total": 0.019459616370876676,
+        "bending": 0.018697380329975234,
+        "contact": 0.0007622360409014427,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.019459616370876676,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.799983144436606,
+      "activePairs": 266,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 4,
+          "minDistanceOverDe": 0.9924056024635494
+        },
+        "courseSpacing": {
+          "activePairs": 219,
+          "minDistanceOverDe": 0.799983144436606
+        },
+        "diagonal": {
+          "activePairs": 39,
+          "minDistanceOverDe": 0.8042436924707445
+        },
+        "sameLoop": {
+          "activePairs": 4,
+          "minDistanceOverDe": 0.9924061656037062
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 88795.75910000002,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "waleSpacing",
+        "courseSpacing",
+        "diagonal",
+        "sameLoop"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.84-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.84,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.84-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.84-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:33:36.013Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.84-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.84-K0.0625-reverse-input.json",
+        "inputSha256": "57ba4a062dc92c44154baeab934043acc0fdc17fc388f6b83bd09e19f15c09a1",
+        "resultFile": "R3b-2/r3b-2.84-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 13,
+        "invocationNumber": 13,
+        "countedAgainstBudget": true,
+        "elapsedMs": 88795.75910000002,
+        "finishedAt": "2026-11-26T13:35:04.815Z",
+        "contactSignature": [
+          "waleSpacing",
+          "courseSpacing",
+          "diagonal",
+          "sameLoop"
+        ],
+        "file": "R3b-2/r3b-2.84-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.84-K0.0625-reverse-result.json"
+    },
+    {
+      "l": 2.9,
+      "direction": "reverse",
+      "KScale": 0.041666666666666664,
+      "denominator": 24,
+      "previousKScale": 0.022727272727272728,
+      "targetKScale": 0.041666666666666664,
+      "id": "r3b-2.9-K0.041666666666666664-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.9-K0.041666666666666664-reverse",
+      "status": "CONVERGED",
+      "iterations": 3475,
+      "W": 0.7970265796500684,
+      "H": 0.5474208139393211,
+      "S": 2.5330215096779915e-8,
+      "shearBranch": false,
+      "waleDensityPerCm": 12.546633017421406,
+      "courseDensityPerCm": 18.26748224649794,
+      "kw": 3.638523575052208,
+      "kc": 5.297569851484402,
+      "energy": {
+        "total": 0.018586004920430842,
+        "bending": 0.01766482719171026,
+        "contact": 0.0009211777287205827,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.018586004920430842,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.7463308026416428,
+      "activePairs": 262,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.2435492941279538
+        },
+        "courseSpacing": {
+          "activePairs": 220,
+          "minDistanceOverDe": 0.7463308026416428
+        },
+        "diagonal": {
+          "activePairs": 42,
+          "minDistanceOverDe": 0.7480330218493503
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.2435492814520335
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 95263.5081000001,
+      "overrides": {
+        "K": 0.00041666666666666664
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.9-K0.022727272727272728-result.json",
+      "manifest": {
+        "l": 2.9,
+        "direction": "reverse",
+        "KScale": 0.041666666666666664,
+        "denominator": 24,
+        "previousKScale": 0.022727272727272728,
+        "targetKScale": 0.041666666666666664,
+        "id": "r3b-2.9-K0.041666666666666664-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.9-K0.041666666666666664-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:35:04.826Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3a-stiffness-2026-11-26\\R3a-2\\r3a-2.9-K0.022727272727272728-result.json",
+        "inputFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-input.json",
+        "inputSha256": "83e315320fed9102d4a0514915ae4421df60648f3ea05196e55513b43a06d7fb",
+        "resultFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-result.json",
+        "overrides": {
+          "K": 0.00041666666666666664
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.00041666666666666664,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.041666666666666664; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 14,
+        "invocationNumber": 14,
+        "countedAgainstBudget": true,
+        "elapsedMs": 95263.5081000001,
+        "finishedAt": "2026-11-26T13:36:40.095Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.9-K0.041666666666666664-reverse-result.json"
+    },
+    {
+      "l": 2.9,
+      "direction": "reverse",
+      "KScale": 0.0625,
+      "denominator": 16,
+      "previousKScale": 0.041666666666666664,
+      "targetKScale": 0.0625,
+      "id": "r3b-2.9-K0.0625-reverse",
+      "target": true,
+      "attempt": "direct",
+      "operationKey": "r3b-2.9-K0.0625-reverse",
+      "status": "CONVERGED",
+      "iterations": 5225,
+      "W": 0.7462243559430044,
+      "H": 0.5538217530645866,
+      "S": -3.302252037643965e-8,
+      "shearBranch": false,
+      "waleDensityPerCm": 13.400795511911415,
+      "courseDensityPerCm": 18.056351063613427,
+      "kw": 3.8862306984543102,
+      "kc": 5.236341808447894,
+      "energy": {
+        "total": 0.018914952369761994,
+        "bending": 0.018209830154638448,
+        "contact": 0.0007051222151235475,
+        "barrier": 0,
+        "barrierFraction": 0
+      },
+      "energyConsistency": {
+        "passed": true,
+        "sum": 0.018914952369761994,
+        "difference": 0,
+        "relativeDifference": 0,
+        "threshold": 0.000001
+      },
+      "minDistanceOverDe": 0.8057194148004307,
+      "activePairs": 242,
+      "groups": {
+        "waleSpacing": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.0446901205488601
+        },
+        "courseSpacing": {
+          "activePairs": 207,
+          "minDistanceOverDe": 0.8057194148004307
+        },
+        "diagonal": {
+          "activePairs": 35,
+          "minDistanceOverDe": 0.8109268982134163
+        },
+        "sameLoop": {
+          "activePairs": 0,
+          "minDistanceOverDe": 1.0446901551077652
+        }
+      },
+      "barrierSupportThreshold": 0.55,
+      "barrierSupportFormula": "minDistanceOverDe < r_c/d_e + 0.1*(1-r_c/d_e) OR barrier > 0",
+      "barrierSupport": false,
+      "elapsedMs": 226246.69219999993,
+      "overrides": {
+        "K": 0.000625
+      },
+      "contactSignature": [
+        "courseSpacing",
+        "diagonal"
+      ],
+      "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.9-K0.041666666666666664-reverse-result.json",
+      "manifest": {
+        "l": 2.9,
+        "direction": "reverse",
+        "KScale": 0.0625,
+        "denominator": 16,
+        "previousKScale": 0.041666666666666664,
+        "targetKScale": 0.0625,
+        "id": "r3b-2.9-K0.0625-reverse",
+        "target": true,
+        "attempt": "direct",
+        "operationKey": "r3b-2.9-K0.0625-reverse",
+        "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+        "runtime": {
+          "node": "v20.17.0",
+          "platform": "win32",
+          "arch": "x64",
+          "endianness": "LE"
+        },
+        "status": "CONVERGED",
+        "startedAt": "2026-11-26T13:36:40.106Z",
+        "sourceInputFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.9-input.json",
+        "initialCellSourceFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\r3b-2.9-K0.041666666666666664-reverse-result.json",
+        "inputFile": "R3b-2/r3b-2.9-K0.0625-reverse-input.json",
+        "inputSha256": "9956cf4bcf5eaf91bf160903b947718dce4f17b94f42da52525ba8f00c968de6",
+        "resultFile": "R3b-2/r3b-2.9-K0.0625-reverse-result.json",
+        "overrides": {
+          "K": 0.000625
+        },
+        "overrideProvenance": {
+          "K": {
+            "value": 0.000625,
+            "unit": "1",
+            "source": "R3-b task §4",
+            "principle": "K scaled by 0.0625; B unchanged; diagnostic only",
+            "confidence": "DIAGNOSTIC_OVERRIDE",
+            "applicableState": "R3-b contact-transition diagnosis; not a material value"
+          }
+        },
+        "lockedLattice": null,
+        "solveNumber": 15,
+        "invocationNumber": 15,
+        "countedAgainstBudget": true,
+        "elapsedMs": 226246.69219999993,
+        "finishedAt": "2026-11-26T13:40:26.360Z",
+        "contactSignature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "file": "R3b-2/r3b-2.9-K0.0625-reverse-manifest.json"
+      },
+      "resultFile": "R3b-2/r3b-2.9-K0.0625-reverse-result.json"
     }
   ],
   "analysis": {
@@ -4855,6 +6299,241 @@
           "coursePercent": 8.289333636844187,
           "formula": "100*(model / dry-relaxed observation - 1)"
         }
+      },
+      {
+        "denominator": 24,
+        "KScale": 0.041666666666666664,
+        "direction": "reverse",
+        "runIds": [
+          "r3b-2.77-K0.041666666666666664-reverse",
+          "r3b-2.84-K0.041666666666666664-reverse",
+          "r3b-2.9-K0.041666666666666664-reverse"
+        ],
+        "wale": {
+          "intercept": 3.9886071239532903,
+          "slope": -1.3704418613860965,
+          "residuals": [
+            {
+              "l": 2.77,
+              "densityPerCm": 13.360605097082992,
+              "x": 1.0188473201992472,
+              "y": 2.59231045878069,
+              "fittedLogDensity": 2.5923361059911976,
+              "residual": -0.000025647210507351303
+            },
+            {
+              "l": 2.84,
+              "densityPerCm": 12.912432650238932,
+              "x": 1.0438040521731147,
+              "y": 2.558190618574569,
+              "fittedLogDensity": 2.558134355770817,
+              "residual": 0.00005626280375192749
+            },
+            {
+              "l": 2.9,
+              "densityPerCm": 12.546633017421406,
+              "x": 1.0647107369924282,
+              "y": 2.52945234411838,
+              "fittedLogDensity": 2.5294829597116246,
+              "residual": -0.00003061559324457619
+            }
+          ],
+          "sse": 4.760597042553636e-9,
+          "method": "ln(density)=intercept+slope*ln(l); equal weights; residual=observed-fitted in log space"
+        },
+        "course": {
+          "intercept": 3.791188811358378,
+          "slope": -0.8322304580605444,
+          "residuals": [
+            {
+              "l": 2.77,
+              "densityPerCm": 18.97815330865216,
+              "x": 1.0188473201992472,
+              "y": 2.9432884917491076,
+              "fittedLogDensity": 2.9432730393752,
+              "residual": 0.00001545237390754295
+            },
+            {
+              "l": 2.84,
+              "densityPerCm": 18.587129683473805,
+              "x": 1.0438040521731147,
+              "y": 2.9224693887081226,
+              "fittedLogDensity": 2.922503286892894,
+              "residual": -0.0000338981847716191
+            },
+            {
+              "l": 2.9,
+              "densityPerCm": 18.26748224649794,
+              "x": 1.0647107369924282,
+              "y": 2.9051225528200533,
+              "fittedLogDensity": 2.9051041070091896,
+              "residual": 0.00001844581086363206
+            }
+          ],
+          "sse": 1.72811072860623e-9,
+          "method": "ln(density)=intercept+slope*ln(l); equal weights; residual=observed-fitted in log space"
+        },
+        "stateConsistent": true,
+        "state": "状态一致",
+        "signatures": [
+          {
+            "l": 2.77,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          {
+            "l": 2.84,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          {
+            "l": 2.9,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          }
+        ],
+        "signature": [
+          "courseSpacing",
+          "diagonal"
+        ],
+        "containsShear": false,
+        "descriptiveOnly": false,
+        "slopeUse": "可按预登记规则参与判读",
+        "dryRelaxedDeviation": {
+          "l": 2.84,
+          "state": "参照为干放松态",
+          "referenceWaleDensityPerCm": 12.125984251968504,
+          "referenceCourseDensityPerCm": 18.07086614173228,
+          "waleDensityPerCm": 12.912432650238932,
+          "courseDensityPerCm": 18.587129683473805,
+          "walePercent": 6.485645881840552,
+          "coursePercent": 2.8568832157374047,
+          "formula": "100*(model / dry-relaxed observation - 1)"
+        }
+      },
+      {
+        "denominator": 16,
+        "KScale": 0.0625,
+        "direction": "reverse",
+        "runIds": [
+          "r3b-2.77-K0.0625-reverse",
+          "r3b-2.84-K0.0625-reverse",
+          "r3b-2.9-K0.0625-reverse"
+        ],
+        "wale": {
+          "intercept": 3.9278937259829543,
+          "slope": -1.2497219443658345,
+          "residuals": [
+            {
+              "l": 2.77,
+              "densityPerCm": 14.195898597515269,
+              "x": 1.0188473201992472,
+              "y": 2.652953091726565,
+              "fittedLogDensity": 2.654617871971631,
+              "residual": -0.0016647802450657778
+            },
+            {
+              "l": 2.84,
+              "densityPerCm": 13.833330841217842,
+              "x": 1.0438040521731147,
+              "y": 2.6270809584155996,
+              "fittedLogDensity": 2.6234288963642323,
+              "residual": 0.0036520620513673663
+            },
+            {
+              "l": 2.9,
+              "densityPerCm": 13.400795511911415,
+              "x": 1.0647107369924282,
+              "y": 2.5953140717552947,
+              "fittedLogDensity": 2.5973013535615963,
+              "residual": -0.0019872818063015885
+            }
+          ],
+          "sse": 0.00002005833946905619,
+          "method": "ln(density)=intercept+slope*ln(l); equal weights; residual=observed-fitted in log space"
+        },
+        "course": {
+          "intercept": 3.8742093154257455,
+          "slope": -0.9217258975816521,
+          "residuals": [
+            {
+              "l": 2.77,
+              "densityPerCm": 18.834003545730802,
+              "x": 1.0188473201992472,
+              "y": 2.9356639353500817,
+              "fittedLogDensity": 2.9351113547164336,
+              "residual": 0.0005525806336481587
+            },
+            {
+              "l": 2.84,
+              "densityPerCm": 18.37325144727915,
+              "x": 1.0438040521731147,
+              "y": 2.9108958812392167,
+              "fittedLogDensity": 2.912108088537116,
+              "residual": -0.0012122072978990595
+            },
+            {
+              "l": 2.9,
+              "densityPerCm": 18.056351063613427,
+              "x": 1.0647107369924282,
+              "y": 2.893497482370828,
+              "fittedLogDensity": 2.8928378557065773,
+              "residual": 0.0006596266642509008
+            }
+          ],
+          "sse": 0.0000022098992259535103,
+          "method": "ln(density)=intercept+slope*ln(l); equal weights; residual=observed-fitted in log space"
+        },
+        "stateConsistent": false,
+        "state": "状态混合",
+        "signatures": [
+          {
+            "l": 2.77,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          {
+            "l": 2.84,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          {
+            "l": 2.9,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          }
+        ],
+        "signature": null,
+        "containsShear": false,
+        "descriptiveOnly": true,
+        "slopeUse": "斜率只作描述，不参与判读",
+        "dryRelaxedDeviation": {
+          "l": 2.84,
+          "state": "参照为干放松态",
+          "referenceWaleDensityPerCm": 12.125984251968504,
+          "referenceCourseDensityPerCm": 18.07086614173228,
+          "waleDensityPerCm": 13.833330841217842,
+          "courseDensityPerCm": 18.37325144727915,
+          "walePercent": 14.080066028225069,
+          "coursePercent": 1.6733304489957357,
+          "formula": "100*(model / dry-relaxed observation - 1)"
+        }
       }
     ],
     "platform": {
@@ -4899,7 +6578,248 @@
         }
       ]
     },
-    "hysteresis": null,
+    "hysteresis": {
+      "pairs": [
+        {
+          "l": 2.77,
+          "denominator": 24,
+          "KScale": 0.041666666666666664,
+          "forwardId": "r3b-2.77-K0.041666666666666664",
+          "reverseId": "r3b-2.77-K0.041666666666666664-reverse",
+          "forward": {
+            "W": 0.7484690969210281,
+            "H": 0.5269216781719697,
+            "S": 1.8776000666533312e-8,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "reverse": {
+            "W": 0.7484690945759104,
+            "H": 0.5269216576220295,
+            "S": 5.025150252374627e-9,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "relativeW": 3.1332192288119463e-9,
+          "relativeH": 3.899999002745953e-8,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.01974492383778151,
+            "reverseTotal": 0.019744924210755115,
+            "reverseMinusForward": 3.729736068602829e-10,
+            "lower": "forward",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        },
+        {
+          "l": 2.84,
+          "denominator": 24,
+          "KScale": 0.041666666666666664,
+          "forwardId": "r3b-2.84-K0.041666666666666664",
+          "reverseId": "r3b-2.84-K0.041666666666666664-reverse",
+          "forward": {
+            "W": 0.7744483785317579,
+            "H": 0.5380054155677118,
+            "S": -1.6541514563704736e-9,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "reverse": {
+            "W": 0.774447408236043,
+            "H": 0.5380066836726922,
+            "S": -2.9364433585813525e-7,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "relativeW": 0.0000012528862372022645,
+          "relativeH": 0.0000023570487280864132,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.019105493218780134,
+            "reverseTotal": 0.019105493225163424,
+            "reverseMinusForward": 6.383289730127473e-12,
+            "lower": "forward",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        },
+        {
+          "l": 2.9,
+          "denominator": 24,
+          "KScale": 0.041666666666666664,
+          "forwardId": "r3b-2.9-K0.041666666666666664",
+          "reverseId": "r3b-2.9-K0.041666666666666664-reverse",
+          "forward": {
+            "W": 0.7970266290937206,
+            "H": 0.5474208055631944,
+            "S": 1.734525270223133e-8,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "reverse": {
+            "W": 0.7970265796500684,
+            "H": 0.5474208139393211,
+            "S": 2.5330215096779915e-8,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "relativeW": 6.203513203660675e-8,
+          "relativeH": 1.530107477834114e-8,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.01858600491988314,
+            "reverseTotal": 0.018586004920430842,
+            "reverseMinusForward": 5.477007736232054e-13,
+            "lower": "forward",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        },
+        {
+          "l": 2.77,
+          "denominator": 16,
+          "KScale": 0.0625,
+          "forwardId": "reused-r3a-2.77-K0.0625",
+          "reverseId": "r3b-2.77-K0.0625-reverse",
+          "forward": {
+            "W": 0.7044288446595692,
+            "H": 0.530954548054925,
+            "S": 1.322088908964557e-8,
+            "shearBranch": false,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          "reverse": {
+            "W": 0.704428813104534,
+            "H": 0.5309545565136495,
+            "S": -2.8896753268843997e-7,
+            "shearBranch": false,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          "relativeW": 4.479520606042048e-8,
+          "relativeH": 1.5931164973732766e-8,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.020134730307884867,
+            "reverseTotal": 0.020134730284569087,
+            "reverseMinusForward": -2.3315779862365105e-11,
+            "lower": "reverse",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        },
+        {
+          "l": 2.84,
+          "denominator": 16,
+          "KScale": 0.0625,
+          "forwardId": "reused-r3a-2.84-K0.0625",
+          "reverseId": "r3b-2.84-K0.0625-reverse",
+          "forward": {
+            "W": 0.7228917281451591,
+            "H": 0.5442694651820188,
+            "S": 1.1669665268451837e-7,
+            "shearBranch": false,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          "reverse": {
+            "W": 0.7228916964961153,
+            "H": 0.5442694793947794,
+            "S": -3.3045584392815024e-7,
+            "shearBranch": false,
+            "signature": [
+              "waleSpacing",
+              "courseSpacing",
+              "diagonal",
+              "sameLoop"
+            ]
+          },
+          "relativeW": 4.378116749424672e-8,
+          "relativeH": 2.611346317272316e-8,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.019459616395614214,
+            "reverseTotal": 0.019459616370876676,
+            "reverseMinusForward": -2.4737538406593984e-11,
+            "lower": "reverse",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        },
+        {
+          "l": 2.9,
+          "denominator": 16,
+          "KScale": 0.0625,
+          "forwardId": "reused-r3a-2.9-K0.0625",
+          "reverseId": "r3b-2.9-K0.0625-reverse",
+          "forward": {
+            "W": 0.7462243549570305,
+            "H": 0.5538217546027564,
+            "S": 8.263369459637432e-9,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "reverse": {
+            "W": 0.7462243559430044,
+            "H": 0.5538217530645866,
+            "S": -3.302252037643965e-8,
+            "shearBranch": false,
+            "signature": [
+              "courseSpacing",
+              "diagonal"
+            ]
+          },
+          "relativeW": 1.3212834070136171e-9,
+          "relativeH": 2.777373407523632e-9,
+          "sameSignature": true,
+          "scalarDifferent": true,
+          "energy": {
+            "forwardTotal": 0.018914952369816454,
+            "reverseTotal": 0.018914952369761994,
+            "reverseMinusForward": -5.445990880481588e-14,
+            "lower": "reverse",
+            "purpose": "仅描述，不剔除或替换点"
+          }
+        }
+      ],
+      "interpretation": "无迟滞（同一平衡）",
+      "rule": "Six geometry/signature pairs; no slope enters this judgment. H>=1e-2 alone is not a hysteresis criterion."
+    },
     "transitions": {
       "forward": [
         {
@@ -4959,7 +6879,15 @@
       "startedAt": "2026-11-26T12:44:58.462Z",
       "studyFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-1\\study-manifest.json",
       "finishedAt": "2026-11-26T13:15:17.552Z"
+    },
+    "reverse": {
+      "step": "R3b-2",
+      "status": "COMPLETE",
+      "head": "7d375c763298cdb7c3645e0714e94d02f8e9a47a",
+      "startedAt": "2026-11-26T13:22:24.753Z",
+      "studyFile": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\r3b-transition-2026-11-26\\R3b-2\\study-manifest.json",
+      "finishedAt": "2026-11-26T13:40:26.379Z"
     }
   },
-  "finishedAt": "2026-11-26T13:15:17.552Z"
+  "finishedAt": "2026-11-26T13:40:26.379Z"
 }

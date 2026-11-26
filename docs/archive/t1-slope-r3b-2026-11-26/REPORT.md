@@ -106,8 +106,61 @@
 
 固定路径为每个 l 的 R3-a 1/44→反向1/24→反向1/16，反向运行编号以-reverse结尾。
 
-尚未执行。
-反向研究尚未完成，六对比较与迟滞判读尚不可用。
+| 运行 | 方向 | K倍数 | l/mm | 状态 | 迭代 | 耗时/s | W/mm | H/mm | S/mm | shearBranch | 签名 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| r3b-2.77-K0.041666666666666664-reverse | reverse | 1/24 | 2.77 | CONVERGED | 3487 | 193.0321947 | 0.748469094576 | 0.526921657622 | 5.02515025237e-9 | false | courseSpacing + diagonal |
+| r3b-2.77-K0.0625-reverse | reverse | 1/16 | 2.77 | CONVERGED | 3425 | 205.7719035 | 0.704428813105 | 0.530954556514 | -2.88967532688e-7 | false | waleSpacing + courseSpacing + diagonal + sameLoop |
+| r3b-2.84-K0.041666666666666664-reverse | reverse | 1/24 | 2.84 | CONVERGED | 4150 | 272.3728389 | 0.774447408236 | 0.538006683673 | -2.93644335858e-7 | false | courseSpacing + diagonal |
+| r3b-2.84-K0.0625-reverse | reverse | 1/16 | 2.84 | CONVERGED | 3175 | 88.7957591 | 0.722891696496 | 0.544269479395 | -3.30455843928e-7 | false | waleSpacing + courseSpacing + diagonal + sameLoop |
+| r3b-2.9-K0.041666666666666664-reverse | reverse | 1/24 | 2.9 | CONVERGED | 3475 | 95.2635081 | 0.79702657965 | 0.547420813939 | 2.53302150968e-8 | false | courseSpacing + diagonal |
+| r3b-2.9-K0.0625-reverse | reverse | 1/16 | 2.9 | CONVERGED | 5225 | 226.2466922 | 0.746224355943 | 0.553821753065 | -3.30225203764e-8 | false | courseSpacing + diagonal |
+
+| 运行 | 横密/cm⁻¹ | 纵密/cm⁻¹ | kw | kc | E_total/N·mm | E_bending | E_contact | E_barrier | barrierFraction | 能量和相对差 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| r3b-2.77-K0.041666666666666664-reverse | 13.3606050971 | 18.9781533087 | 3.70088761189 | 5.2569484665 | 0.0197449242108 | 0.0186671289193 | 0.0010777952915 | 0 | 0 | 0 |
+| r3b-2.77-K0.0625-reverse | 14.1958985975 | 18.8340035457 | 3.93226391151 | 5.21701898217 | 0.0201347302846 | 0.0192519052007 | 0.000882825083827 | 0 | 0 | 0 |
+| r3b-2.84-K0.041666666666666664-reverse | 12.9124326502 | 18.5871296835 | 3.66713087267 | 5.27874483011 | 0.0191054932252 | 0.018115893747 | 0.000989599478189 | 0 | 0 | 0 |
+| r3b-2.84-K0.0625-reverse | 13.8333308412 | 18.3732514473 | 3.92866595891 | 5.21800341103 | 0.0194596163709 | 0.01869738033 | 0.000762236040901 | 0 | 0 | 0 |
+| r3b-2.9-K0.041666666666666664-reverse | 12.5466330174 | 18.2674822465 | 3.63852357505 | 5.29756985148 | 0.0185860049204 | 0.0176648271917 | 0.000921177728721 | 0 | 0 | 0 |
+| r3b-2.9-K0.0625-reverse | 13.4007955119 | 18.0563510636 | 3.88623069845 | 5.23634180845 | 0.0189149523698 | 0.0182098301546 | 0.000705122215124 | 0 | 0 | 0 |
+
+| 运行 | 总体 min/d_e | waleSpacing（对数；min/d_e） | courseSpacing（对数；min/d_e） | diagonal（对数；min/d_e） | sameLoop（对数；min/d_e） | 势垒支撑区 | 初值来源 | 完整结果 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| r3b-2.77-K0.041666666666666664-reverse | 0.729264699858 | 0; 1.14025477615 | 247; 0.729264699858 | 53; 0.731706217239 | 0; 1.1402547556 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3a-stiffness-2026-11-26\R3a-2\r3a-2.77-K0.022727272727272728-result.json | R3b-2/r3b-2.77-K0.041666666666666664-reverse-result.json |
+| r3b-2.77-K0.0625-reverse | 0.788481201094 | 11; 0.962370198359 | 225; 0.788481201094 | 43; 0.793193064537 | 11; 0.962369976878 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3b-transition-2026-11-26\R3b-2\r3b-2.77-K0.041666666666666664-reverse-result.json | R3b-2/r3b-2.77-K0.0625-reverse-result.json |
+| r3b-2.84-K0.041666666666666664-reverse | 0.737910362277 | 0; 1.19766500065 | 236; 0.737910362277 | 44; 0.742904225018 | 0; 1.19766482454 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3a-stiffness-2026-11-26\R3a-2\r3a-2.84-K0.022727272727272728-result.json | R3b-2/r3b-2.84-K0.041666666666666664-reverse-result.json |
+| r3b-2.84-K0.0625-reverse | 0.799983144437 | 4; 0.992405602464 | 219; 0.799983144437 | 39; 0.804243692471 | 4; 0.992406165604 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3b-transition-2026-11-26\R3b-2\r3b-2.84-K0.041666666666666664-reverse-result.json | R3b-2/r3b-2.84-K0.0625-reverse-result.json |
+| r3b-2.9-K0.041666666666666664-reverse | 0.746330802642 | 0; 1.24354929413 | 220; 0.746330802642 | 42; 0.748033021849 | 0; 1.24354928145 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3a-stiffness-2026-11-26\R3a-2\r3a-2.9-K0.022727272727272728-result.json | R3b-2/r3b-2.9-K0.041666666666666664-reverse-result.json |
+| r3b-2.9-K0.0625-reverse | 0.8057194148 | 0; 1.04469012055 | 207; 0.8057194148 | 35; 0.810926898213 | 0; 1.04469015511 | false | C:\Users\liuchen\Documents\KnitScape\archives\r3b-transition-2026-11-26\R3b-2\r3b-2.9-K0.041666666666666664-reverse-result.json | R3b-2/r3b-2.9-K0.0625-reverse-result.json |
+
+正向对应档与反向档并列：
+
+| 方向 | K倍数 | b_wale | b_course | 接触状态 | 含剪切点 | 斜率用途 |
+| --- | --- | --- | --- | --- | --- | --- |
+| forward | 1/16 | -1.24972096968 | -0.92172627943 | 状态混合 | false | 斜率只作描述，不参与判读 |
+| reverse | 1/16 | -1.24972194437 | -0.921725897582 | 状态混合 | false | 斜率只作描述，不参与判读 |
+| forward | 1/24 | -1.37044470469 | -0.832226244282 | 状态一致 | false | 可按预登记规则参与判读 |
+| reverse | 1/24 | -1.37044186139 | -0.832230458061 | 状态一致 | false | 可按预登记规则参与判读 |
+
+| 方向 | K倍数 | 横密 ln残差（l=2.77/2.84/2.90） | 横密 SSE | 纵密 ln残差（同序） | 纵密 SSE | 2.84 横密偏差/% | 2.84 纵密偏差/% |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| forward | 1/16 | -0.00166477294606 / 0.00365204603939 / -0.00198727309333 | 0.0000200581635832 | 0.00055257446154 / -0.00121219375802 / 0.00065961929648 | 0.00000220984985882 | 14.0800610337 | 1.67333310404 |
+| reverse | 1/16 | -0.00166478024507 / 0.00365206205137 / -0.0019872818063 | 0.0000200583394691 | 0.000552580633648 / -0.0012122072979 / 0.000659626664251 | 0.00000220989922595 | 14.0800660282 | 1.673330449 |
+| forward | 1/24 | -0.0000252781129686 / 0.0000554531070249 / -0.0000301749940563 | 4.62456034027e-9 | 0.0000147350650463 / -0.0000323246098328 / 0.0000175895447869 | 1.57139462858e-9 | 6.48551246744 | 2.85712565442 |
+| reverse | 1/24 | -0.0000256472105074 / 0.0000562628037519 / -0.0000306155932446 | 4.76059704255e-9 | 0.0000154523739075 / -0.0000338981847716 / 0.0000184458108636 | 1.72811072861e-9 | 6.48564588184 | 2.85688321574 |
+
+拟合为三个 l 上含截距、等权 ln(密度) 对 ln(l) OLS；残差=观测 ln 密度−拟合 ln 密度。显示至多12位有效数字，判读使用未舍入值。l=2.84 偏差按100×(模型/干放松参照−1)，参照横密30.8/2.54 cm⁻¹、纵密45.9/2.54 cm⁻¹。
+
+| l/mm | K倍数 | 正向运行 | 反向运行 | \|ΔW\|/W正 | \|ΔH\|/H正 | 签名相同 | 正向签名 | 反向签名 | E正/N·mm | E反/N·mm | E反−E正 | 较低总能量 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2.77 | 1/24 | r3b-2.77-K0.041666666666666664 | r3b-2.77-K0.041666666666666664-reverse | 3.13321922881e-9 | 3.89999900275e-8 | true | courseSpacing + diagonal | courseSpacing + diagonal | 0.0197449238378 | 0.0197449242108 | 3.7297360686e-10 | forward |
+| 2.84 | 1/24 | r3b-2.84-K0.041666666666666664 | r3b-2.84-K0.041666666666666664-reverse | 0.0000012528862372 | 0.00000235704872809 | true | courseSpacing + diagonal | courseSpacing + diagonal | 0.0191054932188 | 0.0191054932252 | 6.38328973013e-12 | forward |
+| 2.9 | 1/24 | r3b-2.9-K0.041666666666666664 | r3b-2.9-K0.041666666666666664-reverse | 6.20351320366e-8 | 1.53010747783e-8 | true | courseSpacing + diagonal | courseSpacing + diagonal | 0.0185860049199 | 0.0185860049204 | 5.47700773623e-13 | forward |
+| 2.77 | 1/16 | reused-r3a-2.77-K0.0625 | r3b-2.77-K0.0625-reverse | 4.47952060604e-8 | 1.59311649737e-8 | true | waleSpacing + courseSpacing + diagonal + sameLoop | waleSpacing + courseSpacing + diagonal + sameLoop | 0.0201347303079 | 0.0201347302846 | -2.33157798624e-11 | reverse |
+| 2.84 | 1/16 | reused-r3a-2.84-K0.0625 | r3b-2.84-K0.0625-reverse | 4.37811674942e-8 | 2.61134631727e-8 | true | waleSpacing + courseSpacing + diagonal + sameLoop | waleSpacing + courseSpacing + diagonal + sameLoop | 0.0194596163956 | 0.0194596163709 | -2.47375384066e-11 | reverse |
+| 2.9 | 1/16 | reused-r3a-2.9-K0.0625 | r3b-2.9-K0.0625-reverse | 1.32128340701e-9 | 2.77737340752e-9 | true | courseSpacing + diagonal | courseSpacing + diagonal | 0.0189149523698 | 0.0189149523698 | -5.44599088048e-14 | reverse |
+
+全部六对均保留；总能量和差值只作描述，不据此剔除或替换点。迟滞比较不使用斜率，不额外删去混合档或剪切档的几何/签名配对。
 
 ## 3. 判读
 
@@ -182,8 +235,14 @@ Q-迟滞：六对全部 |ΔW|/W≤1e-4、|ΔH|/H≤1e-4且签名相同，为无�
 | r3b-2.9-K0.041666666666666664 | 0.00041666666666666664 | 1 | R3-b task §4 | K scaled by 0.041666666666666664; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
 | r3b-2.9-K0.03125 | 0.0003125 | 1 | R3-b task §4 | K scaled by 0.03125; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
 | r3b-2.9-K0.015625 | 0.00015625 | 1 | R3-b task §4 | K scaled by 0.015625; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.77-K0.041666666666666664-reverse | 0.00041666666666666664 | 1 | R3-b task §4 | K scaled by 0.041666666666666664; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.77-K0.0625-reverse | 0.000625 | 1 | R3-b task §4 | K scaled by 0.0625; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.84-K0.041666666666666664-reverse | 0.00041666666666666664 | 1 | R3-b task §4 | K scaled by 0.041666666666666664; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.84-K0.0625-reverse | 0.000625 | 1 | R3-b task §4 | K scaled by 0.0625; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.9-K0.041666666666666664-reverse | 0.00041666666666666664 | 1 | R3-b task §4 | K scaled by 0.041666666666666664; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
+| r3b-2.9-K0.0625-reverse | 0.000625 | 1 | R3-b task §4 | K scaled by 0.0625; B unchanged; diagnostic only | DIAGNOSTIC_OVERRIDE | R3-b contact-transition diagnosis; not a material value |
 
-研究状态：FORWARD_COMPLETE；累计计预算求解9/45，实际调用9，中断恢复记录0条。已完成点不重算，单目标仅允许直接失败后几何中点+一次目标重试；中断无终态调用不计入45次。
+研究状态：COMPLETE；累计计预算求解15/45，实际调用15，中断恢复记录0条。已完成点不重算，单目标仅允许直接失败后几何中点+一次目标重试；中断无终态调用不计入45次。
 
 完整结果、原输入、manifest及日志根目录：C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26。逐次manifest记录HEAD、运行环境、时间、输入SHA-256、初值来源及K覆盖六字段。仅对新输入做登记的SHA-256；没有额外文件哈希、结果双跑或性能测量。
 

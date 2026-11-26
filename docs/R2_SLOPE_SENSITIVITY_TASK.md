@@ -310,3 +310,23 @@ R1 金标准（R2-0、R2-4）：7/7 逐位一致 / 未运行（本步未改 src�
 - 全部九个自由解（含复用基准）保存 S；shearBranch 均为 false，标记仅记录，没有按剪切剔除或替换拟合点。本步只缩放 K，B、其他参数和求解设置保持原值；无 src 或研究脚本改动。
 - 本轮简化验证：分析及监测自检、语法检查、六个 K-only 输入/完整结果/manifest/S 字段核对通过；npm run build 退出 0。未运行金标准、性能基准或文件哈希；全量 validate 含金标准故未运行。
 - 输出：[qc-summary.json](archive/t1-slope-r2-2026-11-25/qc-summary.json)、[REPORT.md](archive/t1-slope-r2-2026-11-25/REPORT.md)；完整归档 C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25/R2-3/。原 12/18 次口径差异未触发，本步仅六次求解。
+
+### R2-4b 架构师审查原文（2026-11-26，用户转达）
+
+> 架构师审查结论（R2，main @ e7d2ed6）：通过。做一个收尾提交 R2-4b 后关闭 R2。
+>
+> 1. 在当前 HEAD 上跑一次全量 npm run validate 和 npm run build。说明：validate:fabric-form-golden-eval 只对求值函数输出做哈希比对，不跑求解，属于 validate 的常规项，必须运行。验证开销原则里省略的只有 golden:fabric-form-solve。R2-2 续跑到 R2-4 都没有跑全量 validate，本次补上。如果有失败项，按停止条件 #8 记录，不要修。
+> 2. REPORT.md「主判据、步长敏感性与一致性」第一张表下加注，不改表中数据：只有 l=2.84、|δ|=1% 是主判据。“含剪切分支点=true”的配对混合了对称分支和剪切分支，“原阈值判读”一列只是机械套用阈值，不构成对该 l 或该步长的独立判读。l=2.77 和 2.90 两行仅为描述性数据。
+> 3. REPORT.md QC 节补上任务书 §2 允许的外推：以 K×1 为起点，按 db_wale/dlnK 作对数线性外推，写出 b_wale=−2.05 所需的 K 倍数，并一并列出两段局部斜率（K×0.5→1 和 K×1→2）。必须标注“外推，仅用于判断量级，不是标定，不得作为参数建议”。所需倍数远超 10 倍，按 §2 直接写明。总表 QC 行的关键数字里也补上这个倍数，标注相同。
+> 4. 在任务书 §10 追加本条审查原文和执行记录。只改 REPORT.md 和任务书，不改 src、summary JSON、STEP3、NEXT_TASK。
+>
+> 提交信息：study(fabric-form): R2-4b close review notes，按 §9 格式回报。
+
+### R2-4b 执行记录（2026-11-26）：完成，关闭 R2
+
+- 基线：main @ e7d2ed64bbd97de5389cfc8764ba15f6265d9b73，接手工作区干净。先在该 HEAD 补跑完整 npm run validate 和 npm run build，再进行两份文档的收尾编辑。
+- 本轮实际验证：全量 validate 50/50，退出 0；包含 validate:fabric-form-golden-eval，7/7 求值级基线匹配。build 退出 0。无失败项，未触发停止 #8，没有修复代码；未调用 golden:fabric-form-solve。全量 validate 的常规内部哈希检查均正常执行，没有把求值级校验误作可省略项。
+- Q3 表中数据和“原阈值判读”列保持原值，仅在第一张表下补充主判据与混合分支限制；l=2.77/2.90 配对明确为描述性数据。1% 主判据和三步长最终判读不变。
+- QC 按指定起点与中央导数外推：b_wale(1)=-0.39727588110117334，D=0.18768708854656097，目标 −2.05，ln(m)=-8.80574221539391，m=0.00014987001362520088；即缩小约 6672.45 倍，远超 10 倍。局部导数 K×0.5→1=0.19746618021329126、K×1→2=0.1779079968798307 同列。总表和 QC 外推节均标注“外推，仅用于判断量级，不是标定，不得作为参数建议”；来源六字段在 REPORT 中列明。
+- 本步新增研究求解为 0；只进行了常规验证和既有 QC 数据的纯算术外推，未增加研究工况或改参数。仓库只修改 REPORT.md 与本任务书；src、summary JSON、STEP3、NEXT_TASK 保持原样。
+- 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25/R2-4b-2026-11-26/，含 validate/build 完整日志、退出码、外推算术及文档核对记录。按 §9 单独提交并推送 origin main 后关闭 R2；研究综合状态继续为“推测，待验证”。

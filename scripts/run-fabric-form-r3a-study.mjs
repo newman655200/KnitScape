@@ -6,6 +6,7 @@ import { currentHead, readJson, repositoryRoot, runtime } from "./lib/fabricForm
 import { parseArguments, runStudy, scalars } from "./lib/fabricFormR3aStudy.mjs";
 
 const part = parseArguments(process.argv.slice(2));
+const resumeInterrupted = process.argv.slice(2).includes("--resume-interrupted");
 const archiveRoot = "C:/Users/liuchen/Documents/KnitScape/archives/r3a-stiffness-2026-11-26";
 const r2Root = "C:/Users/liuchen/Documents/KnitScape/archives/r2-slope-2026-11-25";
 const sourceDirectory = "docs/archive/t1-slope-closeout-2026-11-23";
@@ -41,6 +42,6 @@ const r2Rows = part === "chain" ? [2, 1, 0.5].flatMap(KScale => [2.77, 2.84, 2.9
   assert.ok(row.energyConsistency.passed, `STOP #4: reused ${row.id}: inconsistent energy sum`);
   return row;
 })) : [];
-const summary = runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows,
+const summary = runStudy({ part, resumeInterrupted, archiveRoot, summaryDirectory, sources, r2Rows,
   solve: solveFabricCell, head: currentHead(), environment: runtime() });
 console.log(JSON.stringify({ part, status: summary.status, totalSolveCount: summary.totalSolveCount, analysis: summary.analysis }, null, 2));

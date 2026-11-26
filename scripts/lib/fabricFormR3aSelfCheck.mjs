@@ -7,6 +7,8 @@ assert.ok(fs.existsSync(moduleFile), "R3a runner must provide testable stop guar
 const { compareEquivalence, energyConsistency, analyzeChain, classifySlope, runStudy, parseArguments } = await import(moduleFile.href);
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-10, `${a} != ${b}`);
 assert.equal(parseArguments(["--part", "chain"]), "chain");
+assert.equal(parseArguments(["--part", "chain", "--resume-interrupted"]), "chain");
+assert.throws(() => parseArguments(["--part", "equivalence", "--resume-interrupted"]), /Usage/);
 for (const args of [[], ["--part", "bad"], ["--part", "chain", "--max", "38"]])
   assert.throws(() => parseArguments(args), /Usage/);
 const row = { W: 2, H: 3, S: 0, waleDensityPerCm: 5, courseDensityPerCm: 10 / 3,
@@ -172,4 +174,91 @@ for (const [name, status, expected] of [["initial", "INFEASIBLE_INITIAL_GEOMETRY
   assert.throws(() => runStudy({ ...stopped, part: "chain" }), /STOPPED|equivalence|overwrite/);
   assert.equal(n, expectedCalls);
 }
-console.log(`R3a self-check PASS: pure analysis, zero-energy equality, thresholds, two-part reuse, 37-attempt ceiling, retries and permanent stop guards. Synthetic evidence: ${directory}`);
+// Capture exactly the state persisted before fake call 11, then restore those bytes to simulate process termination.
+function interruptedOptions(name) {
+  let n = 0, snapshot;
+  const interrupted = options(name, input => {
+    if (++n === 11) {
+      const files = [path.join(interrupted.archiveRoot, "study-ledger.json"),
+        path.join(interrupted.archiveRoot, "R3a-2/study-manifest.json"),
+        path.join(interrupted.summaryDirectory, "r3a-summary.json"),
+        path.join(interrupted.archiveRoot, "R3a-2/r3a-2.9-K0.125-manifest.json")];
+      snapshot = files.map(file => ({ file, bytes: fs.readFileSync(file) }));
+      throw new Error("SYNTHETIC_INTERRUPTION");
+    }
+    return resultFor(input);
+  });
+  runStudy({ ...interrupted, part: "equivalence" });
+  assert.throws(() => runStudy({ ...interrupted, part: "chain" }), /SYNTHETIC_INTERRUPTION/);
+  for (const { file, bytes } of snapshot) fs.writeFileSync(file, bytes);
+  return { ...interrupted, snapshot };
+}
+const interrupted = interruptedOptions("resume");
+const interruptedInputFile = path.join(interrupted.archiveRoot, "R3a-2/r3a-2.9-K0.125-input.json");
+const interruptedInputBytes = fs.readFileSync(interruptedInputFile);
+const interruptedInput = JSON.parse(interruptedInputBytes).input;
+let resumeCalls = 0;
+const resumed = runStudy({ ...interrupted, part: "chain", resumeInterrupted: true, solve: input => {
+  if (resumeCalls++ === 0) assert.deepEqual(input, interruptedInput);
+  return resultFor(input);
+} });
+assert.equal(resumeCalls, 3);
+assert.equal(resumed.totalSolveCount, 14);
+assert.equal(resumed.targets.length, 12);
+assert.equal(resumed.runs.length, 12);
+const interruptedRow = resumed.runs[8];
+assert.equal(interruptedRow.status, "INTERRUPTED");
+for (const key of ["W", "H", "S", "kw", "kc", "iterations", "elapsedMs", "shearBranch", "barrierSupport", "energyConsistency"])
+  assert.equal(interruptedRow[key], null);
+assert.ok(Object.values(interruptedRow.energy).every(value => value === null));
+assert.equal(interruptedRow.manifest.status, "RUNNING");
+assert.equal(interruptedRow.resultFile, null);
+assert.equal(resumed.runs[9].id, "r3a-2.9-K0.125-resumed");
+assert.equal(resumed.runs[9].manifest.solveNumber, 12);
+assert.deepEqual(fs.readFileSync(interruptedInputFile), interruptedInputBytes);
+assert.deepEqual(fs.readFileSync(interrupted.snapshot[3].file), interrupted.snapshot[3].bytes);
+const snapshotNames = ["study-ledger.json", "study-manifest.json", "r3a-summary.json"];
+for (let index = 0; index < 3; index++) assert.deepEqual(
+  fs.readFileSync(path.join(interrupted.archiveRoot, "R3a-2/interruption-2026-11-26", snapshotNames[index])),
+  interrupted.snapshot[index].bytes);
+const resumedLedger = JSON.parse(fs.readFileSync(path.join(interrupted.archiveRoot, "study-ledger.json")));
+assert.equal(resumedLedger.attempts[10].status, "INTERRUPTED");
+assert.equal(resumedLedger.attempts[10].originalManifestStatus, "RUNNING");
+assert.equal(resumedLedger.attempts[10].resultFileExistsAtRecovery, false);
+assert.throws(() => runStudy({ ...interrupted, part: "chain", resumeInterrupted: true }), /RUNNING|snapshot|resume/);
+
+for (const kind of ["STOPPED", "existing-result", "wrong-id", "summary-mismatch", "input-changed", "existing-snapshot", "no-flag"]) {
+  const rejected = interruptedOptions(`reject-resume-${kind}`);
+  const ledgerFile = path.join(rejected.archiveRoot, "study-ledger.json");
+  const ledger = JSON.parse(fs.readFileSync(ledgerFile));
+  if (kind === "STOPPED") { ledger.status = "STOPPED"; fs.writeFileSync(ledgerFile, JSON.stringify(ledger)); }
+  if (kind === "wrong-id") { ledger.attempts[10].id = "different"; fs.writeFileSync(ledgerFile, JSON.stringify(ledger)); }
+  if (kind === "existing-result") fs.writeFileSync(path.join(rejected.archiveRoot, ledger.attempts[10].resultFile), "{}");
+  if (kind === "summary-mismatch") fs.writeFileSync(path.join(rejected.summaryDirectory, "r3a-summary.json"), "{}");
+  if (kind === "input-changed") {
+    const file = path.join(rejected.archiveRoot, ledger.attempts[10].inputFile), value = JSON.parse(fs.readFileSync(file));
+    value.input.maxIterations = 24001;
+    fs.writeFileSync(file, JSON.stringify(value));
+  }
+  if (kind === "existing-snapshot") {
+    const folder = path.join(rejected.archiveRoot, "R3a-2/interruption-2026-11-26");
+    fs.mkdirSync(folder); fs.writeFileSync(path.join(folder, "study-ledger.json"), "{}");
+  }
+  const before = fs.readFileSync(ledgerFile);
+  let called = 0;
+  assert.throws(() => runStudy({ ...rejected, part: "chain", resumeInterrupted: kind !== "no-flag", solve: () => { called++; } }));
+  assert.equal(called, 0);
+  assert.deepEqual(fs.readFileSync(ledgerFile), before);
+}
+const resumedRetry = interruptedOptions("resume-retry");
+let retriedCalls = 0;
+const retrySummary = runStudy({ ...resumedRetry, part: "chain", resumeInterrupted: true, solve: input => {
+  const result = resultFor(input);
+  if (++retriedCalls === 1) result.status = "NOT_CONVERGED";
+  return result;
+} });
+assert.equal(retriedCalls, 5);
+assert.equal(retrySummary.totalSolveCount, 16);
+assert.deepEqual(retrySummary.runs.slice(9, 12).map(run => run.id),
+  ["r3a-2.9-K0.125-resumed", "r3a-2.9-K0.125-resumed-midpoint", "r3a-2.9-K0.125-resumed-retry"]);
+console.log(`R3a self-check PASS: analysis, two-part reuse, budget/retry/stop guards, exact interrupted snapshot recovery and rejected altered snapshots. Synthetic evidence: ${directory}`);

@@ -5,7 +5,7 @@ import { readJson, sha256, writeJson } from "./fabricFormGolden.mjs";
 import { fitLogDensity } from "./fabricFormR2Analysis.mjs";
 import { shearBranchFor } from "./fabricFormR2Continuation.mjs";
 
-// Registered in R3-a §§2/4/8; no CLI overrides, settings changes or resume path.
+// Registered in R3-a §§2/4/8; the sole explicit interruption recovery is recorded in §10.
 const lengths = [2.77, 2.84, 2.9];
 const targetScales = [1 / 4, 1 / 8, 1 / 16, 1 / 44];
 const energyKeys = ["total", "bending", "contact", "barrier"];
@@ -13,8 +13,9 @@ const thresholds = Object.freeze({ equivalence: 1e-5, energySum: 1e-6, maxSolves
   shearBranch: 1e-4, consistentSlope: -0.9, insufficientSlope: -0.6, extrapolatedSlope: -1.1 });
 
 export function parseArguments(args) {
-  assert.ok(args.length === 2 && args[0] === "--part" && ["equivalence", "chain"].includes(args[1]),
-    "Usage: npm run study:fabric-form-r3a -- --part equivalence|chain");
+  const resume = args.length === 3 && args[1] === "chain" && args[2] === "--resume-interrupted";
+  assert.ok((args.length === 2 || resume) && args[0] === "--part" && ["equivalence", "chain"].includes(args[1]),
+    "Usage: npm run study:fabric-form-r3a -- --part equivalence|chain [--resume-interrupted only for the authorised chain interruption]");
   return args[1];
 }
 
@@ -113,26 +114,121 @@ function overrideParameters(base, { KScale, BScale = 1 }) {
   return { params, overrides };
 }
 
+// One accepted external interruption, not a general resume mechanism. Validate everything before mutation.
+function interruptedRecovery({ ledger, equivalence, archiveRoot, summaryFile, studyFile, ledgerFile, sources, r2Rows, head, environment }) {
+  assert.equal(ledger.status, "RUNNING", "Interrupted resume requires RUNNING, never STOPPED or COMPLETE");
+  assert.equal(ledger.phases.equivalence.status, "COMPLETE");
+  assert.equal(ledger.phases.chain.status, "RUNNING");
+  assert.equal(ledger.maxSolves, 37);
+  assert.equal(ledger.totalSolveCount, 11, "Only the registered 11-attempt interruption may resume");
+  const completedChainIds = [...targetScales.map(scale => `r3a-2.77-K${scale}`),
+    ...targetScales.slice(1).map(scale => `r3a-2.84-K${scale}`), "r3a-2.9-K0.25"];
+  const ids = ["r3a-2.84-K0.25", "equivalence-2.84-B4", ...completedChainIds, "r3a-2.9-K0.125"];
+  assert.deepEqual(ledger.attempts.map(row => row.id), ids, "Interrupted attempt IDs differ from the accepted snapshot");
+  ledger.attempts.forEach((row, index) => {
+    const prefix = index < 2 ? "R3a-1" : "R3a-2";
+    assert.deepEqual(row, { id: ids[index], solveNumber: index + 1, part: index < 2 ? "equivalence" : "chain",
+      inputFile: `${prefix}/${ids[index]}-input.json`, manifestFile: `${prefix}/${ids[index]}-manifest.json`,
+      resultFile: `${prefix}/${ids[index]}-result.json`, status: index < 10 ? "CONVERGED" : "RUNNING" },
+    "Interrupted ledger does not match the accepted snapshot");
+  });
+  const summary = readJson(summaryFile), study = readJson(studyFile);
+  assert.equal(summary.status, "RUNNING");
+  assert.equal(summary.part, "chain");
+  assert.equal(summary.totalSolveCount, 11);
+  assert.equal(summary.analysis, null);
+  assert.ok(!summary.recovery && !summary.error && !summary.finishedAt, "No previous recovery or stop is accepted");
+  assert.deepEqual(study, { ...summary, summaryFile }, "Interrupted study/summary snapshot mismatch");
+  assert.deepEqual(summary.thresholds, thresholds);
+  assert.deepEqual(summary.materialParameters, Object.fromEntries(Object.entries(sources).map(([l, source]) => [l, source.params])));
+  assert.deepEqual(summary.reusedR2References, r2Rows);
+  assert.deepEqual(summary.runs.map(row => row.id), completedChainIds);
+  assert.deepEqual(summary.targets.map(row => row.id), [...targetScales.map(scale => `r3a-2.77-K${scale}`),
+    ...targetScales.map(scale => `r3a-2.84-K${scale}`), "r3a-2.9-K0.25"]);
+  const completed = [...equivalence.runs, ...summary.runs];
+  assert.equal(completed.length, 10);
+  completed.forEach((row, index) => {
+    const attempt = ledger.attempts[index];
+    assert.equal(row.id, attempt.id);
+    assert.equal(row.status, "CONVERGED");
+    assert.equal(row.resultFile, attempt.resultFile);
+    assert.deepEqual(row.manifest, { ...readJson(path.join(archiveRoot, attempt.manifestFile)), file: attempt.manifestFile });
+    assert.equal(row.manifest.solveNumber, index + 1);
+    const result = readJson(path.join(archiveRoot, attempt.resultFile));
+    assert.equal(result.status, "CONVERGED");
+    const values = scalars(result, sources[row.l].params);
+    assert.deepEqual(Object.fromEntries(Object.keys(values).map(key => [key, row[key]])), values,
+      `Completed row ${row.id} differs from its saved result`);
+  });
+  for (const row of summary.targets) {
+    const expected = row.id === "r3a-2.84-K0.25" ? { ...equivalence.targets[0], reusedFromPart: "equivalence", newSolve: false } :
+      summary.runs.find(run => run.id === row.id);
+    assert.deepEqual(row, expected, "Completed targets differ from saved runs");
+  }
+  const attempt = ledger.attempts[10], manifest = readJson(path.join(archiveRoot, attempt.manifestFile));
+  for (const [key, value] of Object.entries({ id: ids[10], l: 2.9, KScale: 0.125, BScale: 1, target: true,
+    attempt: "direct", solveNumber: 11, status: "RUNNING", inputFile: attempt.inputFile, resultFile: attempt.resultFile }))
+    assert.equal(manifest[key], value, `Interrupted manifest ${key} mismatch`);
+  assert.ok(!manifest.finishedAt && manifest.elapsedMs === undefined && !manifest.error);
+  assert.ok(!fs.existsSync(path.join(archiveRoot, attempt.resultFile)), "Interrupted result already exists; refusing resume");
+  const source = sources[2.9], initialFile = path.join(archiveRoot, "R3a-2/r3a-2.9-K0.25-result.json");
+  assert.equal(manifest.initialCellSourceFile, initialFile);
+  assert.equal(manifest.sourceInputFile, source.inputFile);
+  const initialCell = readJson(initialFile).cell;
+  const { params, overrides } = overrideParameters(source.params, { KScale: 0.125, BScale: 1 });
+  const savedInput = readJson(path.join(archiveRoot, attempt.inputFile)).input;
+  assert.deepEqual(savedInput, { ...source.input, params, initialCell }, "Interrupted input differs from the registered source and prior target cell");
+  assert.deepEqual(manifest.overrides, overrides);
+  assert.deepEqual(manifest.overrideProvenance, { K: params.provenance.K });
+  const resumedId = `${attempt.id}-resumed`;
+  for (const suffix of ["input", "manifest", "result"])
+    assert.ok(!fs.existsSync(path.join(archiveRoot, `R3a-2/${resumedId}-${suffix}.json`)), "Resumed files already exist; refusing overwrite");
+  const snapshotDirectory = path.join(archiveRoot, "R3a-2/interruption-2026-11-26");
+  const snapshots = [[ledgerFile, "study-ledger.json"], [studyFile, "study-manifest.json"], [summaryFile, "r3a-summary.json"]];
+  for (const [, name] of snapshots) assert.ok(!fs.existsSync(path.join(snapshotDirectory, name)), "Interruption snapshot already exists; refusing overwrite");
+  fs.mkdirSync(snapshotDirectory, { recursive: true });
+  for (const [file, name] of snapshots) fs.copyFileSync(file, path.join(snapshotDirectory, name), fs.constants.COPYFILE_EXCL);
+  const recovery = { authorisedBy: "User explicit 继续 after process interruption; R3-a §10 (2026-11-26)",
+    recordedAt: new Date().toISOString(), head, runtime: environment, snapshotDirectory,
+    interruptedAttemptId: attempt.id, resumedAttemptId: resumedId, originalManifestStatus: manifest.status,
+    originalManifestFile: attempt.manifestFile, resultFileExistsAtRecovery: false,
+    note: "Original per-run input and RUNNING manifest preserved unchanged. No terminal geometry, iteration count or elapsed time is available." };
+  Object.assign(attempt, { status: "INTERRUPTED", originalManifestStatus: manifest.status, resultFileExistsAtRecovery: false,
+    recoverySnapshotDirectory: snapshotDirectory });
+  summary.recovery = recovery;
+  summary.runs.push({ id: attempt.id, l: 2.9, KScale: 0.125, BScale: 1, target: true, attempt: "direct",
+    status: "INTERRUPTED", observedStatus: "INTERRUPTED", iterations: null, elapsedMs: null,
+    W: null, H: null, S: null, shearBranch: null, waleDensityPerCm: null, courseDensityPerCm: null, kw: null, kc: null,
+    energy: Object.fromEntries([...energyKeys, "barrierFraction"].map(key => [key, null])), energyConsistency: null,
+    minDistanceOverDe: null, activePairs: null, groups: null, barrierSupport: null, barrierSupportThreshold: null,
+    overrides, initialCellSourceFile: manifest.initialCellSourceFile, manifest: { ...manifest, file: attempt.manifestFile },
+    resultFile: null, interruptionEvidence: recovery });
+  ledger.phases.chain.recovery = recovery;
+  return { summary, savedInput, resumedId };
+}
+
 /** Fixed R3-a workflow; injectable solve and output paths permit synthetic checks without physical solves. */
-export function runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows, solve, head, environment, log = console.log }) {
-  parseArguments(["--part", part]);
+export function runStudy({ part, resumeInterrupted = false, archiveRoot, summaryDirectory, sources, r2Rows, solve, head, environment, log = console.log }) {
+  parseArguments(["--part", part, ...(resumeInterrupted ? ["--resume-interrupted"] : [])]);
   const step = part === "equivalence" ? "R3a-1" : "R3a-2";
   const ledgerFile = path.join(archiveRoot, "study-ledger.json");
   const studyFile = path.join(archiveRoot, step, "study-manifest.json");
   const summaryFile = path.join(summaryDirectory, part === "equivalence" ? "equivalence-summary.json" : "r3a-summary.json");
-  for (const file of [studyFile, summaryFile]) assert.ok(!fs.existsSync(file), `Refusing overwrite: ${file}`);
+  if (!resumeInterrupted) for (const file of [studyFile, summaryFile]) assert.ok(!fs.existsSync(file), `Refusing overwrite: ${file}`);
   let ledger, equivalence;
   if (part === "equivalence") {
     assert.ok(!fs.existsSync(ledgerFile), `Refusing overwrite: ${ledgerFile}; no automatic resume`);
     ledger = { schemaVersion: 1, status: "RUNNING", maxSolves: thresholds.maxSolves, totalSolveCount: 0, attempts: [], phases: {} };
   } else {
     ledger = readJson(ledgerFile);
-    assert.equal(ledger.status, "EQUIVALENCE_COMPLETE", `Cannot start chain: ledger ${ledger.status}; no automatic resume`);
+    if (!resumeInterrupted) assert.equal(ledger.status, "EQUIVALENCE_COMPLETE", `Cannot start chain: ledger ${ledger.status}; no automatic resume`);
     equivalence = readJson(path.join(summaryDirectory, "equivalence-summary.json"));
     assert.ok(equivalence.status === "COMPLETE" && equivalence.analysis?.passed, "Successful equivalence required before chain");
     assert.equal(ledger.totalSolveCount, ledger.attempts.length, "Ledger count mismatch; do not resume");
   }
-  const summary = { schemaVersion: 1, part, step, head, runtime: environment, archiveRoot,
+  const recovery = resumeInterrupted ? interruptedRecovery({ ledger, equivalence, archiveRoot, summaryFile, studyFile, ledgerFile,
+    sources, r2Rows, head, environment }) : null;
+  const summary = recovery?.summary ?? { schemaVersion: 1, part, step, head, runtime: environment, archiveRoot,
     startedAt: new Date().toISOString(), status: "RUNNING", thresholds, totalSolveCount: ledger.totalSolveCount,
     verificationPolicy: "Only each new input JSON receives SHA-256; no extra file hashes, duplicate solves or performance study",
     shearBranchDefinition: "abs(S)/W > 1e-4 (R2 helper)",
@@ -145,21 +241,26 @@ export function runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows,
       applicableState: "T1 N64 frictionless plain jersey; dry-relaxed observations used only as labelled reference" },
     materialParameters: Object.fromEntries(Object.entries(sources).map(([l, source]) => [l, source.params])),
     reusedR2References: part === "chain" ? r2Rows : [], runs: [], targets: [], analysis: null };
-  writeJson(studyFile, { ...summary, summaryFile }, { exclusive: true });
-  writeJson(summaryFile, summary, { exclusive: true });
-  ledger.status = "RUNNING";
-  ledger.phases[part] = { step, status: "RUNNING", studyFile, summaryFile, head, startedAt: summary.startedAt };
-  writeJson(ledgerFile, ledger, { exclusive: part === "equivalence" });
+  if (!recovery) {
+    writeJson(studyFile, { ...summary, summaryFile }, { exclusive: true });
+    writeJson(summaryFile, summary, { exclusive: true });
+    ledger.status = "RUNNING";
+    ledger.phases[part] = { step, status: "RUNNING", studyFile, summaryFile, head, startedAt: summary.startedAt };
+    writeJson(ledgerFile, ledger, { exclusive: part === "equivalence" });
+  }
   const save = () => {
     summary.totalSolveCount = ledger.totalSolveCount;
     writeJson(summaryFile, summary);
     writeJson(studyFile, { ...summary, summaryFile });
     writeJson(ledgerFile, ledger);
   };
+  if (recovery) save();
   function run(scenario, initial) {
     if (ledger.totalSolveCount >= thresholds.maxSolves) throw new Error("STOP #5: next solve would exceed 37 cumulative attempts");
     const source = sources[scenario.l], { params, overrides } = overrideParameters(source.params, scenario);
     const input = { ...structuredClone(source.input), params, initialCell: structuredClone(initial.cell) };
+    if (recovery && scenario.id === recovery.resumedId)
+      assert.deepEqual(input, recovery.savedInput, "Resumed solve must use exactly the interrupted input");
     const inputFile = `${step}/${scenario.id}-input.json`, resultFile = `${step}/${scenario.id}-result.json`;
     const manifestFile = `${step}/${scenario.id}-manifest.json`;
     for (const file of [inputFile, resultFile, manifestFile])
@@ -205,8 +306,7 @@ export function runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows,
     if (!row.energyConsistency.passed) throw new Error(`STOP #4: ${scenario.id}: energy sum inconsistent or unavailable`);
     return { result, row, cell: result.cell, file: path.join(archiveRoot, resultFile) };
   }
-  function target(l, KScale, previousScale, initial) {
-    const id = `r3a-${l}-K${KScale}`;
+  function target(l, KScale, previousScale, initial, id = `r3a-${l}-K${KScale}`) {
     let outcome = run({ id, l, KScale, BScale: 1, target: true, attempt: "direct" }, initial);
     if (outcome.row.status !== "CONVERGED") {
       if (!["NOT_CONVERGED", "INFEASIBLE"].includes(outcome.row.status))
@@ -242,7 +342,12 @@ export function runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows,
         const source = sources[l];
         let initial = { cell: source.reference.cell, file: source.initialCellSourceFile }, previousScale = 0.5;
         for (const KScale of targetScales) {
-          if (l === 2.84 && KScale === 0.25) {
+          const completed = recovery && summary.targets.find(row => row.l === l && row.KScale === KScale);
+          if (completed) {
+            const file = path.join(archiveRoot, completed.resultFile);
+            initial = { cell: readJson(file).cell, file };
+            log(`REUSE ${completed.id}; completed before interruption, no solve`);
+          } else if (l === 2.84 && KScale === 0.25) {
             summary.targets.push({ ...reused, reusedFromPart: "equivalence", newSolve: false });
             const file = path.join(archiveRoot, reused.resultFile);
             const result = readJson(file);
@@ -250,7 +355,8 @@ export function runStudy({ part, archiveRoot, summaryDirectory, sources, r2Rows,
             initial = { cell: result.cell, file };
             log(`REUSE ${reused.id}; no solve`);
             save();
-          } else initial = target(l, KScale, previousScale, initial);
+          } else initial = target(l, KScale, previousScale, initial,
+            recovery && l === 2.9 && KScale === 0.125 ? recovery.resumedId : undefined);
           previousScale = KScale;
         }
       }

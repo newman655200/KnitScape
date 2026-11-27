@@ -2,6 +2,9 @@ import { edgeEndpoints, createCellGradient, accumulateEndpointGradient } from ".
 import { isLocalMaterialPair } from "./fabricFormTopology.js";
 import { integrateSegmentContact, integrateSegmentBarrier, segmentDistance } from "./yarnContact.js";
 
+/** Gradients, barrierGradient and safe-step directions use kernel-local
+ * [positions(3N), W, H, S] order. Model wrappers handle global scatter/gather. */
+
 const subtract = (a, b) => a.map((x, k) => x - b[k]);
 const length = vector => Math.hypot(...vector);
 const translate = (points, x, y) => points.map(point => [point[0] + x, point[1] + y, point[2]]);

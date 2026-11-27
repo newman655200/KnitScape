@@ -1,4 +1,4 @@
-import { createDofLayout } from "./dofLayout.js";
+import { createDofLayout, T1_DOF_BLOCKS } from "./dofLayout.js";
 
 /**
  * @typedef {Object} ModelContext
@@ -13,8 +13,8 @@ import { createDofLayout } from "./dofLayout.js";
  * @typedef {Object} EnergyTerm
  * @property {string} id Unique term name within the model.
  * @property {function(object, ModelContext): EnergyTermEvaluation} evaluate Pure cell evaluation.
- * @property {function(object, Float64Array, number): number} [safeStep] Maximum safe step in physical coordinates.
- * @property {function(object): object} [diagnose] Read-only diagnostics, independent of objective evaluation.
+ * @property {function(object, Float64Array, number, ModelContext): number} [safeStep] Maximum safe step; receives the caller's original direction object.
+ * @property {function(object, ModelContext): object} [diagnose] Read-only diagnostics, independent of objective evaluation.
  *
  * @typedef {Object} ConstraintEvaluation
  * @property {Float64Array} values Dimensionless constraint residuals, in registration order.
@@ -23,7 +23,7 @@ import { createDofLayout } from "./dofLayout.js";
  *
  * @typedef {Object} Constraint
  * @property {string} id Unique constraint name within the model.
- * @property {function(object): ConstraintEvaluation} evaluate Pure cell constraint evaluation.
+ * @property {function(object, ModelContext): ConstraintEvaluation} evaluate Pure cell constraint evaluation.
  *
  * @typedef {Object} ModelEvaluation
  * @property {number} energy Sum of term energies in registration order.
@@ -35,6 +35,7 @@ import { createDofLayout } from "./dofLayout.js";
  * @property {string} id Model identifier.
  * @property {EnergyTerm[]} terms Ordered registry; append terms before solving.
  * @property {Constraint[]} constraints Ordered registry; append constraints before solving.
+ * @property {function(object): ReturnType<typeof createDofLayout>} createLayout Build the model's declared layout for a cell.
  * @property {function(object): ModelEvaluation} evaluate Evaluate every registered energy term.
  * @property {function(object): ConstraintEvaluation} constraintsAt Concatenate all registered constraints.
  * @property {function(object, Float64Array, number): number} safeStep Apply each registered step bound in order.
@@ -44,13 +45,22 @@ import { createDofLayout } from "./dofLayout.js";
 /**
  * Compose terms without changing their units, kernels, or arithmetic order.
  * Registries remain available so adding a term or constraint needs no solver edit.
- * @param {{id: string, terms: EnergyTerm[], constraints: Constraint[]}} registration
+ * Every evaluation, constraint, safety and diagnostic entry builds its context
+ * with the same createLayout function. Kernels own any local vector mapping.
+ * Constraint, safety and diagnostic contexts resolve layout lazily, once per call, so a
+ * kernel's existing cell/parameter errors retain priority over layout validation.
+ * @param {{id: string, terms: EnergyTerm[], constraints: Constraint[], blocks?: ReadonlyArray<import("./dofLayout.js").DofBlockSpec>}} registration
  * @returns {FabricModel}
  */
-export function createFabricModel({ id, terms, constraints }) {
-  return { id, terms, constraints,
+export function createFabricModel({ id, terms, constraints, blocks = T1_DOF_BLOCKS }) {
+  const createLayout = cell => createDofLayout(cell, blocks);
+  const deferredContext = cell => {
+    let layout;
+    return { get layout() { return layout ??= createLayout(cell); } };
+  };
+  return { id, terms, constraints, createLayout,
     evaluate(cell) {
-      const ctx = { layout: createDofLayout(cell) };
+      const ctx = { layout: createLayout(cell) };
       let energy = 0, gradient, feasible = true;
       const details = {};
       for (const term of terms) {
@@ -72,23 +82,32 @@ export function createFabricModel({ id, terms, constraints }) {
       return { energy, gradient: gradient ?? new Float64Array(ctx.layout.size), feasible, details };
     },
     constraintsAt(cell) {
-      const values = constraints.map(constraint => constraint.evaluate(cell));
+      const ctx = deferredContext(cell);
+      const values = constraints.map(constraint => {
+        const value = constraint.evaluate(cell, ctx);
+        for (const row of value.jacobian) if (row.length !== ctx.layout.size) {
+          throw new RangeError(`Constraint ${constraint.id} jacobian row must match layout.size`);
+        }
+        return value;
+      });
       if (values.length === 1) return values[0];
       return { values: Float64Array.from(values.flatMap(value => Array.from(value.values))),
         jacobian: values.flatMap(value => value.jacobian),
         maxStrain: Math.max(0, ...values.map(value => value.maxStrain)) };
     },
     safeStep(cell, direction, limit) {
+      const ctx = deferredContext(cell);
       let bound = limit;
       for (const term of terms) {
-        if (term.safeStep) bound = Math.min(bound, term.safeStep(cell, direction, bound));
+        if (term.safeStep) bound = Math.min(bound, term.safeStep(cell, direction, bound, ctx));
       }
       return bound;
     },
     diagnose(cell) {
+      const ctx = deferredContext(cell);
       const diagnostics = {};
       for (const term of terms) {
-        if (term.diagnose) diagnostics[term.id] = term.diagnose(cell);
+        if (term.diagnose) diagnostics[term.id] = term.diagnose(cell, ctx);
       }
       return diagnostics;
     },

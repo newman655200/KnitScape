@@ -6,6 +6,7 @@ import { createFabricFormInitialGeometry } from "../../src/fabricForm/fabricForm
 import { evaluateRodBending, evaluateLengthConstraints } from "../../src/fabricForm/rodBending.js";
 import { evaluatePeriodicContact, safePeriodicStep, diagnosePeriodicContact } from "../../src/fabricForm/periodicContact.js";
 import { evaluateFabricCell, packFabricCell, solveFabricCell } from "../../src/fabricForm/solveFabricCell.js";
+import { assertDofBytes } from "./fabricFormDofLayoutChecks.mjs";
 
 const bytes = values => Buffer.from(values.buffer, values.byteOffset, values.byteLength);
 const scalarBytes = value => bytes(Float64Array.of(value));
@@ -177,4 +178,117 @@ export async function runFabricFormModelChecks() {
   assert.ok(displacement(protectedResult.cell) <= admissibleDisplacement,
     "A finite-energy trial rejected by a registered term must not become the accepted final cell");
 
+  await runProbeModelChecks();
+}
+
+async function runProbeModelChecks() {
+  const { createFabricModel } = await import("../../src/fabricForm/model/fabricModel.js");
+  const { createT1PlainJerseyModel, createT1Terms, createT1Constraints, T1_DOF_BLOCKS } = await import("../../src/fabricForm/model/t1PlainJerseyModel.js");
+  const { createKernelView } = await import("../../src/fabricForm/model/kernelView.js");
+  const topology = createPlainJerseyTopology({ nodesPerLoop: 24 });
+  const params = createFabricFormParams(), quadratureOrder = 4;
+  const cell = { ...createFabricFormInitialGeometry(topology, params), probe: [.25, -.5] };
+  const model = createT1PlainJerseyModel(params, { quadratureOrder });
+  const baseline = model.evaluate(cell), constraints = model.constraintsAt(cell), diagnostics = model.diagnose(cell);
+  assert.throws(() => evaluateFabricCell({ ...cell, positions: [] }, params, quadratureOrder),
+    { name: "TypeError", message: "Invalid rod positions: expected finite 3D points" },
+    "The new block-length guard preserves the existing empty-position evaluation error");
+  for (const positions of [null, undefined, []]) {
+    assert.throws(() => model.constraintsAt({ ...cell, positions }),
+      { name: "TypeError", message: "Invalid rod positions: expected finite 3D points" },
+      "T1 constraints retain the original rod-position error before layout validation");
+  }
+  const direction = Float64Array.from(baseline.gradient, value => -value);
+  const safeStep = model.safeStep(cell, direction, 1);
+  assertDofBytes(Float64Array.of(model.safeStep(cell, Array.from(direction), 1)), Float64Array.of(safeStep),
+    "T1 safeStep retains ordinary numeric Array directions");
+  const errorShape = action => {
+    let error;
+    try { action(); } catch (caught) { error = caught; }
+    assert.ok(error, "The error compatibility fixture must actually reject its input");
+    return { name: error.name, message: error.message };
+  };
+  const assertSafeError = (actualCell, actualParams, actualDirection, limit, label) => {
+    const expected = errorShape(() => safePeriodicStep(actualCell, actualDirection, actualParams, limit));
+    const actual = errorShape(() => createT1PlainJerseyModel(actualParams, { quadratureOrder }).safeStep(actualCell, actualDirection, limit));
+    assert.deepEqual(actual, expected, label);
+  };
+  for (const invalid of [new Float64Array(direction.length - 1), new Float64Array(direction.length + 1), null]) {
+    assertSafeError(cell, params, invalid, 1, "T1 safeStep retains invalid-direction error type and text");
+  }
+  for (const invalid of [null, "0", 0n, NaN, Infinity]) {
+    const invalidDirection = Array.from(direction);
+    invalidDirection[0] = invalid;
+    assertSafeError(cell, params, invalidDirection, 1, `T1 safeStep must not coerce a ${typeof invalid} direction component`);
+  }
+  for (const limit of [-1, NaN, Infinity]) assertSafeError(cell, params, direction, limit, "T1 safeStep retains invalid-limit errors");
+  const invalidParams = { ...params, K: 0 };
+  const invalidCells = [{ ...cell, W: 0 }, { ...cell, positions: [] }, { ...cell, positions: null }];
+  for (const actualCell of invalidCells) {
+    for (const invalidDirection of [[], null, direction]) {
+      assertSafeError(actualCell, params, invalidDirection, -1, "T1 safeStep retains cell-validation priority");
+    }
+    assert.deepEqual(errorShape(() => model.diagnose(actualCell)),
+      errorShape(() => diagnosePeriodicContact(actualCell, params, { quadratureOrder })),
+      "T1 diagnose retains cell-validation error type and text before layout construction");
+  }
+  for (const invalidDirection of [[], null, direction]) {
+    assertSafeError(cell, invalidParams, invalidDirection, -1, "T1 safeStep retains parameter-validation priority");
+  }
+  assert.deepEqual(errorShape(() => createT1PlainJerseyModel(invalidParams, { quadratureOrder }).diagnose({ ...cell, positions: [] })),
+    errorShape(() => diagnosePeriodicContact({ ...cell, positions: [] }, invalidParams, { quadratureOrder })),
+    "T1 diagnose retains parameter validation before empty-position layout validation");
+  const probe = { name: "probe", length: () => 2, scaleKind: "dimensionless", equilibrium: { kind: "maxAbs" },
+    read: state => state.probe, write: (target, values) => { target.probe = Array.from(values); } };
+  for (const insertion of [0, 1, 2]) {
+    const blocks = [...T1_DOF_BLOCKS];
+    blocks.splice(insertion, 0, probe);
+    const extended = createFabricModel({ id: `probe-${insertion}`, terms: createT1Terms(params, { quadratureOrder }), constraints: createT1Constraints(), blocks });
+    const layout = extended.createLayout(cell);
+    const view = createKernelView(layout, ["positions", "lattice"], { lattice: ["W", "H", "S"] });
+    const label = `STOP #3: R4-1(c) probe insertion ${insertion}`;
+    const evaluation = extended.evaluate(cell);
+    assertDofBytes(Float64Array.of(evaluation.energy), Float64Array.of(baseline.energy), `${label}: energy`);
+    assertDofBytes(view.gather(evaluation.gradient), baseline.gradient, `${label}: gradient`);
+    assertDofBytes(evaluation.gradient.subarray(layout.index("probe", 0), layout.index("probe", 0) + 2), new Float64Array(2), `${label}: probe gradient positive zero`);
+    assert.deepEqual(evaluation.details, baseline.details, `${label}: kernel-local details`);
+    const actualConstraints = extended.constraintsAt(cell);
+    assertDofBytes(actualConstraints.values, constraints.values, `${label}: constraint values`);
+    assert.equal(actualConstraints.jacobian.length, constraints.jacobian.length, `${label}: jacobian row count`);
+    for (const [row, values] of actualConstraints.jacobian.entries()) {
+      assertDofBytes(view.gather(values), constraints.jacobian[row], `${label}: jacobian row ${row}`);
+      for (const i of [0, 1]) assert.ok(values[layout.index("probe", i)] === 0, `${label}: jacobian row ${row} probe ${i}`);
+    }
+    assertDofBytes(Float64Array.of(actualConstraints.maxStrain), Float64Array.of(constraints.maxStrain), `${label}: maxStrain`);
+    const globalDirection = view.scatter(direction);
+    globalDirection[layout.index("probe", 0)] = 1e3;
+    globalDirection[layout.index("probe", 1)] = -1e3;
+    assert.equal(extended.safeStep(cell, globalDirection, 1), safeStep, `${label}: safeStep`);
+    assert.equal(extended.safeStep(cell, Array.from(globalDirection), 1), safeStep, `${label}: ordinary Array safeStep`);
+    assert.throws(() => extended.safeStep(cell, direction, 1),
+      { name: "RangeError", message: "Invalid finite step direction or maxStep." },
+      "A T1-sized direction cannot bypass a larger global layout's length guard");
+    assert.deepEqual(extended.diagnose(cell), diagnostics, `${label}: diagnose`);
+  }
+
+  const contexts = [];
+  const expectedDirection = new Float64Array(model.createLayout(cell).size);
+  const passthrough = { values: new Float64Array(0), jacobian: [], maxStrain: -0 };
+  const contextual = createFabricModel({ id: "context-check", terms: [{ id: "context", evaluate(actualCell, ctx) {
+    assert.equal(actualCell, cell); contexts.push(ctx);
+    return { energy: 0, gradient: new Float64Array(ctx.layout.size), details: {} };
+  }, safeStep(actualCell, actualDirection, limit, ctx) {
+    assert.equal(actualCell, cell); assert.equal(actualDirection, expectedDirection); contexts.push(ctx); return limit;
+  }, diagnose(actualCell, ctx) { assert.equal(actualCell, cell); contexts.push(ctx); return {}; } }], constraints: [{
+    id: "context", evaluate(actualCell, ctx) { assert.equal(actualCell, cell); contexts.push(ctx); return passthrough; },
+  }] });
+  contextual.evaluate(cell);
+  assert.equal(contextual.constraintsAt(cell), passthrough, "A single constraint retains the original result object and key order");
+  contextual.safeStep(cell, expectedDirection, 1);
+  contextual.diagnose(cell);
+  assert.equal(contexts.length, 4);
+  for (const ctx of contexts) assert.deepEqual(ctx.layout.blocks, contextual.createLayout(cell).blocks);
+  assert.throws(() => createFabricModel({ id: "wrong-jacobian", terms: [], constraints: [{ id: "wrong", evaluate() {
+    return { values: Float64Array.of(0), jacobian: [new Float64Array(1)], maxStrain: 0 };
+  } }] }).constraintsAt(cell), /jacobian.*layout.size/, "Each constraint row must have layout.size components");
 }

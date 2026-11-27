@@ -4,6 +4,9 @@ import {
   createCellGradient,
 } from "./periodicCell.js";
 
+/** Gradients and constraint Jacobian rows use kernel-local [positions(3N), W, H, S]
+ * order. T1 model wrappers scatter them to the model's global layout. */
+
 function evaluatedEdges(cell) {
   if (!Array.isArray(cell?.positions) || cell.positions.length === 0
     || cell.positions.some(point => !Array.isArray(point) || point.length !== 3 || !point.every(Number.isFinite))) {

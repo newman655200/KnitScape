@@ -1,5 +1,8 @@
 import { createPlainJerseyTopology } from "./fabricFormTopology.js";
 
+/** Kernel vectors use local [positions(3N), W, H, S] order; model wrappers map
+ * them to global DOF layouts through a kernel view. This module owns no global offsets. */
+
 export function edgeEndpoints(cell, edge, p = 0, q = 0) {
   const from = cell.positions[edge.from], to = cell.positions[edge.to];
   return [

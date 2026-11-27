@@ -7,6 +7,8 @@ import { evaluateFabricCell } from "../src/fabricForm/solveFabricCell.js";
 import { evaluateLengthConstraints } from "../src/fabricForm/rodBending.js";
 import { safePeriodicStep, diagnosePeriodicContact } from "../src/fabricForm/periodicContact.js";
 import { fabricFormMetrics } from "../src/fabricForm/fabricFormMetrics.js";
+import { createT1PlainJerseyModel } from "../src/fabricForm/model/t1PlainJerseyModel.js";
+import { assertDofBytes } from "./lib/fabricFormDofLayoutChecks.mjs";
 import { assertCases, currentHead, evalBaselineFile, goldenCases, inputHash, normalizedSolveJson,
   parseGoldenArguments, readInput, readJson, runtime, sha256, solveBaselineFile, writeJson } from "./lib/fabricFormGolden.mjs";
 
@@ -51,6 +53,18 @@ function evaluate(cell, params, quadratureOrder) {
     diagnosePeriodicContact: diagnosePeriodicContact(cell, params, { quadratureOrder }),
     fabricFormMetrics: fabricFormMetrics(cell, params),
   };
+  // R4-1(e): compare all 14 model constraint/safety outputs without changing the golden payload.
+  const model = createT1PlainJerseyModel(params, { quadratureOrder });
+  const label = `STOP #3: R4-1(e) N${cell.topology.nodesPerLoop} l=${cell.topology.loopLengthMm} W=${cell.W} H=${cell.H} S=${cell.S}`;
+  const constraints = model.constraintsAt(cell), direct = outputs.evaluateLengthConstraints;
+  assert.deepEqual(Object.keys(constraints), Object.keys(direct), `${label}: constraints key order`);
+  assertDofBytes(constraints.values, direct.values, `${label}: constraints.values`);
+  assert.equal(constraints.jacobian.length, direct.jacobian.length, `${label}: jacobian row count`);
+  for (let row = 0; row < direct.jacobian.length; row++) {
+    assertDofBytes(constraints.jacobian[row], direct.jacobian[row], `${label}: constraints.jacobian[${row}]`);
+  }
+  assertDofBytes(Float64Array.of(constraints.maxStrain), Float64Array.of(direct.maxStrain), `${label}: constraints.maxStrain`);
+  assertDofBytes(Float64Array.of(model.safeStep(cell, direction, 1)), Float64Array.of(outputs.safePeriodicStep), `${label}: safeStep`);
   return { sha256: hashValues(outputs),
     components: Object.fromEntries(Object.entries(outputs).map(([name, value]) => [name, hashValues(value)])) };
 }

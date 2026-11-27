@@ -132,3 +132,5 @@ R3-a 机制限定见 R3-a REPORT 审查补注；R3-b 已立项
 - 完整结果、日志、manifest和各步验证证据位于C:/Users/liuchen/Documents/KnitScape/archives/r3b-transition-2026-11-26/。每步实际验证数字写入相应提交正文；完整求解金标准、额外性能测量及额外文件哈希未运行。
 
 R3b-0、R3b-1、R3b-2、R3b-3各步本轮均实际完成全量validate 50/50（各含golden-eval 7/7）及build退出0；汇总核对证据位于归档R3b-3/verification.json，逐步日志保留在各自R3b-x目录。
+
+R3-b 架构师审查补注见 R3-b REPORT §5；后续方向由用户决定。

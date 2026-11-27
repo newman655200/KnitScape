@@ -293,3 +293,16 @@ golden:fabric-form-solve：<未运行（纯文档）> 或：
 - 本轮全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0。纯文档步骤，未运行 golden:fabric-form-solve、额外性能测量或额外文件哈希。
 - 公开接口变化：无。偏离任务书：无。发现未处理的问题：无。
 - 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-0/。
+
+### R4-1（2026-11-27）：金标准进程中断，按用户指示停止
+
+- 基线：f5eaeb2be10993c609344ccfafde9ffe6b933d24（R4-0 已推送）。R4-1 的块声明、内核视图、模型包装及 (a)–(e) 检查已实现，并完成任务书符合性和代码质量复核；代码保留在工作区，尚未提交或推送，不能记为本步完成。
+- 冻结代码的最终验收：全量 npm run validate 50/50（含 golden-eval 7/7），npm run build 退出 0；日志位于 R4-1/accepted-verification/。此前复核发现并修正的是本轮包装层引入的输入/错误兼容问题，修正前两轮验证日志亦保留，没有放宽旧断言、金标准或 (c)/(e) 口径。
+- 本步 golden:fabric-form-solve 只启动过一次，明确指定 R4-1/golden-solve 归档。case-2.6-N48 已 CONVERGED，iterations=2375、evaluations=3455、耗时 77.13300129999999 s，原比较结果为逐位一致。case-3-N48 仅留下 START，无终态；其余五组未运行。
+- 工具连接出现 BrokenPipe 后，恢复检查未发现求解进程或退出码文件；solve-report.json 仍为 RUNNING，仅含第一组。进程退出的具体原因、中断点迭代数和完整耗时未知。没有观察到金标准不一致，不将本次中断冒称为 §8 的数值失败。
+- 执行者询问是否授权保留原记录、不重算第一组，仅重启第二组并完成其余五组，按原金标准口径比较。用户原文答复如下：
+
+> 停止，等待架构师裁定
+
+- 按该指示停止，不恢复求解，不继续验证，不开始 R4-2/R4-3。原日志、RUNNING 报告和第一组结果保留；中断记录及日志/报告副本位于 R4-1/interruption-2026-11-27/。本次仅提交本节停止记录，待架构师裁定经用户转达后先原文追加到本节再执行。
+- 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-1/。未做额外性能测量、额外文件哈希或同机重复完整求解；尚未完成的六组金标准是当前未处理事项。

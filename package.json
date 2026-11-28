@@ -8,6 +8,8 @@
   "author": "branchwelder",
   "license": "MIT",
   "scripts": {
+    "validate:fabric-texture": "node scripts/validate-fabric-texture.mjs",
+    "bake:fabric-texture": "node scripts/bake-fabric-texture.mjs",
     "study:fabric-form-r3b": "node scripts/run-fabric-form-r3b-study.mjs",
     "study:fabric-form-r3a": "node scripts/run-fabric-form-r3a-study.mjs",
     "study:fabric-form-r2": "node scripts/run-fabric-form-r2-study.mjs",

@@ -11,6 +11,7 @@ import { createPlainJerseyTopology } from "../src/fabricForm/fabricFormTopology.
 import { decodePng } from "./lib/fabric-texture-png.mjs";
 import { validatePngCodec } from "./lib/fabric-texture-png-checks.mjs";
 import { assertNormalMap, assertNormalPng } from "./lib/fabric-texture-normal-checks.mjs";
+import { validateFuzzTexture } from "./lib/fabric-texture-fuzz-checks.mjs";
 
 // Fixed T6a §4.1 acceptance thresholds. A failed item stops this script immediately.
 const cases = ["step3-hossain-2.84-after", "step4-case-4-N48"].map(name => ({
@@ -126,7 +127,7 @@ assert.deepEqual(constrainVisibleHemisphere([0, 0, -1]), [0, 0, 1], "(g1) antipo
 report("g1", { unchangedCases: unchangedNormals.length, constrainedCases: belowFloorNormals.length, zFloor });
 
 for (const entry of baked) {
-  const options = { result: entry.result, pxPerMm: 200, prefix: "test", generatorVersion: "validation", repeat: [2, 3] };
+  const options = { result: entry.result, pxPerMm: 200, prefix: "test", generatorVersion: "validation", repeat: [2, 3], fuzzSource: "off" };
   const first = await bakeFabricTexture(options);
   const firstNormalChecks = checkTextureNormals(first, "test", `${entry.name} first`);
   const second = await bakeFabricTexture(options);
@@ -164,7 +165,7 @@ const rgbaYarn = image(32, 16, 4, (x, y) => [80 + x, 120, 160,
 for (const fuzzBand of ["fullScan", "vRange"]) {
   const texture = await bakeFabricTexture({ result: baked[0].result, geometry: baked[0].pipelineGeometry,
     material: { baseColor: rgbaYarn, fuzzBand, vRange: [0.25, 0.75] }, pxPerMm: 200,
-    prefix: "bands", generatorVersion: "validation" });
+    prefix: "bands", generatorVersion: "validation", fuzzSource: "off" });
   const normalChecks = checkTextureNormals(texture, "bands", `(j) ${fuzzBand}`);
   const diagnostics = texture.material.diagnostics;
   assert.equal(diagnostics.hairBandMode, fuzzBand, "(j) requested hair band mode is used");
@@ -224,4 +225,5 @@ for (let i = 0; i < g.coverage.length; i++) if (g.coverage[i]) {
 }
 near(sectionNormalError, 0, 1e-6, "(m) normal cross-section removal"); near(sectionAoError, 0, 1e-6, "(m) AO cross-section removal");
 report("m", { sectionNormalError, sectionAoError, baseNormalChecks, sectionNormalChecks });
-console.log("fabric-texture: all T6a-1 checks (a)-(j), (l)-(n) passed.");
+await validateFuzzTexture({ params, center, straightGeometry, hossain, strongNormal });
+console.log("fabric-texture: all T6a-1/T6a-2 checks (a)-(j), (l)-(s) passed.");

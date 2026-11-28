@@ -1,6 +1,6 @@
 {
   "step": "T6a-1",
-  "generatorVersion": "5b754e1184ca3b86c9966be4e6be1bddf22f5962",
+  "generatorVersion": "5b754e1184ca3b86c9966be4e6be1bddf22f5962-dirty",
   "pxPerMm": 200,
   "fuzzSource": "off",
   "cases": [
@@ -945,6 +945,3842 @@
       "case-3-N48-solve_technicalBack_review4x4.png",
       "case-3-N48-solve_metadata.json"
     ],
-    "externalOutputDirectory": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t6a-fabric-texture-2026-11-28\\T6a-1\\ruling-verification\\solve-1"
+    "externalOutputDirectory": "solve-1"
+  },
+  "t6a2": {
+    "step": "T6a-2",
+    "generatorVersion": "3b8f2c158748147d55efefbfafec4a70d6e88ca7-dirty",
+    "pxPerMm": 200,
+    "cases": [
+      {
+        "name": "hossain-2.84",
+        "yarn": "scan",
+        "prefix": "hossain-2.84_scan-fuzz",
+        "fuzzSource": "scan",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7534083721886886,
+        "H": 0.5024151437792043,
+        "waleDensityPerCm": 13.273014170189674,
+        "courseDensityPerCm": 19.903858639250505,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 5263,
+              "fuzzPixelFraction": 0.3485430463576159,
+              "scanPixelCount": 5263,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 4495,
+              "fuzzPixelFraction": 0.297682119205298,
+              "scanPixelCount": 4495,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 2.8399999930086923,
+          "lengthRelativeDeviation": 0.000922336536972157,
+          "maxSplinePolylineDistanceMm": 0.001004319491072374,
+          "maxSampleSpacingMm": 0.007423026769538673,
+          "samplingLimitMm": 0.008170268165673513,
+          "periodicDisplacement": [
+            0.7534083721886886,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.017922065473856,
+          "adjustedRepeatLengthMm": 2.842619435765001,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.7074849609930786,
+          "mapAnisotropy": {
+            "baseColor": 0.7074849609930786,
+            "roughness": 0.7074849609930786
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 3.8204199490662303,
+            "k_V": 2.702889658642301,
+            "f_U": 4,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 3.8204199490662303,
+                "k_V": 2.702889658642301,
+                "f_U": 4,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 3.8204199490662303,
+                "k_V": 2.702889658642301,
+                "f_U": 4,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "scan",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "hossain-2.84_scan-fuzz_technicalFace_normal.png": {
+            "minZ": 0.019607843137254832,
+            "maxLengthError": 0.006526487833136807,
+            "pixels": 15100
+          },
+          "hossain-2.84_scan-fuzz_technicalBack_normal.png": {
+            "minZ": 0.019607843137254832,
+            "maxLengthError": 0.006031259943679146,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 40.266899999999964,
+          "technicalFaceGeometryMs": 70.4547,
+          "technicalFaceAoMs": 694.201,
+          "technicalBackGeometryMs": 69.60300000000007,
+          "technicalBackAoMs": 676.1873,
+          "materialMs": 290.28769999999986,
+          "fibersMs": 0.14660000000003492,
+          "technicalFaceFuzzMs": 579.0863000000008,
+          "technicalFaceComposeMs": 53.91859999999997,
+          "technicalFaceEncodeMs": 28.852899999999863,
+          "technicalBackFuzzMs": 484.1787999999997,
+          "technicalBackComposeMs": 52.102499999999964,
+          "technicalBackEncodeMs": 7.272299999999632
+        }
+      },
+      {
+        "name": "case-4-N48",
+        "yarn": "scan",
+        "prefix": "case-4-N48_scan-fuzz",
+        "fuzzSource": "scan",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 1.13961428775935,
+        "H": 0.7202377547675765,
+        "waleDensityPerCm": 8.774898759528083,
+        "courseDensityPerCm": 13.884304084041025,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1670681433028517,
+            "heightMaxMm": 0.1923614876854044,
+            "coverageFraction": 0.7138767056530214,
+            "legFraction": 0.5834542196433142,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 23438,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 13689,
+              "fuzzPixelFraction": 0.41694078947368424,
+              "scanPixelCount": 13689,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.09045354227486954,
+            "heightMaxMm": 0.2706560305987744,
+            "coverageFraction": 0.7138767056530214,
+            "legFraction": 0.2107688369314788,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 23438,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 12600,
+              "fuzzPixelFraction": 0.38377192982456143,
+              "scanPixelCount": 12600,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 3.9999999974519107,
+          "lengthRelativeDeviation": 0.0014196684948355465,
+          "maxSplinePolylineDistanceMm": 0.0022347387013501364,
+          "maxSampleSpacingMm": 0.00761702616899131,
+          "samplingLimitMm": 0.008215578797859604,
+          "periodicDisplacement": [
+            1.13961428775935,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.040204637498353,
+          "adjustedRepeatLengthMm": 4.005678673979342,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.9914544022848336,
+          "mapAnisotropy": {
+            "baseColor": 0.9914544022848336,
+            "roughness": 0.9914544022848336
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 2.7111510642493455,
+            "k_V": 2.687982657909225,
+            "f_U": 3,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 2.7111510642493455,
+                "k_V": 2.687982657909225,
+                "f_U": 3,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 2.7111510642493455,
+                "k_V": 2.687982657909225,
+                "f_U": 3,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "scan",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "case-4-N48_scan-fuzz_technicalFace_normal.png": {
+            "minZ": 0.019607843137254832,
+            "maxLengthError": 0.006216941482118599,
+            "pixels": 32832
+          },
+          "case-4-N48_scan-fuzz_technicalBack_normal.png": {
+            "minZ": 0.019607843137254832,
+            "maxLengthError": 0.00633136024514358,
+            "pixels": 32832
+          }
+        },
+        "timings": {
+          "centerlineMs": 36.527300000000196,
+          "technicalFaceGeometryMs": 98.10999999999967,
+          "technicalFaceAoMs": 998.8819999999996,
+          "technicalBackGeometryMs": 91.38310000000001,
+          "technicalBackAoMs": 982.3337000000001,
+          "materialMs": 254.10640000000058,
+          "fibersMs": 0.014100000000325963,
+          "technicalFaceFuzzMs": 1168.2127,
+          "technicalFaceComposeMs": 78.6768000000011,
+          "technicalFaceEncodeMs": 13.419899999998961,
+          "technicalBackFuzzMs": 1046.4220999999998,
+          "technicalBackComposeMs": 67.41269999999895,
+          "technicalBackEncodeMs": 10.54529999999977
+        }
+      },
+      {
+        "name": "case-3-N48",
+        "yarn": "scan",
+        "prefix": "case-3-N48_scan-both-low",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.25,
+        "status": "CONVERGED",
+        "W": 0.7709398275361398,
+        "H": 0.5459336633436238,
+        "waleDensityPerCm": 12.971180944120084,
+        "courseDensityPerCm": 18.317243781513724,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1463402026620193,
+            "heightMaxMm": 0.19494463578394788,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.6152652005174645,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 40,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 10062,
+              "fuzzPixelFraction": 0.5994280948409388,
+              "scanPixelCount": 5909,
+              "haloPixelCount": 7642,
+              "haloEnabled": true
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.08441058686376474,
+            "heightMaxMm": 0.2494308283725636,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.05271668822768435,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 40,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 10156,
+              "fuzzPixelFraction": 0.6050279995234124,
+              "scanPixelCount": 4968,
+              "haloPixelCount": 7553,
+              "haloEnabled": true
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 3.000000004424868,
+          "lengthRelativeDeviation": 0.0015902275584291914,
+          "maxSplinePolylineDistanceMm": 0.0017958440381773246,
+          "maxSampleSpacingMm": 0.0078597487131894,
+          "samplingLimitMm": 0.008215578797859604,
+          "periodicDisplacement": [
+            0.7709398275361398,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.040204637498353,
+          "adjustedRepeatLengthMm": 3.0047706826752876,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.7437174480686223,
+          "mapAnisotropy": {
+            "baseColor": 0.7437174480686223,
+            "roughness": 0.7437174480686223
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 3.614252516045862,
+            "k_V": 2.687982657909225,
+            "f_U": 4,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "both",
+          "fuzzStrength": 0.25,
+          "hairinessIndex": 4,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.25,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.25,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 4,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.25,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "case-3-N48_scan-both-low_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006402657720362304,
+            "pixels": 16786
+          },
+          "case-3-N48_scan-both-low_technicalBack_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006278843038372006,
+            "pixels": 16786
+          }
+        },
+        "timings": {
+          "centerlineMs": 31.176899999999932,
+          "technicalFaceGeometryMs": 69.69480000000021,
+          "technicalFaceAoMs": 660.971,
+          "technicalBackGeometryMs": 69.6201000000001,
+          "technicalBackAoMs": 678.0250000000001,
+          "materialMs": 232.8116000000009,
+          "fibersMs": 4.8145999999997,
+          "technicalFaceFuzzMs": 1199.0406000000003,
+          "technicalFaceComposeMs": 63.57840000000033,
+          "technicalFaceEncodeMs": 7.474299999999857,
+          "technicalBackFuzzMs": 1076.1054999999997,
+          "technicalBackComposeMs": 52.8862999999983,
+          "technicalBackEncodeMs": 7.003000000000611
+        }
+      },
+      {
+        "name": "case-3-N48",
+        "yarn": "scan",
+        "prefix": "case-3-N48_scan-both-medium",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7709398275361398,
+        "H": 0.5459336633436238,
+        "waleDensityPerCm": 12.971180944120084,
+        "courseDensityPerCm": 18.317243781513724,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1463402026620193,
+            "heightMaxMm": 0.19494463578394788,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.6152652005174645,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 12531,
+              "fuzzPixelFraction": 0.7465149529369712,
+              "scanPixelCount": 5909,
+              "haloPixelCount": 7642,
+              "haloEnabled": true
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.08441058686376474,
+            "heightMaxMm": 0.2494308283725636,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.05271668822768435,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 11472,
+              "fuzzPixelFraction": 0.6834266650780412,
+              "scanPixelCount": 4968,
+              "haloPixelCount": 7553,
+              "haloEnabled": true
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 3.000000004424868,
+          "lengthRelativeDeviation": 0.0015902275584291914,
+          "maxSplinePolylineDistanceMm": 0.0017958440381773246,
+          "maxSampleSpacingMm": 0.0078597487131894,
+          "samplingLimitMm": 0.008215578797859604,
+          "periodicDisplacement": [
+            0.7709398275361398,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.040204637498353,
+          "adjustedRepeatLengthMm": 3.0047706826752876,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.7437174480686223,
+          "mapAnisotropy": {
+            "baseColor": 0.7437174480686223,
+            "roughness": 0.7437174480686223
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 3.614252516045862,
+            "k_V": 2.687982657909225,
+            "f_U": 4,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "both",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "case-3-N48_scan-both-medium_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006025674917319757,
+            "pixels": 16786
+          },
+          "case-3-N48_scan-both-medium_technicalBack_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.005969373805238876,
+            "pixels": 16786
+          }
+        },
+        "timings": {
+          "centerlineMs": 31.176899999999932,
+          "technicalFaceGeometryMs": 69.69480000000021,
+          "technicalFaceAoMs": 660.971,
+          "technicalBackGeometryMs": 69.6201000000001,
+          "technicalBackAoMs": 678.0250000000001,
+          "materialMs": 234.04269999999997,
+          "fibersMs": 7.979699999999866,
+          "technicalFaceFuzzMs": 1328.9183000000012,
+          "technicalFaceComposeMs": 66.17499999999927,
+          "technicalFaceEncodeMs": 7.891900000000533,
+          "technicalBackFuzzMs": 1172.160899999999,
+          "technicalBackComposeMs": 48.970100000002276,
+          "technicalBackEncodeMs": 28.024600000000646
+        }
+      },
+      {
+        "name": "case-3-N48",
+        "yarn": "scan",
+        "prefix": "case-3-N48_scan-both-high",
+        "fuzzSource": "both",
+        "fuzzStrength": 1,
+        "status": "CONVERGED",
+        "W": 0.7709398275361398,
+        "H": 0.5459336633436238,
+        "waleDensityPerCm": 12.971180944120084,
+        "courseDensityPerCm": 18.317243781513724,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1463402026620193,
+            "heightMaxMm": 0.19494463578394788,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.6152652005174645,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 160,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 14745,
+              "fuzzPixelFraction": 0.8784105802454426,
+              "scanPixelCount": 5909,
+              "haloPixelCount": 7642,
+              "haloEnabled": true
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.08441058686376474,
+            "heightMaxMm": 0.2494308283725636,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.05271668822768435,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 160,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 15028,
+              "fuzzPixelFraction": 0.895269867746932,
+              "scanPixelCount": 4968,
+              "haloPixelCount": 7553,
+              "haloEnabled": true
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 3.000000004424868,
+          "lengthRelativeDeviation": 0.0015902275584291914,
+          "maxSplinePolylineDistanceMm": 0.0017958440381773246,
+          "maxSampleSpacingMm": 0.0078597487131894,
+          "samplingLimitMm": 0.008215578797859604,
+          "periodicDisplacement": [
+            0.7709398275361398,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.040204637498353,
+          "adjustedRepeatLengthMm": 3.0047706826752876,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.7437174480686223,
+          "mapAnisotropy": {
+            "baseColor": 0.7437174480686223,
+            "roughness": 0.7437174480686223
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 3.614252516045862,
+            "k_V": 2.687982657909225,
+            "f_U": 4,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 3.614252516045862,
+                "k_V": 2.687982657909225,
+                "f_U": 4,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "both",
+          "fuzzStrength": 1,
+          "hairinessIndex": 16,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 1,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 1,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 16,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 1,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "case-3-N48_scan-both-high_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006093149935492259,
+            "pixels": 16786
+          },
+          "case-3-N48_scan-both-high_technicalBack_normal.png": {
+            "minZ": 0.04313725490196085,
+            "maxLengthError": 0.005907491519452579,
+            "pixels": 16786
+          }
+        },
+        "timings": {
+          "centerlineMs": 31.176899999999932,
+          "technicalFaceGeometryMs": 69.69480000000021,
+          "technicalFaceAoMs": 660.971,
+          "technicalBackGeometryMs": 69.6201000000001,
+          "technicalBackAoMs": 678.0250000000001,
+          "materialMs": 243.53810000000158,
+          "fibersMs": 6.666100000002189,
+          "technicalFaceFuzzMs": 1607.384299999998,
+          "technicalFaceComposeMs": 57.67900000000009,
+          "technicalFaceEncodeMs": 7.428400000000693,
+          "technicalBackFuzzMs": 1458.952599999997,
+          "technicalBackComposeMs": 55.048500000000786,
+          "technicalBackEncodeMs": 6.354999999999563
+        }
+      },
+      {
+        "name": "case-3-N48",
+        "yarn": "yarn-a",
+        "prefix": "case-3-N48_yarn-a-generated-medium",
+        "fuzzSource": "generated",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7709398275361398,
+        "H": 0.5459336633436238,
+        "waleDensityPerCm": 12.971180944120084,
+        "courseDensityPerCm": 18.317243781513724,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1463402026620193,
+            "heightMaxMm": 0.19494463578394788,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.6152652005174645,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 176,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0.011384217335058214,
+              "maxAngleDeg": 35.68600662636484,
+              "medianAngleDeg": 6.124819937141616
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 12531,
+              "fuzzPixelFraction": 0.7465149529369712,
+              "scanPixelCount": 0,
+              "haloPixelCount": 7642,
+              "haloEnabled": true
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.08441058686376474,
+            "heightMaxMm": 0.2494308283725636,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.05271668822768435,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 115,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0.007438551099611902,
+              "maxAngleDeg": 24.719103385759905,
+              "medianAngleDeg": 4.544471237029277
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 11472,
+              "fuzzPixelFraction": 0.6834266650780412,
+              "scanPixelCount": 0,
+              "haloPixelCount": 7553,
+              "haloEnabled": true
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 3.000000004424868,
+          "lengthRelativeDeviation": 0.0015902275584291914,
+          "maxSplinePolylineDistanceMm": 0.0017958440381773246,
+          "maxSampleSpacingMm": 0.0078597487131894,
+          "samplingLimitMm": 0.008215578797859604,
+          "periodicDisplacement": [
+            0.7709398275361398,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "normal",
+            "roughness",
+            "ambientOcclusion"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "normal": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "roughness": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            },
+            "ambientOcclusion": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 6.26171875,
+              "adjacentColumnsMean": 0.9393244455316373,
+              "firstLastRowsMean": 11.429036458333334,
+              "adjacentRowsMean": 0.6037984650195695
+            },
+            "normal": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 14.643880208333334,
+              "adjacentColumnsMean": 6.206790453767123,
+              "firstLastRowsMean": 21.944661458333332,
+              "adjacentRowsMean": 4.805909317922374
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 8.669921875,
+              "adjacentColumnsMean": 1.3202781005381605,
+              "firstLastRowsMean": 16.10546875,
+              "adjacentRowsMean": 0.849261558219178
+            },
+            "ambientOcclusion": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 38.796875,
+              "adjacentColumnsMean": 6.2299871575342465,
+              "firstLastRowsMean": 90.123046875,
+              "adjacentRowsMean": 3.931961686643836
+            }
+          },
+          "coreBand": [
+            0,
+            1
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0,
+            1
+          ],
+          "rawHairBand": [
+            0,
+            1
+          ],
+          "hasAlpha": false,
+          "emptyAlpha": false,
+          "rho": 1,
+          "rawRho": 1,
+          "rhoTruncated": false,
+          "repeatLengthMm": 0.1971738911486305,
+          "adjustedRepeatLengthMm": 0.20031804551168583,
+          "repeatCount": 15,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 3.9849185991170306,
+          "anisotropy": 1.0159460988710989,
+          "mapAnisotropy": {
+            "baseColor": 1.0159460988710989,
+            "normal": 1.0159460988710989,
+            "roughness": 1.0159460988710989,
+            "ambientOcclusion": 1.0159460988710989
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.2508812549070735,
+            0.3843240476130005,
+            0.5528917798803891
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 12.779677404803047,
+            "k_V": 12.983463404240785,
+            "f_U": 13,
+            "f_V": 13,
+            "maps": {
+              "baseColor": {
+                "k_U": 12.779677404803047,
+                "k_V": 12.983463404240785,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "normal": {
+                "k_U": 12.779677404803047,
+                "k_V": 12.983463404240785,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "roughness": {
+                "k_U": 12.779677404803047,
+                "k_V": 12.983463404240785,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "ambientOcclusion": {
+                "k_U": 12.779677404803047,
+                "k_V": 12.983463404240785,
+                "f_U": 13,
+                "f_V": 13
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "generated",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "case-3-N48_yarn-a-generated-medium_technicalFace_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.006392486168711242,
+            "pixels": 16786
+          },
+          "case-3-N48_yarn-a-generated-medium_technicalBack_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.00609314993549237,
+            "pixels": 16786
+          }
+        },
+        "timings": {
+          "centerlineMs": 31.176899999999932,
+          "technicalFaceGeometryMs": 69.69480000000021,
+          "technicalFaceAoMs": 660.971,
+          "technicalBackGeometryMs": 69.6201000000001,
+          "technicalBackAoMs": 678.0250000000001,
+          "materialMs": 119.17269999999917,
+          "fibersMs": 1.636399999999412,
+          "technicalFaceFuzzMs": 743.7873,
+          "technicalFaceComposeMs": 71.75040000000081,
+          "technicalFaceEncodeMs": 16.799999999999272,
+          "technicalBackFuzzMs": 823.9530000000013,
+          "technicalBackComposeMs": 69.59270000000106,
+          "technicalBackEncodeMs": 6.536600000003091
+        }
+      },
+      {
+        "name": "hossain-2.84",
+        "yarn": "scan",
+        "prefix": "hossain-2.84_scan-both-medium",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7534083721886886,
+        "H": 0.5024151437792043,
+        "waleDensityPerCm": 13.273014170189674,
+        "courseDensityPerCm": 19.903858639250505,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 76,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 11183,
+              "fuzzPixelFraction": 0.7405960264900662,
+              "scanPixelCount": 5263,
+              "haloPixelCount": 6552,
+              "haloEnabled": true
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 76,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 10321,
+              "fuzzPixelFraction": 0.6835099337748345,
+              "scanPixelCount": 4495,
+              "haloPixelCount": 6268,
+              "haloEnabled": true
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 2.8399999930086923,
+          "lengthRelativeDeviation": 0.000922336536972157,
+          "maxSplinePolylineDistanceMm": 0.001004319491072374,
+          "maxSampleSpacingMm": 0.007423026769538673,
+          "samplingLimitMm": 0.008170268165673513,
+          "periodicDisplacement": [
+            0.7534083721886886,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.017922065473856,
+          "adjustedRepeatLengthMm": 2.842619435765001,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.7074849609930786,
+          "mapAnisotropy": {
+            "baseColor": 0.7074849609930786,
+            "roughness": 0.7074849609930786
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 3.8204199490662303,
+            "k_V": 2.702889658642301,
+            "f_U": 4,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 3.8204199490662303,
+                "k_V": 2.702889658642301,
+                "f_U": 4,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 3.8204199490662303,
+                "k_V": 2.702889658642301,
+                "f_U": 4,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "both",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "hossain-2.84_scan-both-medium_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006093149935492259,
+            "pixels": 15100
+          },
+          "hossain-2.84_scan-both-medium_technicalBack_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.00609314993549237,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 40.266899999999964,
+          "technicalFaceGeometryMs": 70.4547,
+          "technicalFaceAoMs": 694.201,
+          "technicalBackGeometryMs": 69.60300000000007,
+          "technicalBackAoMs": 676.1873,
+          "materialMs": 237.1875,
+          "fibersMs": 5.709199999997509,
+          "technicalFaceFuzzMs": 1270.2890000000007,
+          "technicalFaceComposeMs": 48.34770000000208,
+          "technicalFaceEncodeMs": 7.140800000001036,
+          "technicalBackFuzzMs": 1073.5757999999987,
+          "technicalBackComposeMs": 50.12319999999818,
+          "technicalBackEncodeMs": 6.485199999999168
+        }
+      },
+      {
+        "name": "hossain-2.84",
+        "yarn": "yarn-a",
+        "prefix": "hossain-2.84_yarn-a-prefiltered",
+        "fuzzSource": "off",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7534083721886886,
+        "H": 0.5024151437792043,
+        "waleDensityPerCm": 13.273014170189674,
+        "courseDensityPerCm": 19.903858639250505,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 279,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0.019934266933409547,
+              "maxAngleDeg": 36.87767793347666,
+              "medianAngleDeg": 5.931469018106974
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 275,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0.01964847099171192,
+              "maxAngleDeg": 36.51266897485774,
+              "medianAngleDeg": 6.7008146075544435
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 2.8399999930086923,
+          "lengthRelativeDeviation": 0.000922336536972157,
+          "maxSplinePolylineDistanceMm": 0.001004319491072374,
+          "maxSampleSpacingMm": 0.007423026769538673,
+          "samplingLimitMm": 0.008170268165673513,
+          "periodicDisplacement": [
+            0.7534083721886886,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "normal",
+            "roughness",
+            "ambientOcclusion"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "normal": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "roughness": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            },
+            "ambientOcclusion": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 6.26171875,
+              "adjacentColumnsMean": 0.9393244455316373,
+              "firstLastRowsMean": 11.429036458333334,
+              "adjacentRowsMean": 0.6037984650195695
+            },
+            "normal": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 14.643880208333334,
+              "adjacentColumnsMean": 6.206790453767123,
+              "firstLastRowsMean": 21.944661458333332,
+              "adjacentRowsMean": 4.805909317922374
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 8.669921875,
+              "adjacentColumnsMean": 1.3202781005381605,
+              "firstLastRowsMean": 16.10546875,
+              "adjacentRowsMean": 0.849261558219178
+            },
+            "ambientOcclusion": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 38.796875,
+              "adjacentColumnsMean": 6.2299871575342465,
+              "firstLastRowsMean": 90.123046875,
+              "adjacentRowsMean": 3.931961686643836
+            }
+          },
+          "coreBand": [
+            0,
+            1
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0,
+            1
+          ],
+          "rawHairBand": [
+            0,
+            1
+          ],
+          "hasAlpha": false,
+          "emptyAlpha": false,
+          "rho": 1,
+          "rawRho": 1,
+          "rhoTruncated": false,
+          "repeatLengthMm": 0.1960864359761643,
+          "adjustedRepeatLengthMm": 0.20304424541178578,
+          "repeatCount": 14,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 3.9849185991170306,
+          "anisotropy": 1.035483379566689,
+          "mapAnisotropy": {
+            "baseColor": 1.035483379566689,
+            "normal": 1.035483379566689,
+            "roughness": 1.035483379566689,
+            "ambientOcclusion": 1.035483379566689
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.2508812549070735,
+            0.3843240476130005,
+            0.5528917798803891
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 12.608089408336436,
+            "k_V": 13.055467030423188,
+            "f_U": 13,
+            "f_V": 13,
+            "maps": {
+              "baseColor": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "normal": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "roughness": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "ambientOcclusion": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "off",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "hossain-2.84_yarn-a-prefiltered_technicalFace_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.0062090972580421955,
+            "pixels": 15100
+          },
+          "hossain-2.84_yarn-a-prefiltered_technicalBack_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.006278843038372006,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 40.266899999999964,
+          "technicalFaceGeometryMs": 70.4547,
+          "technicalFaceAoMs": 694.201,
+          "technicalBackGeometryMs": 69.60300000000007,
+          "technicalBackAoMs": 676.1873,
+          "materialMs": 100.35230000000229,
+          "fibersMs": 0.004600000000209548,
+          "technicalFaceFuzzMs": 0.06269999999858555,
+          "technicalFaceComposeMs": 53.6211000000003,
+          "technicalFaceEncodeMs": 7.341300000000047,
+          "technicalBackFuzzMs": 0.016800000001239823,
+          "technicalBackComposeMs": 41.632799999999406,
+          "technicalBackEncodeMs": 5.5803000000014435
+        }
+      },
+      {
+        "name": "hossain-2.84",
+        "yarn": "yarn-b",
+        "prefix": "hossain-2.84_yarn-b-prefiltered",
+        "fuzzSource": "off",
+        "fuzzStrength": 0.5,
+        "status": "CONVERGED",
+        "W": 0.7534083721886886,
+        "H": 0.5024151437792043,
+        "waleDensityPerCm": 13.273014170189674,
+        "courseDensityPerCm": 19.903858639250505,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 133,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0.009502715061446128,
+              "maxAngleDeg": 27.440668779448632,
+              "medianAngleDeg": 3.850879444215764
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 155,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0.01107459274078308,
+              "maxAngleDeg": 28.971622804338583,
+              "medianAngleDeg": 4.464601093438227
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false
+            }
+          }
+        },
+        "centerline": {
+          "interpolation": "centripetal Catmull-Rom alpha=0.5",
+          "polygonLengthMm": 2.8399999930086923,
+          "lengthRelativeDeviation": 0.000922336536972157,
+          "maxSplinePolylineDistanceMm": 0.001004319491072374,
+          "maxSampleSpacingMm": 0.007423026769538673,
+          "samplingLimitMm": 0.008170268165673513,
+          "periodicDisplacement": [
+            0.7534083721886886,
+            0,
+            0
+          ],
+          "periodicLatticeOffset": [
+            1,
+            0
+          ]
+        },
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "normal",
+            "roughness",
+            "ambientOcclusion"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "normal": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "roughness": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            },
+            "ambientOcclusion": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 11.05078125,
+              "adjacentColumnsMean": 1.357795172863666,
+              "firstLastRowsMean": 9.893880208333334,
+              "adjacentRowsMean": 0.6142788343933464
+            },
+            "normal": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 19.307942708333332,
+              "adjacentColumnsMean": 8.673973367172211,
+              "firstLastRowsMean": 25.057942708333332,
+              "adjacentRowsMean": 4.050904833251794
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 14.080078125,
+              "adjacentColumnsMean": 1.7376429488747553,
+              "firstLastRowsMean": 12.97265625,
+              "adjacentRowsMean": 0.7866851149706457
+            },
+            "ambientOcclusion": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 92.408203125,
+              "adjacentColumnsMean": 8.965008102984344,
+              "firstLastRowsMean": 82.947265625,
+              "adjacentRowsMean": 4.083556292808219
+            }
+          },
+          "coreBand": [
+            0,
+            1
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0,
+            1
+          ],
+          "rawHairBand": [
+            0,
+            1
+          ],
+          "hasAlpha": false,
+          "emptyAlpha": false,
+          "rho": 1,
+          "rawRho": 1,
+          "rhoTruncated": false,
+          "repeatLengthMm": 0.1960864359761643,
+          "adjustedRepeatLengthMm": 0.20304424541178578,
+          "repeatCount": 14,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 4.996599281284802,
+          "anisotropy": 1.035483379566689,
+          "mapAnisotropy": {
+            "baseColor": 1.035483379566689,
+            "normal": 1.035483379566689,
+            "roughness": 1.035483379566689,
+            "ambientOcclusion": 1.035483379566689
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.6883280286589418,
+            0.28104903277242893,
+            0.1429714726469208
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 12.608089408336436,
+            "k_V": 13.055467030423188,
+            "f_U": 13,
+            "f_V": 13,
+            "maps": {
+              "baseColor": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "normal": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "roughness": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "ambientOcclusion": {
+                "k_U": 12.608089408336436,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "off",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "normalChecks": {
+          "hossain-2.84_yarn-b-prefiltered_technicalFace_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.006526487833136807,
+            "pixels": 15100
+          },
+          "hossain-2.84_yarn-b-prefiltered_technicalBack_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.005969373805238876,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 40.266899999999964,
+          "technicalFaceGeometryMs": 70.4547,
+          "technicalFaceAoMs": 694.201,
+          "technicalBackGeometryMs": 69.60300000000007,
+          "technicalBackAoMs": 676.1873,
+          "materialMs": 106.17259999999806,
+          "fibersMs": 0.004499999999097781,
+          "technicalFaceFuzzMs": 0.01989999999932479,
+          "technicalFaceComposeMs": 43.68280000000232,
+          "technicalFaceEncodeMs": 6.122699999999895,
+          "technicalBackFuzzMs": 0.01239999999961583,
+          "technicalBackComposeMs": 41.35230000000229,
+          "technicalBackEncodeMs": 6.310900000000402
+        }
+      }
+    ],
+    "yarnStrips": [
+      {
+        "yarn": "scan",
+        "prefix": "strip_scan-both-medium",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "roughness"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 2172,
+              "height": 724,
+              "channels": 4
+            },
+            "roughness": {
+              "width": 2172,
+              "height": 724,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 4.115331491712707,
+              "adjacentColumnsMean": 3.092650864866103,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 3.0570628570846354
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 0.393646408839779,
+              "adjacentColumnsMean": 0.20548681642240382,
+              "firstLastRowsMean": 0,
+              "adjacentRowsMean": 0.2901685987126486
+            }
+          },
+          "coreBand": [
+            0.4350828729281768,
+            0.5814917127071824
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "rawHairBand": [
+            0.3660220994475138,
+            0.6422651933701657
+          ],
+          "hasAlpha": true,
+          "emptyAlpha": false,
+          "rho": 1.9433962264150948,
+          "rawRho": 1.9433962264150948,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4.017922065473856,
+          "adjustedRepeatLengthMm": 4,
+          "repeatCount": 1,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": 0.9955394691131862,
+          "mapAnisotropy": {
+            "baseColor": 0.9955394691131862,
+            "roughness": 0.9955394691131862
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7748762587221567,
+            0.7638828648237567,
+            0.755495859212187
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 2.715,
+            "k_V": 2.702889658642301,
+            "f_U": 3,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 2.715,
+                "k_V": 2.702889658642301,
+                "f_U": 3,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 2.715,
+                "k_V": 2.702889658642301,
+                "f_U": 3,
+                "f_V": 3
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "both",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "diagnostics": {
+          "coverageFraction": 0.055401662049861494,
+          "legFraction": 0,
+          "visibleHemisphere": {
+            "constrainedPixelCount": 0,
+            "corePixelCount": 32000,
+            "constrainedCoreFraction": 0,
+            "maxAngleDeg": 0,
+            "medianAngleDeg": 0
+          },
+          "fuzz": {
+            "fiberCount": 107,
+            "fiberDiameterMm": 0.021,
+            "fuzzPixelCount": 88563,
+            "fuzzPixelFraction": 0.15332929362880887,
+            "scanPixelCount": 22069,
+            "haloPixelCount": 75200,
+            "haloEnabled": true
+          }
+        },
+        "preview": {
+          "vRange": [
+            0.3587257617728532,
+            0.6523545706371191
+          ],
+          "usesFullImage": false,
+          "note": "二维预览按现有规则使用识别出的纱线带"
+        },
+        "texture": {
+          "physicalSizeMm": [
+            4,
+            3.6076149773563113
+          ],
+          "pixelSize": [
+            800,
+            722
+          ],
+          "pixelsPerMm": [
+            200,
+            200.13222157345828
+          ],
+          "contentHeightMm": 1.2025383257854372,
+          "periodic": [
+            true,
+            false
+          ],
+          "transparentPadding": "content centered in 3x content height"
+        },
+        "normalChecks": {
+          "strip_scan-both-medium_yarn_normal.png": {
+            "minZ": 0.11372549019607847,
+            "maxLengthError": 0.00615504378139875,
+            "pixels": 577600
+          }
+        },
+        "timings": {
+          "materialMs": 258.9447999999975,
+          "fibersMs": 2.1841999999996915,
+          "geometryMs": 105.04209999999875,
+          "aoMs": 1496.8001999999979,
+          "fuzzMs": 3512.669900000001,
+          "composeMs": 226.46519999999873,
+          "encodeMs": 31.474300000001676
+        }
+      },
+      {
+        "yarn": "yarn-a",
+        "prefix": "strip_yarn-a-generated-medium",
+        "fuzzSource": "generated",
+        "fuzzStrength": 0.5,
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [
+            "baseColor",
+            "normal",
+            "roughness",
+            "ambientOcclusion"
+          ],
+          "imageSizes": {
+            "baseColor": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "normal": {
+              "width": 512,
+              "height": 512,
+              "channels": 3
+            },
+            "roughness": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            },
+            "ambientOcclusion": {
+              "width": 512,
+              "height": 512,
+              "channels": 1
+            }
+          },
+          "mapBoundaries": {
+            "baseColor": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 6.26171875,
+              "adjacentColumnsMean": 0.9393244455316373,
+              "firstLastRowsMean": 11.429036458333334,
+              "adjacentRowsMean": 0.6037984650195695
+            },
+            "normal": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 14.643880208333334,
+              "adjacentColumnsMean": 6.206790453767123,
+              "firstLastRowsMean": 21.944661458333332,
+              "adjacentRowsMean": 4.805909317922374
+            },
+            "roughness": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 8.669921875,
+              "adjacentColumnsMean": 1.3202781005381605,
+              "firstLastRowsMean": 16.10546875,
+              "adjacentRowsMean": 0.849261558219178
+            },
+            "ambientOcclusion": {
+              "unit": "8-bit channel value",
+              "firstLastColumnsMean": 38.796875,
+              "adjacentColumnsMean": 6.2299871575342465,
+              "firstLastRowsMean": 90.123046875,
+              "adjacentRowsMean": 3.931961686643836
+            }
+          },
+          "coreBand": [
+            0,
+            1
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0,
+            1
+          ],
+          "rawHairBand": [
+            0,
+            1
+          ],
+          "hasAlpha": false,
+          "emptyAlpha": false,
+          "rho": 1,
+          "rawRho": 1,
+          "rhoTruncated": false,
+          "repeatLengthMm": 0.1960864359761643,
+          "adjustedRepeatLengthMm": 0.2,
+          "repeatCount": 20,
+          "repeatSource": "DERIVED_FROM_ASPECT",
+          "aspectMap": "baseColor",
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 3.9849185991170306,
+          "anisotropy": 1.0199583617518115,
+          "mapAnisotropy": {
+            "baseColor": 1.0199583617518115,
+            "normal": 1.0199583617518115,
+            "roughness": 1.0199583617518115,
+            "ambientOcclusion": 1.0199583617518115
+          },
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSET",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.2508812549070735,
+            0.3843240476130005,
+            0.5528917798803891
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 12.8,
+            "k_V": 13.055467030423188,
+            "f_U": 13,
+            "f_V": 13,
+            "maps": {
+              "baseColor": {
+                "k_U": 12.8,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "normal": {
+                "k_U": 12.8,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "roughness": {
+                "k_U": 12.8,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              },
+              "ambientOcclusion": {
+                "k_U": 12.8,
+                "k_V": 13.055467030423188,
+                "f_U": 13,
+                "f_V": 13
+              }
+            }
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "generated",
+          "fuzzStrength": 0.5,
+          "hairinessIndex": 8,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 0.5,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 8,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 0.5,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "diagnostics": {
+          "coverageFraction": 0.055401662049861494,
+          "legFraction": 0,
+          "visibleHemisphere": {
+            "constrainedPixelCount": 560,
+            "corePixelCount": 32000,
+            "constrainedCoreFraction": 0.0175,
+            "maxAngleDeg": 23.98266159788722,
+            "medianAngleDeg": 14.229567898210401
+          },
+          "fuzz": {
+            "fiberCount": 107,
+            "fiberDiameterMm": 0.021,
+            "fuzzPixelCount": 88563,
+            "fuzzPixelFraction": 0.15332929362880887,
+            "scanPixelCount": 0,
+            "haloPixelCount": 75200,
+            "haloEnabled": true
+          }
+        },
+        "preview": {
+          "vRange": [
+            0.3573407202216066,
+            0.6523545706371191
+          ],
+          "usesFullImage": false,
+          "note": "二维预览按现有规则使用识别出的纱线带"
+        },
+        "texture": {
+          "physicalSizeMm": [
+            4,
+            3.6076149773563113
+          ],
+          "pixelSize": [
+            800,
+            722
+          ],
+          "pixelsPerMm": [
+            200,
+            200.13222157345828
+          ],
+          "contentHeightMm": 1.2025383257854372,
+          "periodic": [
+            true,
+            false
+          ],
+          "transparentPadding": "content centered in 3x content height"
+        },
+        "normalChecks": {
+          "strip_yarn-a-generated-medium_yarn_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.0062090972580421955,
+            "pixels": 577600
+          }
+        },
+        "timings": {
+          "materialMs": 146.86619999999675,
+          "fibersMs": 2.407200000001467,
+          "geometryMs": 173.4907000000021,
+          "aoMs": 1492.9065999999948,
+          "fuzzMs": 2091.8032999999996,
+          "composeMs": 225.2824000000037,
+          "encodeMs": 29.951799999995274
+        }
+      },
+      {
+        "yarn": "solid",
+        "prefix": "strip_solid-generated-high",
+        "fuzzSource": "generated",
+        "fuzzStrength": 1,
+        "yarnDiagnostics": {
+          "color": "#C08A5A",
+          "usedMaps": [],
+          "imageSizes": {},
+          "mapBoundaries": {},
+          "coreBand": [
+            0,
+            1
+          ],
+          "hairBandMode": "fullScan",
+          "hairBand": [
+            0,
+            1
+          ],
+          "rawHairBand": [
+            0,
+            1
+          ],
+          "hasAlpha": false,
+          "emptyAlpha": false,
+          "rho": 1,
+          "rawRho": 1,
+          "rhoTruncated": false,
+          "repeatLengthMm": 4,
+          "adjustedRepeatLengthMm": 4,
+          "repeatCount": 1,
+          "repeatSource": "NOT_APPLICABLE",
+          "aspectMap": null,
+          "normalGreen": "+Y",
+          "normalProfileMaxAngleDeg": 0,
+          "anisotropy": null,
+          "mapAnisotropy": {},
+          "anisotropyWarning": false,
+          "roughnessSource": "ASSUMPTION",
+          "height": "NOT_USED",
+          "averageColor": [
+            0.7529411764705882,
+            0.5411764705882353,
+            0.35294117647058826
+          ],
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 1,
+            "k_V": 1,
+            "f_U": 1,
+            "f_V": 1,
+            "maps": {}
+          }
+        },
+        "fuzzParameters": {
+          "fuzzSource": "generated",
+          "fuzzStrength": 1,
+          "hairinessIndex": 16,
+          "meanHairLengthMm": 0.3,
+          "hairAngleDeg": 30,
+          "maxCurvaturePerMm": 6,
+          "fiberOpacity": 0.45,
+          "haloStrength": 1,
+          "haloWidthR": 0.6,
+          "seed": 1,
+          "provenance": {
+            "fuzzStrength": {
+              "value": 1,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "MANUAL",
+              "principle": "T6a appearance parameter"
+            },
+            "hairinessIndex": {
+              "value": 16,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "16 * fuzzStrength"
+            },
+            "meanHairLengthMm": {
+              "value": 0.3,
+              "unit": "mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "hairAngleDeg": {
+              "value": 30,
+              "unit": "deg",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "maxCurvaturePerMm": {
+              "value": 6,
+              "unit": "1/mm",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "fiberOpacity": {
+              "value": 0.45,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "haloStrength": {
+              "value": 1,
+              "unit": "1",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DERIVED_FROM_FUZZ_STRENGTH",
+              "principle": "fuzzStrength"
+            },
+            "haloWidthR": {
+              "value": 0.6,
+              "unit": "core radius",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            },
+            "seed": {
+              "value": 1,
+              "unit": "integer",
+              "confidence": "ASSUMPTION",
+              "applicableState": "appearance only",
+              "source": "DEFAULT",
+              "principle": "T6a appearance parameter"
+            }
+          },
+          "classification": "ASSUMPTION"
+        },
+        "diagnostics": {
+          "coverageFraction": 0.04728132387706856,
+          "legFraction": 0,
+          "visibleHemisphere": {
+            "constrainedPixelCount": 0,
+            "corePixelCount": 32000,
+            "constrainedCoreFraction": 0,
+            "maxAngleDeg": 0,
+            "medianAngleDeg": 0
+          },
+          "fuzz": {
+            "fiberCount": 213,
+            "fiberDiameterMm": 0.021,
+            "fuzzPixelCount": 98480,
+            "fuzzPixelFraction": 0.14550827423167847,
+            "scanPixelCount": 0,
+            "haloPixelCount": 75200,
+            "haloEnabled": true
+          }
+        },
+        "preview": {
+          "vRange": [
+            0.3546099290780142,
+            0.6312056737588653
+          ],
+          "usesFullImage": false,
+          "note": "二维预览按现有规则使用识别出的纱线带"
+        },
+        "texture": {
+          "physicalSizeMm": [
+            4,
+            4.229572194595188
+          ],
+          "pixelSize": [
+            800,
+            846
+          ],
+          "pixelsPerMm": [
+            200,
+            200.02022925180748
+          ],
+          "contentHeightMm": 1.409857398198396,
+          "periodic": [
+            true,
+            false
+          ],
+          "transparentPadding": "content centered in 3x content height"
+        },
+        "normalChecks": {
+          "strip_solid-generated-high_yarn_normal.png": {
+            "minZ": 0.10588235294117654,
+            "maxLengthError": 0.00615504378139875,
+            "pixels": 676800
+          }
+        },
+        "timings": {
+          "materialMs": 0.197600000006787,
+          "fibersMs": 6.49199999999837,
+          "geometryMs": 133.24109999999928,
+          "aoMs": 1340.4542999999976,
+          "fuzzMs": 2510.5408000000025,
+          "composeMs": 194.6125999999931,
+          "encodeMs": 40.090400000000955
+        }
+      }
+    ],
+    "validation": {
+      "validate": "51/51",
+      "goldenEval": "7/7",
+      "buildExitCode": 0,
+      "scopeCheck": "empty",
+      "checks": [
+        {
+          "item": "o",
+          "status": "PASS",
+          "hairPixels": 15600,
+          "maxScanAlphaError": 0
+        },
+        {
+          "item": "p",
+          "status": "PASS",
+          "fuzzSource": "scan"
+        },
+        {
+          "item": "p",
+          "status": "PASS",
+          "fuzzSource": "generated"
+        },
+        {
+          "item": "p",
+          "status": "PASS",
+          "fuzzSource": "both"
+        },
+        {
+          "item": "q",
+          "status": "PASS",
+          "fuzzStrength": 0,
+          "hairinessIndex": 0,
+          "haloStrength": 0,
+          "fiberCount": 0
+        },
+        {
+          "item": "q",
+          "status": "PASS",
+          "fuzzStrength": 0.45,
+          "hairinessIndex": 7.2,
+          "haloStrength": 0.45,
+          "fiberCount": 24
+        },
+        {
+          "item": "q",
+          "status": "PASS",
+          "fuzzStrength": 1,
+          "hairinessIndex": 16,
+          "haloStrength": 1,
+          "fiberCount": 53
+        },
+        {
+          "item": "q",
+          "status": "PASS",
+          "seedDeterminism": true,
+          "seedSensitivity": true,
+          "periodicity": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "opacity": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "ambientOcclusion": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            }
+          }
+        },
+        {
+          "item": "q",
+          "status": "PASS",
+          "singleFiber": {
+            "maxFiberAlpha": 115,
+            "alphaLimit": 115
+          }
+        },
+        {
+          "item": "r",
+          "status": "PASS",
+          "name": "white-gray",
+          "vRange": [
+            0.3582295988934993,
+            0.6514522821576764
+          ],
+          "fallback": false,
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": false,
+            "k_U": 1,
+            "k_V": 1,
+            "f_U": 1,
+            "f_V": 1,
+            "maps": {
+              "baseColor": {
+                "k_U": 1,
+                "k_V": 1,
+                "f_U": 1,
+                "f_V": 1
+              },
+              "roughness": {
+                "k_U": 1,
+                "k_V": 1,
+                "f_U": 1,
+                "f_V": 1
+              }
+            }
+          },
+          "boundaries": {
+            "baseColor": {
+              "firstLastColumnsMean": 0.4685338865836791,
+              "adjacentColumnsMean": 0.4550453800307092
+            },
+            "normal": {
+              "firstLastColumnsMean": 0.051175656984785614,
+              "adjacentColumnsMean": 0.14458656538746278
+            },
+            "height": {
+              "firstLastColumnsMean": 0,
+              "adjacentColumnsMean": 0
+            },
+            "ambientOcclusion": {
+              "firstLastColumnsMean": 0.03872752420470263,
+              "adjacentColumnsMean": 0.1540376369493679
+            },
+            "roughness": {
+              "firstLastColumnsMean": 0.12586445366528354,
+              "adjacentColumnsMean": 0.12007228953203954
+            }
+          },
+          "periodicity": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "height": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "ambientOcclusion": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 1,
+              "differingPixels": 5,
+              "differingFraction": 0.000008644536652835408
+            }
+          }
+        },
+        {
+          "item": "r",
+          "status": "PASS",
+          "name": "solid-medium",
+          "vRange": [
+            0.3582295988934993,
+            0.6514522821576764
+          ],
+          "fallback": false,
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": false,
+            "k_U": 1,
+            "k_V": 1,
+            "f_U": 1,
+            "f_V": 1,
+            "maps": {}
+          },
+          "boundaries": {
+            "baseColor": {
+              "firstLastColumnsMean": 0.0487551867219917,
+              "adjacentColumnsMean": 0.2205042783423955
+            },
+            "normal": {
+              "firstLastColumnsMean": 0.05486399262332872,
+              "adjacentColumnsMean": 0.14723510427684214
+            },
+            "height": {
+              "firstLastColumnsMean": 0,
+              "adjacentColumnsMean": 0
+            },
+            "ambientOcclusion": {
+              "firstLastColumnsMean": 0.03872752420470263,
+              "adjacentColumnsMean": 0.1540376369493679
+            },
+            "roughness": {
+              "firstLastColumnsMean": 0,
+              "adjacentColumnsMean": 0.024896265560165973
+            }
+          },
+          "periodicity": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "height": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "ambientOcclusion": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            }
+          }
+        },
+        {
+          "item": "r",
+          "status": "PASS",
+          "name": "solid-high",
+          "vRange": [
+            0.3541912632821724,
+            0.6316410861865407
+          ],
+          "fallback": false,
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": false,
+            "k_U": 1,
+            "k_V": 1,
+            "f_U": 1,
+            "f_V": 1,
+            "maps": {}
+          },
+          "boundaries": {
+            "baseColor": {
+              "firstLastColumnsMean": 0.1115702479338843,
+              "adjacentColumnsMean": 0.32431625718689094
+            },
+            "normal": {
+              "firstLastColumnsMean": 0.16292798110979928,
+              "adjacentColumnsMean": 0.20378976278396008
+            },
+            "height": {
+              "firstLastColumnsMean": 0,
+              "adjacentColumnsMean": 0
+            },
+            "ambientOcclusion": {
+              "firstLastColumnsMean": 0.05667060212514758,
+              "adjacentColumnsMean": 0.2678466146437474
+            },
+            "roughness": {
+              "firstLastColumnsMean": 0,
+              "adjacentColumnsMean": 0.045215905950915625
+            }
+          },
+          "periodicity": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "height": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "ambientOcclusion": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            }
+          }
+        },
+        {
+          "item": "s",
+          "status": "PASS",
+          "stripePrefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 5.12,
+            "k_V": 1.6229329255300982,
+            "f_U": 5,
+            "f_V": 2,
+            "maps": {
+              "baseColor": {
+                "k_U": 5.12,
+                "k_V": 1.6229329255300982,
+                "f_U": 5,
+                "f_V": 2
+              }
+            }
+          },
+          "filteredMin": 103,
+          "filteredMax": 152,
+          "unfilteredMin": 5,
+          "unfilteredMax": 250
+        },
+        {
+          "item": "s",
+          "status": "PASS",
+          "identityPrefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 0.08,
+            "k_V": 0.05071665392281557,
+            "f_U": 1,
+            "f_V": 1,
+            "maps": {
+              "baseColor": {
+                "k_U": 0.08,
+                "k_V": 0.05071665392281557,
+                "f_U": 1,
+                "f_V": 1
+              },
+              "normal": {
+                "k_U": 0.08,
+                "k_V": 0.05071665392281557,
+                "f_U": 1,
+                "f_V": 1
+              },
+              "roughness": {
+                "k_U": 0.08,
+                "k_V": 0.05071665392281557,
+                "f_U": 1,
+                "f_V": 1
+              },
+              "ambientOcclusion": {
+                "k_U": 0.08,
+                "k_V": 0.05071665392281557,
+                "f_U": 1,
+                "f_V": 1
+              },
+              "metallic": {
+                "k_U": 0.08,
+                "k_V": 0.05071665392281557,
+                "f_U": 1,
+                "f_V": 1
+              }
+            }
+          }
+        },
+        {
+          "item": "s",
+          "status": "PASS",
+          "strongPrefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 1.8011556297623479,
+            "k_V": 1.6319333788028985,
+            "f_U": 2,
+            "f_V": 2,
+            "maps": {
+              "normal": {
+                "k_U": 1.8011556297623479,
+                "k_V": 1.6319333788028985,
+                "f_U": 2,
+                "f_V": 2
+              }
+            }
+          },
+          "constrainedPixelCount": 2056
+        }
+      ]
+    }
   }
 }

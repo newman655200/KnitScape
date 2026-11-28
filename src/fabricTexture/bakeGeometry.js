@@ -12,7 +12,8 @@ function visitImagePixels(a, b, radius, grid, visit) {
   const minX = Math.min(a[0], b[0]) - radius, maxX = Math.max(a[0], b[0]) + radius;
   const minY = Math.min(a[1], b[1]) - radius, maxY = Math.max(a[1], b[1]) + radius;
   const firstP = Math.ceil(-maxX / W), lastP = Math.floor((W - minX) / W);
-  const firstQ = Math.ceil(-maxY / H), lastQ = Math.floor((H - minY) / H);
+  const firstQ = grid.periodicY ? Math.ceil(-maxY / H) : 0;
+  const lastQ = grid.periodicY ? Math.floor((H - minY) / H) : 0;
   for (let q = firstQ; q <= lastQ; q++) {
     for (let p = firstP; p <= lastP; p++) {
       const ox = p * W, oy = q * H;
@@ -35,8 +36,9 @@ function visitImagePixels(a, b, radius, grid, visit) {
  * material arc length in mm, and signed projected transverse coordinate in [-1,1].
  * Empty heights are -Infinity, node IDs -1, all other empty arrays zero.
  * Actual S is retained; |S|<=1e-6 W is baked on a rectangular lattice.
+ * periodicY=false keeps a straight-yarn strip open vertically; U stays periodic.
  */
-export function bakeGeometry(centerline, { face = "technicalBack", pxPerMm = 200 } = {}) {
+export function bakeGeometry(centerline, { face = "technicalBack", pxPerMm = 200, periodicY = true } = {}) {
   if (face !== "technicalBack" && face !== "technicalFace") throw new RangeError("Unknown fabric face.");
   const { W, H, S, radiusMm: radius } = centerline;
   if (![W, H, radius, pxPerMm].every(value => Number.isFinite(value) && value > 0) || !Number.isFinite(S)) {
@@ -54,7 +56,7 @@ export function bakeGeometry(centerline, { face = "technicalBack", pxPerMm = 200
   const normals = new Float64Array(3 * count), tangents = new Float64Array(3 * count);
   const arcLengths = new Float64Array(count), transverse = new Float64Array(count);
   const nodeIndices = new Int32Array(count).fill(-1);
-  const grid = { W, H, width, height, dx, dy };
+  const grid = { W, H, width, height, dx, dy, periodicY };
   const sign = face === "technicalFace" ? -1 : 1;
   const points = centerline.points.map(point => facePoint(point, sign));
   const sampleTangents = centerline.tangents.map(tangent => facePoint(tangent, sign));
@@ -130,7 +132,7 @@ export function bakeGeometry(centerline, { face = "technicalBack", pxPerMm = 200
     heightMaxMm = Math.max(heightMaxMm, heights[i]);
   }
   if (!covered) heightMinMm = heightMaxMm = 0;
-  return { face, width, height, W, H, S, dx, dy, coverage, heights, normals, tangents,
+  return { face, width, height, W, H, S, dx, dy, periodicY, coverage, heights, normals, tangents,
     arcLengths, transverse, nodeIndices, heightMinMm, heightMaxMm,
     diagnostics: { coverageFraction: covered / count, legFraction: covered ? legs / covered : 0 } };
 }

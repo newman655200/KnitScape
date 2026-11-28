@@ -1,3 +1,5 @@
+import { boxPrefilter } from "./boxPrefilter.js";
+
 const MAP_KEYS = ["baseColor", "normal", "roughness", "ambientOcclusion", "metallic"];
 const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
 const wrap = (value, period) => ((value % period) + period) % period;
@@ -207,10 +209,16 @@ function sample(image, u, v, channel, scale = 1) {
  * diameterMm is the model core diameter; lengthMm is the sampled spline length.
  * Neither is inferred from the image. Metadata labels the aspect-based repeat
  * as derived, and the untextured roughness 0.8 as an appearance assumption.
+ * Optional pxPerMm sets the output sampling footprint. Original pixels still
+ * determine bands, mean material values and repeat length; only sampling tables
+ * are box-filtered. Omitting it, or using 1 x 1 windows, preserves old sampling.
  */
-export function normalizeYarnMaterial(input = {}, { diameterMm, lengthMm } = {}) {
+export function normalizeYarnMaterial(input = {}, { diameterMm, lengthMm, pxPerMm } = {}) {
   if (!(Number.isFinite(diameterMm) && diameterMm > 0 && Number.isFinite(lengthMm) && lengthMm > 0)) {
     throw new RangeError("diameterMm and lengthMm must be finite positive millimeter lengths");
+  }
+  if (pxPerMm !== undefined && !(Number.isFinite(pxPerMm) && pxPerMm > 0)) {
+    throw new RangeError("pxPerMm must be finite and positive when provided");
   }
   const normalGreen = input.normalGreen ?? "+Y";
   if (!["+Y", "-Y"].includes(normalGreen)) throw new RangeError("normalGreen must be +Y or -Y");
@@ -238,6 +246,24 @@ export function normalizeYarnMaterial(input = {}, { diameterMm, lengthMm } = {})
   const adjustedRepeatLengthMm = lengthMm / repeatCount;
   const averageColor = meanColor(images.baseColor, bands.core, fallbackColor);
   const normal = normalDetails(images.normal, normalGreen);
+  const ao = aoDetails(images.ambientOcclusion);
+  const samplingImages = { ...images }, filterMaps = {};
+  for (const key of MAP_KEYS) if (images[key]) {
+    const image = images[key];
+    const k_U = pxPerMm === undefined ? 1 : image.width / (adjustedRepeatLengthMm * pxPerMm);
+    const k_V = pxPerMm === undefined ? 1 : image.height * (cMax - cMin) / (diameterMm * pxPerMm);
+    const f_U = Math.max(1, Math.round(k_U)), f_V = Math.max(1, Math.round(k_V));
+    if (![f_U, f_V].every(value => Number.isSafeInteger(value) && value >= 1)) {
+      throw new RangeError("Output resolution produces an unsupported box filter window");
+    }
+    filterMaps[key] = { k_U, k_V, f_U, f_V };
+    // Normal and AO are filtered after removing their row profiles below.
+    if (key !== "normal" && key !== "ambientOcclusion") samplingImages[key] = boxPrefilter(image, f_U, f_V);
+  }
+  const filterDetail = (table, key) => table
+    ? boxPrefilter(table, filterMaps[key].f_U, filterMaps[key].f_V) : null;
+  const prefilter = { method: "boxPrefilter", enabled: pxPerMm !== undefined,
+    ...(filterMaps[aspectMap] ?? { k_U: 1, k_V: 1, f_U: 1, f_V: 1 }), maps: filterMaps };
   const imageSizes = {}, mapBoundaries = {}, mapAnisotropy = {};
   for (const key of MAP_KEYS) if (images[key]) {
     const { width, height, channels } = images[key];
@@ -254,12 +280,12 @@ export function normalizeYarnMaterial(input = {}, { diameterMm, lengthMm } = {})
     repeatLengthMm, adjustedRepeatLengthMm, repeatCount, repeatSource, aspectMap,
     normalGreen, normalProfileMaxAngleDeg: normal.maxAngle * 180 / Math.PI,
     anisotropy, mapAnisotropy, anisotropyWarning: anisotropy !== null && (anisotropy > 2 || anisotropy < 0.5),
-    roughnessSource, height: "NOT_USED", averageColor,
+    roughnessSource, height: "NOT_USED", averageColor, prefilter,
   };
   return {
-    color, fallbackColor, images, cMin, cMax, hMin, hMax, rho, diameterMm, lengthMm,
+    color, fallbackColor, images, samplingImages, cMin, cMax, hMin, hMax, rho, diameterMm, lengthMm,
     repeatLengthMm, adjustedRepeatLengthMm, repeatSource, repeatCount, normalGreen,
-    normalDetail: normal.table, aoDetail: aoDetails(images.ambientOcclusion),
+    normalDetail: filterDetail(normal.table, "normal"), aoDetail: filterDetail(ao, "ambientOcclusion"),
     averageColor, averageRoughness: meanScalar(images.roughness, 0.8), averageMetallic: meanScalar(images.metallic, 0),
     roughnessSource, hasMetallic: Boolean(images.metallic), diagnostics,
   };
@@ -269,7 +295,7 @@ export function normalizeYarnMaterial(input = {}, { diameterMm, lengthMm } = {})
 export function sampleYarnMaterial(material, s, w) {
   const u = s / material.adjustedRepeatLengthMm;
   const v = (material.cMin + material.cMax) / 2 + (material.cMax - material.cMin) * w / 2;
-  const { images } = material;
+  const images = material.samplingImages ?? material.images;
   let color = material.fallbackColor.slice();
   if (images.baseColor) {
     const image = images.baseColor;
@@ -281,6 +307,24 @@ export function sampleYarnMaterial(material, s, w) {
     normalDetail: material.normalDetail ? [0, 1, 2].map(c => sample(material.normalDetail, u, v, c)) : [0, 0, 1],
     roughness: images.roughness ? sample(images.roughness, u, v, 0, 255) : 0.8,
     ambientOcclusion: material.aoDetail ? sample(material.aoDetail, u, v, 0) : 1,
+    metallic: images.metallic ? sample(images.metallic, u, v, 0, 255) : 0,
+  };
+}
+
+/**
+ * Sample scan-fuzz texels at s (mm) and signed transverse distance delta/r.
+ * Unlike core color, scan RGB remains unpremultiplied and is not filled with
+ * the core mean when alpha is low. Uses the same filtered tables and UVs.
+ */
+export function sampleYarnFuzzMaterial(material, s, transverse) {
+  const u = s / material.adjustedRepeatLengthMm;
+  const v = (material.cMin + material.cMax) / 2 + (material.cMax - material.cMin) * transverse / 2;
+  const images = material.samplingImages ?? material.images;
+  const image = images.baseColor;
+  return {
+    color: image ? [0, 1, 2].map(c => sample(image, u, v, image.channels < 3 ? 0 : c, 255)) : material.fallbackColor.slice(),
+    alpha: hasAlpha(image) ? sample(image, u, v, image.channels - 1, 255) : 1,
+    roughness: images.roughness ? sample(images.roughness, u, v, 0, 255) : 0.8,
     metallic: images.metallic ? sample(images.metallic, u, v, 0, 255) : 0,
   };
 }

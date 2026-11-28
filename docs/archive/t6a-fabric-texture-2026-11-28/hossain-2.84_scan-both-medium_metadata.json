@@ -1,0 +1,448 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "KnitScape fabricTexture",
+    "version": "3b8f2c158748147d55efefbfafec4a70d6e88ca7-dirty"
+  },
+  "generatedAt": "2026-11-28T04:17:03.180Z",
+  "structure": {
+    "type": "plainJersey",
+    "m": 1,
+    "n": 1
+  },
+  "input": {
+    "loopLengthMm": 2.84,
+    "nodesPerLoop": 64,
+    "params": {
+      "tex": 19.78,
+      "densityGPerCm3": 1.31,
+      "fiberDiameterMm": 0.021,
+      "E_f": 3000,
+      "K": 0.01,
+      "phi0": 0.5
+    },
+    "provenance": {
+      "tex": {
+        "value": 19.78,
+        "unit": "tex",
+        "source": "Hossain et al.2025 PLOS ONE e0323572; table supplied by user",
+        "principle": "Measured yarn linear density reported by user from study; no fitting",
+        "confidence": "REPORTED_MEASUREMENT",
+        "applicableState": "Combed cotton single yarn; fabric dry-relaxed48h at22C/67%RH"
+      },
+      "densityGPerCm3": {
+        "value": 1.31,
+        "unit": "g/cm^3",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "fiberDiameterMm": {
+        "value": 0.021,
+        "unit": "mm",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "E_f": {
+        "value": 3000,
+        "unit": "N/mm^2",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "K": {
+        "value": 0.01,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      },
+      "phi0": {
+        "value": 0.5,
+        "unit": "1",
+        "source": "docs/LAYER3_STEP1_TASK.md section 2",
+        "principle": "Model reference assumption; no material measurement asserted",
+        "confidence": "ASSUMPTION",
+        "applicableState": "Uncalibrated T1 model reference; physical specimen state unknown"
+      }
+    }
+  },
+  "solver": {
+    "status": "CONVERGED",
+    "optimizerStatus": "CONVERGED",
+    "iterations": 3800,
+    "W": 0.7534083721886886,
+    "H": 0.5024151437792043,
+    "S": 2.414423060127245e-10,
+    "waleDensityPerCm": 13.273014170189674,
+    "courseDensityPerCm": 19.903858639250505,
+    "gsm": 148.40600146020145,
+    "sourceResultFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json"
+  },
+  "texture": {
+    "repeat": [
+      1,
+      1
+    ],
+    "physicalSizeMm": [
+      0.7534083721886886,
+      0.5024151437792043
+    ],
+    "pixelSize": [
+      151,
+      100
+    ],
+    "pixelsPerMm": [
+      200.42251396986407,
+      199.03858639250507
+    ]
+  },
+  "conventions": {
+    "technicalFace": "Rotate (x,y,z) to (-x,y,-z), view from +z",
+    "technicalBack": "Unchanged coordinates, view from +z",
+    "image": "Row 0 is maximum y; +y points up",
+    "normal": "OpenGL +Y up; final visible hemisphere floor z=2/255; RGB=round((0.5*n+0.5)*255)",
+    "height": "16-bit grayscale big-endian; 0=heightMinMm, 65535=heightMaxMm; empty pixels=0; yarn core only"
+  },
+  "yarn": {
+    "name": "white-gray-yarn",
+    "id": null,
+    "color": "#C08A5A",
+    "files": {
+      "baseColor": "public/materials/white-gray-yarn/yarn_basecolor_alpha.png",
+      "roughness": "public/materials/white-gray-yarn/yarn_roughness.png"
+    },
+    "usedMaps": [
+      "baseColor",
+      "roughness"
+    ],
+    "height": "未使用",
+    "imageSizes": {
+      "baseColor": [
+        2172,
+        724
+      ],
+      "roughness": [
+        2172,
+        724
+      ]
+    },
+    "coreBand": [
+      0.4350828729281768,
+      0.5814917127071824
+    ],
+    "fuzzBand": [
+      0.3660220994475138,
+      0.6422651933701657
+    ],
+    "fuzzBandMode": "fullScan",
+    "rho": 1.9433962264150948,
+    "repeatLengthMm": 4.017922065473856,
+    "repeatSource": "DERIVED_FROM_ASPECT",
+    "adjustedRepeatLengthMm": 2.842619435765001,
+    "normalGreen": "+Y",
+    "roughnessSource": "ASSET",
+    "diagnostics": {
+      "color": "#C08A5A",
+      "usedMaps": [
+        "baseColor",
+        "roughness"
+      ],
+      "imageSizes": {
+        "baseColor": {
+          "width": 2172,
+          "height": 724,
+          "channels": 4
+        },
+        "roughness": {
+          "width": 2172,
+          "height": 724,
+          "channels": 1
+        }
+      },
+      "mapBoundaries": {
+        "baseColor": {
+          "unit": "8-bit channel value",
+          "firstLastColumnsMean": 4.115331491712707,
+          "adjacentColumnsMean": 3.092650864866103,
+          "firstLastRowsMean": 0,
+          "adjacentRowsMean": 3.0570628570846354
+        },
+        "roughness": {
+          "unit": "8-bit channel value",
+          "firstLastColumnsMean": 0.393646408839779,
+          "adjacentColumnsMean": 0.20548681642240382,
+          "firstLastRowsMean": 0,
+          "adjacentRowsMean": 0.2901685987126486
+        }
+      },
+      "coreBand": [
+        0.4350828729281768,
+        0.5814917127071824
+      ],
+      "hairBandMode": "fullScan",
+      "hairBand": [
+        0.3660220994475138,
+        0.6422651933701657
+      ],
+      "rawHairBand": [
+        0.3660220994475138,
+        0.6422651933701657
+      ],
+      "hasAlpha": true,
+      "emptyAlpha": false,
+      "rho": 1.9433962264150948,
+      "rawRho": 1.9433962264150948,
+      "rhoTruncated": false,
+      "repeatLengthMm": 4.017922065473856,
+      "adjustedRepeatLengthMm": 2.842619435765001,
+      "repeatCount": 1,
+      "repeatSource": "DERIVED_FROM_ASPECT",
+      "aspectMap": "baseColor",
+      "normalGreen": "+Y",
+      "normalProfileMaxAngleDeg": 0,
+      "anisotropy": 0.7074849609930786,
+      "mapAnisotropy": {
+        "baseColor": 0.7074849609930786,
+        "roughness": 0.7074849609930786
+      },
+      "anisotropyWarning": false,
+      "roughnessSource": "ASSET",
+      "height": "NOT_USED",
+      "averageColor": [
+        0.7748762587221567,
+        0.7638828648237567,
+        0.755495859212187
+      ],
+      "prefilter": {
+        "method": "boxPrefilter",
+        "enabled": true,
+        "k_U": 3.8204199490662303,
+        "k_V": 2.702889658642301,
+        "f_U": 4,
+        "f_V": 3,
+        "maps": {
+          "baseColor": {
+            "k_U": 3.8204199490662303,
+            "k_V": 2.702889658642301,
+            "f_U": 4,
+            "f_V": 3
+          },
+          "roughness": {
+            "k_U": 3.8204199490662303,
+            "k_V": 2.702889658642301,
+            "f_U": 4,
+            "f_V": 3
+          }
+        }
+      }
+    },
+    "fuzz": {
+      "fuzzSource": "both",
+      "fuzzStrength": 0.5,
+      "hairinessIndex": 8,
+      "meanHairLengthMm": 0.3,
+      "hairAngleDeg": 30,
+      "maxCurvaturePerMm": 6,
+      "fiberOpacity": 0.45,
+      "haloStrength": 0.5,
+      "haloWidthR": 0.6,
+      "seed": 1,
+      "provenance": {
+        "fuzzStrength": {
+          "value": 0.5,
+          "unit": "1",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "MANUAL",
+          "principle": "T6a appearance parameter"
+        },
+        "hairinessIndex": {
+          "value": 8,
+          "unit": "1",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DERIVED_FROM_FUZZ_STRENGTH",
+          "principle": "16 * fuzzStrength"
+        },
+        "meanHairLengthMm": {
+          "value": 0.3,
+          "unit": "mm",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        },
+        "hairAngleDeg": {
+          "value": 30,
+          "unit": "deg",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        },
+        "maxCurvaturePerMm": {
+          "value": 6,
+          "unit": "1/mm",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        },
+        "fiberOpacity": {
+          "value": 0.45,
+          "unit": "1",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        },
+        "haloStrength": {
+          "value": 0.5,
+          "unit": "1",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DERIVED_FROM_FUZZ_STRENGTH",
+          "principle": "fuzzStrength"
+        },
+        "haloWidthR": {
+          "value": 0.6,
+          "unit": "core radius",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        },
+        "seed": {
+          "value": 1,
+          "unit": "integer",
+          "confidence": "ASSUMPTION",
+          "applicableState": "appearance only",
+          "source": "DEFAULT",
+          "principle": "T6a appearance parameter"
+        }
+      },
+      "classification": "ASSUMPTION",
+      "fiberDiameterMm": 0.021,
+      "faces": {
+        "technicalFace": {
+          "fiberCount": 76,
+          "fiberDiameterMm": 0.021,
+          "fuzzPixelCount": 11183,
+          "fuzzPixelFraction": 0.7405960264900662,
+          "scanPixelCount": 5263,
+          "haloPixelCount": 6552,
+          "haloEnabled": true
+        },
+        "technicalBack": {
+          "fiberCount": 76,
+          "fiberDiameterMm": 0.021,
+          "fuzzPixelCount": 10321,
+          "fuzzPixelFraction": 0.6835099337748345,
+          "scanPixelCount": 4495,
+          "haloPixelCount": 6268,
+          "haloEnabled": true
+        }
+      }
+    }
+  },
+  "rendering": {
+    "crossSection": "circle",
+    "diameterMm": 0.1960864359761643,
+    "diameterProvenance": {
+      "value": 0.1960864359761643,
+      "unit": "mm",
+      "source": "Derived from d_s, phi0",
+      "principle": "d_s / sqrt(phi0)",
+      "confidence": "DERIVED",
+      "applicableState": "Inherits the states and uncertainty of all dependencies",
+      "dependencies": [
+        "d_s",
+        "phi0"
+      ]
+    },
+    "centerline": "centripetal Catmull-Rom alpha=0.5; interpolates every solver node",
+    "maximumSampleSpacingMm": 0.008170268165673513,
+    "centerlineDiagnostics": {
+      "interpolation": "centripetal Catmull-Rom alpha=0.5",
+      "polygonLengthMm": 2.8399999930086923,
+      "lengthRelativeDeviation": 0.000922336536972157,
+      "maxSplinePolylineDistanceMm": 0.001004319491072374,
+      "maxSampleSpacingMm": 0.007423026769538673,
+      "samplingLimitMm": 0.008170268165673513,
+      "periodicDisplacement": [
+        0.7534083721886886,
+        0,
+        0
+      ],
+      "periodicLatticeOffset": [
+        1,
+        0
+      ]
+    },
+    "ao": {
+      "directions": 16,
+      "radiusMm": 0.3921728719523286,
+      "emptyHeight": "heightMinMm - diameterMm"
+    }
+  },
+  "faces": {
+    "technicalFace": {
+      "heightMinMm": -0.12400222830984824,
+      "heightMaxMm": 0.21650486313773598,
+      "coverageFraction": 0.9268874172185431,
+      "legFraction": 0.6453272363532437,
+      "visibleHemisphere": {
+        "constrainedPixelCount": 0,
+        "corePixelCount": 13996,
+        "constrainedCoreFraction": 0,
+        "maxAngleDeg": 0,
+        "medianAngleDeg": 0
+      },
+      "fuzz": {
+        "fiberCount": 76,
+        "fiberDiameterMm": 0.021,
+        "fuzzPixelCount": 11183,
+        "fuzzPixelFraction": 0.7405960264900662,
+        "scanPixelCount": 5263,
+        "haloPixelCount": 6552,
+        "haloEnabled": true
+      }
+    },
+    "technicalBack": {
+      "heightMinMm": -0.10366484640437182,
+      "heightMaxMm": 0.2257786443914685,
+      "coverageFraction": 0.9268874172185431,
+      "legFraction": 0.024935695913118033,
+      "visibleHemisphere": {
+        "constrainedPixelCount": 0,
+        "corePixelCount": 13996,
+        "constrainedCoreFraction": 0,
+        "maxAngleDeg": 0,
+        "medianAngleDeg": 0
+      },
+      "fuzz": {
+        "fiberCount": 76,
+        "fiberDiameterMm": 0.021,
+        "fuzzPixelCount": 10321,
+        "fuzzPixelFraction": 0.6835099337748345,
+        "scanPixelCount": 4495,
+        "haloPixelCount": 6268,
+        "haloEnabled": true
+      }
+    }
+  },
+  "limitations": [
+    "仅普通纬平针、单纱、全成圈（T1），无集圈、无氨纶；",
+    "线圈尺寸是未标定预测：与 Hossain 2025 对照，横密偏高约 6%–14%、纵密偏高约 10%–12%；纱长变化时尺寸变化偏小；",
+    "纱芯截面按直径 d_e 的圆处理，相邻纱线在模型里有轻微重叠，贴图按俯视最高面合并；",
+    "纱线 PBR 贴图沿纱长的重复长度略作调整，使每个线圈恰好重复整数次；纱线 height 图未使用；",
+    "毛羽是外观模型：生成毛羽的参数是假设值，不是实测；毛羽不改变高度图，也不参与受力；",
+    "材料参数默认值是假设值，不是实测。"
+  ]
+}

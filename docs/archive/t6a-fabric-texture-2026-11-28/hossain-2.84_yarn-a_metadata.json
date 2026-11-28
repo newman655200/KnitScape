@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generator": {
     "name": "KnitScape fabricTexture",
-    "version": "5b754e1184ca3b86c9966be4e6be1bddf22f5962"
+    "version": "5b754e1184ca3b86c9966be4e6be1bddf22f5962-dirty"
   },
   "generatedAt": "2026-11-28T03:03:12.563Z",
   "structure": {
@@ -82,7 +82,7 @@
     "waleDensityPerCm": 13.273014170189674,
     "courseDensityPerCm": 19.903858639250505,
     "gsm": 148.40600146020145,
-    "sourceResultFile": "C:\\Users\\liuchen\\Desktop\\knitscape\\docs\\archive\\t1-slope-closeout-2026-11-23\\step3-hossain-2.84-after.json"
+    "sourceResultFile": "docs/archive/t1-slope-closeout-2026-11-23/step3-hossain-2.84-after.json"
   },
   "texture": {
     "repeat": [
@@ -114,10 +114,10 @@
     "id": null,
     "color": "#C08A5A",
     "files": {
-      "baseColor": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t6a-fabric-texture-2026-11-28\\T6a-1\\ruling-verification\\source-maps\\Yarn_A_Cotton_Blue_BaseColor.png",
-      "normal": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t6a-fabric-texture-2026-11-28\\T6a-1\\ruling-verification\\source-maps\\Yarn_A_Cotton_Blue_Normal.png",
-      "roughness": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t6a-fabric-texture-2026-11-28\\T6a-1\\ruling-verification\\source-maps\\Yarn_A_Cotton_Blue_Roughness.png",
-      "ambientOcclusion": "C:\\Users\\liuchen\\Documents\\KnitScape\\archives\\t6a-fabric-texture-2026-11-28\\T6a-1\\ruling-verification\\source-maps\\Yarn_A_Cotton_Blue_AO.png"
+      "baseColor": "Yarn_A_Cotton_Blue_BaseColor.png",
+      "normal": "Yarn_A_Cotton_Blue_Normal.png",
+      "roughness": "Yarn_A_Cotton_Blue_Roughness.png",
+      "ambientOcclusion": "Yarn_A_Cotton_Blue_AO.png"
     },
     "usedMaps": [
       "baseColor",

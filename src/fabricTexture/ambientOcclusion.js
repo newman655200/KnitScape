@@ -35,8 +35,9 @@ export function computeAmbientOcclusion(geometry, diameterMm) {
       for (const ray of rays) {
         let maxSlope = 0;
         for (const [ox, oy, distance] of ray) {
+          const inVerticalRange = geometry.periodicY !== false || (row + oy >= 0 && row + oy < height);
           const neighbor = wrap(row + oy, height) * width + wrap(column + ox, width);
-          const z = coverage[neighbor] ? heights[neighbor] : background;
+          const z = inVerticalRange && coverage[neighbor] ? heights[neighbor] : background;
           maxSlope = Math.max(maxSlope, (z - heights[origin]) / distance);
         }
         // sin(atan(maxSlope)), without a trigonometric call per pixel/sample.

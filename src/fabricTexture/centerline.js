@@ -1,5 +1,25 @@
 import { actualEdgeVector } from "../fabricForm/periodicCell.js";
 
+/** Synthetic straight yarn in mm: U periodic by lengthMm, V handled by the caller.
+ * No solver result is changed; 48 original nodes and dense samples lie on +x.
+ */
+export function createStraightYarnCenterline({ lengthMm = 4, diameterMm, y = 0, heightMm = 1 }) {
+  if (![lengthMm, diameterMm, heightMm].every(value => Number.isFinite(value) && value > 0) || !Number.isFinite(y)) {
+    throw new RangeError("Straight yarn requires positive finite lengths and finite y.");
+  }
+  const radiusMm = diameterMm / 2, divisions = Math.ceil(lengthMm / (radiusMm / 12));
+  const nodes = Array.from({ length: 48 }, (_, i) => [lengthMm * i / 48, y, 0]);
+  const points = Array.from({ length: divisions + 1 }, (_, i) => [lengthMm * i / divisions, y, 0]);
+  return { nodes, nodeIds: nodes.map((_, i) => i), D: [lengthMm, 0, 0], radiusMm,
+    W: lengthMm, H: heightMm, S: 0, points, tangents: points.map(() => [1, 0, 0]),
+    arcLengths: Float64Array.from(points, point => point[0]),
+    nodeIndices: Int32Array.from(points, point => Math.round(point[0] / lengthMm * 48) % 48),
+    legNodes: new Uint8Array(48), lengthMm, materialLengthMm: lengthMm,
+    diagnostics: { interpolation: "straight +x", polygonLengthMm: lengthMm, lengthRelativeDeviation: 0,
+      maxSplinePolylineDistanceMm: 0, maxSampleSpacingMm: lengthMm / divisions,
+      samplingLimitMm: radiusMm / 12, periodicDisplacement: [lengthMm, 0, 0], periodicLatticeOffset: [1, 0] } };
+}
+
 const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 
 function periodicNode(centerline, index) {

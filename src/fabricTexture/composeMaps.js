@@ -50,17 +50,18 @@ function tile(source, repeat) {
 }
 
 /**
- * Compose T6a-1 core-only maps from geometry and prepared yarn material.
+ * Compose core maps and optional visible fuzz fragments from prepared material.
  * ao is the geometric AO Float64Array for one cell. Output maps may be tiled;
  * fields retain unquantized one-cell shading normals, output normals and AO.
  * Heights are millimeters and empty pixels never participate in their range.
  */
-export function composeMaps(geometry, material, ao, { repeat = [1, 1] } = {}) {
+export function composeMaps(geometry, material, ao, { repeat = [1, 1], fuzz } = {}) {
   if (!Array.isArray(repeat) || repeat.length !== 2 || !repeat.every(value => Number.isSafeInteger(value) && value > 0)) {
     throw new RangeError("repeat must be two positive integers");
   }
   const { width, height, coverage, heights } = geometry, count = width * height;
   if (ao !== undefined && ao.length !== count) throw new RangeError("Geometric AO size does not match geometry");
+  if (fuzz && fuzz.fragments.length !== count) throw new RangeError("Fuzz size does not match geometry");
   let heightMinMm = Infinity, heightMaxMm = -Infinity;
   for (let i = 0; i < count; i++) if (coverage[i]) {
     heightMinMm = Math.min(heightMinMm, heights[i]);
@@ -75,37 +76,68 @@ export function composeMaps(geometry, material, ao, { repeat = [1, 1] } = {}) {
   if (material.hasMetallic) maps.metallic = map(width, height, 1);
   const fields = { normals: new Float64Array(3 * count), outputNormals: new Float64Array(3 * count),
     ambientOcclusion: new Float64Array(count) };
-  let corePixelCount = 0;
+  let corePixelCount = 0, fuzzPixelCount = 0;
   const constrainedAnglesDeg = [];
   maps.roughness.data.fill(255);
   for (let i = 0; i < count; i++) {
-    if (!coverage[i]) {
+    // Reject occluded fragments even for caller-supplied fuzz; the top eight
+    // are composited back-to-front. The input fragment lists are never mutated.
+    const layers = fuzz?.fragments[i]?.filter(fragment => fragment.alpha > 0 && (!coverage[i] || fragment.z > heights[i]))
+      .sort((a, b) => b.z - a.z).slice(0, 8) ?? [];
+    if (!coverage[i] && layers.length === 0) {
       maps.normal.data.set([128, 128, 255], 3 * i);
       fields.normals[3 * i + 2] = 1;
       fields.outputNormals[3 * i + 2] = 1;
       continue;
     }
-    corePixelCount++;
-    const sample = sampleYarnMaterial(material, geometry.arcLengths[i], geometry.transverse[i]);
-    const normal = shadeNormal(geometry, i, sample.normalDetail);
+    let color = [0, 0, 0], normal = [0, 0, 0], opacity = 0, ambientOcclusion = 0, roughness = 0, metallic = 0;
+    if (coverage[i]) {
+      corePixelCount++;
+      const sample = sampleYarnMaterial(material, geometry.arcLengths[i], geometry.transverse[i]);
+      color = sample.color;
+      normal = shadeNormal(geometry, i, sample.normalDetail);
+      ambientOcclusion = (ao === undefined ? 1 : ao[i]) * sample.ambientOcclusion;
+      roughness = sample.roughness;
+      metallic = sample.metallic;
+      opacity = 1;
+      // Only the core contributes to height, independently of overlaid fuzz.
+      maps.height.data[i] = range > 0 ? Math.round(clamp01((heights[i] - heightMinMm) / range) * 65535) : 0;
+    }
+    if (layers.length) {
+      fuzzPixelCount++;
+      // These accumulators carry premultiplied channels while layering. Normal
+      // is normalized once after all alpha-weighted vectors have been combined.
+      for (let j = layers.length - 1; j >= 0; j--) {
+        const layer = layers[j], alpha = clamp01(layer.alpha), remaining = 1 - alpha;
+        color = color.map((value, c) => alpha * layer.color[c] + remaining * value);
+        normal = normal.map((value, c) => alpha * layer.normal[c] + remaining * value);
+        roughness = alpha * layer.roughness + remaining * roughness;
+        metallic = alpha * layer.metallic + remaining * metallic;
+        ambientOcclusion = alpha + remaining * ambientOcclusion;
+        opacity = alpha + remaining * opacity;
+      }
+      color = color.map(value => value / opacity);
+      roughness /= opacity;
+      metallic /= opacity;
+      ambientOcclusion /= opacity;
+      normal = normalize(normal);
+    }
     const outputNormal = constrainVisibleHemisphere(normal);
     if (normal[2] < VISIBLE_NORMAL_Z_FLOOR) {
       const dot = normal[0] * outputNormal[0] + normal[1] * outputNormal[1] + normal[2] * outputNormal[2];
       constrainedAnglesDeg.push(Math.acos(Math.max(-1, Math.min(1, dot))) * 180 / Math.PI);
     }
-    const ambientOcclusion = (ao === undefined ? 1 : ao[i]) * sample.ambientOcclusion;
     fields.normals.set(normal, 3 * i);
     fields.outputNormals.set(outputNormal, 3 * i);
     fields.ambientOcclusion[i] = ambientOcclusion;
     for (let c = 0; c < 3; c++) {
-      maps.baseColor.data[3 * i + c] = byte(sample.color[c]);
+      maps.baseColor.data[3 * i + c] = byte(color[c]);
       maps.normal.data[3 * i + c] = byte(0.5 * outputNormal[c] + 0.5);
     }
-    maps.opacity.data[i] = 255;
-    maps.height.data[i] = range > 0 ? Math.round(clamp01((heights[i] - heightMinMm) / range) * 65535) : 0;
+    maps.opacity.data[i] = byte(opacity);
     maps.ambientOcclusion.data[i] = byte(ambientOcclusion);
-    maps.roughness.data[i] = byte(sample.roughness);
-    if (maps.metallic) maps.metallic.data[i] = byte(sample.metallic);
+    maps.roughness.data[i] = byte(roughness);
+    if (maps.metallic) maps.metallic.data[i] = byte(metallic);
   }
   constrainedAnglesDeg.sort((a, b) => a - b);
   const constrainedPixelCount = constrainedAnglesDeg.length;
@@ -119,5 +151,6 @@ export function composeMaps(geometry, material, ao, { repeat = [1, 1] } = {}) {
       ? constrainedAnglesDeg[middle] : (constrainedAnglesDeg[middle - 1] + constrainedAnglesDeg[middle]) / 2) : 0,
   };
   return { maps: Object.fromEntries(Object.entries(maps).map(([key, value]) => [key, tile(value, repeat)])),
-    unitMaps: maps, heightMinMm, heightMaxMm, fields, diagnostics: { visibleHemisphere } };
+    unitMaps: maps, heightMinMm, heightMaxMm, fields,
+    diagnostics: { visibleHemisphere, fuzz: { fuzzPixelCount, fuzzPixelFraction: fuzzPixelCount / count } } };
 }

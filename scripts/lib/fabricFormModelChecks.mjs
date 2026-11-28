@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createPlainJerseyTopology } from "../../src/fabricForm/fabricFormTopology.js";
 import { createFabricFormParams } from "../../src/fabricForm/fabricFormParams.js";
 import { createFabricFormInitialGeometry } from "../../src/fabricForm/fabricFormInitialGeometry.js";
@@ -179,6 +180,7 @@ export async function runFabricFormModelChecks() {
     "A finite-energy trial rejected by a registered term must not become the accepted final cell");
 
   await runProbeModelChecks();
+  await runDecoupledSolverChecks();
 }
 
 async function runProbeModelChecks() {
@@ -291,4 +293,90 @@ async function runProbeModelChecks() {
   assert.throws(() => createFabricModel({ id: "wrong-jacobian", terms: [], constraints: [{ id: "wrong", evaluate() {
     return { values: Float64Array.of(0), jacobian: [new Float64Array(1)], maxStrain: 0 };
   } }] }).constraintsAt(cell), /jacobian.*layout.size/, "Each constraint row must have layout.size components");
+}
+
+/** Retain the exact JSON comparison while reporting only its first differing field or key. */
+function assertSameSolverJson(actual, expected, label) {
+  const actualJson = JSON.stringify(actual), expectedJson = JSON.stringify(expected);
+  if (actualJson === expectedJson) return;
+  const firstDifference = (a, b, path) => {
+    if (a === null || b === null || typeof a !== "object" || typeof b !== "object" ||
+        Array.isArray(a) !== Array.isArray(b)) return path;
+    const actualKeys = Object.keys(a), expectedKeys = Object.keys(b);
+    for (let i = 0; i < Math.max(actualKeys.length, expectedKeys.length); i++) {
+      if (actualKeys[i] !== expectedKeys[i]) {
+        return `${path} key[${i}] (actual ${JSON.stringify(actualKeys[i])}, expected ${JSON.stringify(expectedKeys[i])})`;
+      }
+      const key = actualKeys[i];
+      if (JSON.stringify(a[key]) !== JSON.stringify(b[key])) {
+        return firstDifference(a[key], b[key], Array.isArray(a) ? `${path}[${key}]` : `${path}.${key}`);
+      }
+    }
+    return path;
+  };
+  const path = actualJson === undefined || expectedJson === undefined ? "$" :
+    firstDifference(JSON.parse(actualJson), JSON.parse(expectedJson), "$");
+  assert.fail(`${label}: first JSON difference at ${path}`);
+}
+
+async function runDecoupledSolverChecks() {
+  const coreUrl = new URL("../../src/fabricForm/solve/solveFabricModel.js", import.meta.url);
+  assert.ok(existsSync(coreUrl), "R4-2(f): the generic solve module must exist");
+  const source = readFileSync(coreUrl, "utf8");
+  for (const forbidden of [/\b(bending|contact|barrier|details|params|topology|r_c|d_e)\b/,
+    /["'\x60](W|H|S)["'\x60]/, /\.(W|H|S)\b/]) {
+    const match = forbidden.exec(source);
+    assert.ok(match === null, `R4-2(f): forbidden source name ${match?.[0]} at character ${match?.index}`);
+  }
+
+  const { createFabricModel } = await import("../../src/fabricForm/model/fabricModel.js");
+  const { createT1Terms, createT1Constraints, T1_DOF_BLOCKS } = await import("../../src/fabricForm/model/t1PlainJerseyModel.js");
+  const { createT1Reporting } = await import("../../src/fabricForm/model/t1Reporting.js");
+  const topology = createPlainJerseyTopology({ nodesPerLoop: 24 });
+  const params = createFabricFormParams(), quadratureOrder = 4;
+  const initialCell = { ...createFabricFormInitialGeometry(topology, params), probe: [.25, -.5] };
+  const input = { topology, params, initialCell, quadratureOrder, maxIterations: 200 };
+  const baseline = solveFabricCell(input);
+  assert.ok(baseline.iterations >= 20, "R4-2(g): the default comparison solve must execute at least 20 iterations");
+  const renamed = createFabricModel({ id: "T1_RENAMED",
+    terms: createT1Terms(params, { quadratureOrder }).map(term => ({ ...term,
+      id: term.id === "bending" ? "bendingRenamed" : "contactRenamed" })),
+    constraints: createT1Constraints() });
+  renamed.reporting = createT1Reporting({ bendingTermId: "bendingRenamed", contactTermId: "contactRenamed" });
+  const renamedResult = solveFabricCell({ ...input, model: renamed });
+  assertSameSolverJson(withoutElapsed(renamedResult), withoutElapsed(baseline), "STOP #3: R4-2(g) renamed terms");
+
+  const probe = { name: "probe", length: () => 2, scaleKind: "dimensionless", equilibrium: { kind: "maxAbs" },
+    read: cell => cell.probe, write: (target, values) => { target.probe = Array.from(values); } };
+  for (const insertion of [1, 2]) {
+    const blocks = [...T1_DOF_BLOCKS];
+    blocks.splice(insertion, 0, probe);
+    const model = createFabricModel({ id: `T1_SOLVE_PROBE_${insertion}`, blocks,
+      terms: createT1Terms(params, { quadratureOrder }), constraints: createT1Constraints() });
+    assert.equal(model.reporting, undefined, "R4-2(h): custom models exercise the default reporting fallback");
+    const actual = solveFabricCell({ ...input, model });
+    const label = `STOP #3: R4-2(h) probe insertion ${insertion}`;
+    for (const field of ["status", "optimizerStatus", "iterations", "evaluations", "history", "energy", "constraints",
+      "clearance", "barrier", "trajectory", "settings"]) {
+      assertSameSolverJson(actual[field], baseline[field], `${label}: ${field}`);
+    }
+    assertDofBytes(Float64Array.from(actual.cell.positions.flat()), Float64Array.from(baseline.cell.positions.flat()),
+      `${label}: cell.positions`);
+    for (const component of ["W", "H", "S"]) {
+      assertDofBytes(Float64Array.of(actual.cell[component]), Float64Array.of(baseline.cell[component]), `${label}: cell.${component}`);
+    }
+    assertDofBytes(Float64Array.from(actual.cell.probe), Float64Array.from(initialCell.probe), `${label}: cell.probe`);
+    const { freeResidual: actualFree, ...actualEquilibrium } = actual.equilibrium;
+    const { freeResidual: baselineFree, ...baselineEquilibrium } = baseline.equilibrium;
+    assertSameSolverJson(actualEquilibrium, baselineEquilibrium, `${label}: equilibrium excluding freeResidual`);
+    const layout = model.createLayout(initialCell), freeIndices = layout.freeIndices();
+    const probeIndices = new Set([layout.index("probe", 0), layout.index("probe", 1)]);
+    assert.equal(actualFree.length, freeIndices.length, `${label}: equilibrium.freeResidual length`);
+    const withoutProbe = actualFree.filter((value, i) => {
+      if (!probeIndices.has(freeIndices[i])) return true;
+      assert.ok(value === 0, `${label}: equilibrium.freeResidual[${i}] for probe must be zero`);
+      return false;
+    });
+    assertSameSolverJson(withoutProbe, baselineFree, `${label}: equilibrium.freeResidual excluding probe`);
+  }
 }

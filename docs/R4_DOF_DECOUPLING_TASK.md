@@ -327,3 +327,14 @@ golden:fabric-form-solve：<未运行（纯文档）> 或：
 - 偏离任务书：金标准首次运行被外部中断，按 §10 架构师裁定完整重跑。首次目录 R4-1/golden-solve/，中断副本 R4-1/interruption-2026-11-27/（含原日志、RUNNING 报告和首组结果）；完整重跑目录 R4-1/golden-solve-rerun-1/。本步累计中断 1 次，重跑未再次中断；本裁定与实现同次提交。
 - 未做额外性能测量，未做本步的基线耗时对比；七组实际耗时和迭代数写入提交正文。发现未处理的问题：无。
 - 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-1/。
+
+### R4-2（2026-11-28）：通用求解核心与 T1 结果适配器完成
+
+- 基线：963c0348ff4607d92feeee40f8c936580d79812c（R4-1，已推送）。新增 solve/solveFabricModel.js 和 model/t1Reporting.js；入口保留输入校验、锁定处理及兼容导出，T1 模型挂载默认报告适配器。
+- 通用核心按块声明缩放并检查全部块的平衡；额外块的终态残差也进入最终状态判定。T1 结果键序、原算式、观察时机与局部内核梯度约定保持不变；报告读取项结果和诊断使用配置的 id。
+- 新增 (f)–(h) 全部通过，原 model 检查仅追加 88 行、无删除；既有 (a)–(e) 及全部旧检查通过。R2、R3-a、R3-b 研究脚本 node --check 和公共入口导入冒烟通过，未运行研究求解、未改脚本调用。
+- 独立规范和质量静态审查通过后冻结六个代码/检查文件。本轮实际执行全量 validate 50/50（含 golden-eval 7/7）、build 退出 0、标准 golden:fabric-form-solve 一次完整运行 7/7 逐位一致，七组均 CONVERGED。后台进程独立运行，逐阶段日志与退出码保留；提交前直接字节比较确认冻结文件未变，未计算额外文件哈希。本步无中断或重跑。
+- §4.4 耗时仅从标准输出读取：七组合计 390.4283526 s，基线 443.0628754 s，变化 −11.879696%；未超过 +15%。各组耗时、迭代数及基线对比写入提交正文和 verification.json。该单次历史对比不作为性能改进结论，未作额外测量或重复运行。
+- 公开接口新增 solveFabricModel({ model, layout, initial, freeIndices, lockedComponents, scale, energyScale, settings, observer, restoreLockedValues }) 和 createT1Reporting({ bendingTermId, contactTermId } = {})；后者提供 createObserver(params)、formatInfeasible(raw, context)、formatResult(raw, context)。原有入口签名与结果结构不变。
+- 偏离任务书：无。发现未处理的问题：无。
+- 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-2/；完整求解目录为 R4-2/golden-solve/。

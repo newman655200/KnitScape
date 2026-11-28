@@ -40,6 +40,7 @@ import { createDofLayout, T1_DOF_BLOCKS } from "./dofLayout.js";
  * @property {function(object): ConstraintEvaluation} constraintsAt Concatenate all registered constraints.
  * @property {function(object, Float64Array, number): number} safeStep Apply each registered step bound in order.
  * @property {function(object): Object<string, object>} diagnose Collect available term diagnostics by id.
+ * @property {object} [reporting] Optional result adapter with createObserver, formatInfeasible and formatResult.
  */
 
 /**

@@ -2467,7 +2467,7 @@ button.operation-demo-chip { flex-direction: column; gap: 0.05rem; min-width: 2.
 [data-ui="ios"] .ios-dot.error { background: var(--ios-error); }
 [data-ui="ios"] .ios-links { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; margin-left: auto; }
 [data-ui="ios"] .ios-link { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 28px; padding: 0; border: 0; background: transparent; color: var(--ios-tint-text); text-decoration: none; font-size: inherit; }
-[data-ui="ios"] .ios-link.stop,
+[data-ui="ios"] .ios-link.stop { color: var(--ios-error); }
 [data-ui="ios"] .ios-row.stop,
 [data-ui="ios"] .ios-reset { color: var(--ios-c-stop-text); }
 [data-ui="ios"] .ios-error { margin: 0; color: var(--ios-error); white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -2501,7 +2501,7 @@ button.operation-demo-chip { flex-direction: column; gap: 0.05rem; min-width: 2.
 [data-ui="ios"] .ios-progress-step.current .ios-glyph { color: var(--ios-tint); animation: ios-spin 1s linear infinite; }
 [data-ui="ios"] .ios-progress-step.complete .ios-glyph { color: var(--ios-ok); }
 [data-ui="ios"] .ios-progress > p { margin: 12px 0 0; color: var(--ios-sec); font-size: 12px; line-height: 1.45; }
-[data-ui="ios"] .ios-sheet { width: 440px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 48px); padding: 0; border: 0; border-radius: 14px; background: var(--ios-bg); color: var(--ios-label); box-shadow: 0 20px 50px rgba(0, 0, 0, .28); overflow-y: auto; font: inherit; }
+[data-ui="ios"] .ios-sheet { width: 440px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 48px); margin: auto; padding: 0; border: 0; border-radius: 14px; background: var(--ios-bg); color: var(--ios-label); box-shadow: 0 20px 50px rgba(0, 0, 0, .28); overflow-y: auto; font: inherit; }
 [data-ui="ios"] #ft-appearance-sheet { width: 460px; }
 [data-ui="ios"] #ft-export-sheet { width: 380px; }
 [data-ui="ios"] .ios-sheet::backdrop { background: rgba(0, 0, 0, .25); }

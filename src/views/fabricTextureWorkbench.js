@@ -67,15 +67,15 @@ function finish(c, message) {
   c.elapsedMs = 0; endTimer(c); c.phase = "idle"; c.calculating = false; c.status = message;
 }
 const latest = (c, sequence) => current(c) && sequence === c.jobSequence;
-function stopWork(c, message) {
+function stopWork(c, message, { preserveCalculation = false } = {}) {
   // Reject the awaited job as well as terminating its Worker: no suspended chains.
   c.jobSequence++; c.workerCancel?.();
   clearTimeout(c.composeTimer); c.composeTimer = null;
   endTimer(c); c.phase = "idle"; c.elapsedMs = 0; c.status = message;
-  c.calculating = false;
+  c.calculating = preserveCalculation && c.calculating;
 }
 function cancel(c) {
-  const appearance = !c.calculating && ["fabric", "yarn", "waiting"].includes(c.phase);
+  const appearance = !c.calculating;
   stopWork(c, appearance ? "已停止合成。" : "已停止计算。");
   c.stoppedComposition = true; c.cancelledCalculation = !appearance;
   refresh(c);
@@ -184,6 +184,9 @@ async function loadMaterial(c, changed = false) {
   const signal = c.imageAbort.signal, { asset, resolved, pbr } = materialDescription(c), sourceVersion = c.sourceVersion;
   const cacheKey = c.yarnId;
   c.material = null; c.materialLoading = true; c.error = "";
+  if (c.calculating && !isGeometryTask(c)) {
+    startTimer(c, "loading", "正在读取纱线贴图，读取完成后合成…");
+  }
   c.fuzzStrength = resolved.texture?.fuzzStrength ?? 0.45; c.fuzzOverrides = {};
   refresh(c);
   const registry = yarnAssetRegistry.fork();
@@ -208,7 +211,7 @@ async function loadMaterial(c, changed = false) {
     else if (material.baseColor?.channels !== 4 && ["scan", "both"].includes(c.fuzzSource)) c.fuzzSource = "generated";
     c.materialLoading = false;
     if (c.phase === "loading") c.phase = "idle";
-    if (changed && !c.geometry && !isGeometryTask(c) && !c.stoppedComposition) c.status = "纱线已修改，设置参数后点‘计算面料’。";
+    if (changed && !c.geometry && !isGeometryTask(c) && !c.stoppedComposition && c.status !== pendingStructureStatus) c.status = "纱线已修改，设置参数后点‘计算面料’。";
     scheduleComposition(c); refresh(c);
   } catch (error) {
     if (!current(c) || sequence !== c.imageSequence || signal.aborted) return;
@@ -226,20 +229,20 @@ const geometryCurrent = c => c.geometry && c.geometryKey === inputKey(c);
 const structureStale = c => Boolean(c.fabricKey && (c.fabricKey !== inputKey(c) || !geometryCurrent(c)));
 const fabricCurrent = c => c.fabric && !c.fabricDirty && c.fabricKey === inputKey(c) && geometryCurrent(c);
 const staleStatus = "面料结构已修改，预览和数值是修改前的结果。";
+const pendingStructureStatus = "面料结构已修改，点‘计算面料’开始。";
 function updateGeometryInput(c, change, field) {
   const before = inputKey(c); change();
   if (before === inputKey(c)) return;
-  // §6.4 keeps the in-flight solve; its input key prevents publishing it as the new structure.
-  if (!isGeometryTask(c)) stopWork(c, c.fabric ? staleStatus : "面料结构已修改，点‘计算面料’开始。");
+  stopWork(c, c.fabric ? staleStatus : pendingStructureStatus);
   c.fabricDirty = c.fabricKey !== inputKey(c) || c.fabricAppearanceVersion !== c.appearanceVersion;
   c.stripDirty = c.stripKey !== inputKey(c) || c.stripAppearanceVersion !== c.appearanceVersion || c.stripSettings?.stripLengthMm !== c.stripLengthMm;
-  c.stoppedComposition = false;
+  c.stoppedComposition = false; c.cancelledCalculation = false;
   c.changedField = field; c.error = ""; refresh(c);
   if (fabricCurrent(c) && c.phase === "idle") { c.status = completedStatus(c); refresh(c); }
   scheduleComposition(c);
 }
 function invalidateAppearance(c, message) {
-  if (!isGeometryTask(c) && c.phase !== "loading") stopWork(c, message);
+  if (!isGeometryTask(c) && c.phase !== "loading") stopWork(c, message, { preserveCalculation: true });
   c.fabricDirty = c.stripDirty = true; c.stoppedComposition = false; delete c.timings.yarn;
   c.appearanceVersion++;
 }
@@ -256,7 +259,7 @@ function completedStatus(c) {
 }
 function updateStripLength(c, value) {
   if (value === c.stripLengthMm) return;
-  if (!isGeometryTask(c) && c.phase !== "loading") stopWork(c, "单根纱线长度已修改，将在查看或导出时生成。");
+  if (!isGeometryTask(c) && c.phase !== "loading") stopWork(c, "单根纱线长度已修改，将在查看或导出时生成。", { preserveCalculation: true });
   c.stripLengthMm = value; c.stripDirty = true; c.stoppedComposition = false; delete c.timings.yarn; c.error = "";
   scheduleComposition(c); refresh(c);
 }
@@ -276,6 +279,12 @@ function scheduleComposition(c) {
     if (latest(c, sequence)) compose(c, sequence);
   }, 120);
 }
+function resumeComposition(c) {
+  c.stoppedComposition = false; c.cancelledCalculation = false;
+  if (fabricCurrent(c) && (!c.strip || c.stripDirty)) compose(c, c.jobSequence, { includeYarn: true });
+  else scheduleComposition(c);
+  refresh(c);
+}
 
 async function buildYarn(c, sequence) {
   if (c.strip && !c.stripDirty) return c.strip;
@@ -294,7 +303,7 @@ async function buildYarn(c, sequence) {
   return strip;
 }
 
-async function compose(c, sequence = c.jobSequence) {
+async function compose(c, sequence = c.jobSequence, { includeYarn = false } = {}) {
   if (!latest(c, sequence) || !geometryCurrent(c) || !c.material || c.materialLoading || c.worker) return;
   c.error = "";
   try {
@@ -305,9 +314,10 @@ async function compose(c, sequence = c.jobSequence) {
       if (!latest(c, sequence)) return;
       c.fabric = fabric; c.settings = settings; c.fabricDirty = false; c.fabricKey = key;
       c.fabricAppearanceVersion = c.appearanceVersion;
-      c.displayResult = result; c.timings.fabric = performance.now() - started; c.revision++; refresh(c);
+      c.displayResult = result; c.timings.fabric = performance.now() - started; c.revision++;
     }
-    if (GLOBAL_STATE.fabricTextureView.face === "yarn" && (!c.strip || c.stripDirty)) await buildYarn(c, sequence);
+    c.calculating = false; refresh(c);
+    if ((includeYarn || GLOBAL_STATE.fabricTextureView.face === "yarn") && (!c.strip || c.stripDirty)) await buildYarn(c, sequence);
     if (!latest(c, sequence)) return;
     finish(c, completedStatus(c)); refresh(c);
   } catch (error) {
@@ -317,20 +327,19 @@ async function compose(c, sequence = c.jobSequence) {
 }
 
 async function calculate(c) {
-  if (!current(c) || c.materialLoading || !c.material) return;
+  if (!current(c) || !c.material && !c.materialLoading) return;
   stopWork(c, ""); c.fabricDirty = c.stripDirty = true; c.stoppedComposition = false; c.cancelledCalculation = false; c.error = "";
   c.calculating = true; c.calculationStarted = performance.now();
   const sequence = c.jobSequence;
   try {
     if (!(Number.isFinite(c.input.loopLengthMm) && c.input.loopLengthMm > 0)) throw new Error("纱长必须为正数（mm）。");
     createFabricFormParams(c.input.params);
-    normalizeFuzzParameters(c.material, { ...c.fuzzOverrides, fuzzStrength: c.fuzzStrength, fuzzSource: c.fuzzSource });
+    if (c.material) normalizeFuzzParameters(c.material, { ...c.fuzzOverrides, fuzzStrength: c.fuzzStrength, fuzzSource: c.fuzzSource });
     const key = inputKey(c);
     if (!c.geometry || c.geometryKey !== key) {
       const data = await runWorker(c, sequence, "geometry", { solveInput: c.input, pxPerMm: c.pxPerMm });
       if (!latest(c, sequence)) return;
-      // Inputs can change without interrupting the solve. Never replace the active
-      // cache with a late result for different inputs (exports also reuse this cache).
+      // Check the input key as well before publishing into the reusable cache.
       if (key !== inputKey(c)) {
         finish(c, fabricCurrent(c) ? completedStatus(c) : c.fabric ? staleStatus : "面料结构已修改，点‘计算面料’重新计算。");
         scheduleComposition(c); refresh(c); return;
@@ -544,24 +553,24 @@ function progressCard(c) {
   const currentStep = yarn ? 0 : stage;
   const elapsed = !yarn && c.calculating ? Math.max(0, performance.now() - c.calculationStarted) : c.elapsedMs;
   return html`<div class="ios-progress" aria-label=${yarn ? "正在生成单根纱线贴图" : "正在计算面料"}>
-    <h3>${yarn ? "正在生成单根纱线贴图" : "正在计算面料"} <span>· 已用 ${number(elapsed / 1000, 0)} 秒</span></h3>
+    <h3>${yarn ? "正在生成单根纱线贴图" : "正在计算面料"} <span>已用 ${number(elapsed / 1000, 0)} 秒</span></h3>
     <div class="ios-progress-track" aria-hidden="true">${steps.map((_, index) => html`<span class=${index < currentStep ? "complete" : index === currentStep ? "current" : ""}></span>`)}</div>
     <ol>${steps.map((label, index) => html`<li class=${`ios-progress-step ${index < currentStep ? "complete" : index === currentStep ? "current" : ""}`}>
       <span aria-hidden="true">${index < currentStep ? glyph("check") : index === currentStep ? glyph("spinner") : "○"}</span>${label}</li>`)}</ol>
     <p>${yarn ? "生成后可预览或导出纱线贴图。" : "计算时可以继续调外观，完成后按最新设置出图。"}</p>
+    ${yarn ? html`<button type="button" id="ft-stop-yarn" class="ios-link stop" @click=${() => cancel(c)}>停止</button>` : null}
   </div>`;
 }
 function previewNotice(c, hasPreview, stale) {
-  if (!hasPreview || !stale) return null;
+  if ((!hasPreview || !stale) && !(c.stoppedComposition && !c.cancelledCalculation)) return null;
   if (structureStale(c)) return html`<div class="ios-notice"><span class="ios-dot warning"></span>
     ${c.changedField === "loopLengthMm" ? `纱长已改为 ${number(c.input.loopLengthMm, 2)} mm，点‘重新计算’更新` : "面料结构已修改，点‘重新计算’更新"}</div>`;
   if (c.stoppedComposition) return html`<div class="ios-notice"><span class="ios-dot stopped"></span>
-    ${c.cancelledCalculation ? "已停止计算，下方为修改前的预览。" : "已停止合成，下方为修改前的预览。"}
-    <button type="button" class="ios-link" id="ft-recompose" @click=${() => {
-      c.stoppedComposition = false; scheduleComposition(c); refresh(c);
-    }}>重新合成</button></div>`;
+    ${c.cancelledCalculation ? "已停止计算，下方为修改前的预览。" : hasPreview && stale ? "已停止合成，下方为修改前的预览。" : "已停止合成。"}
+    <button type="button" class="ios-link" id="ft-recompose" @click=${() => resumeComposition(c)}>重新合成</button></div>`;
   if (c.error) return html`<div class="ios-notice"><span class="ios-dot error"></span>下方为修改前的预览。</div>`;
-  return html`<div class="ios-notice"><span class="ios-dot busy"></span>正在按新设置更新…（下方为修改前的预览）</div>`;
+  return html`<div class="ios-notice"><span class="ios-dot busy"></span>正在按新设置更新…（下方为修改前的预览）
+    <button type="button" id="ft-stop-composition" class="ios-link stop" @click=${() => cancel(c)}>停止</button></div>`;
 }
 export function fabricTextureWorkbench() {
   if (!active()) { if (controller) dispose(controller); return null; }
@@ -607,11 +616,11 @@ export function fabricTextureWorkbench() {
         <button id="ft-more-parameters" type="button" class="ios-row" @click=${event => openSheet(c, "ft-parameters-sheet", event)}>
           ${rowLabel("o_more", "更多参数")}<span class="ios-row-value">精度 · 材料 · 假设值${glyph("chevron")}</span></button>
       </div><p class="ios-section-footer">纱线库目前只管外观，计算用的线密度在这里填。</p></section>
-      <div><button id="ft-calculate" type="button" class=${`ios-btn-primary ${busy ? "ios-stop" : ""}`}
-        ?disabled=${!busy && (c.materialLoading || !c.material || calculationUnchanged && !c.cancelledCalculation)}
-        @click=${() => busy ? cancel(c) : calculate(c)}>${glyph(busy ? "stop" : structureChanged ? "recalculate" : "calculate", 18)}
-        ${busy ? "停止计算" : structureChanged ? "重新计算" : "计算面料"}</button>
-        <p class="ios-action-note">${busy ? "可随时停止" : calculationUnchanged && !c.cancelledCalculation ? "面料结构未改动，不用重新计算"
+      <div><button id="ft-calculate" type="button" class=${`ios-btn-primary ${c.calculating ? "ios-stop" : ""}`}
+        ?disabled=${!c.calculating && (!c.material && !c.materialLoading || calculationUnchanged)}
+        @click=${() => c.calculating ? cancel(c) : calculate(c)}>${glyph(c.calculating ? "stop" : structureChanged ? "recalculate" : "calculate", 18)}
+        ${c.calculating ? "停止计算" : structureChanged ? "重新计算" : "计算面料"}</button>
+        <p class="ios-action-note">${c.calculating ? "可随时停止" : calculationUnchanged ? "面料结构未改动，不用重新计算"
           : c.input.nodesPerLoop === 64 ? "约 1～3 分钟" : c.input.nodesPerLoop === 24 ? "比标准快" : "约半分钟到一分钟"}</p></div>
       <section>${sectionHeader("外观", "quick", "不重新计算 · 通常几秒")}<div class="ios-group">
         <label class="ios-row">${rowLabel("b_yarn", "纱线外观")}<span class="ios-row-value"><span class="ios-swatch" style=${`background:${resolved.color}`}></span>
@@ -641,7 +650,10 @@ export function fabricTextureWorkbench() {
       <span class="ios-section-footer">切换视图和平铺只换显示，不计算</span></div>
       <div class="ios-well" aria-label="面料纹理预览">
         ${hasPreview ? html`<canvas id="ft-preview-canvas" class=${`ios-canvas ${stale ? "ios-stale" : ""}`} aria-label="带毫米比例尺的纹理预览"></canvas>`
-          : html`<div class="ios-empty">${glyph("empty", 52)}<h2>还没有面料预览</h2><p>在左侧选纱线、填纱长，然后点‘计算面料’。这里会显示可平铺的面料纹理和毫米比例尺。</p></div>`}
+          : showProgress ? null : view.face === "yarn" && c.stoppedComposition && !c.cancelledCalculation
+            ? html`<div class="ios-empty">${glyph("empty", 52)}<h2>单根纱线贴图未生成</h2>
+                <button type="button" id="ft-generate-yarn" class="ios-link" @click=${() => resumeComposition(c)}>生成</button></div>`
+            : html`<div class="ios-empty">${glyph("empty", 52)}<h2>还没有面料预览</h2><p>在左侧选纱线、填纱长，然后点‘计算面料’。这里会显示可平铺的面料纹理和毫米比例尺。</p></div>`}
         ${showProgress ? progressCard(c) : previewNotice(c, hasPreview, stale)}
       </div>
       ${result && result.status !== "CONVERGED" ? html`<p class="ios-warning">求解未收敛，以下数值仅供参考</p>` : null}

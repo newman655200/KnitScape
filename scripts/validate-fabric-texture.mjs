@@ -12,6 +12,7 @@ import { decodePng } from "./lib/fabric-texture-png.mjs";
 import { validatePngCodec } from "./lib/fabric-texture-png-checks.mjs";
 import { assertNormalMap, assertNormalPng } from "./lib/fabric-texture-normal-checks.mjs";
 import { validateFuzzTexture } from "./lib/fabric-texture-fuzz-checks.mjs";
+import { validateTangentPassageTexture } from "./lib/fabric-texture-tangent-passage-checks.mjs";
 
 // Fixed T6a §4.1 acceptance thresholds. A failed item stops this script immediately.
 const cases = ["step3-hossain-2.84-after", "step4-case-4-N48"].map(name => ({
@@ -226,4 +227,6 @@ for (let i = 0; i < g.coverage.length; i++) if (g.coverage[i]) {
 near(sectionNormalError, 0, 1e-6, "(m) normal cross-section removal"); near(sectionAoError, 0, 1e-6, "(m) AO cross-section removal");
 report("m", { sectionNormalError, sectionAoError, baseNormalChecks, sectionNormalChecks });
 await validateFuzzTexture({ params, center, straightGeometry, hossain, strongNormal });
-console.log("fabric-texture: all T6a-1/T6a-2 checks (a)-(j), (l)-(s) passed.");
+const t6a3Part0 = await validateTangentPassageTexture({ baked });
+console.log("T6A3_PART0_CHECKS_JSON " + JSON.stringify(t6a3Part0));
+console.log("fabric-texture: all T6a-1/T6a-2/T6a-3 part 0 checks (a)-(j), (l)-(u) passed.");

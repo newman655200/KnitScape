@@ -137,7 +137,7 @@ function visitSegmentPixels(a, b, radius, grid, visit) {
     const j0 = Math.max(0, Math.ceil((minY + oy) / dy - 0.5));
     const j1 = Math.min(height - 1, Math.floor((maxY + oy) / dy - 0.5));
     for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
-      visit((height - 1 - j) * width + i, (i + 0.5) * dx - ox, (j + 0.5) * dy - oy);
+      visit((height - 1 - j) * width + i, (i + 0.5) * dx - ox, (j + 0.5) * dy - oy, p, q);
     }
   }
 }
@@ -167,10 +167,29 @@ function haloNoise(s, transverse, length, fiberDiameter, seed) {
   return a * (1 - fy) + b * fy;
 }
 
+function nearestCandidate(old, candidate) {
+  if (!candidate) return old;
+  return !old || candidate.distance < old.distance ||
+    (candidate.distance === old.distance && candidate.z > old.z) ? candidate : old;
+}
+
+function passageRoot(passage) {
+  let root = passage;
+  while (root.parent) root = root.parent;
+  while (passage.parent) {
+    const next = passage.parent;
+    passage.parent = root;
+    passage = next;
+  }
+  return root;
+}
+
 /** Bake scans, fibers and halo into at most eight visible fragments per pixel.
  * Fragments carry {z,alpha,color,normal,roughness,metallic,kind}; colors/scalars
- * are unpremultiplied 0..1. Fiber closest-point selection is across the entire
- * polyline and every periodic image, giving at most one fragment per fiber.
+ * are unpremultiplied 0..1. Scan/halo each keep the closest candidate per continuous
+ * centerline passage, joined across periodic endpoints. Fiber closest-point
+ * selection is across the entire polyline and every periodic image, giving at
+ * most one fragment per fiber. Multi-passage counts describe the final top eight.
  */
 export function bakeYarnFuzz(centerline, geometry, material,
   { parameters, fibers, fiberDiameterMm, periodicY = geometry.periodicY ?? true }) {
@@ -181,7 +200,8 @@ export function bakeYarnFuzz(centerline, geometry, material,
   fibers ??= generateYarnFibers(centerline, parameters, { fiberDiameterMm });
   const haloEnabled = generated && parameters.haloStrength > 0;
   const diagnostics = { fiberCount: generated ? fibers.length : 0, fiberDiameterMm, fuzzPixelCount: 0,
-    fuzzPixelFraction: 0, scanPixelCount: 0, haloPixelCount: 0, haloEnabled };
+    fuzzPixelFraction: 0, scanPixelCount: 0, haloPixelCount: 0, haloEnabled,
+    multiPassagePixelCount: 0, scanMultiPassagePixelCount: 0, haloMultiPassagePixelCount: 0 };
   if (parameters.fuzzSource === "off") return { fragments, diagnostics };
   const grid = { ...geometry, periodicY }, sign = geometry.face === "technicalFace" ? -1 : 1;
   const transform = point => [sign * point[0], point[1], sign * point[2]];
@@ -193,38 +213,69 @@ export function bakeYarnFuzz(centerline, geometry, material,
     list.sort((a, b) => b.z - a.z);
     if (list.length > 8) list.length = 8;
   };
-  const keepHighest = (target, index, candidate, distance) => {
-    const old = target[index];
-    if (!old || candidate.z > old.z || (candidate.z === old.z && distance < old.distance)) target[index] = { ...candidate, distance };
-  };
   if (scan || haloEnabled) {
-    const scanLayer = new Array(count), haloLayer = new Array(count);
+    const pixelImages = new Array(count);
     const scanRadius = scan ? material.rho * radius : 0;
     const haloRadius = haloEnabled ? radius * (1 + 4 * parameters.haloWidthR) : 0;
+    const influenceRadius = Math.max(scanRadius, haloRadius);
     const points = centerline.points.map(transform);
-    for (let segment = 0; segment < points.length - 1; segment++) {
+    const segmentCount = points.length - 1;
+    const [periodP, periodQ] = centerline.diagnostics.periodicLatticeOffset;
+    for (let segment = 0; segment < segmentCount; segment++) {
       const a = points[segment], b = points[segment + 1];
       const arc = centerline.arcLengths[segment], arcLength = centerline.arcLengths[segment + 1] - arc;
-      visitSegmentPixels(a, b, Math.max(scanRadius, haloRadius), grid, (index, x, y) => {
+      visitSegmentPixels(a, b, influenceRadius, grid, (index, x, y, screenP, q) => {
         const closest = closestProjection(a, b, x, y), distance = closest.distance;
+        if (distance > influenceRadius) return;
+        // Image keys use the material lattice: technicalFace reverses image x.
+        // Geometry establishes continuity before visibility/alpha filter candidates.
+        const p = sign * screenP, key = `${p},${q}`;
+        const images = pixelImages[index] ??= new Map();
+        let image = images.get(key);
+        if (!image) images.set(key, image = { p, q, passages: [] });
+        let passage = image.passages.at(-1);
+        if (!passage || passage.last !== segment - 1) {
+          passage = { first: segment, last: segment, scan: null, halo: null };
+          image.passages.push(passage);
+        } else passage.last = segment;
         if (distance <= radius || (geometry.coverage[index] && closest.z <= geometry.heights[index])) return;
         const s = arc + closest.u * arcLength, w = closest.signedDistance / radius;
         if (scan && distance <= scanRadius) {
           const sample = sampleYarnFuzzMaterial(material, s, w);
-          if (sample.alpha >= 1 / 255) keepHighest(scanLayer, index,
-            { ...sample, z: closest.z, normal: [0, 0, 1], kind: "scan" }, distance);
+          if (sample.alpha >= 1 / 255) passage.scan = nearestCandidate(passage.scan,
+            { ...sample, z: closest.z, normal: [0, 0, 1], kind: "scan", distance });
         }
         if (haloEnabled && distance < haloRadius) {
           const alpha = parameters.haloStrength * Math.exp(-(distance - radius) / (parameters.haloWidthR * radius)) *
             (0.4 + 0.6 * haloNoise(s, w, centerline.lengthMm, fiberDiameterMm, parameters.seed));
-          keepHighest(haloLayer, index, { z: closest.z, alpha, normal: [0, 0, 1], color: material.averageColor,
-            roughness: material.averageRoughness, metallic: material.averageMetallic, kind: "halo" }, distance);
+          passage.halo = nearestCandidate(passage.halo, { z: closest.z, alpha, normal: [0, 0, 1], color: material.averageColor,
+            roughness: material.averageRoughness, metallic: material.averageMetallic, kind: "halo", distance });
         }
       });
     }
     for (let i = 0; i < count; i++) {
-      if (scanLayer[i]) { add(i, scanLayer[i]); diagnostics.scanPixelCount++; }
-      if (haloLayer[i]) { add(i, haloLayer[i]); diagnostics.haloPixelCount++; }
+      const images = pixelImages[i];
+      if (!images) continue;
+      // The last segment in (p,q) meets segment zero in (p+p_D,q+q_D).
+      // Union roots also handles a passage spanning several complete images.
+      for (const image of images.values()) {
+        const last = image.passages.at(-1);
+        const next = images.get(`${image.p + periodP},${image.q + periodQ}`)?.passages[0];
+        if (last.last !== segmentCount - 1 || next?.first !== 0) continue;
+        const from = passageRoot(last), to = passageRoot(next);
+        if (from === to) continue;
+        to.scan = nearestCandidate(to.scan, from.scan);
+        to.halo = nearestCandidate(to.halo, from.halo);
+        from.parent = to;
+      }
+      let hasScan = false, hasHalo = false;
+      for (const image of images.values()) for (const passage of image.passages) {
+        if (passage.parent) continue;
+        if (passage.scan) { add(i, passage.scan); hasScan = true; }
+        if (passage.halo) { add(i, passage.halo); hasHalo = true; }
+      }
+      diagnostics.scanPixelCount += Number(hasScan);
+      diagnostics.haloPixelCount += Number(hasHalo);
     }
   }
   if (generated) for (const fiber of fibers) {
@@ -248,7 +299,14 @@ export function bakeYarnFuzz(centerline, geometry, material,
       alpha: parameters.fiberOpacity * Math.exp(-0.5 * (closest.distance / (0.8 * rf)) ** 2),
       color, normal: closest.normal, roughness: material.averageRoughness, metallic: material.averageMetallic, kind: "fiber" });
   }
-  for (const list of fragments) if (list?.length) diagnostics.fuzzPixelCount++;
+  for (const list of fragments) if (list?.length) {
+    diagnostics.fuzzPixelCount++;
+    const scanCount = list.filter(fragment => fragment.kind === "scan").length;
+    const haloCount = list.filter(fragment => fragment.kind === "halo").length;
+    diagnostics.scanMultiPassagePixelCount += Number(scanCount >= 2);
+    diagnostics.haloMultiPassagePixelCount += Number(haloCount >= 2);
+    diagnostics.multiPassagePixelCount += Number(scanCount >= 2 || haloCount >= 2);
+  }
   diagnostics.fuzzPixelFraction = diagnostics.fuzzPixelCount / count;
   return { fragments, diagnostics };
 }

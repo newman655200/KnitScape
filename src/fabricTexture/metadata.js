@@ -64,7 +64,8 @@ export function createTextureMetadata({ result, geometry, composed, material, so
     rendering: { crossSection: "circle", diameterMm: params.d_e, diameterProvenance: params.provenance.d_e,
       centerline: "centripetal Catmull-Rom alpha=0.5; interpolates every solver node",
       maximumSampleSpacingMm: params.d_e / 24, centerlineDiagnostics: geometry.centerline.diagnostics,
-      ao: { directions: 16, radiusMm: 2 * params.d_e, emptyHeight: "heightMinMm - diameterMm" } },
+      ao: { method: "horizonRelativeToTangent", directions: 16, radiusMm: 2 * params.d_e,
+        emptyHeight: "heightMinMm - diameterMm" } },
     faces: Object.fromEntries(Object.entries(geometry.faces).map(([face, value]) => [face, {
       heightMinMm: value.heightMinMm, heightMaxMm: value.heightMaxMm, ...value.diagnostics,
       visibleHemisphere: { ...composed[face].diagnostics.visibleHemisphere },
@@ -92,7 +93,7 @@ export function createYarnStripMetadata({ params, geometry, composed, material, 
       heightMinMm: composed.heightMinMm, heightMaxMm: composed.heightMaxMm },
     yarn: describeYarn(material, sourceMaterial, params.fiberDiameterMm, fuzzParameters, { yarn: fuzz }, repositoryRoot),
     rendering: { crossSection: "circle", diameterMm: params.d_e, diameterProvenance: params.provenance.d_e,
-      centerline: "straight +x", ao: { directions: 16, radiusMm: 2 * params.d_e } },
+      centerline: "straight +x", ao: { method: "horizonRelativeToTangent", directions: 16, radiusMm: 2 * params.d_e } },
     diagnostics: { ...geometry.diagnostics, visibleHemisphere: composed.diagnostics.visibleHemisphere, fuzz: fuzz.diagnostics },
     limitations: [...FABRIC_TEXTURE_LIMITATIONS],
   };

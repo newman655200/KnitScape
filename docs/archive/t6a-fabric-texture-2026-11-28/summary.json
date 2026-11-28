@@ -4782,5 +4782,726 @@
         }
       ]
     }
+  },
+  "t6a3Part0": {
+    "step": "T6a-3 part 0",
+    "generatorVersion": "67ecf6fc52f4162bc651dd648f27f61be8cc9d4c-dirty",
+    "pxPerMm": 200,
+    "aoMethod": "horizonRelativeToTangent",
+    "validation": {
+      "t": {
+        "plane": {
+          "bitwiseIdentical": true,
+          "pixels": 7680,
+          "minAo": 0.5173446167016957,
+          "maxAo": 1
+        },
+        "isolatedYarn": {
+          "pxPerMm": 200,
+          "diameterMm": 0.1971738911486305,
+          "fuzzSource": "off",
+          "selectedPixels": 25600,
+          "minAo": 0.879075737593256,
+          "oldMinAo": 0.7182385318209408,
+          "normalChecks": {
+            "unit": {
+              "minZ": 0.12941176470588234,
+              "maxLengthError": 0.0035155428935380595,
+              "pixels": 99200
+            },
+            "tiled": {
+              "minZ": 0.12941176470588234,
+              "maxLengthError": 0.0035155428935380595,
+              "pixels": 99200
+            },
+            "exported": {
+              "minZ": 0.12941176470588234,
+              "maxLengthError": 0.0035155428935380595,
+              "pixels": 99200
+            },
+            "png": {
+              "minZ": 0.12941176470588234,
+              "maxLengthError": 0.0035155428935380595,
+              "pixels": 99200
+            }
+          }
+        },
+        "fabricMeans": [
+          {
+            "name": "hossain-2.84",
+            "face": "technicalFace",
+            "corePixelCount": 13996,
+            "oldMean": 0.5952988282268651,
+            "newMean": 0.6007416458378529
+          },
+          {
+            "name": "hossain-2.84",
+            "face": "technicalBack",
+            "corePixelCount": 13996,
+            "oldMean": 0.6247875373901393,
+            "newMean": 0.6301228860898477
+          },
+          {
+            "name": "case-3-N48",
+            "face": "technicalFace",
+            "corePixelCount": 15460,
+            "oldMean": 0.5967766330606357,
+            "newMean": 0.6044072091418277
+          },
+          {
+            "name": "case-3-N48",
+            "face": "technicalBack",
+            "corePixelCount": 15460,
+            "oldMean": 0.6236200052592413,
+            "newMean": 0.6349061873250922
+          },
+          {
+            "name": "case-4-N48",
+            "face": "technicalFace",
+            "corePixelCount": 23438,
+            "oldMean": 0.6261297236208319,
+            "newMean": 0.6773893591087414
+          },
+          {
+            "name": "case-4-N48",
+            "face": "technicalBack",
+            "corePixelCount": 23438,
+            "oldMean": 0.6601379441490377,
+            "newMean": 0.7050875194877549
+          }
+        ]
+      },
+      "u": {
+        "startInvariance": {
+          "name": "case-3-N48",
+          "face": "technicalFace",
+          "fuzzSource": "scan",
+          "pxPerMm": 200,
+          "shiftedEdges": 24,
+          "maps": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "opacity": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "ambientOcclusion": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            }
+          },
+          "pixelCount": 16786,
+          "differingPixels": 0,
+          "differingFraction": 0,
+          "normalChecks": {
+            "original": {
+              "unit": {
+                "minZ": 0.03529411764705892,
+                "maxLengthError": 0.006331360245143802,
+                "pixels": 16786
+              },
+              "tiled": {
+                "minZ": 0.03529411764705892,
+                "maxLengthError": 0.006331360245143802,
+                "pixels": 16786
+              }
+            },
+            "shifted": {
+              "unit": {
+                "minZ": 0.03529411764705892,
+                "maxLengthError": 0.006331360245143802,
+                "pixels": 16786
+              },
+              "tiled": {
+                "minZ": 0.03529411764705892,
+                "maxLengthError": 0.006331360245143802,
+                "pixels": 16786
+              }
+            }
+          }
+        },
+        "multiplePassages": {
+          "multiPassagePixelCount": 7576,
+          "scanMultiPassagePixelCount": 7576,
+          "haloMultiPassagePixelCount": 0
+        },
+        "singlePassage": {
+          "prefix": "strip_scan-both-medium",
+          "pxPerMm": 200,
+          "stripLengthMm": 4,
+          "diameterMm": 0.1960864359761643,
+          "fuzzSource": "both",
+          "fuzzStrength": 0.5,
+          "prefilter": {
+            "method": "boxPrefilter",
+            "enabled": true,
+            "k_U": 2.715,
+            "k_V": 2.702889658642301,
+            "f_U": 3,
+            "f_V": 3,
+            "maps": {
+              "baseColor": {
+                "k_U": 2.715,
+                "k_V": 2.702889658642301,
+                "f_U": 3,
+                "f_V": 3
+              },
+              "roughness": {
+                "k_U": 2.715,
+                "k_V": 2.702889658642301,
+                "f_U": 3,
+                "f_V": 3
+              }
+            }
+          },
+          "maps": {
+            "baseColor": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "normal": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "roughness": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            },
+            "height": {
+              "maxDifference": 0,
+              "differingPixels": 0,
+              "differingFraction": 0
+            }
+          },
+          "pixelCount": 577600,
+          "differingPixels": 0,
+          "differingFraction": 0,
+          "normalChecks": {
+            "current": {
+              "unit": {
+                "minZ": 0.11372549019607847,
+                "maxLengthError": 0.00615504378139875,
+                "pixels": 577600
+              },
+              "tiled": {
+                "minZ": 0.11372549019607847,
+                "maxLengthError": 0.00615504378139875,
+                "pixels": 577600
+              },
+              "exported": {
+                "minZ": 0.11372549019607847,
+                "maxLengthError": 0.00615504378139875,
+                "pixels": 577600
+              },
+              "png": {
+                "minZ": 0.11372549019607847,
+                "maxLengthError": 0.00615504378139875,
+                "pixels": 577600
+              }
+            },
+            "previous": {
+              "minZ": 0.11372549019607847,
+              "maxLengthError": 0.00615504378139875,
+              "pixels": 577600
+            }
+          }
+        }
+      }
+    },
+    "cases": [
+      {
+        "name": "hossain-2.84",
+        "material": "white-gray-yarn",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 76,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 11183,
+              "fuzzPixelFraction": 0.7405960264900662,
+              "scanPixelCount": 5263,
+              "haloPixelCount": 6552,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 6550,
+              "scanMultiPassagePixelCount": 2875,
+              "haloMultiPassagePixelCount": 6550
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 76,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 10321,
+              "fuzzPixelFraction": 0.6835099337748345,
+              "scanPixelCount": 4495,
+              "haloPixelCount": 6268,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 6265,
+              "scanMultiPassagePixelCount": 2474,
+              "haloMultiPassagePixelCount": 6262
+            }
+          }
+        },
+        "normalChecks": {
+          "hossain-2.84_scan-both-medium_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006093149935492259,
+            "pixels": 15100
+          },
+          "hossain-2.84_scan-both-medium_technicalBack_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.005969373805238876,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 43.05459999999994,
+          "technicalFaceGeometryMs": 79.78360000000009,
+          "technicalFaceAoMs": 769.8411,
+          "technicalBackGeometryMs": 73.15650000000005,
+          "technicalBackAoMs": 782.3315,
+          "materialMs": 339.5693000000001,
+          "fibersMs": 3.566000000000713,
+          "technicalFaceFuzzMs": 2659.9916000000003,
+          "technicalFaceComposeMs": 85.95399999999972,
+          "technicalFaceEncodeMs": 31.629699999999502,
+          "technicalBackFuzzMs": 2491.484700000001,
+          "technicalBackComposeMs": 91.13190000000031,
+          "technicalBackEncodeMs": 19.65229999999974
+        }
+      },
+      {
+        "name": "case-3-N48",
+        "material": "white-gray-yarn",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1463402026620193,
+            "heightMaxMm": 0.19494463578394788,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.6152652005174645,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 12531,
+              "fuzzPixelFraction": 0.7465149529369712,
+              "scanPixelCount": 5909,
+              "haloPixelCount": 7642,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 7606,
+              "scanMultiPassagePixelCount": 2855,
+              "haloMultiPassagePixelCount": 7606
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.08441058686376474,
+            "heightMaxMm": 0.2494308283725636,
+            "coverageFraction": 0.9210055999046824,
+            "legFraction": 0.05271668822768435,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 15460,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 80,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 11472,
+              "fuzzPixelFraction": 0.6834266650780412,
+              "scanPixelCount": 4968,
+              "haloPixelCount": 7553,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 7538,
+              "scanMultiPassagePixelCount": 2564,
+              "haloMultiPassagePixelCount": 7527
+            }
+          }
+        },
+        "normalChecks": {
+          "case-3-N48_scan-both-medium_technicalFace_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006031259943678924,
+            "pixels": 16786
+          },
+          "case-3-N48_scan-both-medium_technicalBack_normal.png": {
+            "minZ": 0.03529411764705892,
+            "maxLengthError": 0.006270230608479643,
+            "pixels": 16786
+          }
+        },
+        "timings": {
+          "centerlineMs": 32.02990000000045,
+          "technicalFaceGeometryMs": 79.55859999999984,
+          "technicalFaceAoMs": 818.9453000000003,
+          "technicalBackGeometryMs": 66.58719999999994,
+          "technicalBackAoMs": 771.4554000000003,
+          "materialMs": 283.4310999999998,
+          "fibersMs": 3.370100000000093,
+          "technicalFaceFuzzMs": 2851.2065000000002,
+          "technicalFaceComposeMs": 97.1947999999993,
+          "technicalFaceEncodeMs": 8.657100000000355,
+          "technicalBackFuzzMs": 2840.957299999998,
+          "technicalBackComposeMs": 106.88409999999931,
+          "technicalBackEncodeMs": 9.91609999999855
+        }
+      },
+      {
+        "name": "case-4-N48",
+        "material": "white-gray-yarn",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.1670681433028517,
+            "heightMaxMm": 0.1923614876854044,
+            "coverageFraction": 0.7138767056530214,
+            "legFraction": 0.5834542196433142,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 23438,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 107,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 26473,
+              "fuzzPixelFraction": 0.806317007797271,
+              "scanPixelCount": 13689,
+              "haloPixelCount": 21351,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 20714,
+              "scanMultiPassagePixelCount": 2769,
+              "haloMultiPassagePixelCount": 20657
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.09045354227486954,
+            "heightMaxMm": 0.2706560305987744,
+            "coverageFraction": 0.7138767056530214,
+            "legFraction": 0.2107688369314788,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 23438,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 107,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 25199,
+              "fuzzPixelFraction": 0.7675134015594542,
+              "scanPixelCount": 12600,
+              "haloPixelCount": 21040,
+              "haloEnabled": true,
+              "multiPassagePixelCount": 20573,
+              "scanMultiPassagePixelCount": 2732,
+              "haloMultiPassagePixelCount": 20469
+            }
+          }
+        },
+        "normalChecks": {
+          "case-4-N48_scan-both-medium_technicalFace_normal.png": {
+            "minZ": 0.050980392156862786,
+            "maxLengthError": 0.006464570847540818,
+            "pixels": 32832
+          },
+          "case-4-N48_scan-both-medium_technicalBack_normal.png": {
+            "minZ": 0.050980392156862786,
+            "maxLengthError": 0.006216941482118599,
+            "pixels": 32832
+          }
+        },
+        "timings": {
+          "centerlineMs": 44.32899999999972,
+          "technicalFaceGeometryMs": 112.16579999999976,
+          "technicalFaceAoMs": 1137.8589000000002,
+          "technicalBackGeometryMs": 91.83529999999973,
+          "technicalBackAoMs": 1144.2744000000002,
+          "materialMs": 307.6106,
+          "fibersMs": 7.5230999999985215,
+          "technicalFaceFuzzMs": 5438.452499999999,
+          "technicalFaceComposeMs": 172.2072999999982,
+          "technicalFaceEncodeMs": 14.810199999999895,
+          "technicalBackFuzzMs": 5165.3711,
+          "technicalBackComposeMs": 159.55839999999807,
+          "technicalBackEncodeMs": 12.674600000002101
+        }
+      },
+      {
+        "name": "hossain-2.84",
+        "material": "solid",
+        "fuzzSource": "off",
+        "faces": {
+          "technicalFace": {
+            "heightMinMm": -0.12400222830984824,
+            "heightMaxMm": 0.21650486313773598,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.6453272363532437,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false,
+              "multiPassagePixelCount": 0,
+              "scanMultiPassagePixelCount": 0,
+              "haloMultiPassagePixelCount": 0
+            }
+          },
+          "technicalBack": {
+            "heightMinMm": -0.10366484640437182,
+            "heightMaxMm": 0.2257786443914685,
+            "coverageFraction": 0.9268874172185431,
+            "legFraction": 0.024935695913118033,
+            "visibleHemisphere": {
+              "constrainedPixelCount": 0,
+              "corePixelCount": 13996,
+              "constrainedCoreFraction": 0,
+              "maxAngleDeg": 0,
+              "medianAngleDeg": 0
+            },
+            "fuzz": {
+              "fiberCount": 0,
+              "fiberDiameterMm": 0.021,
+              "fuzzPixelCount": 0,
+              "fuzzPixelFraction": 0,
+              "scanPixelCount": 0,
+              "haloPixelCount": 0,
+              "haloEnabled": false,
+              "multiPassagePixelCount": 0,
+              "scanMultiPassagePixelCount": 0,
+              "haloMultiPassagePixelCount": 0
+            }
+          }
+        },
+        "normalChecks": {
+          "hossain-2.84_solid_technicalFace_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.006526487833136807,
+            "pixels": 15100
+          },
+          "hossain-2.84_solid_technicalBack_normal.png": {
+            "minZ": 0.0117647058823529,
+            "maxLengthError": 0.005969373805238987,
+            "pixels": 15100
+          }
+        },
+        "timings": {
+          "centerlineMs": 43.05459999999994,
+          "technicalFaceGeometryMs": 79.78360000000009,
+          "technicalFaceAoMs": 769.8411,
+          "technicalBackGeometryMs": 73.15650000000005,
+          "technicalBackAoMs": 782.3315,
+          "materialMs": 0.7775000000001455,
+          "fibersMs": 0.04050000000279397,
+          "technicalFaceFuzzMs": 0.05129999999917345,
+          "technicalFaceComposeMs": 35.742999999998574,
+          "technicalFaceEncodeMs": 6.140999999999622,
+          "technicalBackFuzzMs": 0.07019999999829452,
+          "technicalBackComposeMs": 30.317199999997683,
+          "technicalBackEncodeMs": 7.090200000002369
+        }
+      }
+    ],
+    "yarnStrips": [
+      {
+        "prefix": "strip_scan-both-medium",
+        "fuzzSource": "both",
+        "fuzzStrength": 0.5,
+        "diagnostics": {
+          "coverageFraction": 0.055401662049861494,
+          "legFraction": 0,
+          "visibleHemisphere": {
+            "constrainedPixelCount": 0,
+            "corePixelCount": 32000,
+            "constrainedCoreFraction": 0,
+            "maxAngleDeg": 0,
+            "medianAngleDeg": 0
+          },
+          "fuzz": {
+            "fiberCount": 107,
+            "fiberDiameterMm": 0.021,
+            "fuzzPixelCount": 88563,
+            "fuzzPixelFraction": 0.15332929362880887,
+            "scanPixelCount": 22069,
+            "haloPixelCount": 75200,
+            "haloEnabled": true,
+            "multiPassagePixelCount": 0,
+            "scanMultiPassagePixelCount": 0,
+            "haloMultiPassagePixelCount": 0
+          }
+        },
+        "fuzz": {
+          "fiberCount": 107,
+          "fiberDiameterMm": 0.021,
+          "fuzzPixelCount": 88563,
+          "fuzzPixelFraction": 0.15332929362880887,
+          "scanPixelCount": 22069,
+          "haloPixelCount": 75200,
+          "haloEnabled": true,
+          "multiPassagePixelCount": 0,
+          "scanMultiPassagePixelCount": 0,
+          "haloMultiPassagePixelCount": 0
+        },
+        "preview": {
+          "vRange": [
+            0.3587257617728532,
+            0.6523545706371191
+          ],
+          "usesFullImage": false,
+          "note": "二维预览按现有规则使用识别出的纱线带"
+        },
+        "normalChecks": {
+          "strip_scan-both-medium_yarn_normal.png": {
+            "minZ": 0.11372549019607847,
+            "maxLengthError": 0.00615504378139875,
+            "pixels": 577600
+          }
+        },
+        "timings": {
+          "materialMs": 350.6971000000012,
+          "fibersMs": 3.659800000001269,
+          "geometryMs": 171.15879999999743,
+          "aoMs": 1671.7594000000026,
+          "fuzzMs": 6484.671399999999,
+          "composeMs": 302.80830000000424,
+          "encodeMs": 33.75529999999708
+        }
+      },
+      {
+        "prefix": "strip_solid-generated-high",
+        "fuzzSource": "generated",
+        "fuzzStrength": 1,
+        "diagnostics": {
+          "coverageFraction": 0.04728132387706856,
+          "legFraction": 0,
+          "visibleHemisphere": {
+            "constrainedPixelCount": 0,
+            "corePixelCount": 32000,
+            "constrainedCoreFraction": 0,
+            "maxAngleDeg": 0,
+            "medianAngleDeg": 0
+          },
+          "fuzz": {
+            "fiberCount": 213,
+            "fiberDiameterMm": 0.021,
+            "fuzzPixelCount": 98480,
+            "fuzzPixelFraction": 0.14550827423167847,
+            "scanPixelCount": 0,
+            "haloPixelCount": 75200,
+            "haloEnabled": true,
+            "multiPassagePixelCount": 0,
+            "scanMultiPassagePixelCount": 0,
+            "haloMultiPassagePixelCount": 0
+          }
+        },
+        "fuzz": {
+          "fiberCount": 213,
+          "fiberDiameterMm": 0.021,
+          "fuzzPixelCount": 98480,
+          "fuzzPixelFraction": 0.14550827423167847,
+          "scanPixelCount": 0,
+          "haloPixelCount": 75200,
+          "haloEnabled": true,
+          "multiPassagePixelCount": 0,
+          "scanMultiPassagePixelCount": 0,
+          "haloMultiPassagePixelCount": 0
+        },
+        "preview": {
+          "vRange": [
+            0.3546099290780142,
+            0.6312056737588653
+          ],
+          "usesFullImage": false,
+          "note": "二维预览按现有规则使用识别出的纱线带"
+        },
+        "normalChecks": {
+          "strip_solid-generated-high_yarn_normal.png": {
+            "minZ": 0.10588235294117654,
+            "maxLengthError": 0.00615504378139875,
+            "pixels": 676800
+          }
+        },
+        "timings": {
+          "materialMs": 0.8255000000062864,
+          "fibersMs": 4.321299999995972,
+          "geometryMs": 343.0204999999987,
+          "aoMs": 1704.6669000000038,
+          "fuzzMs": 4095.037000000004,
+          "composeMs": 267.405700000003,
+          "encodeMs": 37.82190000000264
+        }
+      }
+    ],
+    "comparisonFiles": [
+      "case-3-N48_scan-both-medium_technicalFace_review4x4_t6a3.png",
+      "hossain-2.84_solid_technicalFace_review4x4_t6a3.png",
+      "strip_scan-both-medium_yarn_review_t6a3.png",
+      "strip_solid-generated-high_yarn_review_t6a3.png"
+    ]
   }
 }

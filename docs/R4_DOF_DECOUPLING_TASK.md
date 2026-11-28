@@ -354,3 +354,18 @@ golden:fabric-form-solve：<未运行（纯文档）> 或：
 - 公开接口变化：无。新增检查：无。
 - 偏离任务书：按用户 2026-11-28 最新指示，R4-3 跳过原要求的全量 validate/build，直接提交推送。发现未处理的问题：无新增；R1 遗留第 3、4 项保留。
 - 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-3/。准备好的验证启动脚本未执行，归档 verification.json 如实标记本步未运行验证。
+
+### 用户执行指示（2026-11-28，R4-3 恢复全量验证）
+
+> 那你继续按照上面的跑全量吧
+
+收到该指示时，上一条“直接提交推送”已执行，R4-3 文档提交 4a0de1ed0bd362a86dd78a0bef987d9024872237 已推送。按用户最新指示继续补跑全量 npm run validate 与 npm run build，仍不运行完整求解金标准；保留此前提交和未运行记录，补验实际结果另行追加并提交推送。
+
+
+### R4-3（2026-11-28）：按用户最新指示补验完成
+
+- 基线：4a0de1ed0bd362a86dd78a0bef987d9024872237（R4-3 文档提交，已推送）。按用户恢复全量验证的指示，在 R4-3 已提交文档及后续指示记录上补跑全量验证，求解代码、检查脚本及 ARCHITECTURE 均无新增变化。
+- 本轮实际结果：npm run validate 50/50（含 golden-eval 7/7、solver-math 全部新增及既有检查），npm run build 退出 0，后台进程退出 0。golden:fabric-form-solve 未运行（纯文档）。未做额外性能测量、额外文件哈希或重复完整求解。
+- 本补充提交保留先前“直接提交推送”与随后“恢复全量验证”的用户原文及执行时间顺序，不改写已推送历史；R4-3 的全量 validate/build 要求现已补齐，实际结果以本记录和 full-verification/verification.json 为准。
+- 新增检查：无。公开接口变化：无。偏离任务书：R4-3 按用户上一条指示先提交推送，按随后最新指示补验并追加独立文档回报；最终所需验证已完成。发现未处理的问题：无新增；R1 遗留第 3、4 项仍保持开放。
+- 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-3/full-verification/，含 validate/build 日志、阶段退出码、后台 runner 及 verification.json。

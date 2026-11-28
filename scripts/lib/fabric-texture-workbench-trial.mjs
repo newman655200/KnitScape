@@ -3,15 +3,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { ZipReader, Uint8ArrayReader } from "@zip.js/zip.js";
 import { createFabricFormParams } from "../../src/fabricForm/fabricFormParams.js";
-import { solveFabricTextureGeometry, bakeFabricTexture, bakeYarnStrip } from "../../src/fabricTexture/fabricTexturePipeline.js";
+import { solveFabricTextureGeometry } from "../../src/fabricTexture/fabricTexturePipeline.js";
+import { runFabricComposeJob, runYarnStripJob } from "../../src/fabricTexture/fabricTextureJobs.js";
 import { createFabricTextureZip } from "../../src/fabricTexture/textureExport.js";
 import { addYarnPreviewMetadata } from "./fabric-texture-material-input.mjs";
 import { assertNormalPng } from "./fabric-texture-normal-checks.mjs";
 import { textureGeneratorVersion } from "./fabric-texture-provenance.mjs";
 
-// One complete T6a-3 default-input trial. Do not add a second solve or a benchmark.
+// One complete T6a-3b default-input trial. Do not add a second solve or a benchmark.
 async function main() {
-  if (process.argv.length !== 3) throw new Error("Supply the external T6a-3 archive directory.");
+  if (process.argv.length !== 3) throw new Error("Supply the external T6a-3b archive directory.");
   const archive = path.resolve(process.argv[2]), repositoryRoot = path.resolve(".");
   const relative = path.relative(repositoryRoot, archive);
   if (!relative || (!relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative))) {
@@ -27,24 +28,28 @@ async function main() {
   const common = { material: {}, pxPerMm: 200, prefix: "fabric", fuzzSource: "generated",
     fuzzOptions: { fuzzStrength: 0.5 }, generatorVersion: textureGeneratorVersion(), generatedAt, repositoryRoot };
   const stages = [];
-  const solved = solveFabricTextureGeometry(solveInput, { pxPerMm: common.pxPerMm,
-    onStage: stage => { stages.push(stage); console.log(`WORKBENCH_TRIAL_STAGE ${stage}`); } });
+  const onStage = stage => { stages.push(stage); console.log(`WORKBENCH_TRIAL_STAGE ${stage}`); };
+  const solved = solveFabricTextureGeometry(solveInput, { pxPerMm: common.pxPerMm, onStage });
   const { result, geometry } = solved;
   await fs.writeFile(path.join(archive, "result.json"), JSON.stringify(result, null, 2) + "\n");
   if (result.status !== "CONVERGED") console.warn(`WARNING: solver status=${result.status}; exports remain explicitly non-converged.`);
-  console.log("WORKBENCH_TRIAL_STAGE fabric");
-  const fabric = await bakeFabricTexture({ ...common, result, geometry, repeat: [1, 1], sourceResultFile: "result.json" });
-  console.log("WORKBENCH_TRIAL_STAGE yarn");
-  const yarn = await bakeYarnStrip({ ...common, params: result.params, stripLengthMm: 4 });
+  onStage("fabric");
+  const fabricStarted = performance.now();
+  const fabric = await runFabricComposeJob({ ...common, result, geometry, repeat: [1, 1], sourceResultFile: "result.json" });
+  const fabricJobMs = performance.now() - fabricStarted;
+  onStage("yarn");
+  const yarnStarted = performance.now();
+  const yarn = await runYarnStripJob({ ...common, params: result.params, stripLengthMm: 4 });
+  const yarnJobMs = performance.now() - yarnStarted;
   const previewStarted = performance.now();
   await addYarnPreviewMetadata(yarn.metadata, yarn.maps.baseColor);
   const yarnPreviewMetadataMs = performance.now() - previewStarted;
   const normalStarted = performance.now(), normalChecks = {};
   for (const value of [fabric, yarn]) for (const [name, bytes] of Object.entries(value.files)) {
-    if (name.endsWith("_normal.png")) normalChecks[name] = assertNormalPng(bytes, `T6a-3 trial ${name}`);
+    if (name.endsWith("_normal.png")) normalChecks[name] = assertNormalPng(bytes, `T6a-3b trial ${name}`);
   }
   const normalChecksMs = performance.now() - normalStarted;
-  console.log("WORKBENCH_TRIAL_STAGE zip");
+  onStage("zip");
   const archives = [], zipTimings = {};
   for (const [name, value, metadataFilename] of [
     ["fabric-textures.zip", fabric, "fabric_metadata.json"],
@@ -62,17 +67,18 @@ async function main() {
     } finally { await reader.close(); }
   }
   const summary = {
-    step: "T6a-3 workbench default-input trial", generatedAt, generatorVersion: common.generatorVersion,
+    step: "T6a-3b workbench default-input trial", generatedAt, generatorVersion: common.generatorVersion,
     runtime: { node: process.version, platform: process.platform, arch: process.arch },
     input: { ...solveInput, pxPerMm: common.pxPerMm, material: {}, fuzzSource: common.fuzzSource,
       fuzzOptions: common.fuzzOptions, repeat: [1, 1], stripLengthMm: 4 },
-    pipeline: "solveFabricTextureGeometry (shared with Worker), bakeFabricTexture, bakeYarnStrip, createFabricTextureZip",
+    pipeline: "solveFabricTextureGeometry, runFabricComposeJob, runYarnStripJob (shared with Worker), addYarnPreviewMetadata, createFabricTextureZip",
     stages, solver: { status: result.status, optimizerStatus: result.optimizerStatus, iterations: result.iterations,
       W: result.cell.W, H: result.cell.H, S: result.cell.S, metrics: result.metrics },
     timings: { solveAndGeometry: solved.timings,
       fabric: Object.fromEntries(Object.entries(fabric.timings).filter(([key]) => !Object.hasOwn(geometry.timings, key))),
-      yarn: yarn.timings, yarnPreviewMetadataMs, normalChecksMs, zip: zipTimings, totalMs: performance.now() - started },
-    timingNote: "One actual Node run; stage timings are not a browser performance benchmark. Cached geometry timings appear only under solveAndGeometry.",
+      yarn: yarn.timings, fabricJobMs, yarnJobMs, yarnPreviewMetadataMs, normalChecksMs,
+      zip: zipTimings, totalMs: performance.now() - started },
+    timingNote: "One actual Node run; stage timings are not a browser performance benchmark. Cached geometry timings appear only under solveAndGeometry. Job wall times include their listed stages and are not additive with them.",
     normalChecks, archives, limitations: fabric.metadata.limitations,
   };
   await fs.writeFile(path.join(archive, "summary.json"), JSON.stringify(summary, null, 2) + "\n");

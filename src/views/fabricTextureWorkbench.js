@@ -5,11 +5,10 @@ import { createFabricFormParams } from "../fabricForm/fabricFormParams.js";
 import { resolveYarnMaterial, normalizeYarnPlies } from "../domain/yarnMaterial.js";
 import { yarnAssetRegistry } from "../yarnTexture/yarnAssetRegistry.js";
 import { loadImageFromDataUrl, YARN_PBR_MAP_KEYS } from "../yarnTexture/yarnScanTexture.js";
-import { bakeFabricTexture, bakeYarnStrip } from "../fabricTexture/fabricTexturePipeline.js";
 import { normalizeFuzzParameters } from "../fabricTexture/yarnFuzz.js";
 import { FABRIC_TEXTURE_LIMITATIONS } from "../fabricTexture/metadata.js";
 import { sourceImageHasAlpha } from "../fabricTexture/sourceImageAlpha.js";
-import { createReviewImage } from "../fabricTexture/review.js";
+import { createWorkbenchPreview } from "../fabricTexture/workbenchPreview.js";
 import { createFabricTextureZip } from "../fabricTexture/textureExport.js";
 import { download } from "../utils.js";
 
@@ -47,10 +46,10 @@ function createController() {
     pxPerMm: 200, stripLengthMm: 4, yarnId: String(GLOBAL_STATE.yarnLibrary[0]?.id ?? ""),
     normalGreen: "+Y", fuzzSource: "generated", fuzzBand: "fullScan", fuzzStrength: 0.45,
     fuzzOverrides: {}, material: null, materialLoading: false, materialCache: new Map(),
-    result: null, geometry: null, fabric: null, strip: null, settings: null, geometryKey: null,
-    worker: null, imageAbort: null, urls: new Set(), imageSequence: 0, jobSequence: 0,
+    result: null, geometry: null, fabric: null, strip: null, settings: null, stripSettings: null, geometryKey: null,
+    worker: null, workerCancel: null, imageAbort: null, urls: new Set(), imageSequence: 0, jobSequence: 0, requestSequence: 0,
     phase: "idle", status: "设置参数后点击“计算并生成”。", error: "", elapsedMs: 0,
-    timer: null, composeTimer: null, composing: false, pendingComposition: false,
+    timer: null, composeTimer: null,
     revision: 0, canvas: null, paintKey: null };
 }
 
@@ -62,21 +61,59 @@ function startTimer(c, phase, message) {
 function finish(c, message) {
   c.elapsedMs = performance.now() - c.startedAt; endTimer(c); c.phase = "idle"; c.status = message;
 }
-function cancel(c, message = "已取消。可重新计算或修改参数。") {
-  c.jobSequence++; c.worker?.terminate(); c.worker = null;
-  c.imageSequence++; c.imageAbort?.abort(); c.materialLoading = false;
-  c.pendingComposition = false;
+const latest = (c, sequence) => current(c) && sequence === c.jobSequence;
+function stopWork(c, message) {
+  // Reject the awaited job as well as terminating its Worker: no suspended chains.
+  c.jobSequence++; c.workerCancel?.();
   clearTimeout(c.composeTimer); c.composeTimer = null;
-  endTimer(c); c.phase = "idle"; c.status = message; refresh(c);
+  endTimer(c); c.phase = "idle"; c.elapsedMs = 0; c.status = message;
+}
+function cancel(c, message = "已取消。可重新计算或修改参数。") {
+  stopWork(c, message);
+  c.imageSequence++; c.imageAbort?.abort(); c.materialLoading = false;
+  refresh(c);
 }
 function dispose(c) {
-  c.jobSequence++; c.imageSequence++; c.worker?.terminate(); c.imageAbort?.abort();
-  endTimer(c); clearTimeout(c.composeTimer);
+  stopWork(c, ""); c.imageSequence++; c.imageAbort?.abort();
+  window.removeEventListener("resize", c.resizeHandler);
   for (const url of c.urls) URL.revokeObjectURL(url);
   c.urls.clear(); c.materialCache.clear();
   if (c.canvas) c.canvas.width = c.canvas.height = 1;
-  c.canvas = c.geometry = c.result = c.fabric = c.strip = c.material = c.settings = null;
+  c.canvas = c.geometry = c.result = c.fabric = c.strip = c.material = c.settings = c.stripSettings = null;
   controller = null;
+}
+
+const STAGES = { solve: "正在求解普通纬平针周期单元…", geometry: "正在求解 / 烘焙两面纱芯与 AO…",
+  fabric: "正在合成两面面料贴图…", yarn: "正在生成单根纱线贴图…" };
+
+function runWorker(c, sequence, type, options) {
+  return new Promise((resolve, reject) => {
+    if (!latest(c, sequence)) { reject(new DOMException("任务已取消", "AbortError")); return; }
+    const requestId = ++c.requestSequence;
+    const worker = new Worker(new URL("../fabricTexture/fabricTextureWorker.js", import.meta.url), { type: "module" });
+    const release = () => {
+      worker.terminate();
+      if (c.worker === worker) { c.worker = null; c.workerCancel = null; }
+    };
+    c.worker = worker;
+    c.workerCancel = () => { release(); reject(new DOMException("任务已取消", "AbortError")); };
+    startTimer(c, type === "geometry" ? "solve" : type, STAGES[type === "geometry" ? "solve" : type]); refresh(c);
+    worker.onmessage = ({ data }) => {
+      if (!latest(c, sequence) || c.worker !== worker || data.requestId !== requestId) return;
+      if (data.type === "stage") {
+        c.phase = data.stage; c.status = STAGES[data.stage] ?? c.status; refresh(c);
+      } else if (data.type === "result" && data.jobType === type) {
+        release(); resolve(data);
+      } else if (data.type === "error") {
+        release(); const error = new Error(data.message); error.name = data.name || "Error"; reject(error);
+      }
+    };
+    worker.onerror = event => { release(); reject(new Error(event.message || "Worker 执行失败。")); };
+    worker.onmessageerror = () => { release(); reject(new Error("无法读取 Worker 的贴图结果。")); };
+    // Copy inputs so the main thread's decoded-material and geometry caches survive.
+    try { worker.postMessage({ type, requestId, ...options }); }
+    catch (error) { release(); reject(error); }
+  });
 }
 function observeState() {
   if (monitorRegistered) return;
@@ -86,6 +123,7 @@ function observeState() {
     if (!c) return;
     if (state.workbenchMode !== "fabricTexture" || state.projectGeneration !== c.generation) { dispose(c); return; }
     if (changes.some(key => ["yarnLibrary", "yarnPalette", "yarnPlies"].includes(key))) {
+      stopWork(c, "纱线来源已修改，正在读取贴图…");
       c.materialCache.clear();
       if (!state.yarnLibrary.some(yarn => String(yarn.id) === c.yarnId)) c.yarnId = String(state.yarnLibrary[0]?.id ?? "");
       queueMicrotask(() => { if (current(c)) loadMaterial(c); });
@@ -134,11 +172,7 @@ async function decodeMap(c, map, registry, signal) {
 
 async function loadMaterial(c) {
   if (!current(c)) return;
-  // A source change may arrive from project state while an async encoder is pending.
-  // Keep a running geometry Worker: its inputs do not include yarn appearance.
-  if (!c.worker) { c.jobSequence++; endTimer(c); c.phase = c.composing ? "compose" : "idle"; }
-  c.pendingComposition = false;
-  clearTimeout(c.composeTimer); c.composeTimer = null;
+  stopWork(c, c.geometry ? "正在读取纱线贴图…" : "纱线已修改，读取完成后请点击“计算并生成”。");
   const sequence = ++c.imageSequence;
   c.imageAbort?.abort(); c.imageAbort = new AbortController();
   const signal = c.imageAbort.signal, { asset, resolved, pbr } = materialDescription(c);
@@ -170,14 +204,13 @@ async function loadMaterial(c) {
   } catch (error) {
     if (!current(c) || sequence !== c.imageSequence || signal.aborted) return;
     c.materialLoading = false;
-    if (!c.worker) { endTimer(c); c.phase = "idle"; }
     c.error = `纱线贴图读取失败：${error.message}`; refresh(c);
   } finally { registry.clear(); }
 }
 
 function inputKey(c) { return JSON.stringify([c.input, c.pxPerMm]); }
 function clearResults(c) {
-  c.fabric = c.strip = c.settings = null; c.revision++;
+  c.fabric = c.strip = c.settings = c.stripSettings = null; c.revision++;
   if (c.canvas) c.canvas.width = c.canvas.height = 1;
   c.canvas = null; c.paintKey = null;
 }
@@ -186,8 +219,13 @@ function updateGeometryInput(c, change) {
   c.result = c.geometry = c.geometryKey = null; clearResults(c); c.error = ""; refresh(c);
 }
 function updateAppearance(c, change) {
-  if (!c.worker) c.jobSequence++;
+  stopWork(c, c.geometry ? "外观已修改，等待合成…" : "外观已修改，请点击“计算并生成”。");
   change(); c.error = ""; clearResults(c); scheduleComposition(c); refresh(c);
+}
+function updateStripLength(c, value) {
+  stopWork(c, "单根纱线长度已修改，将在查看或导出时生成。");
+  c.stripLengthMm = value; c.strip = c.stripSettings = null; c.revision++; c.error = "";
+  scheduleComposition(c); refresh(c);
 }
 function settingsSnapshot(c) {
   return { material: { ...c.material, normalGreen: c.normalGreen, fuzzBand: c.fuzzBand },
@@ -195,119 +233,120 @@ function settingsSnapshot(c) {
     pxPerMm: c.pxPerMm, stripLengthMm: c.stripLengthMm };
 }
 function scheduleComposition(c) {
-  if (!current(c) || !c.geometry || !c.material || c.worker) return;
-  c.pendingComposition = true;
+  if (!current(c) || !c.geometry || !c.material || c.worker || !["idle", "waiting"].includes(c.phase)) return;
+  if (c.fabric && (c.strip || GLOBAL_STATE.fabricTextureView.face !== "yarn")) return;
   clearTimeout(c.composeTimer);
+  const sequence = c.jobSequence;
+  c.phase = "waiting"; c.status = "等待最新外观设置…";
   c.composeTimer = setTimeout(() => {
     c.composeTimer = null;
-    if (!c.composing) compose(c);
+    if (latest(c, sequence)) compose(c, sequence);
   }, 120);
 }
 
-async function compose(c) {
-  if (!current(c) || !c.geometry || !c.material || c.worker) return;
-  if (c.composing) { c.pendingComposition = true; return; }
-  c.composing = true; c.pendingComposition = false;
-  const sequence = ++c.jobSequence, settings = settingsSnapshot(c), result = c.result, geometry = c.geometry;
-  startTimer(c, "compose", "正在合成纱线材质、毛羽与两面贴图…"); c.error = ""; refresh(c);
+async function buildYarn(c, sequence) {
+  if (c.strip) return c.strip;
+  const settings = settingsSnapshot(c);
+  const strip = await runWorker(c, sequence, "yarn", { params: c.result.params, ...settings, prefix: "fabric" });
+  if (!latest(c, sequence)) return null;
+  const { findYarnTextureVRange } = await import("../simulation/yarnUvWebglRenderer.js");
+  if (!latest(c, sequence)) return null;
+  const range = findYarnTextureVRange(strip.maps.baseColor), usesFullImage = range[0] === 0 && range[1] === 1;
+  strip.metadata.preview = { vRange: range, usesFullImage,
+    note: usesFullImage ? "二维预览将使用整张贴图高度" : "二维预览按现有规则使用识别出的纱线带" };
+  c.strip = strip; c.stripSettings = settings; c.revision++;
+  return strip;
+}
+
+async function compose(c, sequence = c.jobSequence) {
+  if (!latest(c, sequence) || !c.geometry || !c.material || c.worker) return;
+  c.error = "";
   try {
-    normalizeFuzzParameters(settings.material, { ...settings.fuzzOptions, fuzzSource: settings.fuzzSource });
-    await nextFrame();
-    if (!current(c) || sequence !== c.jobSequence) return;
-    const fabric = await bakeFabricTexture({ result, geometry, ...settings, prefix: "fabric" });
-    if (!current(c) || sequence !== c.jobSequence) return;
-    c.status = "正在生成单根纱线贴图…"; refresh(c); await nextFrame();
-    if (!current(c) || sequence !== c.jobSequence) return;
-    const strip = await bakeYarnStrip({ params: result.params, ...settings, prefix: "fabric" });
-    if (!current(c) || sequence !== c.jobSequence) return;
-    const { findYarnTextureVRange } = await import("../simulation/yarnUvWebglRenderer.js");
-    if (!current(c) || sequence !== c.jobSequence) return;
-    const range = findYarnTextureVRange(strip.maps.baseColor);
-    const usesFullImage = range[0] === 0 && range[1] === 1;
-    strip.metadata.preview = { vRange: range, usesFullImage,
-      note: usesFullImage ? "二维预览将使用整张贴图高度" : "二维预览按现有规则使用识别出的纱线带" };
-    c.fabric = fabric; c.strip = strip; c.settings = settings; c.revision++;
-    finish(c, "已生成两面面料贴图和单根纱线贴图。"); refresh(c);
+    if (!c.fabric) {
+      const settings = settingsSnapshot(c);
+      const fabric = await runWorker(c, sequence, "fabric", { result: c.result, geometry: c.geometry, ...settings, prefix: "fabric" });
+      if (!latest(c, sequence)) return;
+      c.fabric = fabric; c.settings = settings; c.revision++; refresh(c);
+    }
+    if (GLOBAL_STATE.fabricTextureView.face === "yarn" && !c.strip) await buildYarn(c, sequence);
+    if (!latest(c, sequence)) return;
+    finish(c, c.strip ? "已生成两面面料贴图和单根纱线贴图。" : "已生成两面面料贴图；单根纱线在查看或导出时生成。"); refresh(c);
   } catch (error) {
-    if (!current(c) || sequence !== c.jobSequence) return;
+    if (!latest(c, sequence)) return;
     finish(c, "生成失败。请核对输入后重试。"); c.error = error.message; refresh(c);
-  } finally {
-    c.composing = false;
-    if (current(c) && c.pendingComposition) scheduleComposition(c);
   }
 }
 
-function calculate(c) {
+async function calculate(c) {
   if (!current(c) || c.materialLoading || !c.material) return;
   cancel(c); clearResults(c); c.error = "";
-  if (c.geometry && c.geometryKey === inputKey(c)) { compose(c); return; }
+  const sequence = c.jobSequence;
   try {
     if (!(Number.isFinite(c.input.loopLengthMm) && c.input.loopLengthMm > 0)) throw new Error("纱长必须为正数（mm）。");
     createFabricFormParams(c.input.params);
     normalizeFuzzParameters(c.material, { ...c.fuzzOverrides, fuzzStrength: c.fuzzStrength, fuzzSource: c.fuzzSource });
-    const requestId = ++c.jobSequence, key = inputKey(c);
-    const worker = new Worker(new URL("../fabricTexture/fabricTextureWorker.js", import.meta.url), { type: "module" });
-    c.worker = worker; startTimer(c, "solve", "正在求解普通纬平针周期单元…"); refresh(c);
-    worker.onmessage = event => {
-      if (!current(c) || c.worker !== worker || event.data.requestId !== requestId || requestId !== c.jobSequence) return;
-      const data = event.data;
-      if (data.type === "stage") {
-        c.phase = data.stage; c.status = data.stage === "solve" ? "正在求解普通纬平针周期单元…" : "正在烘焙两面纱芯与 AO…"; refresh(c);
-      } else {
-        worker.terminate(); c.worker = null;
-        if (data.type === "error") { finish(c, "计算失败。"); c.error = data.message; refresh(c); return; }
-        if (data.type !== "result") return;
-        c.result = data.result; c.geometry = data.geometry; c.geometryKey = key; c.solveTimings = data.timings;
-        finish(c, "求解与几何烘焙完成。"); refresh(c); compose(c);
-      }
-    };
-    worker.onerror = event => {
-      if (!current(c) || c.worker !== worker) return;
-      worker.terminate(); c.worker = null; finish(c, "计算失败。"); c.error = event.message || "Worker 执行失败。"; refresh(c);
-    };
-    worker.postMessage({ requestId, solveInput: c.input, pxPerMm: c.pxPerMm });
-  } catch (error) { c.error = error.message; c.worker?.terminate(); c.worker = null; endTimer(c); c.phase = "idle"; refresh(c); }
+    const key = inputKey(c);
+    if (!c.geometry || c.geometryKey !== key) {
+      const data = await runWorker(c, sequence, "geometry", { solveInput: c.input, pxPerMm: c.pxPerMm });
+      if (!latest(c, sequence)) return;
+      c.result = data.result; c.geometry = data.geometry; c.geometryKey = key; c.solveTimings = data.timings;
+    }
+    await compose(c, sequence);
+  } catch (error) {
+    if (!latest(c, sequence)) return;
+    c.error = error.message; endTimer(c); c.phase = "idle"; c.status = "计算失败。"; refresh(c);
+  }
 }
 
 async function exportTexture(c, kind) {
-  if (!c.fabric || !c.strip || c.phase !== "idle") return;
+  if (!c.fabric || c.phase !== "idle") return;
   const sequence = ++c.jobSequence, repeat = [...GLOBAL_STATE.fabricTextureView.exportRepeat];
-  startTimer(c, "export", "正在打包贴图…"); refresh(c);
   try {
-    await nextFrame();
-    if (!current(c) || sequence !== c.jobSequence) return;
-    let output = kind === "fabric" ? c.fabric : c.strip;
+    let output = kind === "fabric" ? c.fabric : await buildYarn(c, sequence);
+    if (!latest(c, sequence)) return;
     if (kind === "fabric" && repeat.some(value => value !== 1)) {
-      output = await bakeFabricTexture({ result: c.result, geometry: c.geometry, ...c.settings, repeat, prefix: "fabric" });
+      output = await runWorker(c, sequence, "fabric", { result: c.result, geometry: c.geometry, ...c.settings, repeat, prefix: "fabric" });
     }
-    if (!current(c) || sequence !== c.jobSequence) return;
+    if (!latest(c, sequence)) return;
+    startTimer(c, "packing", "正在打包贴图…"); refresh(c); await nextFrame();
+    if (!latest(c, sequence)) return;
     const filename = kind === "fabric" ? "fabric_metadata.json" : "fabric_yarn_metadata.json";
     const bytes = await createFabricTextureZip(output.files, output.metadata, filename);
-    if (!current(c) || sequence !== c.jobSequence) return;
+    if (!latest(c, sequence)) return;
     const url = URL.createObjectURL(new Blob([bytes], { type: "application/zip" })); c.urls.add(url);
     download(url, kind === "fabric" ? "fabric-textures.zip" : "yarn-textures.zip");
     setTimeout(() => { URL.revokeObjectURL(url); c.urls.delete(url); }, 1000);
-    finish(c, kind === "fabric" ? "面料贴图已打包下载（含两面 PNG 和元数据）。" : "纱线贴图已打包下载（含 PNG 和元数据）。"); refresh(c);
+    finish(c, kind === "fabric" ? "面料贴图已打包下载（含两面 PNG 和元数据）。" : "纱线贴图已打包下载（含 PNG 和元数据）。");
+    scheduleComposition(c); refresh(c);
   } catch (error) {
-    if (!current(c) || sequence !== c.jobSequence) return;
+    if (!latest(c, sequence)) return;
     finish(c, "导出失败。"); c.error = error.message; refresh(c);
   }
 }
 
-function updateView(c, patch) { if (current(c)) dispatch({ fabricTextureView: { ...GLOBAL_STATE.fabricTextureView, ...patch } }); }
+function updateView(c, patch) {
+  if (!current(c)) return;
+  dispatch({ fabricTextureView: { ...GLOBAL_STATE.fabricTextureView, ...patch } });
+  if (patch.face && patch.face !== "yarn" && c.fabric && c.phase === "waiting") {
+    stopWork(c, "已生成两面面料贴图；单根纱线在查看或导出时生成。"); refresh(c);
+  }
+  if (patch.face === "yarn" && !c.strip) { scheduleComposition(c); refresh(c); }
+}
 function paintPreview(c) {
   if (!current(c)) return;
   const canvas = document.getElementById("ft-preview-canvas");
   if (!canvas) return;
-  const view = GLOBAL_STATE.fabricTextureView, key = `${c.revision}:${view.face}:${view.tileCount}`;
+  const maxWidth = Math.min(1024, Math.max(128, (canvas.parentElement?.clientWidth || 1058) - 34));
+  const maxHeight = Math.min(768, Math.max(128, Math.floor(window.innerHeight * 0.65)));
+  const view = GLOBAL_STATE.fabricTextureView, key = `${c.revision}:${view.face}:${view.tileCount}:${maxWidth}:${maxHeight}`;
   if (c.canvas === canvas && c.paintKey === key) return;
   c.canvas = canvas; c.paintKey = key;
   const yarn = view.face === "yarn", product = yarn ? c.strip : c.fabric;
   if (!product) { canvas.width = canvas.height = 1; return; }
   const maps = yarn ? product.composed.unitMaps : product.composed[view.face].unitMaps;
   const copies = yarn ? [2, 1] : [view.tileCount, view.tileCount];
-  const review = createReviewImage(maps, copies);
-  const widthMm = yarn ? c.settings.stripLengthMm * 2 : c.result.cell.W * view.tileCount;
+  const review = createWorkbenchPreview(maps, copies, { maxWidth, maxHeight });
+  const widthMm = yarn ? c.stripSettings.stripLengthMm * 2 : c.result.cell.W * view.tileCount;
   const context = canvas.getContext("2d");
   if (!context) { c.error = "当前浏览器无法创建 Canvas 2D 预览。"; return; }
   const rulerScale = Math.max(1, review.width / 600), rulerHeight = Math.ceil(56 * rulerScale), left = 16 * rulerScale;
@@ -361,12 +400,14 @@ export function fabricTextureWorkbench() {
   if (controller && controller.generation !== GLOBAL_STATE.projectGeneration) dispose(controller);
   if (!controller) {
     controller = createController(); observeState();
-    const initial = controller; queueMicrotask(() => { if (current(initial)) loadMaterial(initial); });
+    const initial = controller;
+    initial.resizeHandler = () => paintPreview(initial);
+    window.addEventListener("resize", initial.resizeHandler);
+    queueMicrotask(() => { if (current(initial)) loadMaterial(initial); });
   }
-  const c = controller, view = GLOBAL_STATE.fabricTextureView, busy = c.phase !== "idle";
-  const appearanceLocked = Boolean(c.worker) || c.phase === "export";
+  const c = controller, view = GLOBAL_STATE.fabricTextureView, busy = c.phase !== "idle" || c.materialLoading;
   const { pbr } = materialDescription(c), hasAlpha = c.material?.baseColor?.channels === 4;
-  const hasOutput = Boolean(c.fabric && c.strip), defaults = normalizeFuzzParameters({}, { fuzzStrength: c.fuzzStrength });
+  const hasPreview = Boolean(view.face === "yarn" ? c.strip : c.fabric), defaults = normalizeFuzzParameters({}, { fuzzStrength: c.fuzzStrength });
   queueMicrotask(() => paintPreview(c));
   return html`<section id="fabric-texture-workbench" @keydown=${event => event.stopPropagation()} @keyup=${event => event.stopPropagation()}>
     <div class="ft-main"><header class="ft-header"><h2>面料纹理 <small>实验</small></h2>
@@ -376,7 +417,7 @@ export function fabricTextureWorkbench() {
         <label>面料平铺 <input id="ft-tile-count" type="range" min="2" max="8" step="1" .value=${String(view.tileCount)}
           ?disabled=${view.face === "yarn"} @input=${event => updateView(c, { tileCount: Number(event.currentTarget.value) })} /> ${view.tileCount} × ${view.tileCount}</label></div>
       <div class="ft-preview" aria-label="面料纹理预览">
-        ${hasOutput ? html`<canvas id="ft-preview-canvas" class="ft-canvas" aria-label="带毫米比例尺的纹理预览"></canvas>`
+        ${hasPreview ? html`<canvas id="ft-preview-canvas" class="ft-canvas" aria-label="带毫米比例尺的纹理预览"></canvas>`
           : html`<div class="ft-preview-empty">${busy ? "正在生成预览…" : "计算后显示带毫米比例尺的纹理预览"}</div>`}
       </div>
       <p class="ft-status" role="status">${c.status} ${c.elapsedMs > 0 ? `已用 ${number(c.elapsedMs / 1000, 1)} 秒` : ""}</p>
@@ -390,14 +431,15 @@ export function fabricTextureWorkbench() {
         <label class="ft-field">每圈节点数<select id="ft-nodes" .value=${String(c.input.nodesPerLoop)} @change=${event => updateGeometryInput(c, () => c.input.nodesPerLoop = Number(event.currentTarget.value))}>
           ${[24, 48, 64].map(value => html`<option value=${value} ?selected=${c.input.nodesPerLoop === value}>${value}</option>`)}</select></label>
         <label class="ft-field">分辨率（px/mm）<select id="ft-resolution" .value=${String(c.pxPerMm)} @change=${event => updateGeometryInput(c, () => c.pxPerMm = Number(event.currentTarget.value))}>
-          ${[100, 200, 400].map(value => html`<option value=${value} ?selected=${c.pxPerMm === value}>${value}</option>`)}</select></label></div>
+          ${[100, 200, 400].map(value => html`<option value=${value} ?selected=${c.pxPerMm === value}>${value}</option>`)}</select>
+          ${c.pxPerMm === 400 ? html`<small>每次合成约需半分钟</small>` : null}</label></div>
         <details class="ft-advanced"><summary>六项材料参数 · 假设值</summary><p class="ft-note">当前值用于未标定 T1 模型。手动调整仍记为假设值，不代表材料实测；物理状态未知。</p>
           <div class="ft-grid">${PARAM_FIELDS.map(([key, label, unit, step]) => numericField(`${label}（${unit}）`, c.input.params[key], value => updateGeometryInput(c, () => {
             c.input.params[key] = value; delete c.input.params.provenance[key];
           }),
             { id: `ft-param-${key}`, step, ...(key === "phi0" ? { max: 0.999999 } : {}), note: "来源：模型参考 / 手动假设" }))}</div></details>
       </fieldset></section>
-      <section class="ft-controls"><h3>纱线</h3><fieldset ?disabled=${appearanceLocked}>
+      <section class="ft-controls"><h3>纱线</h3><fieldset>
         <label class="ft-field">纱线库<select id="ft-yarn" .value=${live(c.yarnId)} @change=${event => { c.yarnId = event.currentTarget.value; loadMaterial(c); }}>
           ${GLOBAL_STATE.yarnLibrary.length ? GLOBAL_STATE.yarnLibrary.map(yarn => html`<option value=${String(yarn.id)} ?selected=${String(yarn.id) === c.yarnId}>${yarn.name}</option>`) : html`<option value="">纯色纱线</option>`}</select></label>
         <p class="ft-map-list">PBR：${YARN_PBR_MAP_KEYS.filter(key => hasMap(pbr[key])).map(key => MAP_LABELS[key]).join("、") || "无（使用纯色）"}</p>
@@ -408,7 +450,7 @@ export function fabricTextureWorkbench() {
           <option value="+Y">+Y · OpenGL</option><option value="-Y">−Y · DirectX</option></select></label>
       </fieldset></section>
       <section class="ft-controls"><h3>纱线毛羽</h3><p class="ft-note">毛羽是所选纱线的外观属性。以下为临时调整，不写回纱线；所有生成参数是假设值。</p>
-        <fieldset ?disabled=${appearanceLocked || c.materialLoading}><label class="ft-field">来源<select id="ft-fuzz-source" .value=${live(c.fuzzSource)} @change=${event => updateAppearance(c, () => c.fuzzSource = event.currentTarget.value)}>
+        <fieldset ?disabled=${c.materialLoading}><label class="ft-field">来源<select id="ft-fuzz-source" .value=${live(c.fuzzSource)} @change=${event => updateAppearance(c, () => c.fuzzSource = event.currentTarget.value)}>
           <option value="off">关</option><option value="scan" ?disabled=${!hasAlpha}>扫描</option><option value="generated">生成</option><option value="both" ?disabled=${!hasAlpha}>扫描 + 生成</option></select></label>
         <label class="ft-field">毛羽强度 ${number(c.fuzzStrength, 2)}<input id="ft-fuzz-strength" type="range" min="0" max="1" step="0.01" .value=${String(c.fuzzStrength)}
           @input=${event => updateAppearance(c, () => c.fuzzStrength = Number(event.currentTarget.value))} /></label>
@@ -425,13 +467,13 @@ export function fabricTextureWorkbench() {
         <div class="ft-actions"><button id="ft-calculate" type="button" class="btn" ?disabled=${busy || c.materialLoading || !c.material} @click=${() => calculate(c)}>计算并生成</button>
           <button id="ft-cancel" type="button" class="btn" ?disabled=${!busy} @click=${() => cancel(c)}>取消</button></div>
       </section>
-      <section class="ft-controls"><h3>导出</h3><fieldset ?disabled=${busy}><div class="ft-grid">
+      <section class="ft-controls"><h3>导出</h3><fieldset><div class="ft-grid">
         ${[0, 1].map(index => numericField(`面料平铺 ${index === 0 ? "横向 kx" : "纵向 ky"}`, view.exportRepeat[index], value => {
           const repeat = [...view.exportRepeat]; repeat[index] = value; updateView(c, { exportRepeat: repeat });
         }, { id: `ft-export-repeat-${index}`, min: 1, integer: true }))}
-        ${numericField("单根纱线长度（mm）", c.stripLengthMm, value => updateAppearance(c, () => c.stripLengthMm = value), { id: "ft-strip-length", step: 0.1 })}</div>
-        <div class="ft-actions"><button id="ft-export-fabric" type="button" class="btn" ?disabled=${!hasOutput} @click=${() => exportTexture(c, "fabric")}>导出面料贴图</button>
-          <button id="ft-export-yarn" type="button" class="btn" ?disabled=${!hasOutput} @click=${() => exportTexture(c, "yarn")}>导出纱线贴图</button></div>
+        ${numericField("单根纱线长度（mm）", c.stripLengthMm, value => updateStripLength(c, value), { id: "ft-strip-length", step: 0.1 })}</div>
+        <div class="ft-actions"><button id="ft-export-fabric" type="button" class="btn" ?disabled=${busy || !c.fabric} @click=${() => exportTexture(c, "fabric")}>导出面料贴图</button>
+          <button id="ft-export-yarn" type="button" class="btn" ?disabled=${busy || !c.fabric} @click=${() => exportTexture(c, "yarn")}>导出纱线贴图</button></div>
         <p class="ft-note">分别导出 ZIP，包含 PNG 与元数据。面料含正反两面；法线输出统一为 +Y。平铺复制同一单元，毛羽会重复。</p>
       </fieldset></section>
     </aside></section>`;

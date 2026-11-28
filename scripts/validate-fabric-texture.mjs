@@ -13,6 +13,7 @@ import { validatePngCodec } from "./lib/fabric-texture-png-checks.mjs";
 import { assertNormalMap, assertNormalPng } from "./lib/fabric-texture-normal-checks.mjs";
 import { validateFuzzTexture } from "./lib/fabric-texture-fuzz-checks.mjs";
 import { validateTangentPassageTexture } from "./lib/fabric-texture-tangent-passage-checks.mjs";
+import { validateFabricTextureJobs } from "./lib/fabric-texture-job-checks.mjs";
 
 // Fixed T6a §4.1 acceptance thresholds. A failed item stops this script immediately.
 const cases = ["step3-hossain-2.84-after", "step4-case-4-N48"].map(name => ({
@@ -229,10 +230,30 @@ report("m", { sectionNormalError, sectionAoError, baseNormalChecks, sectionNorma
 await validateFuzzTexture({ params, center, straightGeometry, hossain, strongNormal });
 const t6a3Part0 = await validateTangentPassageTexture({ baked });
 console.log("T6A3_PART0_CHECKS_JSON " + JSON.stringify(t6a3Part0));
-for (const file of ["src/views/fabricTextureWorkbench.js", "src/fabricTexture/fabricTextureWorker.js"]) {
-  const source = fs.readFileSync(new URL(`../${file}`, import.meta.url), "utf8");
-  assert.match(source, /from\s+["'][./]*(fabricTexture\/)?fabricTexturePipeline\.js["']/, `(k) ${file} imports the shared pipeline`);
+const workbenchFile = "src/views/fabricTextureWorkbench.js";
+const workbenchUrl = new URL(`../${workbenchFile}`, import.meta.url);
+const workbenchSource = fs.readFileSync(workbenchUrl, "utf8");
+assert.doesNotMatch(workbenchSource,
+  /\b(bakeFabricTexture|bakeYarnStrip|bakeYarnStripFields|bakeFabricGeometry|bakeYarnFuzz|composeMaps|computeAmbientOcclusion|normalizeYarnMaterial|generateYarnFibers)\s*\(/,
+  `(k) ${workbenchFile} does not run heavy texture calculation on the main thread`);
+const workerUrls = [...new Set([...workbenchSource.matchAll(/new\s+Worker\s*\(\s*new\s+URL\s*\(\s*["']([^"']+)["']/g)]
+  .map(match => new URL(match[1], workbenchUrl).href))];
+assert.ok(workerUrls.length > 0, "(k) workbench references at least one fabric texture Worker entry");
+const pipelineImport = /from\s+["'][./]*(fabricTexture\/)?fabricTexturePipeline\.js["']/;
+const sources = [[workbenchFile, workbenchSource]];
+for (const workerUrl of workerUrls) {
+  const url = new URL(workerUrl), source = fs.readFileSync(url, "utf8");
+  const imports = [...source.matchAll(/from\s+["'](\.[^"']+)["']/g)];
+  const importsPipeline = pipelineImport.test(source) || imports.some(match =>
+    pipelineImport.test(fs.readFileSync(new URL(match[1], url), "utf8")));
+  const file = url.pathname.slice(new URL("../", import.meta.url).pathname.length);
+  assert.ok(importsPipeline, `(k) ${file} imports the shared pipeline directly or through its shared job module`);
+  sources.push([file, source]);
+}
+for (const [file, source] of sources) {
   assert.doesNotMatch(source, /IHDR|CompressionStream|crc32|Math\.atan2?\(|mulberry/i, `(k) ${file} does not duplicate shared algorithms`);
   report("k", { file });
 }
-console.log("fabric-texture: all T6a-1/T6a-2/T6a-3 checks (a)-(j), (k), (l)-(u) passed.");
+const jobChecks = await validateFabricTextureJobs({ hossain });
+console.log("T6A3B_JOB_CHECKS_JSON " + JSON.stringify(jobChecks));
+console.log("fabric-texture: all T6a-1/T6a-2/T6a-3/T6a-3b checks (a)-(j), (k), (l)-(v) passed.");

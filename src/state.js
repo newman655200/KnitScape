@@ -27,6 +27,7 @@ let GLOBAL_STATE = {
   workbenchMode: "classic2d",
   projectGeneration: 0,
   pbrView: { scale: 1, pan: { x: 0, y: 0 }, flipped: false, visibleYarnId: null },
+  fabricTextureView: { face: "technicalFace", tileCount: 4, exportRepeat: [1, 1] },
 
   chartBackground: "#ffffff",
   symbolPalette: {},

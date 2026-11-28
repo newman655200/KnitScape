@@ -229,4 +229,10 @@ report("m", { sectionNormalError, sectionAoError, baseNormalChecks, sectionNorma
 await validateFuzzTexture({ params, center, straightGeometry, hossain, strongNormal });
 const t6a3Part0 = await validateTangentPassageTexture({ baked });
 console.log("T6A3_PART0_CHECKS_JSON " + JSON.stringify(t6a3Part0));
-console.log("fabric-texture: all T6a-1/T6a-2/T6a-3 part 0 checks (a)-(j), (l)-(u) passed.");
+for (const file of ["src/views/fabricTextureWorkbench.js", "src/fabricTexture/fabricTextureWorker.js"]) {
+  const source = fs.readFileSync(new URL(`../${file}`, import.meta.url), "utf8");
+  assert.match(source, /from\s+["'][./]*(fabricTexture\/)?fabricTexturePipeline\.js["']/, `(k) ${file} imports the shared pipeline`);
+  assert.doesNotMatch(source, /IHDR|CompressionStream|crc32|Math\.atan2?\(|mulberry/i, `(k) ${file} does not duplicate shared algorithms`);
+  report("k", { file });
+}
+console.log("fabric-texture: all T6a-1/T6a-2/T6a-3 checks (a)-(j), (k), (l)-(u) passed.");

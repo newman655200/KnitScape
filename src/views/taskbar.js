@@ -69,9 +69,12 @@ export function taskbar() {
       <button type="button" class="btn ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "selected" : ""}"
         aria-pressed=${GLOBAL_STATE.workbenchMode === "pbr25d"}
         @click=${() => dispatch({ workbenchMode: "pbr25d" })}>PBR + 2.5D</button>
+      <button type="button" class="btn ${GLOBAL_STATE.workbenchMode === "fabricTexture" ? "selected" : ""}"
+        aria-pressed=${GLOBAL_STATE.workbenchMode === "fabricTexture"}
+        @click=${() => dispatch({ workbenchMode: "fabricTexture" })}>面料纹理（实验）</button>
     </div>
     <div
-      class="fabric-mode-controls ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "workspace-hidden" : ""}"
+      class="fabric-mode-controls ${GLOBAL_STATE.workbenchMode === "classic2d" ? "" : "workspace-hidden"}"
       role="group"
       aria-label=${t("workspace.navigation", language)}>
       <button

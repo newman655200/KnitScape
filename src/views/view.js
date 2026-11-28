@@ -16,7 +16,7 @@ import { needleArrangementBar } from "./needleArrangementBar";
 import { singleJerseyCamProgramEditor } from "./singleJerseyCamProgramEditor";
 import { yarnLibraryWorkspace } from "./yarnLibrary.js";
 import { pbrWorkbench } from "./pbrWorkbench.js";
-
+import { fabricTextureWorkbench } from "./fabricTextureWorkbench.js";
 import { simulationView } from "../components/runSimulation";
 import { syncDocumentLanguage } from "../i18n";
 import { codeGuideOverlay } from "../codeGuide/codeGuideOverlay";
@@ -44,7 +44,7 @@ export function view() {
     ${when(GLOBAL_STATE.showLibrary, libraryModal)}
     ${when(GLOBAL_STATE.showSettings, settingsModal)} ${taskbar()}
 
-    <div id="site" class="${GLOBAL_STATE.workspaceMode === "yarns" ? "yarn-library-active" : ""} ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "pbr-workbench-active" : ""}">
+    <div id="site" class="${GLOBAL_STATE.workspaceMode === "yarns" ? "yarn-library-active" : ""} ${GLOBAL_STATE.workbenchMode === "pbr25d" ? "pbr-workbench-active" : ""} ${GLOBAL_STATE.workbenchMode === "fabricTexture" ? "fabric-texture-active" : ""}">
       <div id="chart-pane">
         <div id="chart-layout">
           ${leftBar()}
@@ -88,6 +88,7 @@ export function view() {
         ${yarnLibraryWorkspace()}
       </main>
       ${pbrWorkbench()}
+      ${fabricTextureWorkbench()}
     </div>
     ${when(GLOBAL_STATE.debug, debugPane)}
     ${codeGuideOverlay()}

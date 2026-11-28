@@ -18,7 +18,17 @@ export function solveTextureInput(input) {
     params: createFabricFormParams(params) });
 }
 
-/** Read-only geometry stage. Suitable for a future Worker; never changes the solver cell. */
+/** Shared Worker/Node entry: solve once, then bake both faces and their AO. */
+export function solveFabricTextureGeometry(solveInput, { pxPerMm = 200, onStage } = {}) {
+  onStage?.("solve");
+  const started = performance.now(), result = solveTextureInput(solveInput);
+  const solveMs = performance.now() - started;
+  onStage?.("geometry");
+  const geometry = bakeFabricGeometry(result, { pxPerMm });
+  return { result, geometry, timings: { solveMs, ...geometry.timings } };
+}
+
+/** Read-only geometry stage; never changes the solver cell. */
 export function bakeFabricGeometry(result, { pxPerMm = 400 } = {}) {
   if (!result?.cell || !result.params || !result.metrics) throw new TypeError("A complete fabric-form result is required.");
   if (!Number.isFinite(pxPerMm) || pxPerMm <= 0) throw new RangeError("pxPerMm must be positive and finite.");

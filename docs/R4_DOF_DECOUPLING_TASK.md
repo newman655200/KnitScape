@@ -338,3 +338,19 @@ golden:fabric-form-solve：<未运行（纯文档）> 或：
 - 公开接口新增 solveFabricModel({ model, layout, initial, freeIndices, lockedComponents, scale, energyScale, settings, observer, restoreLockedValues }) 和 createT1Reporting({ bendingTermId, contactTermId } = {})；后者提供 createObserver(params)、formatInfeasible(raw, context)、formatResult(raw, context)。原有入口签名与结果结构不变。
 - 偏离任务书：无。发现未处理的问题：无。
 - 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-2/；完整求解目录为 R4-2/golden-solve/。
+
+
+### 用户执行指示（2026-11-28，R4-3 提交前）
+
+> 你直接提交推送，为什么还要测试
+
+本步为纯文档变更，用户最新指示优先于任务书原 §5 及 R4-3 的每步验证要求。收到指示时 R4-3 的 validate/build 尚未启动；按指示直接提交推送，本步不运行 validate/build，不将前一步结果记为本步验证。该指示不改变已完成的 R4-0、R4-1、R4-2 验收记录。
+
+### R4-3（2026-11-28）：文档与交接完成
+
+- 基线：82dcce7450f8c80f2d709c9b9affcb3b7403f0a8（R4-2，已推送）。ARCHITECTURE 仅修改 Layer 3，替换内核局部/全局布局约定，更新职责与扩展点，写明 R1 遗留第 1、2 项关闭，第 3、4 项仍未处理；NEXT_TASK 仅追加 R4 完成与交接记录。
+- 文档静态审查通过；Layer 3 以外内容、代码及检查脚本未改。全任务核对确认三个物理内核只有注释变化，优化器、金标准基线、R2/R3 研究脚本和汇总无变化。
+- validate：未运行；build：未运行。按上述用户最新指示直接提交推送。golden:fabric-form-solve：未运行（纯文档）。未作额外性能测量、额外文件哈希或重复求解。
+- 公开接口变化：无。新增检查：无。
+- 偏离任务书：按用户 2026-11-28 最新指示，R4-3 跳过原要求的全量 validate/build，直接提交推送。发现未处理的问题：无新增；R1 遗留第 3、4 项保留。
+- 本地归档：C:/Users/liuchen/Documents/KnitScape/archives/r4-dof-decoupling-2026-11-27/R4-3/。准备好的验证启动脚本未执行，归档 verification.json 如实标记本步未运行验证。
